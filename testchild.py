@@ -1,1 +1,0 @@
-testchild.py R1
