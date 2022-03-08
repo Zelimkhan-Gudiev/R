@@ -4,22 +4,16 @@ mydata <- read.csv('evals.csv')
 
 
 
-# if
+#### if ####
 
-a <- 
-
-if (a > 0){
-  print('positive')
-} else {
-  print('not positive')
-}
-
-
+a <- -2
+# два варианата
 if (a > 0){
   print('positive')
 } else print('not positive')
 
 
+# три варианата  
 if (a > 0){
   print('positive')
 } else if (a < 0) {
@@ -27,18 +21,16 @@ if (a > 0){
 } else print('zero')
 
 
-
-# ifelse
+#### ifelse ####
 
 a <- 10
-
 
 ifelse(a > 0, 'positive', 'not positive')
 
 a <- c(1, -1)
 
 
-# for 
+#### for ####
 
 for (i in 1:100){
   print(i)
@@ -51,7 +43,7 @@ for (i in 1:nrow(mydata)){
 
 
 
-# for + if
+#### for + if ####
 for (i in 1:nrow(mydata)){
   if (mydata$gender[i] == 'male'){
     print(mydata$score[i]) 
@@ -60,7 +52,7 @@ for (i in 1:nrow(mydata)){
 
 
 
-# for + if  VS  ifelse
+#### for + if  VS  ifelse ####
 
 mydata$quality <- rep(NA, nrow(mydata))
 
@@ -71,19 +63,10 @@ for (i in 1:nrow(mydata)){
 }
 
 
-
-
-
-
 mydata$quality2 <- ifelse(mydata$score > 4, 'good', 'bad')
 
 
-
-
-
-
-
-# while
+#### while ####
 
 i <- 1
 
