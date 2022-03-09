@@ -13,6 +13,7 @@ remove(list = ls())
 ?mtcars
 
 df  <- mtcars
+yt <- read.csv2("yt.csv")
 
 str(df)
 
@@ -47,6 +48,7 @@ result <- mean(df$qsec[df$cyl != 3 & df$mpg > 20])
 
 # Вариант 2
 result = mean(mtcars$qsec['cyl' != 3 & 'mpg' > 20])
+
 
 
 #### Step 5: Aggregation (расчитывает некоторые описательные статистики (ОС) для некоторого подмножества данных) ####
@@ -97,6 +99,7 @@ descriptions_stat <- aggregate(. ~ mtcars$am, mtcars[, c(3, 4)], sd)
 descriptions_stat = aggregate(x = mtcars[, c('hp', 'disp')], by = list(mtcars$am), FUN = sd)
 # Вариант 4
 descriptions_stat <- aggregate(x = mtcars[, c(3, 4)], by = list(mtcars$am), FUN = sd)
+
 
 
 #### Step 8 of 15: Library "psych". Функция describe (расчитывает базовые ОС) ####
@@ -211,12 +214,76 @@ result <- aggregate(Ozone ~ Month, month_789, length)
 # В графу с ответом требуется ввести только число. Десятичный разделитель - запятая: например 12,6
 
 str(airquality)
+describeBy(yt$duration, yt$teamleader)
+
 # Вариант 1
 describeBy(airquality, group = 'Month') # 0.04
 
 # Вариант 2
 describeBy(airquality, airquality$Month == 8)[['TRUE']]['Wind','skew']
-
+# Вариант 3
 describeBy(airquality$Wind, airquality$Month == 8)$'TRUE'['skew']
-
+# Вариант 4
 describeBy(airquality$Wind, group=airquality$Month == 8)
+# Вариант 5
+describeBy(x = airquality, na.rm=T, group = airquality$Month, mat = T)
+# Вариант 6
+describeBy(x = subset(airquality, Month==8)$Wind, group = subset(airquality, Month == 8)$Month, digits = 1)
+# Вариант 7
+subset(describeBy(airqualityWind, group = airqualityWind,group=airqualityMonth == 8, mat = T), group1 == 'TRUE')['skew']
+# Вариант 8
+round(skew(airquality$Wind[airquality$Month == 8], na.rm = T),2)
+# Вариант 9
+describeBy(airquality,group = list(airquality$Month))
+# Вариант 10
+aggregate(Wind ~ Month, subset(airquality, Month %in% c(8)), skew)
+# Вариант 11
+d3 <- describeBy(x = airquality, group = airquality$Month)
+d3$`8`[3, "skew"]
+# Вариант 12
+aggregate(Wind ~ Month, airquality, skew)
+# Вариант 13
+skew <- describeBy(airquality$Wind, airquality$Month==8)$'TRUE'['skew'][1,1]
+# Вариант 13
+df1 <- airquality
+z <- describeBy(x = df1, group = df1$Month)
+z[["8"]]
+# Вариант 14
+df <- airquality
+df2 <- describeBy(df, group = df$Month, mat = T)
+# Вариант 15
+tmp <- describeBy(airquality, group = airquality$Month, mat = T)
+View(tmp)
+# Вариант 16
+describeBy(x = airquality[, -c(5,6)], group = airquality$Month, mat = T)
+# Вариант 17
+a <- airquality
+b <- describeBy(x = a[ ,-5], group = a$Month, mat = T)
+b[14, 'skew']
+
+
+
+#### Step 13 of 15 ####
+# Обратимся к встроенным данным iris. Соотнесите значения стандартного отклонения переменных.
+# Вариант 1
+sd(iris$Sepal.Length)
+sd(iris$Sepal.Width)
+sd(iris$Petal.Length)
+sd(iris$Petal.Length)
+# Вариант 2
+describe(iris)['sd']
+# Вариант 3
+# Вариант 4
+# Вариант 5
+# Вариант 6
+# Вариант 7
+# Вариант 8
+# Вариант 9
+# Вариант 10
+# Вариант 11
+# Вариант 12
+# Вариант 13
+# Вариант 14
+# Вариант 15
+
+aggregate(iris$Sepal.Length ~ Species, iris, sd)
