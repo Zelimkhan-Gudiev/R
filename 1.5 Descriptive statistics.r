@@ -8,6 +8,15 @@ remove(list = ls())
 
 
 
+#### Packages and librarys ####
+
+install.packages("dplyr")
+library(dplyr)
+install.packages("psych")
+library(psych)
+
+
+
 #### Step 2: Data preprocessing ####
 
 ?mtcars
@@ -103,8 +112,8 @@ descriptions_stat <- aggregate(x = mtcars[, c(3, 4)], by = list(mtcars$am), FUN 
 
 
 #### Step 8 of 15: Library "psych". Функция describe (расчитывает базовые ОС) ####
-install.packages("psych")
-library(psych)
+# install.packages("psych")
+# library(psych)
 
 ?describe
 describe(x = df) # ОС для всех переменных, которые содержатся в df
@@ -273,7 +282,50 @@ sd(iris$Petal.Length)
 # Вариант 2
 describe(iris)['sd']
 # Вариант 3
+subset(describe(iris), select = sd)
 # Вариант 4
+z <- describe(x = iris[1:4], fast = T)
+zz <- subset(z, select = sd)
+# Вариант 5
+describe(iris)
+# Вариант 6
+sapply(iris[1:4], sd)
+# Вариант 7
+aggregate(cbind(Sepal.Length, Sepal.Width, Petal.Length, Petal.Width ) ~ 1, iris, sd)
+# Вариант 8
+sapply(iris[1:4], FUN=sd)
+# Вариант 9
+SD(iris)
+# Вариант 10
+describeBy(x=iris, group = iris$Sepal.Length & iris$Sepal.Width)
+# Вариант 11
+apply(iris[,1:4], 2, sd)
+# Вариант 12
+describe(iris[,-c(5)])["sd"]
+# Вариант 13
+for (v in 1:4) {sd_v[v] <-  sd(iris[,v])}
+# Вариант 14
+arrange(describe(iris, digits = 2)[ ,'sd', drop=F])
+# Вариант 15
+
+aggregate(iris$Sepal.Length ~ Species, iris, sd)
+
+
+
+#### Step 14 of 15 ####
+# В данных iris расположите по убыванию значения медиан количественных переменных в группе virginica.
+
+# Вариант 1
+describe(iris)["median"]
+# Вариант 2
+sd(iris$Sepal.Length)
+sd(iris$Sepal.Width)
+sd(iris$Petal.Length)
+sd(iris$Petal.Length)
+# Вариант 3
+
+# Вариант 4
+
 # Вариант 5
 # Вариант 6
 # Вариант 7
@@ -282,8 +334,23 @@ describe(iris)['sd']
 # Вариант 10
 # Вариант 11
 # Вариант 12
+
 # Вариант 13
 # Вариант 14
 # Вариант 15
 
-aggregate(iris$Sepal.Length ~ Species, iris, sd)
+
+
+
+#### Step 14 of 15 ####
+# В переменной my_vector сохранен вектор с пропущенными значениями. Вам нужно создать новый вектор fixed_vector, в котором все 
+# пропущенные значения вектора my_vector будут заменены на среднее значение по имеющимся наблюдениям.
+# При этом исходный вектор оставьте без изменений!
+# Напоминаю, переменная my_vector уже создана, сразу начинайте работать с ней. Перед тем, как сдавать решение, вы можете потренироваться на различных примерах. Ниже небольшой код, который может создать случайный вектор (выборка из нормального распределения) с пропущенными значениями.
+# my_vector <- rnorm(30)
+# my_vector[sample(1:30, 10)] <- NA # на десять случайных позиций поместим NA
+# Задача для самостоятельной работы:
+# Изучите справку по функции replace. Вызвать справку можно исполнив команду:
+# ?replace
+# Попробуйте решить это задание при помощи этой функции.
+
