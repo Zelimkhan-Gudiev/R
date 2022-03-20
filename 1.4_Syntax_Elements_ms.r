@@ -282,6 +282,7 @@ if (mean(my_vector) > 20) {
 #    [1] 1 2 3 4 5 6 7 8 9
 
 ap <- data.frame(AirPassengers)
+typeof(AirPassengers)
 
 # Вариант 1
 vector1 <- as.vector(AirPassengers)
@@ -303,7 +304,7 @@ ap$good_months3 <- AirPassengers[-1][AirPassengers[-1] > AirPassengers[-144]]
 good_months <- c()    
 index <- 1    
 for (i in 2:length(AirPassengers)) {    
-  if (AirPassengers[i]>AirPassengers[i-1]){    
+  if (AirPassengers[i] > AirPassengers[i-1]){    
     good_months[index] <- AirPassengers[i]    
     index <- index + 1    
   }    
