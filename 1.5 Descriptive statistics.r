@@ -23,6 +23,10 @@ library(psych)
 
 df  <- mtcars
 yt <- read.csv2("yt.csv")
+# Чтобы корректно открыть в RStudio файл csv (без закорючек) необходимо:
+# 1.	Для ОС Windows – при сохранении установить тип файла «CSV (разделитель -запятая)»
+# 2.	Для ОС Mac – при сохранении установить тип файла «CSV UTF-8 (разделитель -запятая)»
+
 
 str(df)
 
@@ -56,7 +60,11 @@ sum(is.na(yt$duration))
 mean(yt$duration, na.rm = T)
 sd(yt$duration, na.rm = T)
 
-yt$ktd[yt$duration > (mean(yt$duration, na.rm = T) + sd(yt$duration, na.rm = T))]
+bad_duration <- yt$ktd[yt$duration > (mean(yt$duration, na.rm = T) + sd(yt$duration, na.rm = T))]
+bad_numb_ret_depir <- yt$ktd[yt$numb_ret_depir > (mean(yt$numb_ret_depir, na.rm = T) + sd(yt$numb_ret_depir, na.rm = T))]
+bad_numb_ret_oiv <- yt$ktd[yt$numb_ret_oiv > (mean(yt$numb_ret_oiv, na.rm = T) + sd(yt$numb_ret_oiv, na.rm = T))]
+
+duplicated(c(bad_duration, bad_numb_ret_depir, bad_numb_ret_oiv))
 
 mean(yt$duration[yt$deputy == "Чурсина Мария Вячеславовна" & yt$reason != 'Дорожная карта и план по стандартизации'])
 sd(yt$duration[yt$deputy == "Чурсина Мария Вячеславовна" & yt$reason != 'Дорожная карта и план по стандартизации'])
