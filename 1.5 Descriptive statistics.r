@@ -64,7 +64,10 @@ bad_duration <- yt$ktd[yt$duration > (mean(yt$duration, na.rm = T) + sd(yt$durat
 bad_numb_ret_depir <- yt$ktd[yt$numb_ret_depir > (mean(yt$numb_ret_depir, na.rm = T) + sd(yt$numb_ret_depir, na.rm = T))]
 bad_numb_ret_oiv <- yt$ktd[yt$numb_ret_oiv > (mean(yt$numb_ret_oiv, na.rm = T) + sd(yt$numb_ret_oiv, na.rm = T))]
 
-duplicated(c(bad_duration, bad_numb_ret_depir, bad_numb_ret_oiv))
+subset(yt, duplicated(c(bad_duration, bad_numb_ret_depir, bad_numb_ret_oiv)), select = ktd)
+?"duplicate"
+duplicate
+
 
 mean(yt$duration[yt$deputy == "Чурсина Мария Вячеславовна" & yt$reason != 'Дорожная карта и план по стандартизации'])
 sd(yt$duration[yt$deputy == "Чурсина Мария Вячеславовна" & yt$reason != 'Дорожная карта и план по стандартизации'])

@@ -1,6 +1,28 @@
-#Step 1: Base graphs
+
+remove(list = ls())
+
+#### Packages and librarys ____________________________________________________________________________________________________ ####
+
+install.packages("dplyr")
+library(dplyr)
+install.packages("psych")
+library(psych)
+
+
+
+#### Data preprocessing _______________________________________________________________________________________________________ ####
+
+?mtcars
 
 df  <- mtcars
+yt <- read.csv2("yt.csv")
+# Чтобы корректно открыть в RStudio файл csv (без закорючек) необходимо:
+# 1.	Для ОС Windows – при сохранении установить тип файла «CSV (разделитель -запятая)»
+# 2.	Для ОС Mac – при сохранении установить тип файла «CSV UTF-8 (разделитель -запятая)»
+
+
+#### Step 1: Base graphs ______________________________________________________________________________________________________ ####
+
 df$vs  <- factor(df$vs  , labels = c("V", "S"))
 df$am  <- factor(df$am  , labels = c("Auto", "Manual"))
 
@@ -20,6 +42,18 @@ boxplot(df$mpg[df$am == "Auto"], df$mpg[df$am == "Manual"], ylab = "MPG", main =
 plot(df$mpg, df$hp, xlab = "MPG", ylab ="HP" , main ="MPG and HP", pch = 22)
 
 plot(~ mpg + hp, df) 
+
+
+#### yt (Step 1: Base graphs) _________________________________________________________________________________________________ ####
+
+hist(yt$duration)
+hist(yt$numb_ret_depir)
+hist(yt$numb_ret_oiv)
+
+boxplot(duration ~ deputy, yt)
+
+plot(yt$time_depir, yt$numb_ret_depir)
+
 
 
 #Step 2, 3: Library ggplot2
