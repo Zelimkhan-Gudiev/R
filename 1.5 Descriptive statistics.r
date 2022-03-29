@@ -19,6 +19,9 @@ library(psych)
 
 #### Step 2: Data preprocessing _______________________________________________________________________________________________________________ ####
 
+getwd()
+setwd("C:/Users/GudievZK/Desktop/GitHub/DF/")
+
 ?mtcars
 
 df  <- mtcars
@@ -471,15 +474,43 @@ sd(iris$Petal.Length)
 # В переменной my_vector сохранен вектор с пропущенными значениями. Вам нужно создать новый вектор fixed_vector, в котором все 
 # пропущенные значения вектора my_vector будут заменены на среднее значение по имеющимся наблюдениям.
 # При этом исходный вектор оставьте без изменений!
-# Напоминаю, переменная my_vector уже создана, сразу начинайте работать с ней. Перед тем, как сдавать решение, вы можете потренироваться на различных примерах. Ниже небольшой код, который может создать случайный вектор (выборка из нормального распределения) с пропущенными значениями.
-# my_vector <- rnorm(30)
-# my_vector[sample(1:30, 10)] <- NA # на десять случайных позиций поместим NA
+# Напоминаю, переменная my_vector уже создана, сразу начинайте работать с ней. Перед тем, как сдавать решение, вы можете 
+# потренироваться на различных примерах. Ниже небольшой код, который может создать случайный вектор (выборка из 
+# нормального распределения) с пропущенными значениями.
+
+my_vector <- rnorm(30)
+hist(my_vector)
+my_vector[sample(1:30, 10)] <- NA # на десять случайных позиций поместим NA
+
 # Задача для самостоятельной работы:
 # Изучите справку по функции replace. Вызвать справку можно исполнив команду:
-# ?replace
+?replace
 # Попробуйте решить это задание при помощи этой функции.
 
-
+# Вариант 1
+fixed_vector <- replace(my_vector, is.na(my_vector), mean(my_vector, na.rm = T))
+# Вариант 2
+fixed_vector <- ifelse(is.na(my_vector), mean(my_vector, na.rm = T), my_vector)
+# Вариант 3
+fixed_vector <- my_vector
+fixed_vector[is.na(fixed_vector)] <- mean(fixed_vector, na.rm=TRUE)
+# Вариант 4
+fixed_vector <- replace(my_vector, my_vector %in% NA, mean(my_vector,na.rm = T))
+# Вариант 5
+fixed_vector <- replace(my_vector, list = is.na(my_vector), values = mean(my_vector, na.rm = T))
+# Вариант 6
+fixed_vector <- replace(my_vector,which(my_vector %in% NA),mean(my_vector[! my_vector %in% NA]))
+# Вариант 7
+m <- mean(my_vector, na.rm = T)
+fixed_vector <-my_vector
+fixed_vector[which(c(is.na(my_vector)))] <- m
+# Вариант 8
+na_pos <- is.na( my_vector )
+fixed_vector <- my_vector
+fixed_vector[na_pos] <- mean( my_vector[!na_pos])
+# Вариант 9
+fixed_vector <- my_vector
+fixed_vector[is.na(my_vector)] <- mean(my_vector[!is.na(my_vector)])
 
 #### yt (Step 15 of 15) _______________________________________________________________________________________________________________________ ####
 
