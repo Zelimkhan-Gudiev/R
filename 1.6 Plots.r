@@ -8,15 +8,13 @@ install.packages("dplyr")
 library(dplyr)
 install.packages("psych")
 library(psych)
-
-
+install.packages("ggplot2")
+library(ggplot2)
 
 #### Data preprocessing _______________________________________________________________________________________________________ ####
 
 getwd()
 setwd("C:/Users/GudievZK/Desktop/GitHub/DF/")
-
-?mtcars
 
 df  <- mtcars
 yt <- read.csv2("yt.csv")
@@ -30,16 +28,18 @@ yt <- read.csv2("yt.csv")
 df$vs  <- factor(df$vs  , labels = c("V", "S"))
 df$am  <- factor(df$am  , labels = c("Auto", "Manual"))
 
+### 1) hist
 hist(df$mpg, breaks = 20, xlab = "MPG", main ="Histogram of MPG", 
      col = "green", cex.lab = 1.3, cex.axis = 1.3)
 
+### 2) boxplot
 boxplot(df$mpg[df$am == "Auto"], df$mpg[df$am == "Manual"], ylab = "MPG", main ="MPG and AM", 
         col = "green", cex.lab = 1.3, cex.axis = 1.3)
 
 boxplot(mpg ~ am, df, ylab = "MPG", main ="MPG and AM", 
         col = "green", cex.lab = 1.3, cex.axis = 1.3)
 
-
+### 3) plot
 plot(density(df$mpg), xlab = "MPG", main ="Density of MPG", 
      col = "green", cex.lab = 1.3, cex.axis = 1.3)
 
@@ -50,21 +50,23 @@ plot(~ mpg + hp, df)
 
 #### yt (Step 1: Base graphs) _________________________________________________________________________________________________ ####
 
+### 1) hist
 hist(yt$duration)
 hist(yt$numb_ret_depir)
 hist(yt$numb_ret_oiv)
 
+### 2) boxplot
 boxplot(duration ~ deputy, yt, ylab = 'Длительность, раб.дн.', xlab = 'Заместитель РПО', main = "Длительность разработки",
         col = 'green', cex.lab = 1.3, cex.axis = 1.3)
 
 table(yt$deputy)
 
+### 3) plot
 plot(yt$time_depir, yt$numb_ret_depir)
 
 
-#Step 2, 3: Library ggplot2
 
-library(ggplot2)
+#Step 2, 3: Library ggplot2 _________________________________________________________________________________________________ ####
 
 ggplot(df, aes(x = mpg))+
   geom_histogram(fill = "white", col = "black", binwidth = 2)+
@@ -113,3 +115,42 @@ my_plot  <- ggplot(df, aes(x = mpg, y = hp, col = vs, size = qsec))+
 my_plot2  <- ggplot(df, aes(x = am, y = hp, fill = vs))
 
 my_plot2 + geom_boxplot()
+
+#### yt (Step 2, 3: Library ggplot2) _________________________________________________________________________________________ ####
+
+ggplot(yt, aes(x = duration)) +
+  geom_histogram(fill = "white", col = "black", binwidth = 20) +
+  xlab("Длительность утверждения КТД, раб. дни") + 
+  ylab("Количество КТД") +
+  ggtitle("Гистограмма утверждения КТД")
+  
+ggplot(df, aes(x = mpg, fill = am))+
+  geom_dotplot()+
+  xlab("Miles/(US) gallon")+
+  ylab("Count")+
+  scale_fill_discrete(name="Transmission type")+
+  ggtitle("MPG dotplot")
+
+ggplot(yt, aes(x = numb_ret_depir)) +
+  geom_dotplot(binwidth = 0.4)+
+  xlab("Количество возвратов ДЭПиР") +
+  ylab("Количество КТД")+
+  scale_fill_discrete(name = yt$deputy) +
+  ggtitle("Гистограмма возвратов ДЭПиР")
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

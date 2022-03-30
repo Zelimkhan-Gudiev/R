@@ -195,7 +195,9 @@ descriptions_stat <- aggregate(x = mtcars[, c(3, 4)], by = list(mtcars$am), FUN 
 
 aggregate(cbind(duration, numb_ret_depir, numb_ret_oiv) ~ deputy, yt, sd)
 
-#### Step 8 of 15: Library "psych". Функция describe (расчитывает базовые ОС) ####
+
+
+#### Step 8 of 15: Library "psych". Функция describe (расчитывает базовые ОС) __________________________________________________________________####
 # install.packages("psych")
 # library(psych)
 
@@ -441,10 +443,10 @@ aggregate(iris$Sepal.Length ~ Species, iris, sd)
 describe(iris)["median"]
 describe(yt)["median"]
 # Вариант 2
-sd(iris$Sepal.Length)
-sd(iris$Sepal.Width)
-sd(iris$Petal.Length)
-sd(iris$Petal.Length)
+median(iris$Sepal.Length)
+median(iris$Sepal.Width)
+median(iris$Petal.Length)
+median(iris$Petal.Width)
 # Вариант 3
 
 # Вариант 4
