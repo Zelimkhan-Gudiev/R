@@ -52,8 +52,9 @@ plot(~ mpg + hp, df)
 
 ### 1) hist
 hist(yt$duration)
-hist(yt$numb_ret_depir)
-hist(yt$numb_ret_oiv)
+hist(yt$duration, breaks = 20)
+hist(yt$numb_ret_depir, breaks = 20)
+hist(yt$numb_ret_oiv, breaks = 5)
 
 ### 2) boxplot
 boxplot(duration ~ deputy, yt, ylab = 'Длительность, раб.дн.', xlab = 'Заместитель РПО', main = "Длительность разработки",
@@ -63,8 +64,13 @@ table(yt$deputy)
 
 ### 3) plot
 plot(yt$time_depir, yt$numb_ret_depir)
+plot(density(yt$duration), xlab = "Длительность", main ="Density of Длительность", 
+     col = "green", cex.lab = 1.3, cex.axis = 1.3)
 
+plot(yt$duration, yt$numb_ret_depir, xlab = "Длительность", ylab = "Количество возвратов от ДЭПиР", 
+     main = "Взаимосвязсь между длительностью и количеством возвратов от ДЭПиР", pch = 20)
 
+plot(~ duration + numb_ret_depir, yt)
 
 #Step 2, 3: Library ggplot2 _________________________________________________________________________________________________ ####
 
@@ -124,26 +130,29 @@ ggplot(yt, aes(x = duration)) +
   ylab("Количество КТД") +
   ggtitle("Гистограмма утверждения КТД")
   
-ggplot(df, aes(x = mpg, fill = am))+
-  geom_dotplot()+
-  xlab("Miles/(US) gallon")+
-  ylab("Count")+
-  scale_fill_discrete(name="Transmission type")+
-  ggtitle("MPG dotplot")
-
-ggplot(yt, aes(x = numb_ret_depir)) +
-  geom_dotplot(binwidth = 0.4)+
-  xlab("Количество возвратов ДЭПиР") +
+ggplot(yt, aes(x = duration, fill = kind_tz)) +
+  geom_dotplot(binwidth = 15)+
+  xlab("Длительность") +
   ylab("Количество КТД")+
-  scale_fill_discrete(name = yt$deputy) +
-  ggtitle("Гистограмма возвратов ДЭПиР")
+  scale_fill_discrete("Вид ТЗ") +
+  ggtitle("Гистограмма длительности")
+
+ggplot(yt, aes(x = duration, fill = kind_tz)) +
+  geom_density(alpha = 0.5) +
+  xlab("Длительность") + 
+  ylab("Количество КТД")+
+  scale_fill_discrete("Вид ТЗ") +
+  ggtitle("Гистограмма длительности")
   
+ggplot(yt, aes(x = numb_ret_oiv)) + 
+  geom_density(fill = "red")
 
-
-
-
-
-
+ggplot(yt, aes(x = numb_ret_depir, fill = kind_tz)) +
+  geom_density(alpha = 0.5) +
+  xlab("Количестово возвратов от ДЭПиР") + 
+  ylab("Количество КТД")+
+  scale_fill_discrete("Вид ТЗ") +
+  ggtitle("Количество возрвратов от ДЭПиР")
 
 
 
