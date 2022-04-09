@@ -29,7 +29,7 @@ yt_f_names <- c('reason', 'year_plan_st', 'kvartal', 'stage', 'executor_ac', 'te
                 'pcp', 'criteria', 'f2', 'method', 'tegs')
 yt[, yt_f_names] <- lapply(yt[, yt_f_names], factor)
 
-write.csv(yt, "yt.csv")
+write.csv2(yt, "yt.csv")
 
 #### Step 1: Base graphs ______________________________________________________________________________________________________ ####
 

@@ -59,17 +59,71 @@ sd(df$hp[df$cyl != 3 & df$am == "Auto"]) # стандартное отклоне
 
 #### yt (Descriptive statistics) ______________________________________________________________________________________________________________ ####
 
+# Удалим ненужные переменные
+# Сохраним исходную версию (на всякий)
+write.csv2(yt, "yt_ish.csv")
+yt_ish.csv <- read.csv2("yt_ish.csv")
+# Способ 1
+do_not_need <- c("date_develop", "history", "deviat_numb_ret_oiv", 'date_develop',
+                 'dev_numb_ret_depir',	'deviat_numb_ret_oiv',	'deviat_time_plan',	'time_develop',
+                 'deviat_time_develop',	'deviat_time_rev_oiv',	'deviat_rev_depir',	'deviat_vn_sogl',
+                 'deviat_time_depir',	'deviat_oiv',	'deviat_prep_rg',	'deviat_rg',	'deviat_mrg',	
+                 'deviat_time_eaist',	'dev_duration')
+
+# Способ 2
+yt <- yt[, !(names(yt) %in% do_not_need)]
+yt <- yt[, !(colnames(yt) %in% c('date_rev_ас', 'date_rev_depir', 'det_let_prot', "discription" ))]
+
+# Descriptive statistics
 sum(is.na(yt$duration))
 mean(yt$duration, na.rm = T)
 sd(yt$duration, na.rm = T)
 
-bad_duration <- yt$ktd[yt$duration > (mean(yt$duration, na.rm = T) + sd(yt$duration, na.rm = T))]
-bad_numb_ret_depir <- yt$ktd[yt$numb_ret_depir > (mean(yt$numb_ret_depir, na.rm = T) + sd(yt$numb_ret_depir, na.rm = T))]
-bad_numb_ret_oiv <- yt$ktd[yt$numb_ret_oiv > (mean(yt$numb_ret_oiv, na.rm = T) + sd(yt$numb_ret_oiv, na.rm = T))]
+
+yt$what_duration <- ifelse(yt$duration > (mean(yt$duration, na.rm = T) + sd(yt$duration, na.rm = T)),
+                          'Bad duration', "Good duration")
+
+yt$what_numb_ret_depir <- ifelse(yt$numb_ret_depir > (mean(yt$numb_ret_depir, na.rm = T) + sd(yt$numb_ret_depir, na.rm = T)),
+                                 "Bad numb_ret_depir", "Good numb_ret_depir")
+
+yt$what_numb_ret_oiv <- ifelse(yt$numb_ret_oiv > (mean(yt$numb_ret_oiv, na.rm = T) + sd(yt$numb_ret_oiv)),
+                               "Bad numb_ret_oiv", "Good numb_ret_oiv")
+
+write.csv2(yt, 'yt.csv')
+
+# Don't work
+yt$top_worst_ktd <- NULL
+yt$top_worst_ktd <- if(yt$what_duration == 'Bad duration' & yt$what_numb_ret_depir == 'numb_ret_depir' 
+                       & yt$what_numb_ret_oiv == 'Bad numb_ret_oiv') 
+  {
+  print ('1')
+} else if (
+(yt$what_duration == 'Bad duration' & (yt$what_numb_ret_depir == 'Bad numb_ret_depir' | yt$what_numb_ret_oiv == 'Bad numb_ret_oiv')) 
+| ((yt$what_numb_ret_depir == 'Bad numb_ret_depir') & (yt$what_duration == 'Bad duration' | yt$what_numb_ret_oiv == 'Bad numb_ret_oiv'))
+| ((yt$what_numb_ret_oiv == 'Bad numb_ret_oiv') & (yt$what_duration == 'Bad duration' | yt$what_numb_ret_depir == 'Bad numb_ret_depir')))
+{ 
+  print ('2')
+} else 
+  {
+  print ('3')
+  }
 
 subset(yt, duplicated(c(bad_duration, bad_numb_ret_depir, bad_numb_ret_oiv)), select = ktd)
 ?"duplicate"
 duplicate
+
+# 
+
+
+
+
+
+
+
+
+
+
+
 
 
 mean(yt$duration[yt$deputy == "Чурсина Мария Вячеславовна" & yt$reason != 'Дорожная карта и план по стандартизации'])
