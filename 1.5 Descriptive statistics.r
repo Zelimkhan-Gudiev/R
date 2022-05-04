@@ -57,74 +57,12 @@ sd(df$hp[df$cyl != 3 & df$am == "Auto"]) # стандартное отклоне
 
 
 
-#### yt (Descriptive statistics) ______________________________________________________________________________________________________________ ####
-
-# Удалим ненужные переменные
-# Сохраним исходную версию (на всякий)
-write.csv2(yt, "yt_ish.csv")
-yt_ish.csv <- read.csv2("yt_ish.csv")
-# Способ 1
-do_not_need <- c("date_develop", "history", "deviat_numb_ret_oiv", 'date_develop',
-                 'dev_numb_ret_depir',	'deviat_numb_ret_oiv',	'deviat_time_plan',	'time_develop',
-                 'deviat_time_develop',	'deviat_time_rev_oiv',	'deviat_rev_depir',	'deviat_vn_sogl',
-                 'deviat_time_depir',	'deviat_oiv',	'deviat_prep_rg',	'deviat_rg',	'deviat_mrg',	
-                 'deviat_time_eaist',	'dev_duration')
-
-# Способ 2
-yt <- yt[, !(names(yt) %in% do_not_need)]
-yt <- yt[, !(colnames(yt) %in% c('date_rev_ас', 'date_rev_depir', 'det_let_prot', "discription" ))]
+#### yt Descriptive statistics (расчитываем описательные статистики для определенных перменных)  ####
 
 # Descriptive statistics
 sum(is.na(yt$duration))
 mean(yt$duration, na.rm = T)
 sd(yt$duration, na.rm = T)
-
-
-yt$what_duration <- ifelse(yt$duration > (mean(yt$duration, na.rm = T) + sd(yt$duration, na.rm = T)),
-                          'Bad duration', "Good duration")
-
-yt$what_numb_ret_depir <- ifelse(yt$numb_ret_depir > (mean(yt$numb_ret_depir, na.rm = T) + sd(yt$numb_ret_depir, na.rm = T)),
-                                 "Bad numb_ret_depir", "Good numb_ret_depir")
-
-yt$what_numb_ret_oiv <- ifelse(yt$numb_ret_oiv > (mean(yt$numb_ret_oiv, na.rm = T) + sd(yt$numb_ret_oiv)),
-                               "Bad numb_ret_oiv", "Good numb_ret_oiv")
-
-write.csv2(yt, 'yt.csv')
-
-# Don't work
-yt$top_worst_ktd <- NULL
-yt$top_worst_ktd <- if(yt$what_duration == 'Bad duration' & yt$what_numb_ret_depir == 'numb_ret_depir' 
-                       & yt$what_numb_ret_oiv == 'Bad numb_ret_oiv') 
-  {
-  print ('1')
-} else if (
-(yt$what_duration == 'Bad duration' & (yt$what_numb_ret_depir == 'Bad numb_ret_depir' | yt$what_numb_ret_oiv == 'Bad numb_ret_oiv')) 
-| ((yt$what_numb_ret_depir == 'Bad numb_ret_depir') & (yt$what_duration == 'Bad duration' | yt$what_numb_ret_oiv == 'Bad numb_ret_oiv'))
-| ((yt$what_numb_ret_oiv == 'Bad numb_ret_oiv') & (yt$what_duration == 'Bad duration' | yt$what_numb_ret_depir == 'Bad numb_ret_depir')))
-{ 
-  print ('2')
-} else 
-  {
-  print ('3')
-  }
-
-subset(yt, duplicated(c(bad_duration, bad_numb_ret_depir, bad_numb_ret_oiv)), select = ktd)
-?"duplicate"
-duplicate
-
-# 
-
-
-
-
-
-
-
-
-
-
-
-
 
 mean(yt$duration[yt$deputy == "Чурсина Мария Вячеславовна" & yt$reason != 'Дорожная карта и план по стандартизации'])
 sd(yt$duration[yt$deputy == "Чурсина Мария Вячеславовна" & yt$reason != 'Дорожная карта и план по стандартизации'])
@@ -157,7 +95,6 @@ mean(yt$numb_ret_oiv[yt$deputy == "Магамгазиев Расул Висха�
 sd(yt$numb_ret_oiv[yt$deputy == "Магамгазиев Расул Висхаджиевич"])
 
 ## _________________________________________________________________ ##
-
 
 
 
@@ -227,7 +164,17 @@ aggregate(cbind(duration, numb_ret_depir, numb_ret_oiv) ~ deputy, yt, mean)
 aggregate(cbind(duration, numb_ret_depir, numb_ret_oiv) ~ deputy, subset(yt, 
           reason %in% c('План по стандартизации', 'Поручение ДЭПиР или руководства')), mean)
 
+# add a new column
+yt <- yt %>%
+  mutate(tru = case_when(
+    startsWith(ktd, "П") ~ "Поставка товра",
+    startsWith(ktd, "В") ~ "Выполнение работ",
+    startsWith(ktd, "О") ~ "Оказание услуг",
+  ))
 
+aggregate(yt[, c("duration", "numb_ret_depir", "numb_ret_oiv")], by = list(yt$tru), FUN = mean)
+aggregate(cbind(duration, numb_ret_depir, numb_ret_oiv) ~ tru, subset(yt,
+          reason %in% c('План по стандартизации', 'Поручение ДЭПиР или руководства')), mean)
 
 #### Step 7 of 15 _____________________________________________________________________________________________________________________________ ####
 # При помощи функции aggregate рассчитайте стандартное отклонение переменной hp (лошадиные силы) 
@@ -252,8 +199,8 @@ aggregate(cbind(duration, numb_ret_depir, numb_ret_oiv) ~ deputy, yt, sd)
 
 
 #### Step 8 of 15: Library "psych". Функция describe (расчитывает базовые ОС) __________________________________________________________________####
-# install.packages("psych")
-# library(psych)
+install.packages("psych")
+library(psych)
 
 ?describe
 describe(x = df) # ОС для всех переменных, которые содержатся в df
@@ -289,6 +236,8 @@ describeBy(df$qsec, group = list(df$vs, df$am), digits = 1,
 describeBy(cbind(yt$duration, yt$numb_ret_depir, yt$numb_ret_oiv), group = yt$deputy)
 describeBy(x = yt[, c("duration", "numb_ret_depir", "numb_ret_oiv")], group = yt$deputy)
 
+describeBy(cbind(cbind(yt$duration, yt$numb_ret_depir, yt$numb_ret_oiv)), group = yt$tru)
+describeBy(x = yt[, c("duration", "numb_ret_depir", "numb_ret_oiv")], group = yt$deputy)
 
 
 #### Step 10 of 15: NA values  ________________________________________________________________________________________________________________ ####

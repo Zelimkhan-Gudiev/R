@@ -23,6 +23,8 @@ yt <- read.csv2("yt.csv")
 # 1.	Для ОС Windows – при сохранении установить тип файла «CSV (разделитель -запятая)»
 # 2.	Для ОС Mac – при сохранении установить тип файла «CSV UTF-8 (разделитель -запятая)»
 
+# Чтобы корректно отображался текст киррилицы (в коде) необхоимо File -> Reopen with Encoding -> Show all encoding -> CP1251
+
 str(yt)
 
 yt_f_names <- c('reason', 'year_plan_st', 'kvartal', 'stage', 'executor_ac', 'teamleader', 'deputy', 'contract', 
