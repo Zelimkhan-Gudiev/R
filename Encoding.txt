@@ -1,0 +1,9 @@
+Чтобы корректно открыть в RStudio файл csv (без закорючек) необходимо:
+1. Для ОС Windows - при сохранении установить тип файла "csv (разделитель - запятая))"
+2. Для ОС Mac - при сохранении установить тип файла "CSV UTF-8 (разделитель - запятая))"
+
+Чтобы корректно отображался текст киррилицы (в коде) необхоимо:
+ File -> Reopen with Encoding -> Show all encoding -> CP1251
+
+1. Для ОС Windows - File -> Reopen with Encoding -> UTF-8
+2. Для ОС Mac - File -> Reopen with Encoding -> Show all encoding -> CP1251

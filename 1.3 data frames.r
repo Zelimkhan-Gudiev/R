@@ -77,6 +77,7 @@ names(yt)
 head(yt)
 summary(yt)
 summary(yt$duration, yt$numb_ret_depir, yt$numb_ret_oiv) # error. I can't output summary for duration, numb_ret_depir, numb_ret_oiv
+summary(yt$duration)
 
 
 #### Variables (Обращение к переменным) ________________________________________________________________________________________________________####
