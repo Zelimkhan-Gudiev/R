@@ -126,4 +126,113 @@ katalog_med_01.02.11_date31.03.22 <- 4864
 katalog_med <- katalog_med_01.02.09_date31.03.22 + katalog_med_01.02.10_date31.03.22 + katalog_med_01.02.11_date31.03.22
 
 katalog_exceptMed_date31.03.22 <- katalog_all_date31.03.22 - katalog_med
+
+####  ####
+zakupki <- read.csv2("2022.05.17 size st (mac).csv")
+str(zakupki)
+sum(zakupki$KPGZ_SUM) # 7 тлрн 082 млрд 731 млн 000 000 руб.
+sum(zakupki$KPGZ_SUM[zakupki$status == 1]) # 688 млрд 780 млн 000 000 руб.
+sum(zakupki$KPGZ_SUM[zakupki$status %in% c(1, 2, 3)]) # 736 млрд 904 млн 594 тыс 176 руб.
+sort(zakupki)
+
+# альтенативный способ
+View(subset(zakupki, status %in% c(1, 2, 3)))
+stand <- subset(zakupki, status %in% c(1, 2, 3))
+sum(stand$KPGZ_SUM)
+#
+
+
+#### ggplot ####
+names(zakupki)
+str(zakupki)
+zakupki_f_names <- c('isFinal_kpgz', 'status', 'IS_STANDARD_PRODUCT')
+zakupki[, zakupki_f_names] <- lapply(zakupki[, zakupki_f_names], factor)
+
+
+ggplot(zakupki, aes(x = 'status'))+
+  geom_histogram(fill = "white", col = "black", binwidth = 2)+
+  xlab("Miles/(US) gallon")+
+  ylab("Count")+
+  ggtitle("MPG histogram")
+
+ggplot(zakupki, aes(x = "KPGZ_SUM", fill = 'status'))+
+  geom_dotplot()+
+  xlab("Miles/(US) gallon")+
+  ylab("Count")+
+  scale_fill_discrete(name="Transmission type")+
+  ggtitle("MPG dotplot")
+
+
+ggplot(zakupki, aes(x = KPGZ_SUM))+
+  geom_density(fill = "red")
+
+ggplot(zakupki, aes(x = KPGZ_SUM, fill = status))+
+  geom_density(alpha = 0.5)+
+  xlab("Miles/(US) gallon")+
+  ylab("Count")+
+  scale_fill_discrete(name="Transmission type")+
+  ggtitle("MPG density plot")
+
+
+ggplot(zakupki, aes(x = status, y = KPGZ_SUM))+
+  geom_boxplot()+
+  xlab("Transmission type")+
+  ylab("Gross horsepower")+
+  scale_fill_discrete(name="Engine type")+
+  ggtitle("Gross horsepower and engine type")
+
+
+ggplot(df, aes(x = mpg, y = hp, size = qsec))+
+  geom_point()+
+  xlab("Miles/(US) gallon")+
+  ylab("Gross horsepower")+
+  scale_size_continuous(name="1/4 mile time")+
+  ggtitle("Miles/(US) gallon and Gross horsepower")
+
+
+my_plot  <- ggplot(df, aes(x = mpg, y = hp, col = vs, size = qsec))+
+  geom_point()
+
+my_plot2  <- ggplot(df, aes(x = am, y = hp, fill = vs))
+
+my_plot2 + geom_boxplot()
+
+
+#### Анализ номинативных данных ####
+
+yt <- yt %>%
+  mutate(tru = case_when(
+    startsWith(ktd, "П") ~ "Поставка товра",
+    startsWith(ktd, "В") ~ "Выполнение работ",
+    startsWith(ktd, "О") ~ "Оказание услуг",
+  ))
+
+zakupki <- zakupki %>%
+  mutate(tru = case_when(
+    startsWith(CODE, "01.") ~ "Поставка товра",
+    startsWith(CODE, "02.") ~ "Выполнение работ",
+    startsWith(CODE, "03.") ~ "Оказание услуг",
+  ))
+
+
+t1 <- table(zakupki$status)
+t2 <- table(zakupki$status, zakupki$tru)
+dim(zakupki)
+
+prop.table(zakupki$status)
+
+barplot(t2, fill = 'status', legend.text = T, args.legend = list(x = 'topright'))
+barplot(t2, fill = 'status', legend.text = T, args.legend = list(x = 'topright'), beside = T)
+
+mosaicplot(t2)
+
+62000*107
+6634000/24
+
+ggplot(data = zakupki, aes(x = 'tru', y = 'CON_COUNT', fill = 'status')) + 
+  geom_bar(stat = "identity", position = "dodge") + 
+  scale_fill_manual(values = c("Brown", "Blue", "Darkgrey", "Darkgreen"))
+
+
+
   

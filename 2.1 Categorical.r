@@ -59,7 +59,7 @@ table(yt$kind_tz)
 t2 <- table(df$status, df$field)
 t2
 t2 <- table(status = df$status, field = df$field)
-
+t2
 dim(t2)
 
 prop.table(t2)
@@ -165,7 +165,8 @@ HairEyeColor[ , "Blue",'Male'] # обращение к части таблицы
 # Обратите внимание, что нужны не проценты, а просто доля, то есть десятичная дробь  (например, не 10%, а 0.1).
 # Дополните код, чтобы получить верный ответ.    
 HairEyeColor <- HairEyeColor
-red_men <- prop.table(HairEyeColor[, , "Male"], 1)
+red_men <- prop.table(HairEyeColor[, , "Male"], 2)
+round(red_men, 3)
 prop.table(HairEyeColor["Red", , "Male"], 3)
 
 dim(HairEyeColor)
@@ -238,8 +239,8 @@ dim(mydata)
 # Постройте график на основе предложенного кода, сохранив его в переменную obj.
 # Укажите, чему равен аргумент data, что должно находиться в aes(). Изучите справку по geom_bar(), чтобы узнать, 
 # чему должен равняться аргумент position для отображения цвета глаз в виде соседних столбиков, также вам может быть полезна 
-# эта памятка. Там же вы найдёте ответ на вопрос, за что отвечает аргумент stat. С помощью scale_fill_manual мы говорим графику, 
-# что мы хотим, чтобы он использовал указанные нами цвета.
+# эта памятка (https://ggplot2.tidyverse.org/reference/geom_bar.html). Там же вы найдёте ответ на вопрос, за что отвечает аргумент stat.
+# С помощью scale_fill_manual мы говорим графику, что мы хотим, чтобы он использовал указанные нами цвета.
 # Дополните предложенный код:
 
 
@@ -315,7 +316,7 @@ main_stat <- chi$statistic
 #2
 
 diamods_table <- table(diamonds$cut, diamonds$color)    
-chi_result <- chisq.test(diamods_table )    
+chi_result <- chisq.test(diamods_table)    
 main_stat <- chi_result$statistic
 
 #3

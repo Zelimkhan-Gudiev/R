@@ -68,7 +68,10 @@ hist(yt$numb_ret_depir, breaks = 20)
 hist(yt$numb_ret_oiv, breaks = 5)
 
 ### 2) boxplot
-boxplot(duration ~ deputy, yt, ylab = 'Длительность, раб.дн.', xlab = 'Заместитель РПО', main = "Длительность разработки",
+levels(yt$reason)
+
+boxplot(duration ~ deputy, subset(yt, reason %in% c('План по стандартизации', 'Поручение ДЭПиР или руководства')),
+        ylab = 'Длительность, раб.дн.', xlab = 'Заместитель РПО', main = "Длительность разработки",
         col = 'green', cex.lab = 1.3, cex.axis = 1.3)
 
 table(yt$deputy)

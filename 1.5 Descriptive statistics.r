@@ -21,6 +21,7 @@ library(psych)
 
 getwd()
 setwd("C:/Users/GudievZK/Desktop/GitHub/DF/")
+setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/")
 
 ?mtcars
 
@@ -108,7 +109,7 @@ df <- mtcars
 result <- mean(df$qsec[df$cyl != 3 & df$mpg > 20])
 
 # Вариант 2
-result = mean(mtcars$qsec['cyl' != 3 & 'mpg' > 20])
+result <- mean(mtcars$qsec['cyl' != 3 & 'mpg' > 20])
 
 
 
@@ -131,7 +132,7 @@ mean_hp_vs  <- aggregate(x = df$hp, by = list(df$vs), FUN = mean) # В ДФ со
 # by = list(df$vs) - указываем переменную для разбиения на группы
 # FUN = mean - указываем фукцию, которую мы хотим применить
 
-# В ДФ mean_hp_vs у переменным нет наименований 
+# В ДФ mean_hp_vs у переменных нет наименований 
 colnames(mean_hp_vs)  <- c("VS", "Mean HP") # укажем наименования переменных
 
 ### Вышеуказанные операции можно соращать в сокращенном виде (в виде формулы).###
@@ -165,7 +166,7 @@ aggregate(cbind(duration, numb_ret_depir, numb_ret_oiv) ~ deputy, subset(yt,
           reason %in% c('План по стандартизации', 'Поручение ДЭПиР или руководства')), mean)
 
 # add a new column
-yt <- yt %>%
+yt <- yt 
   mutate(tru = case_when(
     startsWith(ktd, "П") ~ "Поставка товра",
     startsWith(ktd, "В") ~ "Выполнение работ",
@@ -276,13 +277,16 @@ sum(is.na(yt$duration))
 # [1] TRUE
 # 2. Для подсчета числа непропущенных наблюдений воспользуйтесь записью с помощью формулы,
 # при которой пропущенные значения не учитываются: aggregate(y ~ x + z , data, FUN)
-
+airquality
 # Вариант 1
 air <- subset(airquality, Month%in%c(7, 8, 9))
 result <- aggregate(air$Ozone ~ Month, air, length)
 
 # Вариант 2
 result <- aggregate(Ozone ~ Month, airquality, subset = Month %in% c(7,8,9), length) 
+
+aggregate(cbind(yt$duration, yt$numb_ret_depir, yt$numb_ret_oiv) ~ deputy, yt,
+          subset = reason %in% c('План по стандартизации', 'Поручение ДЭПиР или руководства'), mean)
 
 # Вариант 3
 ar <- subset(airquality,airquality[,5] %in% c(7,8,9))
@@ -310,7 +314,7 @@ result <- airquality %>%
   summarize(qOzone = length(Ozone))
 
 # Вариант 9
-result <- aggregate (Ozone ~ Month, subset(airquality, Month >= 7 & Month <= 9), length)
+result <- aggregate(Ozone ~ Month, subset(airquality, Month >= 7 & Month <= 9), length)
 
 # Вариант 10
 sub1 <- subset(airquality, Month %in% c(7,8,9)) 
@@ -369,7 +373,7 @@ d3$`8`[3, "skew"]
 # Вариант 12
 aggregate(Wind ~ Month, airquality, skew)
 # Вариант 13
-skew <- describeBy(airquality$Wind, airquality$Month==8)$'TRUE'['skew'][1,1]
+describeBy(airquality$Wind, airquality$Month==8)$'TRUE'['skew'][1,1]
 # Вариант 13
 df1 <- airquality
 z <- describeBy(x = df1, group = df1$Month)
@@ -484,6 +488,7 @@ median(iris$Petal.Width)
 # нормального распределения) с пропущенными значениями.
 
 my_vector <- rnorm(30)
+describe(my_vector)
 hist(my_vector)
 my_vector[sample(1:30, 10)] <- NA # на десять случайных позиций поместим NA
 

@@ -240,7 +240,7 @@ for (i in 1:nrow(yt)) {
  } if (yt$duration[i] < mean(yt$duration, na.rm = T)) {
    yt$quality3[i] <- "dur less than mean"
  } else yt$quality3[i] <- "dur equal mean"
-
+}
 
 # Вариант 3
 mtcars$new_var2 <- rep(NA, nrow(mtcars))
@@ -259,8 +259,8 @@ for (i in 1:nrow(mtcars)) {
 #  if () {
 #  } else {
 #  } 
-#Если среднее значение вектора my_vector больше 20, в переменную result сохраните "My mean is great",  
-#если среднее значение my_vector меньше или равно 20 то в переменную result сохраните  строку "My mean is not so great".
+# Если среднее значение вектора my_vector больше 20, в переменную result сохраните "My mean is great",  
+# если среднее значение my_vector меньше или равно 20 то в переменную result сохраните  строку "My mean is not so great".
 
 if (mean(my_vector) > 20) {
   result <- 'My mean is great'
@@ -288,7 +288,7 @@ typeof(AirPassengers)
 vector1 <- as.vector(AirPassengers)
 vector2 <- c(vector1[length(vector1)],vector1[-length(vector1)])
 diffs <- vector1-vector2
-output = vector1[diffs>0]
+output <-  vector1[diffs>0]
 good_months <- output
 
 # Вариант 2
@@ -301,13 +301,13 @@ ap$good_months3 <- AirPassengers[-1][AirPassengers[-1] > AirPassengers[-144]]
 
 # Вариант 4. Пример решения с циклом:
   
-good_months <- c()    
-index <- 1    
-for (i in 2:length(AirPassengers)) {    
-  if (AirPassengers[i] > AirPassengers[i-1]){    
-    good_months[index] <- AirPassengers[i]    
-    index <- index + 1    
-  }    
+good_months <- c()
+index <- 1
+for (i in 2:length(AirPassengers)) {
+  if (AirPassengers[i] > AirPassengers[i-1]){
+    good_months[index] <- AirPassengers[i]
+    index <- index + 1
+  }
 }
 ap$good_months <- good_months[index]
 
@@ -354,7 +354,7 @@ ap$good_months <- good_months[index]
 
 # Вариант 1
     
-    moving_average <- numeric(135) # создаем пустой числовой вектор из 135 элементов    
+  moving_average <- numeric(135) # создаем пустой числовой вектор из 135 элементов    
   last_index <- length(AirPassengers) - 9    
   for (i in 1:last_index) {    
     end <- i + 9    
@@ -364,10 +364,11 @@ ap$good_months <- good_months[index]
 # Вариант 2
 # Можно решить и без цикла при помощи разностей кумулятивных сумм!    
     
-  n <- 10    
-  d <- AirPassengers    
-  cx <- c(0, cumsum(d))    
+  n <- 10
+  d <- AirPassengers
+  cx <- c(0, cumsum(d))
   moving_average <- (cx[(n + 1):length(cx)] - cx[1:(length(cx) - n)]) / n
+  
   
 # Вариант 3
   moving_average <- numeric(135)
