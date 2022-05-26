@@ -103,3 +103,16 @@ lek <- read.csv('lekarstva.csv')
 
 t.test(lek$Pressure_before, lek$Pressure_after, paired = T)
 
+####  Step 15 of 16  ####
+
+ds <- read.table("dataset_11504_15.txt")
+bartlett.test(ds$V1, ds$V2)
+
+t.test(ds$V1, ds$V2)
+wilcox.test(ds$V1, ds$V2)
+
+#
+ggplot(ds, aes(x = V1)) +
+  geom_histogram(fill = 'white', col = 'black', binwidth = 0.4) +
+  facet_grid(V2 ~ .)
+####  Step 16 of 16  ####
