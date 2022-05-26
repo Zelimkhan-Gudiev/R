@@ -103,3 +103,33 @@ lek <- read.csv('lekarstva.csv')
 
 t.test(lek$Pressure_before, lek$Pressure_after, paired = T)
 
+
+
+#### Step 15 of 16 ####
+getwd()
+setwd("C:/Users/GudievZK/Desktop/GitHub/DF")
+ds <- read.table("dataset_11504_15.txt")
+str(ds)
+ds$V2 <- as.factor(ds$V2)
+
+bartlett.test(ds$V1, ds$V2) # if p-value > 0.05 it mean that we don't have reason to refuse H0 about equal variances 
+bartlett.test(V1 ~ V2, ds)  # we need to use t.test. if p-value < 0.05 we will refuse H0 and use wilcox.test
+
+t.test(ds$V1, ds$V2, var.equal = T)
+t.test(V1 ~ V2, ds, var.equal = T)
+wilcox.test(ds$V1, ds$V2)
+
+#
+boxplot(V1 ~ V2, ds)
+
+
+#### Step 16 of 16 ####
+
+ds16 <- read.table("dataset_11504_16.txt")
+t.test(ds16$V1, ds16$V2, var.equal = F) # if we find is a difference significant, we need to print three numbers: 
+         # first variable's mean; second variable's mean; p-value. If we don't find
+         # deference significant, we need to print following text: "The difference is not significant"
+
+
+
+
