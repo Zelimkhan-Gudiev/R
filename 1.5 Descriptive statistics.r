@@ -14,6 +14,7 @@ install.packages("dplyr")
 library(dplyr)
 install.packages("psych")
 library(psych)
+yes
 
 
 
@@ -216,7 +217,7 @@ describe(yt[, c('duration', 'numb_ret_depir', 'numb_ret_oiv')])
 #### Step 9 of 15: Library "psych". Функция describeBy (расчитывает базовые ОС по группам) ####
 
 
-descr2  <- describeBy(x = df[,-c(8,9)], group = df$vs) # ОС для грруппы с V образным двигателем и для группы с S образным двигателем
+descr2  <- describeBy(x = df[,-c(8,9)], group = df$vs) # ОС для группы с V образным двигателем и для группы с S образным двигателем
 # результат выполнения describeBy сохраняется в лист в двумя элементами descr2
 descr2$V
 descr2$S
@@ -332,7 +333,7 @@ result <- aggregate(Ozone ~ Month, month_789, length)
 #### yt Step 11 of 15 _________________________________________________________________________________________________________________________ ####
 
 result <- aggregate(Ozone ~ Month, airquality, subset = Month %in% c(7,8,9), length) 
-road_map <- aggregate(duration ~ deputy, yt, subset = reason %in% 'Дорожная карта и план по стандартизации', length) 
+road_map <- aggregate(duration ~ deputy, yt, subset = reason %in% c('Дорожная карта и план по стандартизации', 'Дорожная карта'), length) 
   
 subset(yt, reason %in% c('Дорожная карта и план по стандартизации', 'Дорожная карта'))
 
@@ -403,7 +404,7 @@ b[14, 'skew']
 sd(iris$Sepal.Length)
 sd(iris$Sepal.Width)
 sd(iris$Petal.Length)
-sd(iris$Petal.Length)
+sd(iris$Petal.Width)
 # Вариант 2
 describe(iris)['sd']
 # Вариант 3
