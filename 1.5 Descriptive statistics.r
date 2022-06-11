@@ -510,13 +510,13 @@ fixed_vector <- replace(my_vector, my_vector %in% NA, mean(my_vector,na.rm = T))
 # Вариант 5
 fixed_vector <- replace(my_vector, list = is.na(my_vector), values = mean(my_vector, na.rm = T))
 # Вариант 6
-fixed_vector <- replace(my_vector,which(my_vector %in% NA),mean(my_vector[! my_vector %in% NA]))
+fixed_vector <- replace(my_vector, which(my_vector %in% NA), mean(my_vector[! my_vector %in% NA]))
 # Вариант 7
 m <- mean(my_vector, na.rm = T)
 fixed_vector <-my_vector
 fixed_vector[which(c(is.na(my_vector)))] <- m
 # Вариант 8
-na_pos <- is.na( my_vector )
+na_pos <- is.na(my_vector)
 fixed_vector <- my_vector
 fixed_vector[na_pos] <- mean( my_vector[!na_pos])
 # Вариант 9
