@@ -135,7 +135,7 @@ mean_hp_vs  <- aggregate(x = df$hp, by = list(df$vs), FUN = mean) # В ДФ со
 # В ДФ mean_hp_vs у переменных нет наименований 
 colnames(mean_hp_vs)  <- c("VS", "Mean HP") # укажем наименования переменных
 
-### Вышеуказанные операции можно соращать в сокращенном виде (в виде формулы).###
+### Вышеуказанные операции можно совершать в сокращенном виде (в виде формулы).###
 aggregate(hp ~ vs, df, mean) # В ДФ созданном по итогам выполнения функции переменные имеют наименовани
 #  hp - подмножество для расчета ОС
 # ~ vs - указываем переменную для разбиеня на группы
@@ -168,9 +168,9 @@ aggregate(cbind(duration, numb_ret_depir, numb_ret_oiv) ~ deputy, subset(yt,
 # add a new column
 yt <- yt 
   mutate(tru = case_when(
-    startsWith(ktd, "П") ~ "Поставка товра",
-    startsWith(ktd, "В") ~ "Выполнение работ",
-    startsWith(ktd, "О") ~ "Оказание услуг",
+    startsWith(yt$ktd, "П") ~ "Поставка товра",
+    startsWith(yt$ktd, "В") ~ "Выполнение работ",
+    startsWith(yt$ktd, "О") ~ "Оказание услуг",
   ))
 
 aggregate(yt[, c("duration", "numb_ret_depir", "numb_ret_oiv")], by = list(yt$tru), FUN = mean)
