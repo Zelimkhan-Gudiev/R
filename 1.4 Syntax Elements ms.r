@@ -87,12 +87,12 @@ length(less_or_equal_or_more_than_mean[less_or_equal_or_more_than_mean == "dur l
 mean(yt$duration, na.rm = T)
 length(yt[yt$duration == 130.2266])
 
-# v2 # error
+# v2 # 
 p1 <- ifelse(yt$duration < mean(yt$duration, na.rm = T), "dur less than mean","other")
 length(p1[p1 == "dur less than mean"])
 length(p1[p1 == "other"])
 p2 <- ifelse(yt$duration > mean(yt$duration, na.rm = T), "dur more than mean", "other")
-length(p2[p2 == "dur less than mean"])
+length(p2[p2 == "dur more than mean"])
 length(p2[p2 == "other"])
 p3 <- ifelse(yt$duration == mean(yt$duration, na.rm = T), "dur equal mean","other")
 length(p3[p3 == "dur equal mean"])
@@ -169,15 +169,14 @@ yt$quality <- rep(NA, nrow(yt))
 for (i in 1:nrow(yt)) {
   if (yt$duration[i] > mean(yt$duration, na.rm = T)) {
     yt$quality[i] <- "dur more than mean"
-  } if (yt$duration[i] < mean(yt$duration, na.rm = T)) {
+  } else if (yt$duration[i] < mean(yt$duration, na.rm = T)) {
     yt$quality[i] <- "dur less than mean"
   } else yt$quality[i] <- "dur equal mean"
 }
-# error
+# 
 length(yt$quality[yt$quality == "dur more than mean"])
 length(yt$quality[yt$quality == "dur less than mean"])
 length(yt$quality[yt$quality == "dur equal mean"])
-59+70
 
 
 # С помощью ifelse можно выполнить все вышеуказанное в одну строчку
@@ -212,8 +211,10 @@ mtcars <- mtcars
 mtcars$new_var <- ifelse((mtcars$carb >= 4 | mtcars$cyl > 6), '1', '0')
 # yt
 yt$score <- ifelse((yt$numb_ret_depir >= 4 | yt$numb_ret_oiv >= 4), 'Bad', 'Norm') # отсупление
+yt$score2 <- ifelse((yt$numb_ret_depir >= mean(yt$numb_ret_depir)) | (yt$numb_ret_oiv >= mean(yt$numb_ret_depir)), 'Bad', 'Norm')
 length(yt$score[yt$score == 'Bad'])
 length(yt$score[yt$score == 'Norm'])
+49+58
 
 # Вариант 2
 for (i in 1:nrow(mtcars)){
@@ -229,7 +230,7 @@ yt$quality3 <- rep(NA, nrow(yt))
 for (i in i:nrow(yt)) {
   if (yt$duration[i] > mean(yt$duration, na.rm = T)) {
     yt$quality3[i] <- "dur more than mean"
-  } if (yt$duration[i] < mean(yt$duration, na.rm = T)) {
+  } else if (yt$duration[i] < mean(yt$duration, na.rm = T)) {
     yt$quality3[i] <- "dur less than mean"
   } else yt$quality3[i] <- "dur equal mean"
 }
@@ -237,7 +238,7 @@ for (i in i:nrow(yt)) {
 for (i in 1:nrow(yt)) {
   if (yt$duration[i] > mean(yt$duration, na.rm = T)) {
   yt$quality3[i] <- "dur more than mean"
- } if (yt$duration[i] < mean(yt$duration, na.rm = T)) {
+ } else if (yt$duration[i] < mean(yt$duration, na.rm = T)) {
    yt$quality3[i] <- "dur less than mean"
  } else yt$quality3[i] <- "dur equal mean"
 }
@@ -342,7 +343,7 @@ ap$good_months <- good_months[index]
 #       moving_average <- numeric(135)
 #       Такой вариант является более предпочтительным. Почему? Узнаем во второй части курса!)
 
-# А для тем, кто уже выбрал путь воина и не хочет использовать цикл - советую познакомиться с функцией cumsum. 
+# А для тех, кто уже выбрал путь воина и не хочет использовать цикл - советую познакомиться с функцией cumsum. 
 # Подсказка: если у нас есть два вектора одинаковой длинны, то если из одного вектора вычесть второй вектор, 
 # мы найдем разность для первых элементов векторов, затем для вторых и т.д.
 # > x <- c(2, 4, 7)
@@ -354,11 +355,11 @@ ap$good_months <- good_months[index]
 
 # Вариант 1
     
-  moving_average <- numeric(135) # создаем пустой числовой вектор из 135 элементов    
-  last_index <- length(AirPassengers) - 9    
-  for (i in 1:last_index) {    
-    end <- i + 9    
-    moving_average[i] <- mean(AirPassengers[i:end])    
+  moving_average <- numeric(135) # создаем пустой числовой вектор из 135 элементов
+  last_index <- length(AirPassengers) - 9
+  for (i in 1:last_index) {
+    end <- i + 9
+    moving_average[i] <- mean(AirPassengers[i:end])
   }    
 
 # Вариант 2
