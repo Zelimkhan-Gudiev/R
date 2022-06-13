@@ -315,8 +315,8 @@ main_stat <- chi$statistic
 
 #2
 
-diamods_table <- table(diamonds$cut, diamonds$color)    
-chi_result <- chisq.test(diamods_table)    
+diamods_table <- table(diamonds$cut, diamonds$color)
+chi_result <- chisq.test(diamods_table) 
 main_stat <- chi_result$statistic
 
 #3

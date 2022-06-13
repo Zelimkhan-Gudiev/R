@@ -1,4 +1,3 @@
-
 remove(list = ls())
 rm()
 
@@ -72,6 +71,9 @@ levels(yt$reason)
 
 boxplot(duration ~ deputy, subset(yt, reason %in% c('План по стандартизации', 'Поручение ДЭПиР или руководства')),
         ylab = 'Длительность, раб.дн.', xlab = 'Заместитель РПО', main = "Длительность разработки",
+        col = 'green', cex.lab = 1.3, cex.axis = 1.3)
+
+boxplot(duration ~ reason, yt, ylab = 'Длительность, раб.дн.', xlab = 'Основание', main = "Длительность разработки",
         col = 'green', cex.lab = 1.3, cex.axis = 1.3)
 
 table(yt$deputy)
@@ -153,14 +155,14 @@ ggplot(yt, aes(x = duration)) +
   
 ggplot(yt, aes(x = duration, fill = kind_tz)) +
   geom_dotplot(binwidth = 15)+
-  xlab("Длительность") +
+  xlab("Длительность, раб. дни") +
   ylab("Количество КТД")+
   scale_fill_discrete("Вид ТЗ") +
   ggtitle("Гистограмма длительности")
 
 ggplot(yt, aes(x = duration, fill = kind_tz)) +
   geom_density(alpha = 0.5) +
-  xlab("Длительность") + 
+  xlab("Длительность, раб. дни") + 
   ylab("Количество КТД")+
   scale_fill_discrete("Вид ТЗ") +
   ggtitle("Гистограмма длительности")
@@ -178,7 +180,7 @@ ggplot(yt, aes(x = numb_ret_depir, fill = kind_tz)) +
 
 plot_durarion_other_var <- ggplot(yt, aes(x = duration, y = numb_ret_depir, col = kind_tz, size = numb_ret_oiv)) +
   geom_point() + 
-  xlab("Длительность") +
+  xlab("Длительность, раб. дни") +
   ylab("Количество возвратов от ДЭПиР") +
   scale_color_discrete("Вид ТЗ") +
   scale_size_continuous("Количество возрвратов от ОИВ") +
@@ -187,10 +189,18 @@ plot_durarion_other_var <- ggplot(yt, aes(x = duration, y = numb_ret_depir, col 
 
 ggplot(yt, aes(x = duration, y = numb_ret_depir, col = kind_tz, size = numb_ret_oiv)) +
   geom_point() + 
-  xlab("Длительность") +
+  xlab("Длительность, раб. дни") +
   ylab("Количество возвратов от ДЭПиР") +
   ggtitle('Взаимосвязь длительности разработки, количество возрвратов от ДЭПиР, вида ТЗ и количество возрвратов от ОИВ')
 
+
+ggplot(subset(yt, reason %in% c('План по стандартизации', 'Поручение ДЭПиР или руководства') & kind_tz == "ТТЗ"), aes(x = tru, y = duration)) +
+  geom_boxplot()
+
+ggplot(yt, aes(x = tru, y = duration)) +
+  geom_boxplot()
+
+levels(yt$reason)
 
 #Step 4: exercise _________________________________________________________________________________________________ ####
 

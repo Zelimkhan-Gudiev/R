@@ -229,7 +229,7 @@ mosaicplot(t2)
 62000*107
 6634000/24
 
-ggplot(data = zakupki, aes(x = 'tru', y = 'CON_COUNT', fill = 'status')) + 
+ggplot(data = zakupki, aes(x = 'tru', y = 'Freq', fill = 'status')) + 
   geom_bar(stat = "identity", position = "dodge") + 
   scale_fill_manual(values = c("Brown", "Blue", "Darkgrey", "Darkgreen"))
 
