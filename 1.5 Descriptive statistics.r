@@ -11,6 +11,7 @@ remove(list = ls())
 #### Packages and librarys ####
 
 install.packages("dplyr")
+yes
 library(dplyr)
 install.packages("psych")
 library(psych)
@@ -128,7 +129,8 @@ sd(yt$duration[yt$year_plan_st == 2021], na.rm = T)
 
 ### расчитаем ОС для одной переменной ###
 
-mean_hp_vs  <- aggregate(x = df$hp, by = list(df$vs), FUN = mean) # В ДФ созданном по итогам выполнения функции переменные не имеют наименований
+mean_hp_vs  <- aggregate(x = df$hp, by = list(df$vs), FUN = mean) # В ДФ созданном по итогам выполнения 
+# функции переменные не имеют наименований
 # x = df$hp - подмножество для расчета ОС
 # by = list(df$vs) - указываем переменную для разбиения на группы
 # FUN = mean - указываем фукцию, которую мы хотим применить
@@ -167,7 +169,7 @@ aggregate(cbind(duration, numb_ret_depir, numb_ret_oiv) ~ deputy, subset(yt,
           reason %in% c('План по стандартизации', 'Поручение ДЭПиР или руководства')), mean)
 
 # add a new column
-yt <- yt 
+yt <- yt
   mutate(tru = case_when(
     startsWith(yt$ktd, "П") ~ "Поставка товра",
     startsWith(yt$ktd, "В") ~ "Выполнение работ",
@@ -197,6 +199,8 @@ descriptions_stat <- aggregate(x = mtcars[, c(3, 4)], by = list(mtcars$am), FUN 
 #### yt (Step 7 of 15) ________________________________________________________________________________________________________________________ ####
 
 aggregate(cbind(duration, numb_ret_depir, numb_ret_oiv) ~ deputy, yt, sd)
+aggregate(cbind(duration, numb_ret_depir, numb_ret_oiv) ~ deputy, subset(yt, reason %in% c('План по стандартизации', 'Поручение ДЭПиР или руководства')), sd)
+
 
 
 
@@ -206,7 +210,8 @@ library(psych)
 
 ?describe
 describe(x = df) # ОС для всех переменных, которые содержатся в df
-descr  <- describe(x = df[,-c(8,9)]) # ОС для всех переменных, которые содержатся в df, кроме двух качественных переменных под номером 8 и 9
+descr  <- describe(x = df[,-c(8,9)]) # ОС для всех переменных, которые содержатся в df, 
+# кроме двух качественных переменных под номером 8 и 9
 
 
 #### yt (describe) ____________________________________________________________________________________________________________________________ ####
@@ -217,7 +222,8 @@ describe(yt[, c('duration', 'numb_ret_depir', 'numb_ret_oiv')])
 #### Step 9 of 15: Library "psych". Функция describeBy (расчитывает базовые ОС по группам) ####
 
 
-descr2  <- describeBy(x = df[,-c(8,9)], group = df$vs) # ОС для группы с V образным двигателем и для группы с S образным двигателем
+descr2  <- describeBy(x = df[,-c(8,9)], group = df$vs) # ОС для группы с V образным двигателем и для группы с 
+S образным двигателем
 # результат выполнения describeBy сохраняется в лист в двумя элементами descr2
 descr2$V
 descr2$S
@@ -524,4 +530,5 @@ fixed_vector <- my_vector
 fixed_vector[is.na(my_vector)] <- mean(my_vector[!is.na(my_vector)])
 
 #### yt (Step 15 of 15) _______________________________________________________________________________________________________________________ ####
+
 
