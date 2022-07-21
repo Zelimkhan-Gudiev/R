@@ -139,7 +139,7 @@ mean_hp_vs  <- aggregate(x = df$hp, by = list(df$vs), FUN = mean) # В ДФ со
 colnames(mean_hp_vs)  <- c("VS", "Mean HP") # укажем наименования переменных
 
 ### Вышеуказанные операции можно совершать в сокращенном виде (в виде формулы).###
-aggregate(hp ~ vs, df, mean) # В ДФ созданном по итогам выполнения функции переменные имеют наименовани
+aggregate(hp ~ vs, df, mean) # В ДФ созданном по итогам выполнения функции переменные имеют наименования
 #  hp - подмножество для расчета ОС
 # ~ vs - указываем переменную для разбиеня на группы
 # df - указываем ДФ
@@ -150,7 +150,7 @@ aggregate(x = df$hp, by = list (df$vs, df$am), FUN = mean) # тоже самое
 
 
 ### расчитаем ОС для более одной переменной не в сокращенном виде ###
-aggregate(x = df[,-c(8,9)], by = list(df$am), FUN = median) # расчитаем ОС не для одной переменной как выше, а для всех количественныз переменных
+aggregate(x = df[,-c(8,9)], by = list(df$am), FUN = median) # расчитаем ОС не для одной переменной как выше, а для всех количественных переменных
 aggregate(df[,c(1,3)], by = list(df$am, df$vs), FUN = sd) # расчитаем ОС для 1 и 3 переменной с разбиением на группы по тиипу КПП (df$am) и типу двинателя (df$vs)
 
 ### расчитаем ОС для более одной переменной в сокращенном виде ###
@@ -216,6 +216,7 @@ descr  <- describe(x = df[,-c(8,9)]) # ОС для всех переменных
 
 #### yt (describe) ____________________________________________________________________________________________________________________________ ####
 describe(yt[, c('duration', 'numb_ret_depir', 'numb_ret_oiv')])
+describe(yt[yt$reason == 'План по стандартизации' | yt$reason == 'Поручение ДЭПиР или руководства'), c('duration', 'numb_ret_depir', 'numb_ret_oiv')])
 
 
 
@@ -225,8 +226,8 @@ describe(yt[, c('duration', 'numb_ret_depir', 'numb_ret_oiv')])
 descr2  <- describeBy(x = df[,-c(8,9)], group = df$vs) # ОС для группы с V образным двигателем и для группы с 
 S образным двигателем
 # результат выполнения describeBy сохраняется в лист в двумя элементами descr2
-descr2$V
-descr2$S
+descr2$`0`
+descr2$`1`
 
 # если указать mat = T, результат выполнения describeBy сохраняется в ДФ
 # если указать digits = 1, то значения ОС будут окрруглены до 1 знака после запятой
@@ -247,19 +248,24 @@ describeBy(x = yt[, c("duration", "numb_ret_depir", "numb_ret_oiv")], group = yt
 describeBy(cbind(cbind(yt$duration, yt$numb_ret_depir, yt$numb_ret_oiv)), group = yt$tru)
 describeBy(x = yt[, c("duration", "numb_ret_depir", "numb_ret_oiv")], group = yt$deputy)
 
+describeBy(cbind(yt$duration, yt$numb_ret_depir, yt$numb_ret_oiv), group = yt$deputy, data = yt[yt$reason == 'План по стандартизации'| yt$reason == 'Поручение ДЭПиР или руководства', ]) # не получается
+
 
 #### Step 10 of 15: NA values  ________________________________________________________________________________________________________________ ####
 # некотрые функции ведут себя по разному в зависимости от того имеются ли в переменной пропущенные значения.
 
-is.na(df) # функция is.na на вход принимает вектор, а на выход логический вектор с указанием того является какое-нибудь значение пропущенным TRUE
-sum(is.na(df)) # показывает количетво пропущенных значений в векторе или ДФ
+mtc <- mtcars
 
-df$mpg[1:10]  <- NA # укажем, что первые 10 значений df$mpg это пропущенные значения
+is.na(mtc) # функция is.na на вход принимает вектор, а на выход логический вектор с указанием того является какое-нибудь значение пропущенным TRUE
+sum(is.na(mtc)) # показывает количетво пропущенных значений в векторе или ДФ
 
-mean(df$mpg) # ф. mean по умолчанию не может расчитать ср. значение, т.к. имеются пропущенные значения
-mean(df$mpg, na.rm = T) # если указать na.rm = T, то ф. mean уберет пропущенные значения и расчитает ср. значение для оставшихся данных
+mtc$mpg[1:10]  <- NA # укажем, что первые 10 значений df$mpg это пропущенные значения
 
-aggregate(mpg ~ am, df, sd) # aggregate по умолчанию игнорирует na
+mean(mtc$mpg) # ф. mean по умолчанию не может расчитать ср. значение, т.к. имеются пропущенные значения
+mean(mtc$mpg, na.rm = T) # если указать na.rm = T, то ф. mean уберет пропущенные значения и расчитает ср. значение для оставшихся данных
+
+
+aggregate(mpg ~ am, mtc, sd) # aggregate по умолчанию игнорирует na
 
 describe( ) # describe по умолчанию игнорирует na
 describe(na.rm = ) # если в ф. describe указать na.rm = T, то ф. удалит все строчки для расчета всех ОС (это очень экстримально)
@@ -292,12 +298,12 @@ result <- aggregate(air$Ozone ~ Month, air, length)
 # Вариант 2
 result <- aggregate(Ozone ~ Month, airquality, subset = Month %in% c(7,8,9), length) 
 
-aggregate(cbind(yt$duration, yt$numb_ret_depir, yt$numb_ret_oiv) ~ deputy, yt,
+aggregate(cbind(yt$duration, yt$numb_ret_depir, yt$numb_ret_oiv) ~ deputy + tru, yt,
           subset = reason %in% c('План по стандартизации', 'Поручение ДЭПиР или руководства'), mean)
 
 # Вариант 3
-ar <- subset(airquality,airquality[,5] %in% c(7,8,9))
-result <-aggregate(Ozone ~ Month  , ar, length)
+ar <- subset(airquality, airquality[,5] %in% c(7,8,9))
+result <-aggregate(Ozone ~ Month, ar, length)
 
 # Вариант 4
 monthes <- subset(airquality, Month > 6)
@@ -338,7 +344,7 @@ result <- aggregate(Ozone ~ Month, month_789, length)
 
 #### yt Step 11 of 15 _________________________________________________________________________________________________________________________ ####
 
-result <- aggregate(Ozone ~ Month, airquality, subset = Month %in% c(7,8,9), length) 
+result <- aggregate(Ozone ~ Month, airquality, subset = Month %in% c(7,8,9), length)
 road_map <- aggregate(duration ~ deputy, yt, subset = reason %in% c('Дорожная карта и план по стандартизации', 'Дорожная карта'), length) 
   
 subset(yt, reason %in% c('Дорожная карта и план по стандартизации', 'Дорожная карта'))
@@ -531,4 +537,4 @@ fixed_vector[is.na(my_vector)] <- mean(my_vector[!is.na(my_vector)])
 
 #### yt (Step 15 of 15) _______________________________________________________________________________________________________________________ ####
 
-
+4200000/24

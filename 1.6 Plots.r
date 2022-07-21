@@ -27,15 +27,15 @@ yt <- read.csv2("yt.csv")
 str(yt)
 
 yt_f_names <- c('reason', 'year_plan_st', 'kvartal', 'stage', 'executor_ac', 'teamleader', 'deputy', 'contract', 
-                'pcp', 'criteria', 'f2', 'method', 'tegs')
+                'pcp', 'criteria', 'f2', 'method', 'tegs', 'what_duration', 'what_numb_ret_depir', 'what_numb_ret_oiv','top_worst_ktd', 'tru')
 yt[, yt_f_names] <- lapply(yt[, yt_f_names], factor)
 
 write.csv2(yt, "yt.csv")
 
 #### Step 1: Base graphs ______________________________________________________________________________________________________ ####
 
-df$vs  <- factor(df$vs  , labels = c("V", "S"))
-df$am  <- factor(df$am  , labels = c("Auto", "Manual"))
+df$vs  <- factor(df$vs, labels = c("V", "S"))
+df$am  <- factor(df$am, labels = c("Auto", "Manual"))
 
 
 ### 1) hist
@@ -194,7 +194,8 @@ ggplot(yt, aes(x = duration, y = numb_ret_depir, col = kind_tz, size = numb_ret_
   ggtitle('¬заимосв€зь длительности разработки, количество возрвратов от ƒЁѕи–, вида “« и количество возрвратов от ќ»¬')
 
 
-ggplot(subset(yt, reason %in% c('ѕлан по стандартизации', 'ѕоручение ƒЁѕи– или руководства') & kind_tz == "““«"), aes(x = tru, y = duration)) +
+ggplot(subset(yt, reason %in% c('ѕлан по стандартизации', 'ѕоручение ƒЁѕи– или руководства') 
+              & kind_tz == "““«"), aes(x = tru, y = duration)) +
   geom_boxplot()
 
 ggplot(yt, aes(x = tru, y = duration)) +
@@ -204,7 +205,8 @@ levels(yt$reason)
 
 #Step 4: exercise _________________________________________________________________________________________________ ####
 
-# ѕри помощи функции ggplot() или boxplot() постройте график boxplot, использу€ встроенные в R данные airquality.
+# ѕри помощи функции ggplot() или boxplot() постройте график boxplot, использу€ встроенные 
+# в R данные airquality.
 # ѕо оси x отложите номер мес€ца, по оси y Ч значени€ переменной Ozone.
 # Ќа графике boxplot отдельными точками отображаютс€ наблюдени€, отклон€ющиес€ от 1 или 3 квартил€ больше чем 
 # на полтора межквартильных размаха. —колько таких наблюдений присутствует в сент€бре (мес€ц є9)?

@@ -52,8 +52,9 @@ dim(t1)
 
 #### Step 3: yt (1d Table) __________________________________________________________ ####
 table(yt$deputy)
+dim(table(yt$deputy))
 table(yt$kind_tz)
-
+dim(table(yt$kind_tz))
 
 #### Step 4: 2d Table __________________________________________________________ ####
 t2 <- table(df$status, df$field)
@@ -63,12 +64,14 @@ t2
 dim(t2)
 
 prop.table(t2)
-
+round(prop.table(t2)*100, 1)
 prop.table(t2, 1)
 prop.table(t2, 2)
 
 prop.table(t2, 2) * 100
 round(prop.table(t2, 2),2)
+sum(c(7.0, 33.3, 4.2, 4.9, 3.1, 4.6, 30.4,  4.6, 5.5, 2.3))
+
 round(prop.table(t2, 2) *100, 1)
 
 #### Step 4: yt (2d Table) __________________________________________________________ ####
@@ -149,6 +152,8 @@ prop.table(yt_t1, 2)
 
 yt_t2 <- table('ТРУ' = yt$tru, 'Уровень наихудших КТД' = yt$top_worst_ktd)
 yt_t2 <- as.data.frame(yt_t2)
+prop.table(yt_t2, 2)
+round(prop.table(yt_t2, 2)*100, 1)
 
 
 #### Step 5: Exircises __________________________________________________________ ####
@@ -188,7 +193,7 @@ male <- HairEyeColor[ , ,'Male']
 str <- prop.table(male, 2)
 str[3,2]
 #
-prop.table(HairEyeColor[,2,1], )[3]
+prop.table(HairEyeColor[, 2, 1], )[3]
 #
 as.vector(prop.table(HairEyeColor[,'Blue',],2))[3]
 #
