@@ -232,6 +232,8 @@ mosaicplot(t2)
 
 barplot(yt_t1)
 barplot(yt_t1, legend.text = T, args.legend = list(x = "topright"), beside = T)
+barplot(yt_t1, legend.text = T, args.legend = list(x = 'topleft'), beside = T)
+barplot(yt_t2, legend.text = T, args.legend = list(x = 'topleft'), beside = T)
 
 
 #### Step 8: Exircises __________________________________________________________ ####
