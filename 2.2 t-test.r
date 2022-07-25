@@ -12,7 +12,7 @@ table(df1$Species)
 
 hist(df1$Sepal.Length)
 
-ggplot(df1, aes(x =Sepal.Length ))+
+ggplot(df1, aes(x = Sepal.Length )) +
   geom_histogram(fill = "white", col = "black", binwidth = 0.4)+
   facet_grid(Species ~ .)
 
@@ -30,7 +30,7 @@ shapiro.test(df1$Sepal.Length[df1$Species == "virginica"])
 #The same result in one line
 by(df1$Sepal.Length, INDICES = df1$Species, shapiro.test)
 
-bartlett.test(Sepal.Length  ~ Species, df1)
+bartlett.test(Sepal.Length ~ Species, df1)
 
 
 t.test(Sepal.Length  ~ Species, df1)
@@ -41,6 +41,7 @@ test1$p.value
 
 t.test(Sepal.Length  ~ Species, df1, var.equal = T)
 
+mean(df1$Sepal.Length)
 t.test(df1$Sepal.Length, mu = 8)
 
 t.test(df1$Petal.Length, df1$Petal.Width, paired = T)

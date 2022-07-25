@@ -161,8 +161,9 @@ round(prop.table(yt_t2, 2)*100, 1)
 # К частям таблицы можно обращаться так же, как и к матрицам.
 # HairEyeColor - таблица с данными, встроенными в R. Посмотрите на неё в R. Команда 
 dimnames(HairEyeColor)
-# позволит нам посмотреть, какие измерения есть в этой таблице и как они называются. Например, чтобы обратиться к части таблицы, 
-# в которой хранятся данные только о мужчинах, нам нужно выполнить следующую команду: 
+# позволит нам посмотреть, какие измерения есть в этой таблице и как они называются. Например, чтобы 
+# обратиться к части таблицы, в которой хранятся данные только о мужчинах,
+# нам нужно выполнить следующую команду: 
 HairEyeColor[ , ,'Male']
 HairEyeColor[ , "Blue",'Male'] # обращение к части таблицы, в которой хранятся данные только о мужчинах с голубыми глазами
 
@@ -202,7 +203,8 @@ prop.table(HairEyeColor[,'Blue','Male'])['Red']
 prop.table(HairEyeColor[ ,"Blue", "Male"])[3]
 sum(HairEyeColor['Red','Blue','Male'])/sum(HairEyeColor[,'Blue','Male'])
 # 1. HairEyeColor  является 3-х мерным массивом размерностью Hair - Eye - Sex str(HairEyeColor)
-# 2. когда мы в [ ] указываем, например, [, , Male] (HairEyeColor[ , , "Male"]) (т.е. 3-ю размерность), то получаем матрицу Hair - Eye.
+# 2. когда мы в [ ] указываем, например, [, , Male] (HairEyeColor[ , , "Male"]) (т.е. 3-ю размерность), 
+# то получаем матрицу Hair - Eye.
 # 3. когда мы в [ ] указываем, например, [, Blue, Male] (HairEyeColor[ ,"Blue", "Male"]) (т.е. 2 и 3-ю размерности), 
 # то получаем табличку значений  Hair
 # 4. После этого мы подаем таблички на ввод ф-ции prop.table(), которая возвращает, соответственно, одно-или двух мерную таблицу.
@@ -315,6 +317,7 @@ chisq.test(df12)
 #### Step 13: Exircises __________________________________________________________ ####
 
 diamonds
+mtcars
 # 1
 df13 <- as.data.frame(diamonds[c('cut', 'color')])
 chi <- chisq.test(x = df13$cut, y = df13$color)
@@ -362,9 +365,14 @@ main_stat <- chisq.test(table(dd))$statistic
 #1
 df15 <- mtcars
 df15$am <- factor(df15$am)
-df15$vs <- as.factor(df15$vs)
+df15$vs <- factor(df15$vs)
 fish <- fisher.test(df15$am, df15$vs)
 fisher_test <- fish$p.value
+      barp <- as.data.frame(mtcars[c('am', 'vs')])
+      barplot(barp)
+      table(barp)
+
+
 #2
 tbl = table(mtcars$am, mtcars$vs)    
 fit  <- fisher.test(tbl)    

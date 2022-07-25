@@ -263,4 +263,12 @@ t <- (x1 - x2)/se
 45 + 34
 
 
+fit <- aov(duration ~ tru + teamleader, data = yt)
+summary(fit)
 
+fit <- aov(duration ~ tru + teamleader + tru:teamleader, data = yt)
+summary(fit)
+
+fit <- aov(duration ~ tru*teamleader, data = yt)
+summary(fit)
+TukeyHSD(fit)
