@@ -292,15 +292,4 @@ obj <- ggplot(ToothGrowth, aes(x = as.factor(dose), y = len, col = supp, group =
   stat_summary(fun.data = mean_cl_boot, geom = 'line', position = position_dodge(0.2))
 
 
-pd = position_dodge(0.1)
-ggplot(mydata, aes(x = store, y = price, color = origin, group = origin)) + 
-  stat_summary(fun.data = mean_cl_boot, geom = 'errorbar', width = 0.2, lwd = 0.8, position = pd)+  
-  stat_summary(fun.data = mean_cl_boot, geom = 'line', size = 1.5, position = pd) +
-  stat_summary(fun.data = mean_cl_boot, geom = 'point', size = 5, position = pd, pch=15) +
-  theme_bw()
-#  Что к чему:
-# group=origin для того, чтобы показать, что в какой группе находиться (более толстые линии на графике)
-# position=position_dodge(width=0.2) для того, чтобы сместить разделение по магазину с одной линии
-# theme_bw() The classic dark-on-light ggplot2 theme. May work better for presentations displayed with a projector.
-
 
