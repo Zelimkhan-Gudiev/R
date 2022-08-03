@@ -23,6 +23,10 @@ setwd("C:/Users/GudievZK/Desktop/GitHub/DF/")
 setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/")
 
 yt <- read.csv2("yt.csv")
+str(yt)
+yt_f_names <- c('reason', 'year_plan_st', 'kvartal', 'stage', 'executor_ac', 'teamleader', 'deputy', 'contract', 
+                'pcp', 'criteria', 'f2', 'method', 'tegs', 'what_duration', 'what_numb_ret_depir', 'what_numb_ret_oiv','top_worst_ktd', 'tru')
+yt[, yt_f_names] <- lapply(yt[, yt_f_names], factor)
 
 
 #### 1.5 Descriptive statistics (расчитываем описательные статистики для определенных перменных)  ####
