@@ -106,8 +106,14 @@ source('/Users/zelimkhan/Desktop/Data/GitHub/my_na_rm.R')
 
 my_vector <- c(1, 2, 3, NA, NA)
 which(is.na(my_vector) == T)
+#
 
+is.na(d1)
+which(is.na(d1))
+d1[is.na(d1)]
+d1[is.na(d1) == T]
 
+#
 NA.position(my_vector)
 
 
@@ -118,12 +124,12 @@ NA.position <- function(x) {
   return(which(is.na(my_vector)))
 }
 
+
 #
 NA.position <- function(x){
   temp <- is.na(x)
   ans <- c()
-  
-  for (i in 1:length(temp)){
+    for (i in 1:length(temp)){
     if (temp[i] == T){
       ans <- c(ans, i)
     }
@@ -144,7 +150,10 @@ NA.position <- function(x){
   return(new_vector)
 }
 
+
 #
+# (any(is.na(d2)))
+
 NA.position <- function(my_vector){
   if (any(is.na(my_vector))){
     res <- which(is.na(my_vector))
@@ -517,3 +526,10 @@ v111_2 <- v111[-which(v111<(as.numeric(quantile(v111, probs = c(0.25, 0.75))[1] 
 v111 <- v111[-which(v111 %in% c(v111_1))]
 v111 <- v111[-which(v111 %in% c(v111_2))]
 
+v1 <- c(1:10)
+v1_1 <- v1[-which(v1>(as.numeric(quantile(v1, probs = c(0.25,  0.75))[2] + (1.5*IQR(v1)))))]
+
+?methods
+methods('mean')
+mean
+var
