@@ -152,3 +152,23 @@ filtered.cor <- function(x){
 # > test_data  <- read.csv("https://stepik.org/media/attachments/course/129/test_data.csv")
 # > smart_cor(test_data)
 # [1] -0.1031003
+
+
+all <- 15754
+med <- 104+7829+1452
+kkpgz <- all - med
+
+
+allSpgz <- 641
+
+
+allSpgz <- 171539
+med <- 5264+88456+4966
+spgz <- allSpgz-med
+
+
+allSpgzStand <- 44576
+medStand <- 5259+15109+96
+spgzStand <- allSpgz-med
+
+
