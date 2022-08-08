@@ -276,3 +276,8 @@ summary(fit)
 fit <- aov(duration ~ tru*teamleader, data = yt)
 summary(fit)
 TukeyHSD(fit)
+
+
+#### cor  ####
+
+

@@ -47,6 +47,7 @@ ggplot(df, aes(x = mpg, y = hp, col = factor(cyl)))+
 df  <- mtcars
 df_numeric  <- df[, c(1,3:7)]
 
+
 pairs(df_numeric)
 
 cor(df_numeric)
@@ -69,10 +70,59 @@ fit$adjust
 # Пишите функцию с учетом, что она должна работать на любом  dataframe с двумя количественными переменными как в примере выше.
 # Не забудьте подгрузить библиотеку library(psych), если хотите использовать ее при решении этой задачи.
 
-corr.calc <- function(x, y){
-  crt <- cor(x,y)
-  return(c(crt$ , crt$p.value)
+# тестирование 
+str(df)
+crt <- cor.test(df[, c(3, 4)])
+crt <- cor.test(df[, 3], df[, 4])
+str(crt)
+crt$estimate
+
+
+#1
+corr.calc <- function(x){
+  crt <- cor.test(x[, 1], x[, 2])
+  return(c(crt$estimate, crt$p.value))
 }
+
+corr.calc(df[, c(3, 4)])
+
+#2
+corr.calc <- function(test_data){    
+  fit  <- cor.test(test_data[[1]], test_data[[2]])    
+  r <- fitestimate    
+  p <- fitestimatep<???fitp.value    
+  return(c(r, p))}
+
+#3
+corr.calc <- function(df){
+  # put your code here  
+  fit <- cor.test(~., df)
+  return(c(fit$estimate, fit$p.value))
+}
+
+#4
+corr.calc <- function(x){
+  cor.test(x = x[,1], y = x[,2])[c("estimate", "p.value")]
+}
+
+#5
+corr.calc <- function(x){
+  
+  ct<- psych::corr.test(x)
+  return(c(ct$r[1,2], ct$p[1,2]))
+  
+}
+
+#6
+library(psych)
+corr.calc <- function(x){
+  fit  <- corr.test(x)
+  return(c(fit$r[2], fit$p[2]))
+}
+
+#8
+
+
 
 ####  Step 6 of 16 ####
 # Напишите функцию filtered.cor которая на вход получает data.frame с  произвольным количеством переменных 
@@ -86,6 +136,11 @@ corr.calc <- function(x, y){
 # Если вы хотите использовать функцию corr.test не забудьте загрузить библиотекy psych.
 # Данные для тренировки:
 # https://stepic.org/media/attachments/lesson/11504/step6.csv
+
+filtered.cor <- function(x){
+  
+  
+}
 
 ####  Step 7 of 16 ####
 # Напишите функцию smart_cor, которая получает на вход dataframe с двумя количественными переменными. 
