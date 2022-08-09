@@ -9,8 +9,10 @@ library(psych)
 #### Data preprocessing _______________________________________________________________________________________________________ ####
 
 getwd()
-setwd("")
-setwd("")
+setwd("C:/Users/GudievZK/Desktop/GitHub/DF/")
+setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/")
+
+yt <- read.csv2("yt.csv")
 
 
 # Чтобы корректно открыть в RStudio файл csv (без закорючек) необходимо:
@@ -56,6 +58,34 @@ fit  <- corr.test(df_numeric)
 fit$r
 fit$p
 fit$adjust
+
+#### yt  ####
+
+pairs(yt[, c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
+             'time_prep_rg', 'time_rg', 'time_mrg', 'time_eaist', 'duration')])
+
+#v1
+yt_n_names <- c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
+                'time_prep_rg', 'time_rg', 'time_mrg', 'time_eaist', 'duration')
+
+yt[, yt_n_names] <- lapply(yt[, yt_n_names], numeric)
+
+#v2
+yt$numb_ret_depir <- as.numeric(yt$numb_ret_depir)
+yt$numb_ret_oiv <- as.numeric(yt$numb_ret_oiv)
+yt$time_plan <- as.numeric(yt$time_plan)
+yt$time_ac <- as.numeric(yt$time_ac)
+yt$time_rev_oiv <- as.numeric(yt$time_rev_oiv)
+yt$teamleader <- as.numeric(yt$teamleader)
+yt$time_rev_depir <- as.numeric(yt$time_rev_depir)
+yt$time_vn_sogl <- as.numeric(yt$time_vn_sogl)
+yt$time_depir <- as.numeric(yt$time_depir)
+yt$time_oiv <- as.numeric(yt$time_oiv)
+yt$time_prep_rg <- as.numeric(yt$time_prep_rg)
+yt$time_rg <- as.numeric(yt$time_rg)
+yt$time_mrg <- as.numeric(yt$time_mrg)
+yt$time_eaist <- as.numeric(yt$time_eaist)
+yt$duration <- as.numeric(yt$duration)
 
 ####  Step 5 of 16 ####
 
