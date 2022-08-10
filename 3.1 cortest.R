@@ -63,6 +63,8 @@ fit$adjust
 
 pairs(yt[, c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
              'time_prep_rg', 'time_rg', 'time_mrg', 'time_eaist', 'duration')])
+cor(yt[, c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
+           'time_prep_rg', 'time_rg', 'time_mrg', 'time_eaist', 'duration')])
 
 #v1
 yt_n_names <- c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
@@ -102,10 +104,40 @@ yt$duration <- as.numeric(yt$duration)
 
 # тестирование 
 str(df)
-crt <- cor.test(df[, c(3, 4)])
+typeof(df$disp)
+df$disp <- as.numeric(df$disp)
+df$hp <- as.numeric(df$hp)
+crt <- cor.test(df[, 'disp'], df[, 'hp'])
 crt <- cor.test(df[, 3], df[, 4])
 str(crt)
 crt$estimate
+
+#### How to Fix: СxТ must be numeric in R (Error in cor.test.default(df[, c(3, 4)]) : 'x' must be a numeric vector) ####
+# Example 1: Error in vector СxТ must be numeric
+# vector creation
+x <- c("61", "4", "21", "67", "89", "2")
+# display vector
+print(x)
+# plotting hist
+hist(x)
+# To solve this error we will convert the vector elements into numeric data using as.numeric() methods.
+x <- c("61", "4", "21", "67", "89", "2")
+print(x)
+res <- as.numeric(x)
+hist(res)
+
+# Example 2: Error in dataframe СxТ must be numeric
+# Create data for chart
+val <-data.frame("num"=c("77","55","80","60"),
+                 "course"=c('DSA','C++','R','Python'))
+
+print(val)
+hist(val[,1])
+# To solve this error we will convert the dataframe element into numeric data using as.numeric() methods
+val <-data.frame("num"=c(77,55,80,60),
+                 "course"=c('DSA','C++','R','Python'))
+print(val)
+hist(val[,1])
 
 
 #1
@@ -117,11 +149,12 @@ corr.calc <- function(x){
 corr.calc(df[, c(3, 4)])
 
 #2
-corr.calc <- function(test_data){    
-  fit  <- cor.test(test_data[[1]], test_data[[2]])    
-  r <- fitestimate    
-  p <- fitestimatep<???fitp.value    
+corr.calc <- function(x){    
+  fit  <- cor.test(x[[1]], x[[2]])
+  r <- fit$estimate
+  p <- fit$p.value
   return(c(r, p))}
+corr.calc(df[, c(3, 4)])
 
 #3
 corr.calc <- function(df){
