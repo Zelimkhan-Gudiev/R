@@ -192,16 +192,34 @@ corr.calc <- function(x){
 # (как количественными, так и любых других типов), рассчитывает коэффициенты корреляции Пирсона между всеми парами
 # количественных переменных и возвращает наибольшее по модулю значение коэффициента корреляции. 
 # (То есть функция может вернуть -0.9, если это наибольшая по модулю  корреляция).
+
 # Гарантируется наличие в data.frame хотя бы двух количественных переменных.
+
 # Обратите внимание: при проверке вашей функции на вход будут подаваться данные с различными именами колонок. 
 # Ваша функция должна корректно работать независимо от имен переменных. Перед тем, как сдавать решение, убедитесь, 
 # что ваша функция работает корректно на разных данных, с разными именами колонок. 
 # Если вы хотите использовать функцию corr.test не забудьте загрузить библиотекy psych.
 # Данные для тренировки:
 # https://stepic.org/media/attachments/lesson/11504/step6.csv
+# Remove Non-Numeric Columns https://datamining.togaware.com/survivor/Remove_Non_Numeric.html
+
+colnames(df)
+typeof(df)
+lapply(df, class)
+typeof(yt)
+is.numeric(yt$name)
+is.numeric(yt$duration)
+lapply(df, class)
+yt_numeric <- yt[, sapply(yt, is.numeric)]
+pairs(yt_numeric)
+
+df_numeric[[]]
+is.numeric(df_numeric)
 
 filtered.cor <- function(x){
-  
+  if (x[[]] == numeric) {
+    pairs(x)
+  }
   
 }
 
@@ -217,21 +235,6 @@ filtered.cor <- function(x){
 # [1] -0.1031003
 
 
-all <- 15754
-med <- 104+7829+1452
-kkpgz <- all - med
-
-
-allSpgz <- 641
-
-
-allSpgz <- 171539
-med <- 5264+88456+4966
-spgz <- allSpgz-med
-
-
-allSpgzStand <- 44576
-medStand <- 5259+15109+96
-spgzStand <- allSpgz-med
-
-
+smart_cor <- function(x) {
+  if(x[, 1])
+}
