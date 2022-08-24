@@ -5,6 +5,8 @@ rm()
 
 library(ggplot2)
 library(psych)
+library(dplyr)
+library(psych)
 
 #### Data preprocessing _______________________________________________________________________________________________________ ####
 
@@ -13,7 +15,7 @@ setwd("C:/Users/GudievZK/Desktop/GitHub/DF/")
 setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/")
 
 yt <- read.csv2("yt.csv")
-
+df  <- mtcars
 
 # Чтобы корректно открыть в RStudio файл csv (без закорючек) необходимо:
 # 1.	Для ОС Windows – при сохранении установить тип файла «CSV (разделитель -запятая)»
@@ -26,7 +28,7 @@ yt <- read.csv2("yt.csv")
 # Регрессия ???https://stepic.org/media/attachments/lesson/11508/simple_regr.R
 
 
-df  <- mtcars
+
 
 cor.test(x = df$mpg, y = df$hp)
 fit  <- cor.test(x = df$mpg, y = df$hp)
@@ -61,16 +63,20 @@ fit$adjust
 
 #### yt  ####
 
-pairs(yt[, c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
+pairs(yt[, c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 
+             'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
              'time_prep_rg', 'time_rg', 'time_mrg', 'time_eaist', 'duration')])
-cor(yt[, c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
+
+cor(yt[, c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 
+           'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
            'time_prep_rg', 'time_rg', 'time_mrg', 'time_eaist', 'duration')])
 
 #v1
-yt_n_names <- c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
+yt_n_names <- c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 
+                'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
                 'time_prep_rg', 'time_rg', 'time_mrg', 'time_eaist', 'duration')
 
-yt[, yt_n_names] <- lapply(yt[, yt_n_names], numeric)
+yt[, yt_n_names] <- lapply(yt[, yt_n_names], as.numeric)
 
 #v2
 yt$numb_ret_depir <- as.numeric(yt$numb_ret_depir)
@@ -218,15 +224,51 @@ lapply(df, class)
 yt_numeric <- yt[, sapply(yt, is.numeric)]
 pairs(yt_numeric)
 
-df_numeric[[]]
-is.numeric(df_numeric)
+#
+library(dplyr)
+xNum <- select_if(x, is.numeric)
+pairs(xNum)
+
+
+x <- df
 
 filtered.cor <- function(x){
-  if (x[[]] == numeric) {
-    pairs(x)
+  library(dplyr)
+  library(psych)
+  x <- select_if(x, is.numeric)
+  crt <- corr.test(x)$r
+  diag(crt) <- 0
+  abs(max(crt))
   }
+
+filtered.cor(x)
+
+df <- df[, c(1:3)]
+crt <- corr.test(df)$r
+diag(crt) <- 0
+max(crt)
+
+
+
+
+yt[, is.numeric(1:length(yt))]
+ytNum <- select_if(yt, is.numeric)
   
-}
+ytNum <- yt[, -c("numb", "year_plan_st", "kvartal", "created_date", "date_end")]
+ytNum <- yt[, -c(yt$numb, ytNum$year_plan_st, ytNum$kvartal, ytNum$created_date, ytNum$date_end)]
+ytNum <- yt[, yt %in% ytNum0]
+
+names(ytNum)
+corr.test(ytNum)
+crdf <- corr.test(df)$r
+str(crdf)
+diag(crdf) <- 0
+max(crdf)
+abs(max(crdf))
+
+dim(yt)
+?unlist
+unlist(head(mtcars[, 1:3]))
 
 ####  Step 7 of 16 ####
 # Напишите функцию smart_cor, которая получает на вход dataframe с двумя количественными переменными. 
@@ -294,4 +336,17 @@ smart_cor <- function(x) {
 # Цвет точек - переменная Species
 # Также добавьте линейное сглаживание для каждой группы наблюдений по переменной Species.
 # Если Вы все сделали правильно должен получиться следующий график:
-  
+
+
+yt$reason
+yt[yt$reason == 'План по стандартизации']
+
+
+
+
+length("Аэрофотосъёмка ландшафта уже выявила земли богачей и процветающих крестьян.")
+getwd()
+list.files()  
+sd
+var
+mean
