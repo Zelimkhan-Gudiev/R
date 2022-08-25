@@ -238,37 +238,18 @@ filtered.cor <- function(x){
   x <- select_if(x, is.numeric)
   crt <- corr.test(x)$r
   diag(crt) <- 0
-  abs(max(crt))
-  }
+  crt[which.max(abs(crt))]
+}
 
-filtered.cor(x)
+filtered.cor(test_data)
 
-df <- df[, c(1:3)]
-crt <- corr.test(df)$r
-diag(crt) <- 0
-max(crt)
+test_data <- as.data.frame(list(V5 = c("b", "b", "b", "b", "b", "b", "b", "b"), 
+                                V4 = c("r", "r", "r", "r", "r", "r", "r", "r"), 
+                                V2 = c(-0.3, -0.1, -0.5, 0.3, 0.4, 1.4, -0.7, 1.8),
+                                V6 = c("e", "e", "e", "e", "e", "e", "e", "e"), 
+                                V3 = c("k", "k", "k", "k", "k", "k", "k", "k"), 
+                                V1 = c(0.6, 0.6, 0.3, -1.2, -0.4, -0.2, -0.3, 0.5)))
 
-
-
-
-yt[, is.numeric(1:length(yt))]
-ytNum <- select_if(yt, is.numeric)
-  
-ytNum <- yt[, -c("numb", "year_plan_st", "kvartal", "created_date", "date_end")]
-ytNum <- yt[, -c(yt$numb, ytNum$year_plan_st, ytNum$kvartal, ytNum$created_date, ytNum$date_end)]
-ytNum <- yt[, yt %in% ytNum0]
-
-names(ytNum)
-corr.test(ytNum)
-crdf <- corr.test(df)$r
-str(crdf)
-diag(crdf) <- 0
-max(crdf)
-abs(max(crdf))
-
-dim(yt)
-?unlist
-unlist(head(mtcars[, 1:3]))
 
 ####  Step 7 of 16 ####
 # Напишите функцию smart_cor, которая получает на вход dataframe с двумя количественными переменными. 
@@ -283,11 +264,14 @@ unlist(head(mtcars[, 1:3]))
 
 
 smart_cor <- function(x) {
-  if(x[, 1])
+  if(shapiro.test())
 }
 
-
-
+shapiro.test(c(yt$duration, yt$time_depir))
+hist(yt$duration)
+rnorm(100)
+hist(rnorm(100))
+shapiro.test(rnorm(100))
 ####  Step 12 of 16 ####
 # Скачайте набор данных - dataframe с двумя количественными переменными (вспомните при необходимости, как задавать разделитель и другие параметры функции read.table), постройте линейную регрессию, где - первая переменная - зависимая, вторая - независимая. В ответ укажите значения регрессионных коэффициентов сначала intercept затем  slope.
 # Десятичный разделитель - точка. В поле для ответа введите два числа, не округляйте значения, например;
