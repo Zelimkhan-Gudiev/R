@@ -71,30 +71,6 @@ cor(yt[, c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_o
            'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
            'time_prep_rg', 'time_rg', 'time_mrg', 'time_eaist', 'duration')])
 
-#v1
-yt_n_names <- c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 
-                'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
-                'time_prep_rg', 'time_rg', 'time_mrg', 'time_eaist', 'duration')
-
-yt[, yt_n_names] <- lapply(yt[, yt_n_names], as.numeric)
-
-#v2
-yt$numb_ret_depir <- as.numeric(yt$numb_ret_depir)
-yt$numb_ret_oiv <- as.numeric(yt$numb_ret_oiv)
-yt$time_plan <- as.numeric(yt$time_plan)
-yt$time_ac <- as.numeric(yt$time_ac)
-yt$time_rev_oiv <- as.numeric(yt$time_rev_oiv)
-yt$teamleader <- as.numeric(yt$teamleader)
-yt$time_rev_depir <- as.numeric(yt$time_rev_depir)
-yt$time_vn_sogl <- as.numeric(yt$time_vn_sogl)
-yt$time_depir <- as.numeric(yt$time_depir)
-yt$time_oiv <- as.numeric(yt$time_oiv)
-yt$time_prep_rg <- as.numeric(yt$time_prep_rg)
-yt$time_rg <- as.numeric(yt$time_rg)
-yt$time_mrg <- as.numeric(yt$time_mrg)
-yt$time_eaist <- as.numeric(yt$time_eaist)
-yt$duration <- as.numeric(yt$duration)
-
 ####  Step 5 of 16 ####
 
 # Напишите функцию corr.calc, которая на вход получает data.frame с двумя количественными переменными, 
@@ -171,7 +147,7 @@ corr.calc <- function(df){
 
 #4
 corr.calc <- function(x){
-  cor.test(x = x[,1], y = x[,2])[c("estimate", "p.value")]
+  cor.test(x = x[, 1], y = x[, 2])[c("estimate", "p.value")]
 }
 
 #5
@@ -250,6 +226,7 @@ test_data <- as.data.frame(list(V5 = c("b", "b", "b", "b", "b", "b", "b", "b"),
                                 V3 = c("k", "k", "k", "k", "k", "k", "k", "k"), 
                                 V1 = c(0.6, 0.6, 0.3, -1.2, -0.4, -0.2, -0.3, 0.5)))
 
+test_data <- select_if(test_data, is.numeric)
 
 ####  Step 7 of 16 ####
 # Напишите функцию smart_cor, которая получает на вход dataframe с двумя количественными переменными. 
@@ -262,16 +239,21 @@ test_data <- as.data.frame(list(V5 = c("b", "b", "b", "b", "b", "b", "b", "b"),
 # > smart_cor(test_data)
 # [1] -0.1031003
 
-
+names(df)
+df  <- select_if(df, is.numeric)
 smart_cor <- function(x) {
-  if(shapiro.test())
+  shapiro1 <- shapiro.test(x[, 1])[2]
+  shapiro2 <- shapiro.test(x[, 2])$p.value
+  if(shapiro1 < 0.05 | shapiro2 < 0.05) {
+    corSpear <- cor.test(x[, 1], x[, 2], method = "spearman")
+    return(corSpear$estimate)
+  } else {
+    corPear <- cor.test(x[, 1], x[, 2], method = "pearson")
+    return(corPear$estimate)
+  }
 }
 
-shapiro.test(c(yt$duration, yt$time_depir))
-hist(yt$duration)
-rnorm(100)
-hist(rnorm(100))
-shapiro.test(rnorm(100))
+
 ####  Step 12 of 16 ####
 # Скачайте набор данных - dataframe с двумя количественными переменными (вспомните при необходимости, как задавать разделитель и другие параметры функции read.table), постройте линейную регрессию, где - первая переменная - зависимая, вторая - независимая. В ответ укажите значения регрессионных коэффициентов сначала intercept затем  slope.
 # Десятичный разделитель - точка. В поле для ответа введите два числа, не округляйте значения, например;
