@@ -23,6 +23,33 @@ setwd("C:/Users/GudievZK/Desktop/GitHub/DF/")
 setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/")
 
 yt <- read.csv2("yt.csv")
+str(yt)
+yt_f_names <- c('reason', 'year_plan_st', 'kvartal', 'stage', 'executor_ac', 'teamleader', 'deputy', 'contract', 
+                'pcp', 'criteria', 'f2', 'method', 'tegs')
+
+yt_f_names <- c('reason', 'year_plan_st', 'kvartal', 'stage', 'executor_ac', 'teamleader', 'deputy', 'contract', 
+                'pcp', 'criteria', 'f2', 'method', 'tegs', 'what_duration', 'what_numb_ret_depir', 'what_numb_ret_oiv','top_worst_ktd', 'tru')
+yt[, yt_f_names] <- lapply(yt[, yt_f_names], factor)
+
+yt$reason <- as.factor(yt$reason)
+yt$year_plan_st <- as.factor(yt$year_plan_st)
+yt$kvartal <- as.factor(yt$kvartal)
+yt$stage <- as.factor(yt$stage)
+yt$executor_ac <- as.factor(yt$executor_ac)
+yt$teamleader <- as.factor(yt$teamleader)
+yt$deputy <- as.factor(yt$deputy)
+yt$contract <- as.factor(yt$contract)
+yt$pcp <- as.factor(yt$pcp)
+yt$criteria <- as.factor(yt$criteria)
+yt$f2 <- as.factor(yt$f2)
+yt$method <- as.factor(yt$method)
+yt$tegs <- as.factor(yt$tegs)
+yt$what_duration <- as.factor(yt$what_duration)
+yt$what_numb_ret_depir <- as.factor(yt$what_numb_ret_depir)
+yt$what_numb_ret_oiv <- as.factor(yt$what_numb_ret_oiv)
+yt$top_worst_ktd <- as.factor(yt$top_worst_ktd)
+yt$tru <- as.factor(yt$tru)
+
 
 
 #### 1.5 Descriptive statistics (расчитываем описательные статистики для определенных перменных)  ####
@@ -272,3 +299,31 @@ summary(fit)
 fit <- aov(duration ~ tru*teamleader, data = yt)
 summary(fit)
 TukeyHSD(fit)
+
+summary(yt)
+str(yt)
+#### cor  ####
+pairs(yt[, c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
+            'time_prep_rg', 'time_rg', 'time_mrg', 'time_eaist', 'duration')])
+
+yt_n_names <- c('numb_ret_depir', 'numb_ret_oiv', 'time_plan', 'time_ac', 'time_rev_oiv', 'time_rev_depir', 'time_vn_sogl', 'time_depir', 'time_oiv', 
+                'time_prep_rg', 'time_rg', 'time_mrg', 'time_eaist', 'duration')
+
+yt[, yt_n_names] <- lapply(yt[, yt_n_names], numeric)
+
+yt$numb_ret_depir <- as.numeric(yt$numb_ret_depir)
+yt$numb_ret_oiv <- as.numeric(yt$numb_ret_oiv)
+yt$time_plan <- as.numeric(yt$time_plan)
+yt$time_ac <- as.numeric(yt$time_ac)
+yt$time_rev_oiv <- as.numeric(yt$time_rev_oiv)
+yt$teamleader <- as.numeric(yt$teamleader)
+yt$time_rev_depir <- as.numeric(yt$time_rev_depir)
+yt$time_vn_sogl <- as.numeric(yt$time_vn_sogl)
+yt$time_depir <- as.numeric(yt$time_depir)
+yt$time_oiv <- as.numeric(yt$time_oiv)
+yt$time_prep_rg <- as.numeric(yt$time_prep_rg)
+yt$time_rg <- as.numeric(yt$time_rg)
+yt$time_mrg <- as.numeric(yt$time_mrg)
+yt$time_eaist <- as.numeric(yt$time_eaist)
+yt$duration <- as.numeric(yt$duration)
+

@@ -106,8 +106,14 @@ source('/Users/zelimkhan/Desktop/Data/GitHub/my_na_rm.R')
 
 my_vector <- c(1, 2, 3, NA, NA)
 which(is.na(my_vector) == T)
+#
 
+is.na(d1)
+which(is.na(d1))
+d1[is.na(d1)]
+d1[is.na(d1) == T]
 
+#
 NA.position(my_vector)
 
 
@@ -118,12 +124,12 @@ NA.position <- function(x) {
   return(which(is.na(my_vector)))
 }
 
+
 #
 NA.position <- function(x){
   temp <- is.na(x)
   ans <- c()
-  
-  for (i in 1:length(temp)){
+    for (i in 1:length(temp)){
     if (temp[i] == T){
       ans <- c(ans, i)
     }
@@ -144,7 +150,10 @@ NA.position <- function(x){
   return(new_vector)
 }
 
+
 #
+# (any(is.na(d2)))
+
 NA.position <- function(my_vector){
   if (any(is.na(my_vector))){
     res <- which(is.na(my_vector))
@@ -418,16 +427,69 @@ outliers.rm(v111)
 
 #v1
 outliers.rm <- function(x) {
-  x <- ifelse(x < 1.5 * IQR(x) + quantile(x, probs = 0.25) | x > 1.5 * IQR(x) + quantile(x, probs = 0.75), 0, x)
+  x <- ifelse(x < 1.5 * IQR(x) - quantile(x, probs = 0.25) | x > 1.5 * IQR(x) + quantile(x, probs = 0.75), 0, x)
   x <- x[x != 0]
   return(x)
 }
 
 #v2
 outliers.rm <- function(x) {
-  x <- x[x > 1.5 * IQR(x) + quantile(x, probs = 0.25) & x < 1.5 * IQR(x) + quantile(x, probs = 0.75)]
+  x <- x[x > 1.5 * IQR(x) - quantile(x, probs = 0.25) & x < 1.5 * IQR(x) + quantile(x, probs = 0.75)]
   return(x)
+}
+outliers.rm(v111)
+
+#v3
+outliers.rm <- function(x){
+  out_vec <- boxplot.stats(x)$out
+  return(x[-which(x %in% out_vec)])
+}
+outliers.rm(v111)
+
+#4
+outliers.rm <- function(x){
+  x1 <- x[-which(x>(as.numeric(quantile(x, probs = c(0.25, 0.75))[2] + (1.5*IQR(x)))))]
+  x2 <- x[-which(x<(as.numeric(quantile(x, probs = c(0.25, 0.75))[1] - (1.5*IQR(x)))))]
+  x <- x[-which(x %in% c(x1, x2))]
+  return(x)
+}
+outliers.rm(v111)
+
+#5
+outliers.rm <- function(x){
+  x1 <- x[which(x<(as.numeric(quantile(x, probs = c(0.25, 0.75))[2] + (1.5*IQR(x)))))]
+  x2 <- x[which(x>(as.numeric(quantile(x, probs = c(0.25, 0.75))[1] - (1.5*IQR(x)))))]
+  x <- c(x1, x2)
+  return(x)
+}
+outliers.rm(v111)
+
+#6
+outliers.rm <- function(x){
+  mod_x <<- c()
+  q1 <- quantile(x,probs=c(0.75))
+  q2 <- quantile(x,probs=c(0.25))
+  for(i in 1:length(x)){
+        if (x[i]<(q1+1.5*IQR(x)) & x[i]>(q2-1.5*IQR(x))) {
+      mod_x <<- append(mod_x, x[i])
+      return(x)
+    }
   }
+}
+#
+outliers.rm <- function(x){
+  mod_x <<- c()
+  q1 <- quantile(x,probs=c(0.75))
+  q2 <- quantile(x,probs=c(0.25))
+  iq <- 1.5*IQR(x)
+  for(i in 1:length(x)){
+    if (x[i]<=(q1+iq) & x[i]>=(q2-iq)) {
+      mod_x <<- append(mod_x, x[i])
+      return(x)
+    }
+  }
+}
+
 #
 v111 <- as.numeric(unlist(strsplit("16.3 8.13 22.92 19.84 22.64 22.43 27.66 12.06 21.19 24.08 12.89 16.82 27.1 15.11 30.0 21.75 17.99 20.48 25.77 18.49 16.68 22.2 17.17 11.9 17.48 7.37 18.84 27.57 21.24 26.33 19.56 17.11 11.29 12.1 16.95 15.8", " ")))
 
@@ -435,3 +497,39 @@ v111 <- as.numeric(unlist(strsplit("16.3 8.13 22.92 19.84 22.64 22.43 27.66 12.0
 v111 <- c(-0.73, 0.08, 1.04, 0.09, 1.01, 6.11, -1.69, -1.08, -0.47, 0.82, -0.25, 13.91, -6.39, 0.19, 0.69, 1.95, -0.01, 0.27, 6.52, -0.82, -0.41, 0.93, -68.37, -2.97, 1.36, 3.7, -0.78, -0.42, -3.59, 0.19)
 # sample output
 v1111 <- c(-0.73, 0.08, 1.04, 0.09, 1.01, -1.69, -1.08, -0.47, 0.82, -0.25, 0.19, 0.69, 1.95, -0.01, 0.27, -0.82, -0.41, 0.93, -2.97, 1.36, -0.78, -0.42, 0.19)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+v111_1 <- v111[-which(v111>(as.numeric(quantile(v111, probs = c(0.25, 0.75))[2] + (1.5*IQR(v111)))))]
+v111_2 <- v111[-which(v111<(as.numeric(quantile(v111, probs = c(0.25, 0.75))[1] - (1.5*IQR(v111)))))]
+v111 <- v111[-which(v111 %in% c(v111_1))]
+v111 <- v111[-which(v111 %in% c(v111_2))]
+
+v1 <- c(1:10)
+v1_1 <- v1[-which(v1>(as.numeric(quantile(v1, probs = c(0.25,  0.75))[2] + (1.5*IQR(v1)))))]
+
+?methods
+methods('mean')
+mean
+var
