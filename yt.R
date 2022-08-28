@@ -327,3 +327,6 @@ yt$time_mrg <- as.numeric(yt$time_mrg)
 yt$time_eaist <- as.numeric(yt$time_eaist)
 yt$duration <- as.numeric(yt$duration)
 
+
+
+cor(iris[, -5])

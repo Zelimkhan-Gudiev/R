@@ -3,14 +3,18 @@ rm()
 
 #### Packages and librarys. ____________________________________________________________________________________________________ ####
 
-
+library(ggplot2)
+library(psych)
+library(dplyr)
+library(psych)
 
 #### Data preprocessing _______________________________________________________________________________________________________ ####
 
 getwd()
-setwd("")
-setwd("")
+setwd("C:/Users/GudievZK/Desktop/GitHub/DF/")
+setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/")
 
+yt <- read.csv2("yt.csv")
 
 # Чтобы корректно открыть в RStudio файл csv (без закорючек) необходимо:
 # 1.	Для ОС Windows – при сохранении установить тип файла «CSV (разделитель -запятая)»
@@ -120,13 +124,36 @@ fit <- lm(x[, 1] ~ x[, 2], x)
 x$fit <- fit$fitted.values
 
 
-
 regr.calc <- function(x) {
-  
+  crt <- cor.test(x[, 1], x[, 2])
+  if(crt$p.value < 0.05) {
+  fit <- lm(x[, 1] ~ x[, 2], x)
+  x$fit <- fit$fitted.values
+  return(x)
+  } else {
+    return("There is no sense in prediction")
+  }
 }       
        
-
+regr.calc(x)
        
+####  Step 15 of 16 Памятка ####
+# Постройте scatterplot по данным iris, сохранив его в переменную my_plot : 
+# Ось X - переменная Sepal.Width
+# Ось Y -  переменная Petal.Width
+# Цвет точек - переменная Species
+# Также добавьте линейное сглаживание для каждой группы наблюдений по переменной Species.
+# Если Вы все сделали правильно должен получиться следующий график:
+
+library(ggplot2)
+my_plot <- ggplot(iris, aes(x = Sepal.Width, y = Petal.Width, col = factor(Species))) + 
+           geom_point(size = 3) +
+           geom_smooth(method = lm)
+                    
+
+
+
+
  ####  Step 16 of 16 Памятка ####
 cor.test(mtcars$mpg, mtcars$disp) # Расчет корреляции Пирсона 
 cor.test(~ mpg + disp, mtcars) # запись через формулу

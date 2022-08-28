@@ -75,4 +75,4 @@ yt_f_names <- c('reason', 'year_plan_st', 'kvartal', 'kind_tz', 'stage', 'execut
                 'f2', 'method', 'tegs')
 yt[yt_f_names] <- lapply(yt[yt_f_names], as.factor)
 
-
+write.csv2(yt, file = "yt.csv")
