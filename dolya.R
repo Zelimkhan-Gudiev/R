@@ -233,6 +233,9 @@ ggplot(data = zakupki, aes(x = 'tru', y = 'Freq', fill = 'status')) +
   geom_bar(stat = "identity", position = "dodge") + 
   scale_fill_manual(values = c("Brown", "Blue", "Darkgrey", "Darkgreen"))
 
+install.packages("googlesheets4")
+library(googlesheets4)
 
 
-  
+
+
