@@ -184,3 +184,27 @@ ggplot(mtcars, aes(mpg, disp))+
 ggplot(mtcars, aes(mpg, disp))+
          geom_point()+
          geom_smooth(aes(col = factor(am)))
+
+
+####  3.4 Step 9 of 9 ####
+# Напишите функцию normality.test, которая получает на вход dataframe с количественными переменными, проверяет
+# распределения каждой переменной на нормальность с помощью функции shapiro.test. Функция должна возвращать
+# вектор с значениями p - value, полученного в результате проверки на нормальность каждой переменной. 
+# Названия элементов вектора должны совпадать с названиями переменных. 
+# Пример работы функции:
+# normality.test(iris[,-5])
+# Sepal.Length  Sepal.Width Petal.Length  Petal.Width 
+# 1.018116e-02 1.011543e-01 7.412263e-10 1.680465e-08
+x <- iris[, -5]
+
+normality.test <- function(x) {
+  shapiro <-  sapply(x, function(x) shapiro.test(x))[2,]
+  return(as.vector(shapiro))
+}
+
+normality.test(x)
+
+
+
+install.packages('gvlma')
+library(gvlma)
