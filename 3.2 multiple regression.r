@@ -42,6 +42,7 @@ aggregate(duration ~ kind_tz, yt, mean)
 
 names(yt)
 
+ytFut <- lm(duration ~ ., yt)
 
 
 ##### Step 5 of 15 #####

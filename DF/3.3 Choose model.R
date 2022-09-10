@@ -56,4 +56,15 @@ summary(ideal_model)
 ####  Step 5  of 6 ####
 ideal_model <- lm(formula = rating ~ complaints + learning, data = attitude)
 anova(model_full, ideal_model)
+
+
 ####  Step 6  of 6 ####
+
+lcs <- LifeCycleSavings
+str(lcs)
+
+fit6 <- lm(sr ~ (.)^2, lcs)
+summary(fit6)
+step(fit6, direction = 'backward')
+
+
