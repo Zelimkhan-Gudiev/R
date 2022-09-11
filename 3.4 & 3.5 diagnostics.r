@@ -373,16 +373,54 @@ resid.norm <- function(fit) {
 }
 
 
+#### Step 8 of 8 ####
 
-# Черновики
-df <- as.data.frame(fit$model)
-shapiro <- shapiro.test(fit$residuals)$p.value
-ggplot(x, aes(x = fit$residuals)) +
-  geom_histogram(binwidth = 2, fill = 'red', col = 'white')
-ggplot(x, aes(x = fit$residuals)) +
-  geom_histogram(binwidth = 2, fill = 'green', col = 'white')
-ggplot(x, aes(x = fit$residuals)) +
-  geom_histogram(binwidth = 2, ifelse(shapiro.test(fit$residuals)$pvalue < 0.05, 'red', 'green'), col = 'white')
-ggplot(x, aes(x = fit$residuals)) +
-  geom_histogram(binwidth = 2, ifelse(shapiro < 0.05, 'red', 'green'), col = 'white')
+# Ещё одной проблемой регрессионных моделей может стать мультиколлинеарность - ситуация, когда предикторы очень сильно коррелируют между собой. 
+# Иногда корреляция между двумя предикторами может достигать 1, например, когда два предиктора - это одна и та же переменная, 
+# измеренная в разных шкалах (x1 - рост в метрах, x2 - рост в сантиметрах)  
+# Проверить данные на мультиколлинеарность можно по графику pairs() и посчитав корреляцию между всеми предикторами c помощью функции cor.
+
+# Напишите функцию high.corr, которая принимает на вход датасет с произвольным числом количественных переменных и возвращает вектор 
+# с именами двух переменных с максимальным абсолютным значением коэффициента корреляции .
+# Примеры работы функции:
+high.corr(swiss)
+# [1] "Examination" "Education"
+x1 <- rnorm(30) # создадим случайную выборку
+x2 <- rnorm(30) # создадим случайную выборку
+x3  <- x1 + 5 # теперь коэффициент корреляции x1 и x3 равен единице
+my_df <- data.frame(var1 = x1, var2 = x2, var3 = x3)
+high.corr(my_df)
+# [1] "var1" "var3"
+# Вам могут понадобиться следующие функции: which, dimnames, colnames, rownames, diag, abs. Посмотрите справку по ним.
+# Подсказки: Далеко не всегда 1 == 1 есть ТRUE! Смотри закрепленный комментарий или можно почитать о проблеме здесь.
+
+
+high.corr <- function (x){
+  t <- x[,sapply(x,  is.numeric)] # очищаем наш дата фрейм от не числовых данных
+  r <- cor(t) # выводим таблицу в попарными коэффициентами корреляции Пирсона
+  r <- upper.tri(r,diag = F) * r # оставляем в таблице только элементы из верхней диагонали, так как ниижние элементы такие же и они не нужны
+  mr <- r[which.max(abs(r))] # находим максимальный коэф Пирсона в нашей урезанной таблице
+  ind <- which(r==mr, arr.ind=TRUE) # сюда пишем индексы Строки и Колонки в которых содержится наш максимальный коэф Пирсона mr
+  print <- c(rownames(r)[ind[,"row"]],  colnames(r)[ind[,"col"]]) # выводим вектор с названием Строки и Колонки где лежит наш mr
+  return(print)
+}
+high.corr(x)
+
 #
+high.corr <- function(x){    
+  cr <- cor(x)    
+  diag(cr) <- 0    
+  return(rownames(which(abs(cr)==max(abs(cr)), arr.ind=T)))}
+
+
+high.corr <- function(x){
+  x1 <- cor(x)
+  diag(x1) <- 0
+  x2 <- which.max(abs(x1))
+  x31 <- ifelse(x2 %% length(x1[1,]) == 0, x2 / length(x1[1,]),
+                x2 %/% length(x1[1,]) + 1)
+  x32 <- ifelse(x2 %% length(x1[1,]) == 0, length(x1[1,]),
+                x2 %% length(x1[1,]))
+  return (c(colnames(x1)[x31], rownames(x1)[x32]))
+  
+}
