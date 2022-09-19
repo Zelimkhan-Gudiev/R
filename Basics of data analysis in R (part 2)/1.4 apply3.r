@@ -146,15 +146,51 @@ get_sd <- function(x){
 
 # Казалось бы, все логично и работает на различных примерах:
 get_sd(iris)
-# Но в нашем коде скрыта серьезная уязвимость!) Предположим, у нас есть набор данных, в котором только одна количественная переменная:
+# Но в нашем коде скрыта серьезная уязвимость!) Предположим, у нас есть набор данных, 
+# в котором только одна количественная переменная:
 my_df <- data.frame(x = 1:10, y = letters[1:10])
 get_sd(my_df)
 
+# Что вообще только что произошло? Дело в том, что существуют различные способы обращения к колонкам dataframe:
+my_df[1]     # получим dataframe
+my_df[[1]]   # получим вектор
+my_df[, 1]   # получим вектор
+# В случае, если у нас только одна количественная переменная, обращение x[, num_var] вернет колонку в виде вектора, 
+# а sapply применит функцию sd к каждому наблюдению вместо того, чтобы применить ко всей переменной.
+# Таким образом, если вы хотите применить какую-либо функцию к неизвестному заранее числу колонок в данных, 
+# лучше используйте такую индексацию типа: my_df[col_index]. То есть:
+
+get_sd <- function(x){
+num_var <- sapply(x, is.numeric)
+sapply(x[num_var], sd)
+}
+7et_sd(my_df)
+
+
 
 #### Step 11 of 16  ####
+test_data <- as.data.frame(list(name = c("p4@HPS1", "p7@HPS2", "p4@HPS3", "p7@HPS4", "p7@HPS5", 
+                                         "p9@HPS6", "p11@HPS7", "p10@HPS8", "p15@HPS9"), 
+                                expression = c(118.84, 90.04, 106.6, 104.99, 93.2, 66.84, 90.02, 108.03, 111.83)))
+names <- c('HPS1', 'GOT1')
+
+my_names <- function (dataset, names){
+  as.data.frame(grepl(paste(names, collapse = "|"), dataset))
+}
+
+my_names <- function (dataset, names){
+  dataset[sapply(names, function(x) grepl(x, dataset))]
+}
+
+my_names(test_data, names)
+my_names <- function (dataset, names){
+  dataset[sapply("HPS9", function(x) grepl(x, dataset[[1]]))]
+}
+
+
+
 #### Step 12 of 16  ####
 #### Step 13 of 16  ####
 #### Step 14 of 16  ####
 #### Step 15 of 16  ####
 #### Step 16 of 16  ####
-
