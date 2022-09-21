@@ -194,3 +194,29 @@ my_names <- function (dataset, names){
 #### Step 14 of 16  ####
 #### Step 15 of 16  ####
 #### Step 16 of 16  ####
+
+
+remove(list = ls())
+nds <- 0.2
+
+V1
+
+one_thing_without_nds <- 4567.87
+quantity_of_things <- 10
+summ_of_nds <- 9135.74
+one_thing_with_nds <- 5481.44
+one_thing_without_nds*quantity_of_things
+
+one_thing_with_nds/100*20
+one_thing_without_nds/100*20
+nds_for_one_thing <- 913.574
+nds_for_one_thing*10
+
+one_thing_without_nds_v2 <- 4567.87
+summ_of_nds <- 9135.74
+one_thing_with_nds <- 5481.44
+one_thing_without_nds*quantity_of_things
+
+V2
+
+
