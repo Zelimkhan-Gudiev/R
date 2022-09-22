@@ -190,7 +190,7 @@ head(m)
 # Хотелось бы рассмотреть еще один подводный камень применения функций семейства apply к dataframe.
 # Предположим, мы решили написать простенькую функцию для расчета стандартного отклонения количественных переменных в данных.
 get_sd <- function(x){
-  num_var <- sapply(x, is.numeric)
+  num_var <- sapply(x, is.numeric) # x[sapply(x, is.numeric)]
   sapply(x[, num_var], sd)
 }
 
@@ -227,6 +227,11 @@ names <- c('HPS1', 'GOT1')
 my_names <- function (dataset, names){
   as.data.frame(grepl(paste(names, collapse = "|"), dataset))
 }
+my_names <- function (dataset, names){
+  dataset[(grepl(paste(names, collapse = "|"), dataset))]
+}
+
+my_names(test_data, names)
 
 my_names <- function (dataset, names){
   dataset[sapply(names, function(x) grepl(x, dataset))]
@@ -237,6 +242,12 @@ my_names <- function (dataset, names){
   dataset[sapply("HPS9", function(x) grepl(x, dataset[[1]]))]
 }
 
+#
+data <- data.frame(animal = sample(c("cat","dog","bird", 'doggy','kittycat'), 50, replace = T))
+mathes <- c('cat', 'dog')
+data$keep <- ifelse(data$animal %in% mathes, 'Keep', 'Discard')
+
+data$keep <- ifelse(grepl(mathes, data$animal), 'keep', 'Discard')
 
 
 #### Step 12 of 16  ####
