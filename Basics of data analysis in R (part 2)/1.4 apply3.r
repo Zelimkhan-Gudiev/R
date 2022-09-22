@@ -38,18 +38,62 @@ sapply(my_list, range, na.rm = T, simplify = F)
 cars <- c("Mazda", "Volga", "Merc")
 car <- "Mazda RX4"  
 
-sapply(cars, function(x) grepl(x, car))
-lapply(cars, function(x) grepl(x, car))
+grepl(car, cars)
+grepl(cars, car) #!
+
+cars_grep <- sapply(cars, function(x) grepl(x, car))
+typeof(cars_grep)
+is.vector(cars_grep)
+
+car_grep <- sapply(car, function(x) grepl(x, cars))
+typeof(car_grep)
+is.matrix(car_grep)
+
+cars_grep1 <- lapply(cars, function(x) grepl(x, car))
+typeof(cars_grep1)
+is.vector(cars_grep1)
+is.list(cars_grep1)
+
+car_grep1 <- lapply(car, function(x) grepl(x, cars))
+typeof(car_grep1)
+is.vector(car_grep1)
+is.list(car_grep1)
+
 
 # step 3 by tapply
 tapply(mtcars$mpg, mtcars$am, function(x) mean(x))
 aggregate(mpg ~ am, mtcars, function(x) mean(x))
+
+# by группирует не вектор в отличие от вышеуказанных функций, а целый датафрейм по какой-то переменной
+by(iris[1:4], iris$Species, colMeans)
+
+tapply(iris[1:4], iris$Species, mean) # error
+aggregate(iris[1:4], iris$Species, mean) # error
 
 by(iris[1:4], iris$Species, 
    function(x) sapply(x, 
                       function(col) shapiro.test(col)$p.value))
 
 aggregate(. ~ Species, iris, function(x) shapiro.test(x)$p.value)
+
+
+#### Step 5 of 16 ####
+# Обратите внимание на следующее выражение, которое очень часто будет вам помогать при работе с данными:
+# давайте напишем команду, которая отбирает только количественные колонки в данных:
+iris_num <- iris[sapply(iris, is.numeric)]
+
+# Готово! sapply(iris, is.numeric) возвращает вектор логических значений, который мы и используем для индексации.
+# Этот пример также иллюстрирует идею, что lapply и sapply можно применять к dataframe. Так как dataframe - это в том числе и список.
+# Например, результат команды:
+sapply(iris[1:4], sd)
+# эквивалентна результату:
+apply(iris[1:4], 2, sd)
+# так как каждая колонка dataframe - это и есть элемент списка, то функция lapply и sapply возвращает результат 
+# применения некоторой функции к каждой колонке данных!
+# Но тут есть одно но!
+# Как вы помните, apply производит все опперации именно над матрицами, поэтому если вы отправите в apply 
+# dataframe с разными типами данных, то R сначала приведет все колонки к одному типу, чтобы получилась матрица, 
+# т.к. в матрице могут храниться данные только одного типа! Это в свою очередь может привести к неожиданному результату:
 
 
 # step 4 vapply, 
@@ -59,8 +103,9 @@ vapply(mtcars, mean, FUN.VALUE = numeric(1))
 sapply(mtcars, mean)
 
 mapply(rep, c(1, 2, 3, 4), c(1, 2, 3, 4))
-
+rep(c(1, 2, 3, 4), c(1, 2, 3, 4))
 rep(1, 3)
+
 x <- c(20, 25, 13)
 m <- c(0, 1, 2)
 s <- c(3, 5, 6)
@@ -109,18 +154,21 @@ iris_num <- iris[sapply(iris, is.numeric)]
 sapply(iris[1:4], sd)
 # эквивалентна результату:
 apply(iris[1:4], 2, sd)
-# так как каждая колонка dataframe - это и есть элемент списка, то функция lapply и sapply возвращает результат применения некоторой функции 
-# к каждой колонке данных!
+
+# так как каждая колонка dataframe - это и есть элемент списка, то функция lapply и sapply
+# возвращает результат применения некоторой функции к каждой колонке данных!
 # Но тут есть одно но!
-# Как вы помните, apply производит все опперации именно над матрицами, поэтому если вы отправите в apply dataframe с разными типами данных, 
-# то R сначала приведет все колонки к одному типу, чтобы получилась матрица, т.к. в матрице могут храниться данные только одного типа! 
+# Как вы помните, apply производит все опперации именно над матрицами, поэтому если вы отправите в apply dataframe 
+# с разными типами данных, то R сначала приведет все колонки к одному типу, чтобы получилась матрица, 
+# т.к. в матрице могут храниться данные только одного типа! 
 # Это в свою очередь может привести к неожиданному результату:
 sapply(iris, is.numeric)
 
 apply(iris, 2, is.numeric)
 
-# По результатам команды apply можно подумать, что в данных нет количественных переменных! Дело в том, что перед тем как применить функцию 
-# is.numeric, сначала данные iris были переведены в матрицу, а все переменные переведены в строки, как в наиболее общий тип данных. 
+# По результатам команды apply можно подумать, что в данных нет количественных переменных! Дело в том, что перед тем как 
+# применить функцию is.numeric, сначала данные iris были переведены в матрицу,
+# а все переменные переведены в строки, как в наиболее общий тип данных. 
 # В результате получаем для каждой колонки FALSE.
 
 
@@ -135,6 +183,8 @@ m <- matrix(rnorm(100 * 200), nrow = 100)
 # Тогда мы могли бы сгенерировать список данными именами следующим образом:
 m_names <- mapply(paste, list("row", "col"), list(1:100, 1:200), sep = "_")
 str(m_names)
+dimnames(m) <- m_names
+head(m)
 
 #### Step 10 of 16  ####
 # Хотелось бы рассмотреть еще один подводный камень применения функций семейства apply к dataframe.
@@ -219,4 +269,6 @@ one_thing_without_nds*quantity_of_things
 
 V2
 
+
+c <- letters
 
