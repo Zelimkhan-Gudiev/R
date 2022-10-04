@@ -22,94 +22,23 @@ data(diamonds)
 # step 1 lapply 
 apply(array, margin, ...)
 
-lapply(list, function)
+lapply(list, function) # lapply apply the function to the elements of list
 
 my_list <- list(x = c(rnorm(30), NA), y = rnorm(10))
 str(my_list)
 
+# Approach with cycle
+for (i in 1:length(my_list)) {
+  print(mean(my_list[[i]], na.rm = T))
+}
+
+# Approach with lapply
 lapply(my_list, mean)
 lapply(my_list, mean, na.rm = T)
 lapply(my_list, function(x) x * 2)
 
 sapply(my_list, range, na.rm = T, simplify = F)
-
-# step 2
-
-cars <- c("Mazda", "Volga", "Merc")
-car <- "Mazda RX4"  
-
-grepl(car, cars)
-grepl(cars, car) #!
-
-cars_grep <- sapply(cars, function(x) grepl(x, car))
-typeof(cars_grep)
-is.vector(cars_grep)
-
-car_grep <- sapply(car, function(x) grepl(x, cars))
-typeof(car_grep)
-is.matrix(car_grep)
-
-cars_grep1 <- lapply(cars, function(x) grepl(x, car))
-typeof(cars_grep1)
-is.vector(cars_grep1)
-is.list(cars_grep1)
-
-car_grep1 <- lapply(car, function(x) grepl(x, cars))
-typeof(car_grep1)
-is.vector(car_grep1)
-is.list(car_grep1)
-
-
-# step 3 by tapply
-tapply(mtcars$mpg, mtcars$am, function(x) mean(x))
-aggregate(mpg ~ am, mtcars, function(x) mean(x))
-
-# by группирует не вектор в отличие от вышеуказанных функций, а целый датафрейм по какой-то переменной
-by(iris[1:4], iris$Species, colMeans)
-
-tapply(iris[1:4], iris$Species, mean) # error
-aggregate(iris[1:4], iris$Species, mean) # error
-
-by(iris[1:4], iris$Species, 
-   function(x) sapply(x, 
-                      function(col) shapiro.test(col)$p.value))
-
-aggregate(. ~ Species, iris, function(x) shapiro.test(x)$p.value)
-
-
-#### Step 5 of 16 ####
-# Обратите внимание на следующее выражение, которое очень часто будет вам помогать при работе с данными:
-# давайте напишем команду, которая отбирает только количественные колонки в данных:
-iris_num <- iris[sapply(iris, is.numeric)]
-
-# Готово! sapply(iris, is.numeric) возвращает вектор логических значений, который мы и используем для индексации.
-# Этот пример также иллюстрирует идею, что lapply и sapply можно применять к dataframe. Так как dataframe - это в том числе и список.
-# Например, результат команды:
-sapply(iris[1:4], sd)
-# эквивалентна результату:
-apply(iris[1:4], 2, sd)
-# так как каждая колонка dataframe - это и есть элемент списка, то функция lapply и sapply возвращает результат 
-# применения некоторой функции к каждой колонке данных!
-# Но тут есть одно но!
-# Как вы помните, apply производит все опперации именно над матрицами, поэтому если вы отправите в apply 
-# dataframe с разными типами данных, то R сначала приведет все колонки к одному типу, чтобы получилась матрица, 
-# т.к. в матрице могут храниться данные только одного типа! Это в свою очередь может привести к неожиданному результату:
-
-
-# step 4 vapply, 
-
-vapply(list, function, FUN.VALUE = type, ...)
-vapply(mtcars, mean, FUN.VALUE = numeric(1))
-sapply(mtcars, mean)
-
-mapply(rep, c(1, 2, 3, 4), c(1, 2, 3, 4))
-rep(c(1, 2, 3, 4), c(1, 2, 3, 4))
-rep(1, 3)
-
-x <- c(20, 25, 13)
-m <- c(0, 1, 2)
-s <- c(3, 5, 6)
-mapply(rnorm, x, m, s)
+sapply(my_list, range, na.rm = T, simplify = T)
 
 #### Step 3 of 16 ####
 # Напишите функцию positive_sum, которая получает на вход dataframe с произвольным количеством числовых переменных. 
@@ -142,12 +71,58 @@ positive_sum <-  function(x){
   
 }
 
+#### step 4 of 16 ####
+
+car <- "Mazda RX4" 
+cars <- c("Mazda", "Volga", "Merc")
+ 
+
+grepl(car, cars)
+grepl(cars, car) #!
+
+## Approach with cycle
+# 1
+for (i in cars) {
+  print(grepl(i, car))
+}
+
+#2
+
+for (i in cars) {
+  if (grepl(i, car)) {
+    print(My_car <- i)
+  }
+}
+
+## We will can do easier all the above
+
+cars[sapply(cars, function(x) grepl(x, car))]
+cars[lapply(cars, function(x) grepl(x, car))] # error
+
+cars_grep <- sapply(cars, function(x) grepl(x, car))
+typeof(cars_grep)
+is.vector(cars_grep)
+
+car_grep <- sapply(car, function(x) grepl(x, cars))
+typeof(car_grep)
+is.matrix(car_grep)
+
+cars_grep1 <- lapply(cars, function(x) grepl(x, car))
+typeof(cars_grep1)
+is.vector(cars_grep1)
+is.list(cars_grep1)
+
+car_grep1 <- lapply(car, function(x) grepl(x, cars))
+typeof(car_grep1)
+is.vector(car_grep1)
+is.list(car_grep1)
 
 
 #### Step 5 of 16  ####
 # Обратите внимание на следующее выражение, которое очень часто будет вам помогать при работе с данными:
 # давайте напишем команду, которая отбирает только количественные колонки в данных:
 iris_num <- iris[sapply(iris, is.numeric)]
+
 # Готово! sapply(iris, is.numeric) возвращает вектор логических значений, который мы и используем для индексации.
 # Этот пример также иллюстрирует идею, что lapply и sapply можно применять к dataframe. Так как dataframe - это в том числе и список.
 # Например, результат команды:
@@ -155,7 +130,7 @@ sapply(iris[1:4], sd)
 # эквивалентна результату:
 apply(iris[1:4], 2, sd)
 
-# так как каждая колонка dataframe - это и есть элемент списка, то функция lapply и sapply
+ # так как каждая колонка dataframe - это и есть элемент списка, то функция lapply и sapply
 # возвращает результат применения некоторой функции к каждой колонке данных!
 # Но тут есть одно но!
 # Как вы помните, apply производит все опперации именно над матрицами, поэтому если вы отправите в apply dataframe 
@@ -171,6 +146,44 @@ apply(iris, 2, is.numeric)
 # а все переменные переведены в строки, как в наиболее общий тип данных. 
 # В результате получаем для каждой колонки FALSE.
 
+#### step 6 of 16  tapply, aggregate, by ####
+tapply(mtcars$mpg, mtcars$am, function(x) mean(x))
+aggregate(mpg ~ am, mtcars, function(x) mean(x))
+aggregate(mpg ~ am, mtcars, mean)
+
+# by группирует не вектор в отличие от вышеуказанных функций, а целый датафрейм по какой-то переменной
+by(iris[1:4], iris$Species, colMeans)
+
+tapply(iris[1:4], iris$Species, mean) # error
+aggregate(iris[1:4], iris$Species, mean) # error
+
+by(iris[1:4], iris$Species, 
+   function(x) sapply(x, 
+                      function(col) shapiro.test(col)$p.value))
+
+aggregate(. ~ Species, iris, function(x) shapiro.test(x)$p.value)
+
+
+
+
+
+
+#### step 7 of 16 vapply ####
+
+vapply(list, function, FUN.VALUE = type, ...)
+vapply(mtcars, mean, FUN.VALUE = numeric(1))
+sapply(mtcars, mean)
+
+mapply(rep, c(1, 2, 3, 4), c(1, 2, 3, 4))
+rep(c(1, 2, 3, 4), c(1, 2, 3, 4))
+rep(1, 3)
+
+x <- c(20, 25, 13)
+m <- c(0, 1, 2)
+s <- c(3, 5, 6)
+mapply(rnorm, x, m, s)
+
+
 
 #### Step 9 of 16  ####
 # Давайте рассмотрим один небольшой пример работы с функцией mapply. Я оговорился, что она довольно специфична, однако иногда она все-таки 
@@ -182,6 +195,7 @@ m <- matrix(rnorm(100 * 200), nrow = 100)
 # col_1, col_2, col_3, ..., col_200 - для колонок
 # Тогда мы могли бы сгенерировать список данными именами следующим образом:
 m_names <- mapply(paste, list("row", "col"), list(1:100, 1:200), sep = "_")
+p1 <- paste(a, b, sep = " ")
 str(m_names)
 dimnames(m) <- m_names
 head(m)
@@ -223,6 +237,7 @@ test_data <- as.data.frame(list(name = c("p4@HPS1", "p7@HPS2", "p4@HPS3", "p7@HP
                                          "p9@HPS6", "p11@HPS7", "p10@HPS8", "p15@HPS9"), 
                                 expression = c(118.84, 90.04, 106.6, 104.99, 93.2, 66.84, 90.02, 108.03, 111.83)))
 names <- c('HPS1', 'GOT1')
+my_names(test_data)
 
 my_names <- function (dataset, names){
   as.data.frame(grepl(paste(names, collapse = "|"), dataset))

@@ -18,6 +18,9 @@ yt <- read.csv2("yt.csv")
 yt <- read_xlsx("plan.xlsx")
 data(diamonds)
 
+diam <- data_frame(diamonds)
+str(diam)
+typeof(diam$cut)
 
 # steps 2 - 3 for vs apply 
 
@@ -25,11 +28,14 @@ data(diamonds)
 str(diamonds)
 
 min_size <- numeric(nrow(diamonds)) # ?????????????? ???????????? min_size ???????? numeric ?????????? nrow(diamonds)
-for (i in 1:nrow(diamonds)){
-  min_size[i] <-  min(diamonds[i, 8:10])
+for (i in 1:nrow(diamonds)) {
+  min_size[i] <- min(diamonds[i, 8:10])
 }
 
+head(min_size)
 min_size_2 <- apply(diamonds[, 8:10], 1, min)
+
+min_size == min_size_2
 
 
 # steps 4 and 7 apply function
