@@ -231,6 +231,112 @@ maxdiff(xx)
 # В противном случае функция возвращает FALSE.
 # Пример.  x=c(0, 0, 3, 4, 4, 8) нестрого возрастает, возвращаем TRUE. y=c(3:0, 1) был бы нестрого убывающим, 
 # если бы не последняя единица, поэтому возвращаем FALSE.
+x <- c(0, 0, 3, 4, 4, 8)
+y <- c(3:0, 1) 
+
+
+is_monotone(x)
+
+#
+is_monotone <- function(x) {
+  i <- seq(1:(length(x)-1))
+  if (all(x[i+1]>=x[i]) | all(x[i+1]<=x[i])){
+    TRUE
+  } else {
+    FALSE
+  }
+}
+#
+is_monotone <- function(x) {
+return(all(x[-length(x)]<=x[-1]) | all(x[-length(x)]>=x[-1]))
+}
+
+#
+is_monotone <- function(x) {
+  all(x == sort(x) | x == -sort(-x))
+}
+#
+is_monotone <- function(x) {
+  all(diff(x) >= 0) || all(diff(x) <= 0)
+}
+#
+is_monotone <- function(x) {
+  return(all(x[-length(x)]-x[-1] >=0) | all(x[-length(x)]-x[-1] <=0))
+}
+#
+is_monotone <- function(x) {
+  diffs <- x[-1] - x[-length(x)]
+  all(diffs >= 0) || all(diffs <= 0)
+}
+#
+is_monotone <- function(x) {
+  diff(range(sign(diff(x)))) < 2
+}
+#
+is_monotone <- function(x) {
+  y <- x[-1] - x[-length(x)]
+  return(all(y >= 0) | all(y <= 0))
+}
+
+#
+is_monotone <- function(x) {
+  a = x[-1]-x[-length(x)]
+  print(all(a >= 0) | all(a <= 0))
+}
+#
+is_monotone <- function(x) {
+  if (min(x) == max(x)) {
+    print(TRUE)
+  } else if (all(x[-1] - x[-length(x)] >= 0) | all(x[-1] - x[-length(x)] <= 0)) {
+    print(TRUE)
+  } else {
+    print(FALSE)}}
+#
+is_monotone <- function(x) {
+  all(x[-1] >= x[-length(x)]) || all(x[-1] <= x[-length(x)])
+}
+#
+is_monotone <- function(x) {
+  y <- x[-1] - x[-length(x)]
+  return(max(y) * min(y) >= 0)
+}
+#
+is_monotone <- function(x) {
+  x1 <- ifelse(diff(x) >= 0,1,0)
+  y1 <- ifelse(diff(x) <= 0,1,0)
+  if ((mean(x1) == 1) | (mean(y1) == 1)) print(TRUE) else print(FALSE)
+}
+#
+is_monotone <- function(x) {
+  return(min(x[-1] >= x[-length(x)]) || min(x[-1] <= x[-length(x)]))
+}
+#
+is_monotone <- function(x) {
+  return(min(x[-1] >= x[-length(x)])||min(x[-1] <= x[-length(x)]))
+  
+}
+#
+# Решил сэкономить на одном вызове `diff`. По идее так должно быть быстрее, вот скрипт для проверки.
+# Он генерирует вектор длины 10, 100, 1000, ... и для каждой длины сравнивает две функции:
+is_monotone1 <- function(x) {
+  x <- diff(x)
+  all(x >= 0) || all(x <= 0)
+}
+
+is_monotone2 <- function(x) {
+  all(diff(x) >= 0) || all(diff(x) <= 0)
+}
+
+require(microbenchmark)
+set.seed(42)
+lapply(setNames(nm = 10^(1:6)),
+       function(n) {
+         x <- sample.int(n, replace = TRUE)
+         microbenchmark(is_monotone1(x), is_monotone2(x))
+       })
+
+
+
 
 Подсказки: 
 # "Не меньше" = "больше либо равно".
