@@ -53,7 +53,7 @@ names(a) <- c("one", "two", "forty two", "ninety nine")
 
 names(a) <- NULL # удаляет вектор имен
 
-a[c("two", "one", "forty two")]
+a[c("two", "one", "forty two", "f")]
 a[c(2, 1, 42)]
 
 # Функция all и any
@@ -229,7 +229,7 @@ maxdiff(xx)
 # Напишите функцию, которая принимает один аргумент (числовой вектор) и возвращает TRUE, если 
 # вектор обладает свойством нестрогой монотонности, то есть является либо несторого возрастающим, либо нестрого убывающим. 
 # В противном случае функция возвращает FALSE.
-# Пример.  x=c(0, 0, 3, 4, 4, 8) нестрого возрастает, возвращаем TRUE. y=c(3:0, 1) был бы нестрого убывающим, 
+# Пример.  x <- c(0, 0, 3, 4, 4, 8) нестрого возрастает, возвращаем TRUE. y <- c(3:0, 1) был бы нестрого убывающим, 
 # если бы не последняя единица, поэтому возвращаем FALSE.
 x <- c(0, 0, 3, 4, 4, 8)
 y <- c(3:0, 1) 
@@ -239,8 +239,8 @@ is_monotone(x)
 
 #
 is_monotone <- function(x) {
-  i <- seq(1:(length(x)-1))
-  if (all(x[i+1]>=x[i]) | all(x[i+1]<=x[i])){
+  i <- seq(1:(length(x) - 1))
+  if (all(x[i + 1] >= x[i]) | all(x[i + 1] <= x[i])){
     TRUE
   } else {
     FALSE
@@ -248,7 +248,7 @@ is_monotone <- function(x) {
 }
 #
 is_monotone <- function(x) {
-return(all(x[-length(x)]<=x[-1]) | all(x[-length(x)]>=x[-1]))
+return(all(x[-length(x)] <= x[-1]) | all(x[-length(x)] >= x[-1]))
 }
 
 #
@@ -261,7 +261,7 @@ is_monotone <- function(x) {
 }
 #
 is_monotone <- function(x) {
-  return(all(x[-length(x)]-x[-1] >=0) | all(x[-length(x)]-x[-1] <=0))
+  return(all(x[-length(x)] - x[-1] >= 0) | all(x[-length(x)] - x[-1] <= 0))
 }
 #
 is_monotone <- function(x) {
@@ -361,8 +361,50 @@ lapply(setNames(nm = 10^(1:6)),
 # я не буду проверять корректную работу при больших значениях n, оставим этот аспект за скобками.
 # если вы не знаете, как считать число сочетаний с повторениями, обратитесь к Википедии.
 
+combin_count <- function(n, k, with_repretitions = FALSE) {
+  if (with_repretitions == FALSE) {
+    factorial(n)/(factorial(k)*factorial(n-k))
+  } else {
+    factorial(n+k-1)/(factorial(k)*factorial(n-1))
+  }
+}
+
+#
+combin_count <- function(n, k, with_repretitions = FALSE) {
+  ifelse(with_repretitions,choose(n+k-1, k),choose(n, k))
+}
+
+#
+combin_count <- function(n, k, with_repretitions = FALSE) {
+  if (with_repretitions) {
+    return(prod(c((k+1):(n+k-1)))/prod(c(1:(n-1))))
+  } else {
+    return(prod(c((k+1):n))/prod(c(1:(n-k))))
+  }  
+}
+#
+combin_count <- function(n, k, with_repretitions = FALSE) {
+  if (with_repretitions) n <- n + k - 1
+  if (k == 0 || k == n) return(1)
+  if (k == 1 || k == n - 1) return(n)  
+  if ((n - k + 1) <= k) k <- (n - k)
+  
+  x <- c((n - k + 1):n)
+  for(i in k:2) {
+    kmax <- max(which(x %% i == 0))
+    x[kmax] <- x[kmax] %/% i
+  }
+  prod(x)
+}
+#
+combin_count <- function(n, k, with_repretitions = FALSE) {
+  ifelse(with_repretitions, return(choose(n + k - 1, n - 1)), return(choose(n, k)))
+}
 
 
+
+
+combin_count(10, 5, T)
 
 #### Step 12 of 13  ####
 #### Step 13 of 13  ####
