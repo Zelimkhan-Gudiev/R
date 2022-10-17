@@ -1,0 +1,33 @@
+remove(list = ls())
+
+install.packages("readxl")
+library("readxl")
+library(dplyr)
+library('ggplot2')
+
+df <- data_frame(period         = c('1kv2021', '2kv2021', '3kv2021', '4kv2021', '1v2022', '2kv2022', '3kv2022'), 
+                 number_of_KPGZ = c(  5880,      6380,      6260,      6250,     6360,      6410,      6470),
+                 prop_KPGZ      = c(  35.30,     41.70,     46.90,     48.49,    49.40,     51.16,     55.71),
+                 number_of_KPGZ_Stand = number_of_KPGZ/100*prop_KPGZ,
+                 number_of_SPGZ = c(99000,      96800,     91500,     89460,    88270,     72400,     70640),
+                 prop_SPGZ      = c(21.00,       24.10,     27.00,     25.66,    26.42,     32.52,     36.23),
+                 number_of_KPGZ_Stand = number_of_SPGZ/100*prop_SPGZ
+                 )
+
+
+period         <-  c('20211kv1', '2021kv2', '2021kv3', '2021kv4', '2022kv1', '2022kv2', '2022kv3')
+number_of_KPGZ <-  c(  5880,      6380,      6260,      6250,     6360,      6410,      6470)
+prop_KPGZ      <-  c(  35.30,     41.70,     46.90,     48.49,    49.40,     51.16,     55.71)
+number_of_KPGZ_Stand <- number_of_KPGZ/100*prop_KPGZ
+number_of_SPGZ <-  c(99000,      96800,     91500,     89460,    88270,     72400,     70640)
+prop_SPGZ      <-  c(21.00,       24.10,     27.00,     25.66,    26.42,     32.52,     36.23)
+number_of_SPGZ_Stand <- number_of_SPGZ/100*prop_SPGZ
+
+df_e <- data_frame(period, number_of_KPGZ, round(number_of_KPGZ_Stand), prop_KPGZ, 
+                 number_of_SPGZ, round(number_of_SPGZ_Stand), prop_SPGZ)
+write.csv2(df_e, file = "df_e.csv")
+
+ggplot(df_e, aes(x = period, y = number_of_KPGZ)) + 
+  geom_point()
+plot(~ mpg + hp, df)
+plot(~ period + number_of_KPGZ)
