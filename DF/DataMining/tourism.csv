@@ -1,0 +1,52 @@
+AGE,COMPANIONS,CHOICE,LENGTH,TIMES_YEAR,AIM,EXPENCES,ORGANIZE,TYPE,HOTEL_QUAL
+22,Family,Family recommendations,10-20 days,4,Recreation,35000-50000,Self,Beach,Price and services
+27,Family,Family recommendations,over 20 days,1,Recreation,over 50000,Self,Curative,Personnel
+19,Family,Social networks and friends,10-20 days,3,Study,35000-50000,Self,Sightseeing,Placing
+25,Family,Other,less than 7 days,1,Recreation,less than 20000,Self,Mountain skiing,Placing
+19,Friends,Social networks and friends,over 20 days,1,Recreation,over 50000,Self,Sightseeing,Placing
+26,Self,Family recommendations,over 20 days,2,Recreation,20000-35000,Self,Beach,Personnel
+30,Family,Family recommendations,7-10 days,2,Other,20000-35000,All-inclusive,Beach,Price and services
+27,Family,Family recommendations,10-20 days,2,Recreation,20000-35000,All-inclusive,Beach,Rooms quality
+28,Friends,Social networks and friends,10-20 days,3,Internship,over 50000,Self,Beach,Price and services
+21,Friends,Other,10-20 days,3,Internship,35000-50000,All-inclusive,Beach,Placing
+22,Partner,Other,10-20 days,1,Internship,35000-50000,All-inclusive,Cruise,Rooms quality
+24,Family,Social networks and friends,10-20 days,2,Study,over 50000,Self,Extreme sports,Price and services
+27,Friends,Family recommendations,10-20 days,2,Study,20000-35000,Partly by touring company,Sightseeing,Personnel
+26,Friends,Family recommendations,10-20 days,1,Recreation,20000-35000,Self,Other,Personnel
+19,Self,Social networks and friends,10-20 days,2,Recreation,less than 20000,Self,Beach,Price and services
+18,Partner,Social networks and friends,7-10 days,1,Recreation,35000-50000,All-inclusive,Beach,Rooms quality
+19,Friends,Other,over 20 days,2,Recreation,20000-35000,All-inclusive,Mountain skiing,Placing
+19,Friends,Social networks and friends,7-10 days,1,Recreation,35000-50000,Partly by touring company,Mountain skiing,Rooms quality
+17,Partner,Family recommendations,7-10 days,2,Recreation,over 50000,Self,Sightseeing,Price and services
+18,Family,Ads,7-10 days,2,Internship,over 50000,Self,Sightseeing,Placing
+20,Family,Social networks and friends,10-20 days,5,Recreation,over 50000,Self,Sightseeing,Placing
+20,Family,Other,10-20 days,2,Recreation,20000-35000,Self,Beach,Personnel
+19,Friends,Ads,10-20 days,4,Recreation,20000-35000,Self,Extreme sports,Rooms quality
+19,Friends,Social networks and friends,10-20 days,3,Recreation,20000-35000,Self,Exotic,Price and services
+21,Family,Family recommendations,less than 7 days,2,Study,20000-35000,Partly by touring company,Mountain skiing,Price and services
+22,Family,Social networks and friends,7-10 days,1,Study,20000-35000,All-inclusive,Exotic,Price and services
+30,Friends,Social networks and friends,over 20 days,1,Recreation,less than 20000,Partly by touring company,Cruise,Price and services
+19,Partner,Ads,7-10 days,2,Study,20000-35000,Partly by touring company,Beach,Placing
+20,Family,Social networks and friends,7-10 days,2,Internship,20000-35000,Partly by touring company,Sightseeing,Price and services
+28,Family,Social networks and friends,10-20 days,5,Internship,less than 20000,Self,Mountain skiing,Price and services
+19,Partner,Other,10-20 days,1,Internship,35000-50000,Partly by touring company,Curative,Price and services
+19,Friends,Social networks and friends,10-20 days,3,Study,35000-50000,All-inclusive,Beach,Price and services
+19,Friends,Social networks and friends,10-20 days,3,Recreation,20000-35000,All-inclusive,Beach,Price and services
+20,Friends,Other,7-10 days,2,Recreation,over 50000,All-inclusive,Beach,Personnel
+19,Friends,Social networks and friends,over 20 days,2,Recreation,20000-35000,Self,Extreme sports,Rooms quality
+20,Family,Family recommendations,7-10 days,5,Recreation,20000-35000,Partly by touring company,Exotic,Personnel
+20,Family,Family recommendations,less than 7 days,2,Recreation,20000-35000,All-inclusive,Sightseeing,Personnel
+24,Family,Ads,10-20 days,2,Study,over 50000,Partly by touring company,Sightseeing,Personnel
+19,Self,Family recommendations,7-10 days,2,Recreation,35000-50000,Partly by touring company,Cruise,Price and services
+18,Partner,Social networks and friends,over 20 days,2,Recreation,35000-50000,Self,Sightseeing,Placing
+20,Family,Other,over 20 days,3,Recreation,35000-50000,Self,Extreme sports,Rooms quality
+17,Friends,Social networks and friends,10-20 days,2,Recreation,20000-35000,Self,Beach,Personnel
+20,Friends,Ads,over 20 days,3,Recreation,20000-35000,Partly by touring company,Sightseeing,Placing
+20,Family,Social networks and friends,7-10 days,2,Recreation,less than 20000,All-inclusive,Extreme sports,Placing
+19,Family,Social networks and friends,10-20 days,1,Recreation,20000-35000,All-inclusive,Sightseeing,Price and services
+20,Friends,Other,10-20 days,4,Recreation,35000-50000,All-inclusive,Sightseeing,Placing
+20,Family,Social networks and friends,10-20 days,3,Recreation,35000-50000,Self,Mountain skiing,Personnel
+18,Family,Family recommendations,10-20 days,0,Recreation,35000-50000,Partly by touring company,Beach,Price and services
+23,Partner,Other,less than 7 days,2,Recreation,35000-50000,Self,Beach,Personnel
+27,Partner,Social networks and friends,7-10 days,3,Recreation,less than 20000,All-inclusive,Curative,Placing
+19,Partner,Social networks and friends,over 20 days,4,Study,20000-35000,All-inclusive,Exotic,Price and services

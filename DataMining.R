@@ -1,23 +1,47 @@
+# Лабороторная работа от 17.10.2022
 remove(list = ls())
 
 library("psych")
 library(zoo)
 library(dplyr)
-
+library(vroom)
+library(readxl)
 myData <- read.csv("C:/Users/GudievZK/Desktop/GitHub/DF/iris_example1.csv", dec = ",", row.names = FALSE) # ошибка!!!
-myData <- iris 
+tb <- read.table("C:/Users/GudievZK/Desktop/GitHub/DF/iris_example.csv")
+tb <- vroom(file = "C:/Users/GudievZK/Desktop/GitHub/DF/iris_example1.csv", delim = "\t")
+read_excel("C:/Users/GudievZK/Desktop/GitHub/DF/iris_example1.csv")
+tb <- read.table(file = "C:/Users/GudievZK/Desktop/GitHub/DF/iris_example.csv", dec=",", sep="\t", header = TRUE)
+
+myData <- as_data_frame(iris) # Так файл, предоставленный преподователем корректно не считывается, то подгрузим дата сет iris, 
+                              # который поставляется вместе с R. Для удобства будем использовать функции из пакета dplyr.
 
 
 #### 1.3 Проверьте, есть ли наблюдения, в которых значения по какому-либо параметру отсутствуют, и выведите список этих значений. ####
 
-sum(is.na(myData)) # NA отсутствуют
+sum(is.na(myData)) # NA отсутствуют, т.к. я использую дата сет iris, который поставляется вместе с R.
 
-myData[c(1, 3, 51), c(2, 4)] <- NA # заменим некоторые данные на NA 
-is.na(myData)
-sum(is.na(myData)) # 6 NA
-myDataNA <- myData # сохраним дата фрейм с пропусками, т.к. мы его использовать вместо исходного файла
+myData[c(1, 3, 51), c(2, 4)] <- NA  # заменим некоторые данные на NA для того чтобы выполнять задания, 
+                                    # предусмотренные лабороторной работой
 
-myData[!complete.cases(myData),] # ропуски имеются на пересечении строк 1, 3 и 51 и столбцов Sepal.Width Petal, Petal.Width
+myDataNA <- myData  # сохраним дата фрейм с 6 NA, т.к. он нам понадобится для выполнения заданий, 
+# предусмотренные лабороторной работой.
+
+sum(is.na(myDataNA)) # 6 NA
+
+myData <- as_data_frame(iris) # сохраним в myData исходные данные без пропусков, т.к. он нам понадобится для выполнения заданий, 
+# предусмотренных лабороторной работой.
+
+myDataNA[!complete.cases(myDataNA),] # пропуски имеются на пересечении строк 1, 3 и 51 и столбцов Sepal.Width Petal, Petal.Width
+
+which(is.na(myDataNA), arr.ind=TRUE)
+
+names(which(colSums(is.na(myDataNA)) > 0)) # NA содержатся в переменных Sepal.Width и Petal.Width
+colSums(is.na(myDataNA)) # 3 NA в переменной Sepal.Width и 3 NA в переменной Petal.Width
+
+names(which(rowSums(is.na(myDataNA)) > 0)) # NA содержатся в переменных Sepal.Width и Petal.Width
+rowSums(is.na(myDataNA)) # 3 NA в переменной Sepal.Width и 3 NA в переменной Petal.Width
+
+rownames(myDataNA[apply(myDataNA, 1, anyNA), ])
 
 # Примите решение, что, на ваш взгляд, целесообразно в данном случае сделать с пропущенными значениями.
 # В частности, подставьте вместо отсутствующих значений среднее с помощью функции na.aggregate либо удалите значения с пропусками.
