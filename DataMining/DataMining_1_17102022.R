@@ -6,13 +6,19 @@ library(zoo)
 library(dplyr)
 library(vroom)
 library(readxl)
+install.packages("googlesheets4")
+library(googlesheets4)
 
-## я не смого считать данные ?!
+## я не смог считать данные ?!
 myData <- read.csv("C:/Users/GudievZK/Desktop/GitHub/DF/iris_example1.csv", dec = ",", row.names = FALSE) # ошибка!!!
 tb <- read.table("C:/Users/GudievZK/Desktop/GitHub/DF/iris_example.csv")
 tb <- vroom(file = "C:/Users/GudievZK/Desktop/GitHub/DF/iris_example1.csv", delim = "\t")
 read_excel("C:/Users/GudievZK/Desktop/GitHub/DF/iris_example1.csv")
 tb <- read.table(file = "C:/Users/GudievZK/Desktop/GitHub/DF/iris_example.csv", dec=",", sep="\t", header = TRUE)
+
+
+myData <- read_sheet("https://docs.google.com/spreadsheets/d/1k35c-h8EIDPcaDIPXanuNNp76jojFIYmgmumVymeWng/edit#gid=1967398368")
+
 ##________________________________
 myData <- as_data_frame(iris) # “ак файл, предоставленный преподователем корректно не считываетс€, то подгрузим дата сет iris, 
                               # который поставл€етс€ вместе с R. ƒл€ удобства будем использовать функции из пакета dplyr.
@@ -26,7 +32,7 @@ myData[c(1, 3, 51), c(2, 4)] <- NA  # заменим некоторые данные на NA дл€ того чт
                                     # предусмотренные лабороторной работой
 
 myDataNA <- myData  # сохраним дата фрейм с 6 NA, т.к. он нам понадобитс€ дл€ выполнени€ заданий, 
-# предусмотренные лабороторной работой.
+# предусмотренных лабороторной работой.
 
 sum(is.na(myDataNA)) # 6 NA
 
@@ -47,7 +53,8 @@ colSums(is.na(myDataNA)) # 3 NA в переменной Sepal.Width и 3 NA в переменной Pet
 # ¬ частности, подставьте вместо отсутствующих значений среднее с помощью функции na.aggregate либо удалите значени€ с пропусками.
 
 myDataNA[] <- lapply(myDataNA, na.aggregate) # заменим NA на средние значени€
-sum(is.na(myData)) # 0 NA
+sum(is.na(myDataNA)) # 0 NA
+
 
 # ѕроверим
 mean(myDataNA$Sepal.Width, na.rm = T) # среднее значение переменной Sepal.Width = 3.052381 
@@ -99,6 +106,7 @@ attributes(myData)
 
 # –ассчитайте описательные статистики.
 summary(myData)
+describe(myData)
 
 # –ассчитайте винзорированную (триммированную) среднюю по каждой переменной и сопоставьте это значение с исходным средним и
 # медианным значением. —делайте выводы. 
@@ -117,20 +125,24 @@ describe(myDataNA[, -5])['median'] - as.data.frame(winsor.mean(select_if(myDataN
 
 # ƒанный кусок кода у мен€ не работает
 x1 <- myDataNA[, 1]
+x1 <- myDataNA$Sepal.Length
 boxplot.stats(x1)$out # почему не работает?
 boxplot(x1)
 
 x2 <- myDataNA[, 2]
+x2 <- myDataNA$Sepal.Width
 boxplot.stats(x2)$out # почему не работает?
 boxplot.stats(myDataNA$Sepal.Width)$out
 boxplot(x2)
 
 x3 <- myData[, 3]
+x3 <- myDataNA$Petal.Length
 boxplot.stats(x3)$out # почему не работает?
 boxplot.stats(myDataNA$Petal.Length)$out # выбросов нет
 boxplot(x3)
 
 x4 <- myData[, 4]
+x4 <- myDataNA$Petal.Width
 boxplot.stats(x4)$out # почему не работает?
 boxplot.stats(myDataNA$Petal.Width)$out # выбросов нет
 boxplot(x4)
