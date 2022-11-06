@@ -1,5 +1,5 @@
 ---
-title: "Zelimhan Gudiev HW1"
+title: "Зелимхан Гудиев. Лабораторная №1"
 output: html_document
 date: "2022-10-28"
 editor_options: 
@@ -18,9 +18,9 @@ editor_options:
 # функция показывает текущую рабочую директорию
 getwd()
 # функция задает текущую рабочую директорию
-setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/DataMining/")
+setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/DataMining")
 
-myData <- read.table(file="/Users/zelimkhan/Desktop/Data/GitHub/DF/DataMining/iris_example.csv", dec=",", sep=",", header=TRUE)
+myData <- read.table(file="/Users/zelimkhan/Desktop/Data/GitHub/DF/DataMining/iris_example.csv", dec =",", sep = ",", header=TRUE)
 # myData <- edit(myData)
 head(myData)
 ```
@@ -310,3 +310,4 @@ parcoord(myData[1:4], col = as.factor(myData[, 5]))
 Сделайте выводы.
 Напишите аналитическую записку о том, что представляют собой имеющиеся данные, какова их структура и описательные характеристики, какие результаты получены на основе первичного анализа и обработки.
 *Выводы: *
+

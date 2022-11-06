@@ -1,0 +1,113 @@
+---
+title: "Зелимхан Гудиев. Лабораторная №3"
+output:
+  html_document: default
+  pdf_document: default
+date: '2022-11-01'
+---
+
+# 1. Данные
+
+Вначале подгрузим все необходимые библиотеки. В данной лабораторной для бустинга используется библиотека XGBoost от Kaggle.
+```{r setup, include=FALSE}
+# библиотеки
+library(xgboost)
+library(caTools)
+library(dplyr)
+library(caret)
+```
+
+Загрузим данные
+```{r, include = FALSE, echo = FALSE}
+
+setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/DataMining")
+
+# path_dir <- setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/DataMining/")
+```
+```{r}
+myData <- read.csv("/Users/zelimkhan/Desktop/Data/GitHub/DF/DataMining/tourism.csv")
+# filename <- paste0(path_dir, "tourism.csv")
+# myData <- read.csv(filename)
+head(myData)
+str(myData)
+```
+В этих данных все переменные представляют собой категории, а расходы переведены в группировочные интервалы. Как следствие, необходимо присвоить им числовые метки. По умолчанию строковые данные имеют тип «string», и в целочисленный формат преобразованы с помощью функции as.integer быть не могут, для этого нам нужно преобразовать их в тип «factor», чтобы такие метки были присвоены как категории.
+```{r}
+myData[] <- lapply(myData, factor)
+str(myData)
+```
+Случайное зерно (seed) задают для повторяемости результатов псевдогенератора случайных чисел, например, чтобы была возможность в точности воспроизвести эксперимент или построение модели.
+```{r}
+set.seed(1234) 
+```
+Разделим данные с помощью случайной выборки на обучающие и тестовые
+```{r}
+sample_split <- sample.split(Y = myData$TYPE, SplitRatio = 0.7)
+
+train_set <- subset(x = myData, sample_split == TRUE)
+test_set <- subset(x = myData, sample_split == FALSE)
+
+y_train <- as.integer(train_set$TYPE) - 1
+y_test <- as.integer(test_set$TYPE) - 1
+X_train <- train_set %>% select(-TYPE)
+X_test <- test_set %>% select(-TYPE)
+```
+
+# 2. Моделирование
+
+DMatrix это не более чем способ хранения табличных данных в машинном обучении, для оптимизации памяти и скорости обучения
+```{r}
+xgb_train <- xgb.DMatrix(data = as.matrix(sapply(X_train, as.numeric)), label = y_train)
+xgb_test <- xgb.DMatrix(data = as.matrix(sapply(X_test, as.numeric)), label = y_test)
+```
+Небольшой кусок кода для хранения различных параметров модели, чтобы не вводить их каждый раз в саму функцию ее обучения
+```{r}
+xgb_params <- list(
+  booster = "gbtree",
+  eta = 0.01,
+  max_depth = 8,
+  gamma = 4,
+  subsample = 0.75,
+  colsample_bytree = 1,
+  objective = "multi:softprob",
+  eval_metric = "mlogloss",
+  num_class = length(levels(myData$TYPE))
+)
+```
+Обучение модели
+```{r}
+xgb_model <- xgb.train(
+  params = xgb_params,
+  data = xgb_train,
+  nrounds = 5000,
+  verbose = 1
+)
+xgb_model
+```
+## Предсказание
+В R большинство моделей вычисляют прогнозируемые значения с помощью функции predict()
+```{r}
+xgb_preds <- predict(xgb_model, as.matrix(sapply(X_test, as.numeric)), reshape = TRUE)
+xgb_preds <- as.data.frame(xgb_preds)
+colnames(xgb_preds) <- levels(myData$TYPE)
+xgb_preds
+```
+Для удобства просмотра результатов прогноза, создадим в тестовых данных две колонки, с предсказанной группой (PredictedClass) и фактической (ActualClass)
+```{r, warning=FALSE}
+original_levels <- myData$TYPE %>% levels()
+xgb_preds$PredictedClass <- apply(xgb_preds, 1, function(y) colnames(xgb_preds)[which.max(y)]) %>%
+  factor(levels = original_levels)
+xgb_preds$ActualClass <- original_levels[y_test + 1] %>%
+  factor(levels = original_levels)
+xgb_preds
+```
+Точность модели составит 33%, так как размер данных очень мал
+```{r}
+accuracy <- sum(xgb_preds$PredictedClass == xgb_preds$ActualClass) / nrow(xgb_preds)
+accuracy
+```
+Матрица классификации:
+```{r}
+confusionMatrix(xgb_preds$ActualClass, xgb_preds$PredictedClass)
+```
+
