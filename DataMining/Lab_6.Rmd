@@ -16,14 +16,16 @@ library(dplyr)
 
 ```{r}
 path_dir <- getwd()
-myData <- read.csv(paste0(path_dir, "/airbnb_task.csv")) %>%
-  filter(!is.na(room_id))
+myData<-read.csv(paste0(path_dir, "/airbnb_task.csv")) %>%
+  filter(!is.na(room_id)) %>%
+  mutate(y = factor(if_else(y. == "0" | y. == "0;", 0, 1))) 
 attach(myData)
-fit <- glm(factor(y.) ~ price + room_type, data = myData, family = quasibinomial())
+fit<-glm(factor(y)~price+room_type, data=myData, family=quasibinomial())
 ```
 
 Иногда можно использовать квазибиномиальное семейство моделей, если, например, допускается очень высокая вариация в данных.
 ```{r}
 summary(fit)
 ```
-
+**Ответ:** \
+*Зависимость целевой переменной от цены и типа комнаты не является статистически значимой, т.к. значения p-value больше 0.05 .*
