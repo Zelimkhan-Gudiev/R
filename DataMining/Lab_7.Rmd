@@ -9,9 +9,9 @@ path_dir <- getwd()
 myCpu<-read.csv(paste0(path_dir, "/myCpu.csv"))
 library(neuralnet)
 n=names(myCpu)
-f=as.formula(paste("class ~", paste( n[!n %in% "class"], collapse = "+" )))
+f=as.formula(paste("class ~", paste( n[!n %in% c("class", "X")], collapse = "+" )))
 
-#разделим данные на обучающую и тестовую выборку
+# разделим данные на обучающую и тестовую выборку
 ind <- sample(2, nrow(myCpu), replace=TRUE, prob=c(0.7, 0.3))
 Train <- myCpu[ind==1,]
 Test <- myCpu[ind==2,]
@@ -44,7 +44,7 @@ print(confusionMatrix(t))
 ```
 Теперь применим метод главных компонент и сравним результаты
 ```{r}
-pca_Train = Train %>% select( -class )
+pca_Train = Train %>% select( -class, -X )
 pca_Test = Test
 pca = prcomp(pca_Train, scale = T)
 
@@ -74,7 +74,7 @@ plot(nn, rep = "best")
 nn.results = compute(nn, new_Test)
 
 prediction <- round(nn.results$net.result) %>%
-  as.data.frame(col.names = c("common","faulty", "normal", "uncommon", "unusual"))
+  as.data.frame()
 colnames(prediction) <- c("common","faulty", "normal", "uncommon", "unusual")
 
 prediction <- prediction %>%

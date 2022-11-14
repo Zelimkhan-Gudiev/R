@@ -21,7 +21,7 @@ yt <- read_sheet(yt, sheet = "Worksheet")
 setwd("C:/Users/GudievZK/Desktop/GitHub/DF/")
 setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/")
 
-yt <- read_xlsx('/Users/zelimkhan/Desktop/Data/GitHub/DF/plan.xlsx', sheet = 'Worksheet')
+yt <- read_xlsx('C:/Users/GudievZK/Desktop/GitHub/DF/plan.csv.xlsx', sheet = 'Worksheet')
 
 # Удаление ненужных столбцов
 names(yt)

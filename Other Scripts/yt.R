@@ -330,3 +330,14 @@ yt$duration <- as.numeric(yt$duration)
 
 
 cor(iris[, -5])
+
+
+
+yt_ttz <- subset(yt, reason %in% c('План по стандартизации', 'Поручение ДЭПиР или руководства') & duration > 38)
+
+summary(select_if(yt_ttz, is.numeric))
+summary(yt_ttz$duration)
+
+del
+
+2293 - 1382
