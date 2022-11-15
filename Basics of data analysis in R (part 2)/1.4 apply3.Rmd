@@ -1,0 +1,139 @@
+---
+title: "1.4 apply3"
+author: "Zelimkhan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+## Step 1 of 16. Introduction
+В этом уроке мы:
+познакомимся с функциями lapply, sapply, tapply, by, vapply, mapply.
+как следует попрактикуемся в решении задач.
+
+Скрипт урока доступен по ссылке <https://stepic.org/media/attachments/course/724/apply3.r>.
+
+## Step 2 of 16. lapply
+
+
+```{r}
+# apply(array, margin, ...)
+
+# lapply(list, function) # lapply apply the function to the elements of list
+
+my_list <- list(x = c(rnorm(30), NA), y = rnorm(10))
+str(my_list)
+
+# Approach with cycle
+for (i in 1:length(my_list)) {
+  print(mean(my_list[[i]], na.rm = T))
+}
+
+# Approach with lapply
+lapply(my_list, mean)
+lapply(my_list, mean, na.rm = T)
+lapply(my_list, function(x) x * 2)
+
+sapply(my_list, range, na.rm = T, simplify = F)
+sapply(my_list, range, na.rm = T, simplify = T)
+
+```
+## Step 3 of 16
+
+Напишите функцию positive_sum, которая получает на вход dataframe с произвольным количеством числовых переменных. Основная задача функции - найти сумму положительных значений в каждой переменной и сохранить их в список. Рассмотрим пример работы функции на небольшом примере:
+
+```{r}
+test_data <- data.frame(matrix(rnorm(30), ncol = 6))
+#
+positive_sum <- function(test_data) {lapply(test_data, function(x) {sum(x[!is.na(x) & x > 0])})}
+positive_sum(test_data)
+#
+positive_sum <- function(d) {lapply(d, function(x) sum(x[x > 0], na.rm = T))}
+#
+positive_sum <-  function(d){
+  lapply(d, FUN = function(x) sum(subset(x, x > 0)))
+}
+#
+positive_sum <- function(df){
+  lapply(df, function(x) sum(x[x > 0 & !is.na(x)]))
+}
+#
+positive_sum <-  function(test_data){
+  test_data[test_data < 0] <- 0
+  lapply(test_data, sum, na.rm = T)
+}
+#
+positive_sum <-  function(x){
+  pos_sum <- apply(x, 2, function(x) sum(x[!is.na(x) & x > 0]))
+  return(as.list(pos_sum))
+  
+}
+```
+
+
+
+
+## Step 4 of 16
+
+```{r}
+car <- "Mazda RX4" 
+cars <- c("Mazda", "Volga", "Merc")
+ 
+
+grepl(car, cars)
+grepl(cars, car) #!
+
+## Approach with cycle
+# 1
+for (i in cars) {
+  print(grepl(i, car))
+}
+
+#2
+
+for (i in cars) {
+  if (grepl(i, car)) {
+    print(My_car <- i)
+  }
+}
+
+## We will can do easier all the above
+
+cars[sapply(cars, function(x) grepl(x, car))]
+# cars[lapply(cars, function(x) grepl(x, car))] # error
+
+cars_grep <- sapply(cars, function(x) grepl(x, car))
+typeof(cars_grep)
+is.vector(cars_grep)
+
+car_grep <- sapply(car, function(x) grepl(x, cars))
+typeof(car_grep)
+is.matrix(car_grep)
+
+cars_grep1 <- lapply(cars, function(x) grepl(x, car))
+typeof(cars_grep1)
+is.vector(cars_grep1)
+is.list(cars_grep1)
+
+car_grep1 <- lapply(car, function(x) grepl(x, cars))
+typeof(car_grep1)
+is.vector(car_grep1)
+is.list(car_grep1)
+```
+
+
+
+## Step 5 of 16
+
+
+## Step 6 of 16
+
+## Step 7 of 16
+## Step 8 of 16
+## Step 9 of 16
+## Step 10 of 16
+## Step 11 of 16
+## Step 12 of 16
+## Step 13 of 16
+## Step 14 of 16
+## Step 15 of 16
+## Step 16 of 16
+
