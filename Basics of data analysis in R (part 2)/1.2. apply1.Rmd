@@ -5,6 +5,14 @@ date: "2022-11-14"
 output: html_document
 ---
 
+В этом уроке мы:
+узнаем, что использование циклов for в R может значительно усложнить нашу жизнь;
+познакомимся с функцией apply;
+решим несколько практических задач, используя apply.
+
+Скрипт занятия доступен по ссылке <https://stepic.org/media/attachments/course/724/apply1.r>.
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -14,14 +22,13 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(dplyr)
 library(readxl)
-
 ```
 
 ## Upload data
 ```{r}
 getwd()
-setwd("C:/Users/GudievZK/Desktop/GitHub/DF/")
-# setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/")#
+# setwd("C:/Users/GudievZK/Desktop/GitHub/DF/")
+setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/")#
 
 data("diamonds")
 
@@ -44,7 +51,7 @@ for (i in 1:nrow(diamonds)) {
 
 ## apply
 ```{r}
-apply(diamonds[, 8:10], 1, min)
+min_size2 <- apply(diamonds[, 8:10], 1, min)
 
 ```
 ## Apply Functions Over Array Margins\
@@ -59,21 +66,76 @@ apply(X, MARGIN, FUN, ..., simplify = TRUE)\
 **...** - optional arguments to FUN.\
 **simplify** - a logical indicating whether results should be simplified if possible.\
 
+```{r}
+d <- matrix(rnorm(30), nrow = 5)
+
+s <- apply(d, MARGIN = 1, FUN = sd)
+```
+Function apply returned the vector. The length this vector is equal to the length of the matrix's "d" row.
+
+If we change the MARGIN argument from 1 to 2, we will get a vector whose length is equal to the length of the matrix's "d" column
+
+```{r}
+s <- apply(d, MARGIN = 2, FUN = sd)
+```
+s is vector
+```{r}
+is.vector(s)
+typeof(s)
+```
 
 
+## Step 5 of 9
+В переменной my_df сохранен dataframe с произвольным числом количественных переменных. При помощи функции apply найдите максимальное значение в каждой строке. Сохраните результат (вектор максимальных значений) в переменную row_max.
+```{r}
+my_df <- matrix(rnorm(100), ncol = 10)
+```
 
 
+```{r}
+row_max <- apply(my_df, 1, max)
+```
+
+## Step 6 of 9
+В переменной my_df сохранен dataframe с произвольным числом количественных переменных. Рассчитайте медиану для всех столбцов с количественными переменными. В переменную col_median сохраните вектор полученных значений. 
+
+```{r}
+col_median <- apply(my_df, MARGIN = 2, FUN = median)
+```
+
+## Step 7 of 9
+```{r}
+my_range <- apply(d, MARGIN = 2, FUN = range)
+my_range
+```
+
+In this case function apply returned the matrix. In case when applying a function returns more than one value and these values are equal for every margins, the apply function will return a matrix.\
+
+## Step 8 of 9
+
+```{r}
+outliers_count <- function(x) {
+  outliers <- x[abs(x - mean(x)) > 2 * sd(x)]
+  if (length(outliers) > 0) {
+    return(outliers)
+  } else {
+    return("There are no outliers")
+  }
+}
+```
 
 
+```{r}
+iris_num <- iris[, 1:4]
+```
 
+```{r}
+apply(iris_num, 2, outliers_count)
+```
 
+In this case function apply returned the list. In case when applying a function returns values different length or type for every margins, the apply function will return a list.\
 
-
-
-
-
-
-
+## Step 9 of 9
 
 
 

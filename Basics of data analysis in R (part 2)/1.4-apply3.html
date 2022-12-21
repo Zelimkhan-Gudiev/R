@@ -9,11 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Zelimkhan Gudiev" />
+<meta name="author" content="Zelimkhan" />
 
-<meta name="date" content="2022-11-14" />
+<meta name="date" content="2022-11-15" />
 
-<title>1.2. apply1</title>
+<title>1.4 apply3</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -359,148 +359,215 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">1.2. apply1</h1>
-<h4 class="author">Zelimkhan Gudiev</h4>
-<h4 class="date">2022-11-14</h4>
+<h1 class="title toc-ignore">1.4 apply3</h1>
+<h4 class="author">Zelimkhan</h4>
+<h4 class="date">2022-11-15</h4>
 
 </div>
 
 
-<div id="install-the-necessary-packages-and-libraries" class="section level2">
-<h2>Install the necessary packages and libraries</h2>
-<pre class="r"><code>library(ggplot2)
-library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(readxl)</code></pre>
+<div id="step-1-of-16.-introduction" class="section level2">
+<h2>Step 1 of 16. Introduction</h2>
+<p>В этом уроке мы: познакомимся с функциями lapply, sapply, tapply, by,
+vapply, mapply. как следует попрактикуемся в решении задач.</p>
+<p>Скрипт урока доступен по ссылке <a href="https://stepic.org/media/attachments/course/724/apply3.r" class="uri">https://stepic.org/media/attachments/course/724/apply3.r</a>.</p>
 </div>
-<div id="upload-data" class="section level2">
-<h2>Upload data</h2>
-<pre class="r"><code>getwd()</code></pre>
-<pre><code>## [1] &quot;/Users/zelimkhan/Desktop/Data/GitHub/Basics of data analysis in R (part 2)&quot;</code></pre>
-<pre class="r"><code># setwd(&quot;C:/Users/GudievZK/Desktop/GitHub/DF/&quot;)
-setwd(&quot;/Users/zelimkhan/Desktop/Data/GitHub/DF/&quot;)#
+<div id="step-2-of-16.-lapply" class="section level2">
+<h2>Step 2 of 16. lapply</h2>
+<pre class="r"><code># apply(array, margin, ...)
 
-data(&quot;diamonds&quot;)</code></pre>
-</div>
-<div id="find-the-minimum-value-in-three-dimensions" class="section level2">
-<h2>Find the minimum value in three dimensions</h2>
-<pre class="r"><code># min_size &lt;- c()
-# for(i in 1:nrow(diamonds)) {
-#   min_size &lt;- c(min_size, min(diamonds[i, 8:10]))
-# }
+# lapply(list, function) # lapply apply the function to the elements of list
 
-min_size &lt;- numeric(nrow(diamonds))
-for (i in 1:nrow(diamonds)) {
-  min_size[i] &lt;- min(diamonds[i, 8:10])
+my_list &lt;- list(x = c(rnorm(30), NA), y = rnorm(10))
+str(my_list)</code></pre>
+<pre><code>## List of 2
+##  $ x: num [1:31] 0.176 -0.771 -0.755 1.994 0.47 ...
+##  $ y: num [1:10] -0.0021 -1.0961 0.2305 0.4142 -0.4365 ...</code></pre>
+<pre class="r"><code># Approach with cycle
+for (i in 1:length(my_list)) {
+  print(mean(my_list[[i]], na.rm = T))
 }</code></pre>
-<p>Циклы в R работают очень медленно и поэтому лучше использовать
-альтернативные варианты с применением функций семейства apply</p>
+<pre><code>## [1] 0.1574503
+## [1] -0.2947833</code></pre>
+<pre class="r"><code># Approach with lapply
+lapply(my_list, mean)</code></pre>
+<pre><code>## $x
+## [1] NA
+## 
+## $y
+## [1] -0.2947833</code></pre>
+<pre class="r"><code>lapply(my_list, mean, na.rm = T)</code></pre>
+<pre><code>## $x
+## [1] 0.1574503
+## 
+## $y
+## [1] -0.2947833</code></pre>
+<pre class="r"><code>lapply(my_list, function(x) x * 2)</code></pre>
+<pre><code>## $x
+##  [1]  0.35240082 -1.54291532 -1.51017603  3.98818295  0.94098527 -0.03618458
+##  [7] -2.13139267 -1.61879909  4.92193352  2.56396571  3.48832615  0.32268952
+## [13]  0.62668797  1.68716500  1.78659540 -0.38398091  1.39176281 -0.11374324
+## [19] -1.81965413  1.38736267  1.46363938 -4.23201753 -0.17874274  0.82573335
+## [25] -0.66621857  1.32767192 -0.01184881 -3.67926019  1.26726875 -0.97041973
+## [31]          NA
+## 
+## $y
+##  [1] -0.00419447 -2.19220554  0.46096150  0.82844996 -0.87300107  2.63699698
+##  [7] -5.88419292  0.03415925 -0.39305683 -0.50958261</code></pre>
+<pre class="r"><code>sapply(my_list, range, na.rm = T, simplify = F)</code></pre>
+<pre><code>## $x
+## [1] -2.116009  2.460967
+## 
+## $y
+## [1] -2.942096  1.318498</code></pre>
+<pre class="r"><code>sapply(my_list, range, na.rm = T, simplify = T)</code></pre>
+<pre><code>##              x         y
+## [1,] -2.116009 -2.942096
+## [2,]  2.460967  1.318498</code></pre>
 </div>
-<div id="apply" class="section level2">
-<h2>apply</h2>
-<pre class="r"><code>min_size2 &lt;- apply(diamonds[, 8:10], 1, min)</code></pre>
+<div id="step-3-of-16" class="section level2">
+<h2>Step 3 of 16</h2>
+<p>Напишите функцию positive_sum, которая получает на вход dataframe с
+произвольным количеством числовых переменных. Основная задача функции -
+найти сумму положительных значений в каждой переменной и сохранить их в
+список. Рассмотрим пример работы функции на небольшом примере:</p>
+<pre class="r"><code>test_data &lt;- data.frame(matrix(rnorm(30), ncol = 6))
+#
+positive_sum &lt;- function(test_data) {lapply(test_data, function(x) {sum(x[!is.na(x) &amp; x &gt; 0])})}
+positive_sum(test_data)</code></pre>
+<pre><code>## $X1
+## [1] 4.030352
+## 
+## $X2
+## [1] 4.130855
+## 
+## $X3
+## [1] 3.978199
+## 
+## $X4
+## [1] 0.7701099
+## 
+## $X5
+## [1] 1.988513
+## 
+## $X6
+## [1] 2.734557</code></pre>
+<pre class="r"><code>#
+positive_sum &lt;- function(d) {lapply(d, function(x) sum(x[x &gt; 0], na.rm = T))}
+#
+positive_sum &lt;-  function(d){
+  lapply(d, FUN = function(x) sum(subset(x, x &gt; 0)))
+}
+#
+positive_sum &lt;- function(df){
+  lapply(df, function(x) sum(x[x &gt; 0 &amp; !is.na(x)]))
+}
+#
+positive_sum &lt;-  function(test_data){
+  test_data[test_data &lt; 0] &lt;- 0
+  lapply(test_data, sum, na.rm = T)
+}
+#
+positive_sum &lt;-  function(x){
+  pos_sum &lt;- apply(x, 2, function(x) sum(x[!is.na(x) &amp; x &gt; 0]))
+  return(as.list(pos_sum))
+  
+}</code></pre>
 </div>
-<div id="apply-functions-over-array-margins" class="section level2">
-<h2>Apply Functions Over Array Margins<br />
-</h2>
-<p><strong>Description</strong><br />
-Returns a vector or array or list of values obtained by applying a
-function to margins of an array or matrix.<br />
-<strong>Usage</strong><br />
-apply(X, MARGIN, FUN, …, simplify = TRUE)<br />
-<strong>Arguments:</strong><br />
-<strong>X</strong> - an array, including a matrix.<br />
-<strong>MARGIN</strong> - a vector giving the subscripts which the
-function will be applied over. E.g., for a matrix 1 indicates rows, 2
-indicates columns, c(1, 2) indicates rows and columns. Where X has named
-dimnames, it can be a character vector selecting dimension names.<br />
-<strong>FUN</strong> - the function to be applied: see ‘Details’. In the
-case of functions like +, %*%, etc., the function name must be
-backquoted or quoted.<br />
-<strong>…</strong> - optional arguments to FUN.<br />
-<strong>simplify</strong> - a logical indicating whether results should
-be simplified if possible.<br />
-</p>
-<pre class="r"><code>d &lt;- matrix(rnorm(30), nrow = 5)
+<div id="step-4-of-16" class="section level2">
+<h2>Step 4 of 16</h2>
+<pre class="r"><code>car &lt;- &quot;Mazda RX4&quot; 
+cars &lt;- c(&quot;Mazda&quot;, &quot;Volga&quot;, &quot;Merc&quot;)
+ 
 
-s &lt;- apply(d, MARGIN = 1, FUN = sd)</code></pre>
-<p>Function apply returned the vector. The length this vector is equal
-to the length of the matrix’s “d” row.</p>
-<p>If we change the MARGIN argument from 1 to 2, we will get a vector
-whose length is equal to the length of the matrix’s “d” column</p>
-<pre class="r"><code>s &lt;- apply(d, MARGIN = 2, FUN = sd)</code></pre>
-<p>s is vector</p>
-<pre class="r"><code>is.vector(s)</code></pre>
+grepl(car, cars)</code></pre>
+<pre><code>## [1] FALSE FALSE FALSE</code></pre>
+<pre class="r"><code>grepl(cars, car) #!</code></pre>
+<pre><code>## Warning in grepl(cars, car): argument &#39;pattern&#39; has length &gt; 1 and only the
+## first element will be used</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>typeof(s)</code></pre>
-<pre><code>## [1] &quot;double&quot;</code></pre>
-</div>
-<div id="step-5-of-9" class="section level2">
-<h2>Step 5 of 9</h2>
-<p>В переменной my_df сохранен dataframe с произвольным числом
-количественных переменных. При помощи функции apply найдите максимальное
-значение в каждой строке. Сохраните результат (вектор максимальных
-значений) в переменную row_max.</p>
-<pre class="r"><code>my_df &lt;- matrix(rnorm(100), ncol = 10)</code></pre>
-<pre class="r"><code>row_max &lt;- apply(my_df, 1, max)</code></pre>
-</div>
-<div id="step-6-of-9" class="section level2">
-<h2>Step 6 of 9</h2>
-<p>В переменной my_df сохранен dataframe с произвольным числом
-количественных переменных. Рассчитайте медиану для всех столбцов с
-количественными переменными. В переменную col_median сохраните вектор
-полученных значений.</p>
-<pre class="r"><code>col_median &lt;- apply(my_df, MARGIN = 2, FUN = median)</code></pre>
-</div>
-<div id="step-7-of-9" class="section level2">
-<h2>Step 7 of 9</h2>
-<pre class="r"><code>my_range &lt;- apply(d, MARGIN = 2, FUN = range)
-my_range</code></pre>
-<pre><code>##            [,1]       [,2]        [,3]       [,4]      [,5]      [,6]
-## [1,] -1.0865011 0.01313147 -0.03563719 -0.5699731 -1.482076 -1.431804
-## [2,]  0.9455227 1.49818297  1.46270001  0.9124628  1.108370  1.594624</code></pre>
-<p>In this case function apply returned the matrix. In case when
-applying a function returns more than one value and these values are
-equal for every margins, the apply function will return a matrix.<br />
-</p>
-</div>
-<div id="step-8-of-9" class="section level2">
-<h2>Step 8 of 9</h2>
-<pre class="r"><code>outliers_count &lt;- function(x) {
-  outliers &lt;- x[abs(x - mean(x)) &gt; 2 * sd(x)]
-  if (length(outliers) &gt; 0) {
-    return(outliers)
-  } else {
-    return(&quot;There are no outliers&quot;)
+<pre class="r"><code>## Approach with cycle
+# 1
+for (i in cars) {
+  print(grepl(i, car))
+}</code></pre>
+<pre><code>## [1] TRUE
+## [1] FALSE
+## [1] FALSE</code></pre>
+<pre class="r"><code>#2
+
+for (i in cars) {
+  if (grepl(i, car)) {
+    print(My_car &lt;- i)
   }
 }</code></pre>
-<pre class="r"><code>iris_num &lt;- iris[, 1:4]</code></pre>
-<pre class="r"><code>apply(iris_num, 2, outliers_count)</code></pre>
-<pre><code>## $Sepal.Length
-## [1] 7.6 7.7 7.7 7.7 7.9 7.7
-## 
-## $Sepal.Width
-## [1] 4.0 4.4 4.1 4.2 2.0
-## 
-## $Petal.Length
-## [1] &quot;There are no outliers&quot;
-## 
-## $Petal.Width
-## [1] &quot;There are no outliers&quot;</code></pre>
-<p>In this case function apply returned the list In case when applying a
-function returns values different length or type for every margins, the
-apply function will return a list.<br />
-</p>
+<pre><code>## [1] &quot;Mazda&quot;</code></pre>
+<pre class="r"><code>## We will can do easier all the above
+
+cars[sapply(cars, function(x) grepl(x, car))]</code></pre>
+<pre><code>## [1] &quot;Mazda&quot;</code></pre>
+<pre class="r"><code># cars[lapply(cars, function(x) grepl(x, car))] # error
+
+cars_grep &lt;- sapply(cars, function(x) grepl(x, car))
+typeof(cars_grep)</code></pre>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<pre class="r"><code>is.vector(cars_grep)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>car_grep &lt;- sapply(car, function(x) grepl(x, cars))
+typeof(car_grep)</code></pre>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<pre class="r"><code>is.matrix(car_grep)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>cars_grep1 &lt;- lapply(cars, function(x) grepl(x, car))
+typeof(cars_grep1)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<pre class="r"><code>is.vector(cars_grep1)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>is.list(cars_grep1)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>car_grep1 &lt;- lapply(car, function(x) grepl(x, cars))
+typeof(car_grep1)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<pre class="r"><code>is.vector(car_grep1)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>is.list(car_grep1)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 </div>
-<div id="step-9-of-9" class="section level2">
-<h2>Step 9 of 9</h2>
+<div id="step-5-of-16" class="section level2">
+<h2>Step 5 of 16</h2>
+</div>
+<div id="step-6-of-16" class="section level2">
+<h2>Step 6 of 16</h2>
+</div>
+<div id="step-7-of-16" class="section level2">
+<h2>Step 7 of 16</h2>
+</div>
+<div id="step-8-of-16" class="section level2">
+<h2>Step 8 of 16</h2>
+</div>
+<div id="step-9-of-16" class="section level2">
+<h2>Step 9 of 16</h2>
+</div>
+<div id="step-10-of-16" class="section level2">
+<h2>Step 10 of 16</h2>
+</div>
+<div id="step-11-of-16" class="section level2">
+<h2>Step 11 of 16</h2>
+</div>
+<div id="step-12-of-16" class="section level2">
+<h2>Step 12 of 16</h2>
+</div>
+<div id="step-13-of-16" class="section level2">
+<h2>Step 13 of 16</h2>
+</div>
+<div id="step-14-of-16" class="section level2">
+<h2>Step 14 of 16</h2>
+</div>
+<div id="step-15-of-16" class="section level2">
+<h2>Step 15 of 16</h2>
+</div>
+<div id="step-16-of-16" class="section level2">
+<h2>Step 16 of 16</h2>
 </div>
 
 

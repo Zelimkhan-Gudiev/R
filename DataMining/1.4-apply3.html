@@ -9,11 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Zelimkhan Gudiev" />
+<meta name="author" content="Zelimkhan" />
 
-<meta name="date" content="2022-11-14" />
 
-<title>1.2. apply1</title>
+<title>1.4 Функции семейства apply. Часть 3</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -359,17 +358,25 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">1.2. apply1</h1>
-<h4 class="author">Zelimkhan Gudiev</h4>
-<h4 class="date">2022-11-14</h4>
+<h1 class="title toc-ignore">1.4 Функции семейства apply. Часть 3</h1>
+<h4 class="author">Zelimkhan</h4>
+<h4 class="date">06.11.2022</h4>
 
 </div>
 
 
-<div id="install-the-necessary-packages-and-libraries" class="section level2">
-<h2>Install the necessary packages and libraries</h2>
+<p>remove(list = ls()) rm()</p>
+<div id="packages-and-librarys" class="section level2">
+<h2>Packages and librarys</h2>
+<p>r pressure, echo=FALSE</p>
 <pre class="r"><code>library(ggplot2)
-library(dplyr)</code></pre>
+library(psych)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;psych&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:ggplot2&#39;:
+## 
+##     %+%, alpha</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
@@ -378,129 +385,288 @@ library(dplyr)</code></pre>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(readxl)</code></pre>
-</div>
-<div id="upload-data" class="section level2">
-<h2>Upload data</h2>
+<pre class="r"><code>library(readxl)
+library(ROCR)</code></pre>
+<pre><code>## Warning: package &#39;ROCR&#39; was built under R version 4.0.2</code></pre>
+<div id="data-preprocessing" class="section level3">
+<h3>Data preprocessing</h3>
 <pre class="r"><code>getwd()</code></pre>
-<pre><code>## [1] &quot;/Users/zelimkhan/Desktop/Data/GitHub/Basics of data analysis in R (part 2)&quot;</code></pre>
+<pre><code>## [1] &quot;/Users/zelimkhan/Desktop/Data/GitHub/DataMining&quot;</code></pre>
 <pre class="r"><code># setwd(&quot;C:/Users/GudievZK/Desktop/GitHub/DF/&quot;)
 setwd(&quot;/Users/zelimkhan/Desktop/Data/GitHub/DF/&quot;)#
 
-data(&quot;diamonds&quot;)</code></pre>
+yt &lt;- read.csv2(&quot;yt.csv&quot;)
+yt &lt;- read_xlsx(&quot;plan.xlsx&quot;)</code></pre>
+<pre><code>## New names:
+## • `Отклонения` -&gt; `Отклонения...12`
+## • `Отклонения` -&gt; `Отклонения...14`
+## • `Отклонения` -&gt; `Отклонения...32`
+## • `Отклонения` -&gt; `Отклонения...34`
+## • `Отклонения` -&gt; `Отклонения...36`
+## • `Отклонения` -&gt; `Отклонения...38`
+## • `Отклонения` -&gt; `Отклонения...40`
+## • `Отклонения` -&gt; `Отклонения...42`
+## • `Отклонения` -&gt; `Отклонения...44`
+## • `Отклонения` -&gt; `Отклонения...46`
+## • `Отклонения` -&gt; `Отклонения...48`
+## • `Отклонения` -&gt; `Отклонения...50`
+## • `Отклонения` -&gt; `Отклонения...52`
+## • `Отклонения` -&gt; `Отклонения...56`</code></pre>
+<pre class="r"><code>data(diamonds)</code></pre>
 </div>
-<div id="find-the-minimum-value-in-three-dimensions" class="section level2">
-<h2>Find the minimum value in three dimensions</h2>
-<pre class="r"><code># min_size &lt;- c()
-# for(i in 1:nrow(diamonds)) {
-#   min_size &lt;- c(min_size, min(diamonds[i, 8:10]))
-# }
-
-min_size &lt;- numeric(nrow(diamonds))
-for (i in 1:nrow(diamonds)) {
-  min_size[i] &lt;- min(diamonds[i, 8:10])
-}</code></pre>
-<p>Циклы в R работают очень медленно и поэтому лучше использовать
-альтернативные варианты с применением функций семейства apply</p>
 </div>
-<div id="apply" class="section level2">
-<h2>apply</h2>
-<pre class="r"><code>min_size2 &lt;- apply(diamonds[, 8:10], 1, min)</code></pre>
+<div id="step-1-lapply" class="section level1">
+<h1>step 1 lapply</h1>
+<p>apply(array, margin, …)</p>
+<p>lapply(list, function) # lapply apply the function to the elements of
+list</p>
+<p>my_list &lt;- list(x = c(rnorm(30), NA), y = rnorm(10))
+str(my_list)</p>
 </div>
-<div id="apply-functions-over-array-margins" class="section level2">
-<h2>Apply Functions Over Array Margins<br />
-</h2>
-<p><strong>Description</strong><br />
-Returns a vector or array or list of values obtained by applying a
-function to margins of an array or matrix.<br />
-<strong>Usage</strong><br />
-apply(X, MARGIN, FUN, …, simplify = TRUE)<br />
-<strong>Arguments:</strong><br />
-<strong>X</strong> - an array, including a matrix.<br />
-<strong>MARGIN</strong> - a vector giving the subscripts which the
-function will be applied over. E.g., for a matrix 1 indicates rows, 2
-indicates columns, c(1, 2) indicates rows and columns. Where X has named
-dimnames, it can be a character vector selecting dimension names.<br />
-<strong>FUN</strong> - the function to be applied: see ‘Details’. In the
-case of functions like +, %*%, etc., the function name must be
-backquoted or quoted.<br />
-<strong>…</strong> - optional arguments to FUN.<br />
-<strong>simplify</strong> - a logical indicating whether results should
-be simplified if possible.<br />
-</p>
-<pre class="r"><code>d &lt;- matrix(rnorm(30), nrow = 5)
-
-s &lt;- apply(d, MARGIN = 1, FUN = sd)</code></pre>
-<p>Function apply returned the vector. The length this vector is equal
-to the length of the matrix’s “d” row.</p>
-<p>If we change the MARGIN argument from 1 to 2, we will get a vector
-whose length is equal to the length of the matrix’s “d” column</p>
-<pre class="r"><code>s &lt;- apply(d, MARGIN = 2, FUN = sd)</code></pre>
-<p>s is vector</p>
-<pre class="r"><code>is.vector(s)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>typeof(s)</code></pre>
-<pre><code>## [1] &quot;double&quot;</code></pre>
+<div id="approach-with-cycle" class="section level1">
+<h1>Approach with cycle</h1>
+<p>for (i in 1:length(my_list)) { print(mean(my_list[[i]], na.rm = T))
+}</p>
 </div>
-<div id="step-5-of-9" class="section level2">
-<h2>Step 5 of 9</h2>
-<p>В переменной my_df сохранен dataframe с произвольным числом
-количественных переменных. При помощи функции apply найдите максимальное
-значение в каждой строке. Сохраните результат (вектор максимальных
-значений) в переменную row_max.</p>
-<pre class="r"><code>my_df &lt;- matrix(rnorm(100), ncol = 10)</code></pre>
-<pre class="r"><code>row_max &lt;- apply(my_df, 1, max)</code></pre>
+<div id="approach-with-lapply" class="section level1">
+<h1>Approach with lapply</h1>
+<p>lapply(my_list, mean) lapply(my_list, mean, na.rm = T)
+lapply(my_list, function(x) x * 2)</p>
+<p>sapply(my_list, range, na.rm = T, simplify = F) sapply(my_list,
+range, na.rm = T, simplify = T)</p>
+<div id="step-3-of-16" class="section level4">
+<h4>Step 3 of 16</h4>
 </div>
-<div id="step-6-of-9" class="section level2">
-<h2>Step 6 of 9</h2>
-<p>В переменной my_df сохранен dataframe с произвольным числом
-количественных переменных. Рассчитайте медиану для всех столбцов с
-количественными переменными. В переменную col_median сохраните вектор
-полученных значений.</p>
-<pre class="r"><code>col_median &lt;- apply(my_df, MARGIN = 2, FUN = median)</code></pre>
 </div>
-<div id="step-7-of-9" class="section level2">
-<h2>Step 7 of 9</h2>
-<pre class="r"><code>my_range &lt;- apply(d, MARGIN = 2, FUN = range)
-my_range</code></pre>
-<pre><code>##            [,1]       [,2]        [,3]       [,4]      [,5]      [,6]
-## [1,] -1.0865011 0.01313147 -0.03563719 -0.5699731 -1.482076 -1.431804
-## [2,]  0.9455227 1.49818297  1.46270001  0.9124628  1.108370  1.594624</code></pre>
-<p>In this case function apply returned the matrix. In case when
-applying a function returns more than one value and these values are
-equal for every margins, the apply function will return a matrix.<br />
-</p>
+<div id="напишите-функцию-positive_sum-которая-получает-на-вход-dataframe-с-произвольным-количеством-числовых-переменных." class="section level1">
+<h1>Напишите функцию positive_sum, которая получает на вход dataframe с
+произвольным количеством числовых переменных.</h1>
 </div>
-<div id="step-8-of-9" class="section level2">
-<h2>Step 8 of 9</h2>
-<pre class="r"><code>outliers_count &lt;- function(x) {
-  outliers &lt;- x[abs(x - mean(x)) &gt; 2 * sd(x)]
-  if (length(outliers) &gt; 0) {
-    return(outliers)
-  } else {
-    return(&quot;There are no outliers&quot;)
-  }
-}</code></pre>
-<pre class="r"><code>iris_num &lt;- iris[, 1:4]</code></pre>
-<pre class="r"><code>apply(iris_num, 2, outliers_count)</code></pre>
-<pre><code>## $Sepal.Length
-## [1] 7.6 7.7 7.7 7.7 7.9 7.7
-## 
-## $Sepal.Width
-## [1] 4.0 4.4 4.1 4.2 2.0
-## 
-## $Petal.Length
-## [1] &quot;There are no outliers&quot;
-## 
-## $Petal.Width
-## [1] &quot;There are no outliers&quot;</code></pre>
-<p>In this case function apply returned the list In case when applying a
-function returns values different length or type for every margins, the
-apply function will return a list.<br />
-</p>
+<div id="основная-задача-функции---найти-сумму-положительных-значений-в-каждой-переменной-и-сохранить-их-в-список." class="section level1">
+<h1>Основная задача функции - найти сумму положительных значений в
+каждой переменной и сохранить их в список.</h1>
 </div>
-<div id="step-9-of-9" class="section level2">
-<h2>Step 9 of 9</h2>
+<div id="рассмотрим-пример-работы-функции-на-небольшом-примере" class="section level1">
+<h1>Рассмотрим пример работы функции на небольшом примере:</h1>
+<p>test_data &lt;- data.frame(matrix(rnorm(30), ncol = 6)) #
+positive_sum &lt;- function(test_data) {lapply(test_data, function(x)
+{sum(x[!is.na(x) &amp; x &gt; 0])})} positive_sum(test_data) #
+positive_sum &lt;- function(d) {lapply(d, function(x) sum(x[x &gt; 0],
+na.rm = T))} # positive_sum &lt;- function(d){ lapply(d, FUN =
+function(x) sum(subset(x, x &gt; 0))) } # positive_sum &lt;-
+function(df){ lapply(df, function(x) sum(x[x &gt; 0 &amp; !is.na(x)])) }
+# positive_sum &lt;- function(test_data){ test_data[test_data &lt; 0]
+&lt;- 0 lapply(test_data, sum, na.rm = T) } # positive_sum &lt;-
+function(x){ pos_sum &lt;- apply(x, 2, function(x) sum(x[!is.na(x) &amp;
+x &gt; 0])) return(as.list(pos_sum))</p>
+<p>}</p>
+<div id="step-4-of-16" class="section level4">
+<h4>step 4 of 16</h4>
+<p>car &lt;- “Mazda RX4” cars &lt;- c(“Mazda”, “Volga”, “Merc”)</p>
+<p>grepl(car, cars) grepl(cars, car) #!</p>
+</div>
+<div id="approach-with-cycle-1" class="section level2">
+<h2>Approach with cycle</h2>
+</div>
+</div>
+<div id="section" class="section level1">
+<h1>1</h1>
+<p>for (i in cars) { print(grepl(i, car)) }</p>
+<p>#2</p>
+<p>for (i in cars) { if (grepl(i, car)) { print(My_car &lt;- i) } }</p>
+<div id="we-will-can-do-easier-all-the-above" class="section level2">
+<h2>We will can do easier all the above</h2>
+<p>cars[sapply(cars, function(x) grepl(x, car))] cars[lapply(cars,
+function(x) grepl(x, car))] # error</p>
+<p>cars_grep &lt;- sapply(cars, function(x) grepl(x, car))
+typeof(cars_grep) is.vector(cars_grep)</p>
+<p>car_grep &lt;- sapply(car, function(x) grepl(x, cars))
+typeof(car_grep) is.matrix(car_grep)</p>
+<p>cars_grep1 &lt;- lapply(cars, function(x) grepl(x, car))
+typeof(cars_grep1) is.vector(cars_grep1) is.list(cars_grep1)</p>
+<p>car_grep1 &lt;- lapply(car, function(x) grepl(x, cars))
+typeof(car_grep1) is.vector(car_grep1) is.list(car_grep1)</p>
+<div id="step-5-of-16" class="section level4">
+<h4>Step 5 of 16</h4>
+</div>
+</div>
+</div>
+<div id="обратите-внимание-на-следующее-выражение-которое-очень-часто-будет-вам-помогать-при-работе-с-данными" class="section level1">
+<h1>Обратите внимание на следующее выражение, которое очень часто будет
+вам помогать при работе с данными:</h1>
+</div>
+<div id="давайте-напишем-команду-которая-отбирает-только-количественные-колонки-в-данных" class="section level1">
+<h1>давайте напишем команду, которая отбирает только количественные
+колонки в данных:</h1>
+<p>iris_num &lt;- iris[sapply(iris, is.numeric)]</p>
+</div>
+<div id="готово-sapplyiris-is.numeric-возвращает-вектор-логических-значений-который-мы-и-используем-для-индексации." class="section level1">
+<h1>Готово! sapply(iris, is.numeric) возвращает вектор логических
+значений, который мы и используем для индексации.</h1>
+</div>
+<div id="этот-пример-также-иллюстрирует-идею-что-lapply-и-sapply-можно-применять-к-dataframe.-так-как-dataframe---это-в-том-числе-и-список." class="section level1">
+<h1>Этот пример также иллюстрирует идею, что lapply и sapply можно
+применять к dataframe. Так как dataframe - это в том числе и
+список.</h1>
+</div>
+<div id="например-результат-команды" class="section level1">
+<h1>Например, результат команды:</h1>
+<p>sapply(iris[1:4], sd) # эквивалентна результату: apply(iris[1:4], 2,
+sd)</p>
+<p># так как каждая колонка dataframe - это и есть элемент списка, то
+функция lapply и sapply # возвращает результат применения некоторой
+функции к каждой колонке данных! # Но тут есть одно но! # Как вы
+помните, apply производит все опперации именно над матрицами, поэтому
+если вы отправите в apply dataframe # с разными типами данных, то R
+сначала приведет все колонки к одному типу, чтобы получилась матрица, #
+т.к. в матрице могут храниться данные только одного типа! # Это в свою
+очередь может привести к неожиданному результату: sapply(iris,
+is.numeric)</p>
+<p>apply(iris, 2, is.numeric)</p>
+</div>
+<div id="по-результатам-команды-apply-можно-подумать-что-в-данных-нет-количественных-переменных-дело-в-том-что-перед-тем-как" class="section level1">
+<h1>По результатам команды apply можно подумать, что в данных нет
+количественных переменных! Дело в том, что перед тем как</h1>
+</div>
+<div id="применить-функцию-is.numeric-сначала-данные-iris-были-переведены-в-матрицу" class="section level1">
+<h1>применить функцию is.numeric, сначала данные iris были переведены в
+матрицу,</h1>
+</div>
+<div id="а-все-переменные-переведены-в-строки-как-в-наиболее-общий-тип-данных." class="section level1">
+<h1>а все переменные переведены в строки, как в наиболее общий тип
+данных.</h1>
+</div>
+<div id="в-результате-получаем-для-каждой-колонки-false." class="section level1">
+<h1>В результате получаем для каждой колонки FALSE.</h1>
+<div id="step-6-of-16-tapply-aggregate-by" class="section level4">
+<h4>step 6 of 16 tapply, aggregate, by</h4>
+<p>tapply(mtcars<span class="math inline">\(mpg, mtcars\)</span>am,
+function(x) mean(x)) aggregate(mpg ~ am, mtcars, function(x) mean(x))
+aggregate(mpg ~ am, mtcars, mean)</p>
+</div>
+</div>
+<div id="by-группирует-не-вектор-в-отличие-от-вышеуказанных-функций-а-целый-датафрейм-по-какой-то-переменной" class="section level1">
+<h1>by группирует не вектор в отличие от вышеуказанных функций, а целый
+датафрейм по какой-то переменной</h1>
+<p>by(iris[1:4], iris$Species, colMeans)</p>
+<p>tapply(iris[1:4], iris<span class="math inline">\(Species, mean) #
+error aggregate(iris[1:4], iris\)</span>Species, mean) # error</p>
+<p>by(iris[1:4], iris<span class="math inline">\(Species,  function(x)
+sapply(x,  function(col) shapiro.test(col)\)</span>p.value))</p>
+<p>aggregate(. ~ Species, iris, function(x) shapiro.test(x)$p.value)</p>
+<div id="step-7-of-16-vapply" class="section level4">
+<h4>step 7 of 16 vapply</h4>
+<p>vapply(list, function, FUN.VALUE = type, …) vapply(mtcars, mean,
+FUN.VALUE = numeric(1)) sapply(mtcars, mean)</p>
+<p>mapply(rep, c(1, 2, 3, 4), c(1, 2, 3, 4)) rep(c(1, 2, 3, 4), c(1, 2,
+3, 4)) rep(1, 3)</p>
+<p>x &lt;- c(20, 25, 13) m &lt;- c(0, 1, 2) s &lt;- c(3, 5, 6)
+mapply(rnorm, x, m, s)</p>
+</div>
+<div id="step-9-of-16" class="section level4">
+<h4>Step 9 of 16</h4>
+</div>
+</div>
+<div id="давайте-рассмотрим-один-небольшой-пример-работы-с-функцией-mapply.-я-оговорился-что-она-довольно-специфична-однако-иногда-она-все-таки" class="section level1">
+<h1>Давайте рассмотрим один небольшой пример работы с функцией mapply. Я
+оговорился, что она довольно специфична, однако иногда она все-таки</h1>
+</div>
+<div id="оказывается-довольно-полезной." class="section level1">
+<h1>оказывается довольно полезной.</h1>
+</div>
+<div id="допустим-у-нас-есть-матрица-размером-100-на-200" class="section level1">
+<h1>Допустим у нас есть матрица размером 100 на 200:</h1>
+<p>m &lt;- matrix(rnorm(100 * 200), nrow = 100) # И мы хотим присвоить
+имена строчкам и столбикам в этой матрице по принципу: # row_1, row_2,
+row_3, …, row_100 - для строк # col_1, col_2, col_3, …, col_200 - для
+колонок # Тогда мы могли бы сгенерировать список данными именами
+следующим образом: m_names &lt;- mapply(paste, list(“row”, “col”),
+list(1:100, 1:200), sep = “_“) p1 &lt;- paste(a, b, sep =” “)
+str(m_names) dimnames(m) &lt;- m_names head(m)</p>
+<div id="step-10-of-16" class="section level4">
+<h4>Step 10 of 16</h4>
+</div>
+</div>
+<div id="хотелось-бы-рассмотреть-еще-один-подводный-камень-применения-функций-семейства-apply-к-dataframe." class="section level1">
+<h1>Хотелось бы рассмотреть еще один подводный камень применения функций
+семейства apply к dataframe.</h1>
+</div>
+<div id="предположим-мы-решили-написать-простенькую-функцию-для-расчета-стандартного-отклонения-количественных-переменных-в-данных." class="section level1">
+<h1>Предположим, мы решили написать простенькую функцию для расчета
+стандартного отклонения количественных переменных в данных.</h1>
+<p>get_sd &lt;- function(x){ num_var &lt;- sapply(x, is.numeric) #
+x[sapply(x, is.numeric)] sapply(x[, num_var], sd) }</p>
+</div>
+<div id="казалось-бы-все-логично-и-работает-на-различных-примерах" class="section level1">
+<h1>Казалось бы, все логично и работает на различных примерах:</h1>
+<p>get_sd(iris) # Но в нашем коде скрыта серьезная уязвимость!)
+Предположим, у нас есть набор данных, # в котором только одна
+количественная переменная: my_df &lt;- data.frame(x = 1:10, y =
+letters[1:10]) get_sd(my_df)</p>
+</div>
+<div id="что-вообще-только-что-произошло-дело-в-том-что-существуют-различные-способы-обращения-к-колонкам-dataframe" class="section level1">
+<h1>Что вообще только что произошло? Дело в том, что существуют
+различные способы обращения к колонкам dataframe:</h1>
+<p>my_df<a href="#section">1</a> # получим dataframe my_df[<a href="#section">1</a>] # получим вектор my_df[, 1] # получим вектор # В
+случае, если у нас только одна количественная переменная, обращение x[,
+num_var] вернет колонку в виде вектора, # а sapply применит функцию sd к
+каждому наблюдению вместо того, чтобы применить ко всей переменной. #
+Таким образом, если вы хотите применить какую-либо функцию к
+неизвестному заранее числу колонок в данных, # лучше используйте такую
+индексацию типа: my_df[col_index]. То есть:</p>
+<p>get_sd &lt;- function(x){ num_var &lt;- sapply(x, is.numeric)
+sapply(x[num_var], sd) } 7et_sd(my_df)</p>
+<div id="step-11-of-16" class="section level4">
+<h4>Step 11 of 16</h4>
+<p>test_data &lt;- as.data.frame(list(name = c(“<a href="mailto:p4@HPS1" class="email">p4@HPS1</a>”, “<a href="mailto:p7@HPS2" class="email">p7@HPS2</a>”, “<a href="mailto:p4@HPS3" class="email">p4@HPS3</a>”, “<a href="mailto:p7@HPS4" class="email">p7@HPS4</a>”, “<a href="mailto:p7@HPS5" class="email">p7@HPS5</a>”, “<a href="mailto:p9@HPS6" class="email">p9@HPS6</a>”, “<a href="mailto:p11@HPS7" class="email">p11@HPS7</a>”, “<a href="mailto:p10@HPS8" class="email">p10@HPS8</a>”, “<a href="mailto:p15@HPS9" class="email">p15@HPS9</a>”), expression = c(118.84, 90.04, 106.6,
+104.99, 93.2, 66.84, 90.02, 108.03, 111.83))) names &lt;- c(‘HPS1’,
+‘GOT1’) my_names(test_data)</p>
+<p>my_names &lt;- function (dataset, names){
+as.data.frame(grepl(paste(names, collapse = “|”), dataset)) } my_names
+&lt;- function (dataset, names){ dataset[(grepl(paste(names, collapse =
+“|”), dataset))] }</p>
+<p>my_names(test_data, names)</p>
+<p>my_names &lt;- function (dataset, names){ dataset[sapply(names,
+function(x) grepl(x, dataset))] }</p>
+<p>my_names(test_data, names) my_names &lt;- function (dataset, names){
+dataset[sapply(“HPS9”, function(x) grepl(x, dataset[<a href="#section">1</a>]))] }</p>
+</div>
+</div>
+<div id="section-1" class="section level1">
+<h1></h1>
+<p>data &lt;- data.frame(animal = sample(c(“cat”,“dog”,“bird”,
+‘doggy’,‘kittycat’), 50, replace = T)) mathes &lt;- c(‘cat’, ‘dog’)
+data<span class="math inline">\(keep &lt;- ifelse(data\)</span>animal
+%in% mathes, ‘Keep’, ‘Discard’)</p>
+<p>data<span class="math inline">\(keep &lt;- ifelse(grepl(mathes,
+data\)</span>animal), ‘keep’, ‘Discard’)</p>
+<div id="step-12-of-16" class="section level4">
+<h4>Step 12 of 16</h4>
+</div>
+<div id="step-13-of-16" class="section level4">
+<h4>Step 13 of 16</h4>
+</div>
+<div id="step-14-of-16" class="section level4">
+<h4>Step 14 of 16</h4>
+</div>
+<div id="step-15-of-16" class="section level4">
+<h4>Step 15 of 16</h4>
+</div>
+<div id="step-16-of-16" class="section level4">
+<h4>Step 16 of 16</h4>
+<p>remove(list = ls()) nds &lt;- 0.2</p>
+<p>V1</p>
+<p>one_thing_without_nds &lt;- 4567.87 quantity_of_things &lt;- 10
+summ_of_nds &lt;- 9135.74 one_thing_with_nds &lt;- 5481.44
+one_thing_without_nds*quantity_of_things</p>
+<p>one_thing_with_nds/100<em>20 one_thing_without_nds/100</em>20
+nds_for_one_thing &lt;- 913.574 nds_for_one_thing*10</p>
+<p>one_thing_without_nds_v2 &lt;- 4567.87 summ_of_nds &lt;- 9135.74
+one_thing_with_nds &lt;- 5481.44
+one_thing_without_nds*quantity_of_things</p>
+<p>V2</p>
+<p>c &lt;- letters</p>
+</div>
 </div>
 
 
