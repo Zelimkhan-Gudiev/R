@@ -73,9 +73,8 @@ positive_sum <-  function(x){
 
 #### step 4 of 16 ####
 
-car <- "Mazda RX4" 
 cars <- c("Mazda", "Volga", "Merc")
- 
+car <- "Mazda RX4" 
 
 grepl(car, cars)
 grepl(cars, car) #!
@@ -145,6 +144,9 @@ apply(iris, 2, is.numeric)
 # применить функцию is.numeric, сначала данные iris были переведены в матрицу,
 # а все переменные переведены в строки, как в наиболее общий тип данных. 
 # В результате получаем для каждой колонки FALSE.
+# Вот такой вот тонкий момент, о котором нужно помнить, применяя функцию apply к data.frame. 
+# В свою очередь с sapply и lapply такого не случится, т.к. в этом случае мы по очереди применим требуемую функцию к каждой колонке данных, 
+# как к каждому элементу списка!
 
 #### step 6 of 16  tapply, aggregate, by ####
 tapply(mtcars$mpg, mtcars$am, function(x) mean(x))
@@ -155,13 +157,15 @@ aggregate(mpg ~ am, mtcars, mean)
 by(iris[1:4], iris$Species, colMeans)
 
 tapply(iris[1:4], iris$Species, mean) # error
-aggregate(iris[1:4], iris$Species, mean) # error
+aggregate(. ~ Species, iris, mean)
 
 by(iris[1:4], iris$Species, 
    function(x) sapply(x, 
                       function(col) shapiro.test(col)$p.value))
 
 aggregate(. ~ Species, iris, function(x) shapiro.test(x)$p.value)
+
+
 
 
 
@@ -195,10 +199,11 @@ m <- matrix(rnorm(100 * 200), nrow = 100)
 # col_1, col_2, col_3, ..., col_200 - для колонок
 # Тогда мы могли бы сгенерировать список данными именами следующим образом:
 m_names <- mapply(paste, list("row", "col"), list(1:100, 1:200), sep = "_")
-p1 <- paste(a, b, sep = " ")
 str(m_names)
 dimnames(m) <- m_names
 head(m)
+
+p1 <- paste(a, b, sep = " ")
 
 #### Step 10 of 16  ####
 # Хотелось бы рассмотреть еще один подводный камень применения функций семейства apply к dataframe.
@@ -233,39 +238,105 @@ sapply(x[num_var], sd)
 
 
 #### Step 11 of 16  ####
-test_data <- as.data.frame(list(name = c("p4@HPS1", "p7@HPS2", "p4@HPS3", "p7@HPS4", "p7@HPS5", 
-                                         "p9@HPS6", "p11@HPS7", "p10@HPS8", "p15@HPS9"), 
+# короткое решение с использованием регулярного выражения https://habr.com/ru/post/545150/
+my_names <- function(test_data, names){
+  
+  # слепляем все слова в одну строку, разделив их символом "|",
+  # который на языке регулярных выражений означает "или",
+  # т.е. grepl("HPS7|HPS4", dataset$name) будет искать совпадение в dataset$name
+  # c "HPS7" или "HPS4"
+  names_line <- paste0(names, collapse = "|")
+  
+  # возвращаем датасет со строками, в которых нашлись с какими-то из имен,
+  # т.е. где команда grepl(names_line, dataset$name) вернула TRUE
+  return(test_data[grepl(names_line, test_data$name),])
+}
+
+# более длинное решение без регулярных выражений 
+my_names_2 <- function(dataset, names){
+  
+  # получаем список с результатами поочередного применения имен из names к 
+  # колонке с именами в датасете
+  l <- lapply(names, grepl, test_data$name)
+  
+  # складываем поэлементно все листы, помня, что значение TRUE = 1, а значение 
+  # FALSE = 0,  т.е. после сложения в том елементе, где хотя бы один раз было TRUE
+  # в итоговом векторе на этом месте будет значение отличное от 0
+  sum_res <- Reduce("+", l)
+  
+  # возвращаем те строки датасета, у которых соответсвующие значения суммарного 
+  # вектора отлично от 0
+  return(test_data[sum_res > 0,])
+}
+
+# тестирование
+dataset <- as.data.frame(list(name = c("p4@HPS1", "p7@HPS2", "p4@HPS3", "p7@HPS4", "p7@HPS5", "p9@HPS6", "p11@HPS7", "p10@HPS8", "p15@HPS9"), 
                                 expression = c(118.84, 90.04, 106.6, 104.99, 93.2, 66.84, 90.02, 108.03, 111.83)))
-names <- c('HPS1', 'GOT1')
-my_names(test_data)
 
-my_names <- function (dataset, names){
-  as.data.frame(grepl(paste(names, collapse = "|"), dataset))
-}
-my_names <- function (dataset, names){
-  dataset[(grepl(paste(names, collapse = "|"), dataset))]
-}
 
+names = c("HPS5", "HPS6", "HPS9", "HPS2", "HPS3", "HPS7", "HPS4", "HPS8")
+names = c("HPS5", "HPS6")
 my_names(test_data, names)
+my_names_2(test_data, names)
 
-my_names <- function (dataset, names){
-  dataset[sapply(names, function(x) grepl(x, dataset))]
-}
+#
+my_names <- function (dataset, names){    
+  dataset[as.numeric(lapply(names, function(x) which(grepl(x, dataset$name)))),]}
 
-my_names(test_data, names)
-my_names <- function (dataset, names){
-  dataset[sapply("HPS9", function(x) grepl(x, dataset[[1]]))]
+#
+my_names <- function (dataset, names){    
+  gs=gsub('^.*\\@','',dataset[,1])    
+  return(dataset[gs %in% names,])}
+
+#
+my_names <- function (dataset, names) {
+  dataset[sapply(names, grep, dataset$name), ]
 }
 
 #
-data <- data.frame(animal = sample(c("cat","dog","bird", 'doggy','kittycat'), 50, replace = T))
-mathes <- c('cat', 'dog')
-data$keep <- ifelse(data$animal %in% mathes, 'Keep', 'Discard')
+my_names <- function (dataset, names) dataset[grepl(paste(names,collapse = "|"), dataset$name),]
 
-data$keep <- ifelse(grepl(mathes, data$animal), 'keep', 'Discard')
+#
+my_names <- function (dataset, names) {
+  dataset[gsub(".*@", "", dataset$name) %in% unique(names), ]
+}
+
 
 
 #### Step 12 of 16  ####
+t <- test_data
+find_outliers <- function(t){
+  t %>%
+    # делаем факторами все нечисловые колонки
+    mutate_if(Negate(is.numeric), factor) %>%
+    # группируем по колонкам-факторам
+    group_by_if(is.factor) %>%
+    # рассчитываем по группам критические значения и сравниваем значение х с
+    # критическими значениями для групп 
+    # переводим получившиеся TRUE/FALSE в integer
+    mutate(is_outlier = as.integer(x > mean(x) + 2 * sd(x) | 
+                                     x < mean(x) - 2 * sd(x))
+    ) 
+}
+
+find_outliers(test_data)
+
+mutate_if(t, Negate(is.numeric), factor)
+
+test_data <- as.data.frame(unclass(read.csv("https://stepic.org/media/attachments/course/724/hard_task.csv")), 
+                           stringsAsFactors = TRUE) %>% as_tibble()
+str(test_data)
+
+colnames(select_if(test_data, is.factor)) %>% paste(, sep = "+")
+
+aggregate(. ~ factor_2 + factor_3, test_data, mean)
+
+test_data %>% mutate(is_outlier = ifelse())
+
+
+
+
+
 #### Step 13 of 16  ####
 #### Step 14 of 16  ####
 #### Step 15 of 16  ####

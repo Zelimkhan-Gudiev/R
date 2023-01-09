@@ -2,10 +2,10 @@
 
 library(data.table)
 
-system.time(fread("products.csv"))
-system.time(read.table("products.csv", header = T, sep = ";"))
+system.time(fread("/Users/zelimkhan/Desktop/Data/GitHub/DF/DataTable/products.csv"))
+system.time(read.table("/Users/zelimkhan/Desktop/Data/GitHub/DF/DataTable/products.csv", header = T, sep = ";"))
 
-products <- fread("products.csv")
+products <- fread("/Users/zelimkhan/Desktop/Data/GitHub/DF/DataTable/products.csv")
 
 
 # step 2 data.table vs dataframe
@@ -78,3 +78,12 @@ products[, .(price = {
   b <- median(price)
   c(min(price), max(price), a/b)
 })]
+
+# step 9 of 11
+filter.expensive.available <- function(products, brands) {
+  
+}
+# step 10 of 11
+
+
+# step 11 of 11

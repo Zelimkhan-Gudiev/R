@@ -72,3 +72,60 @@ ggplot(mtcars, aes(factor(am), mpg, col = factor(cyl),
                  position = position_dodge(0.2)) +
     stat_summary(fun.y = mean, geom = "line", 
                  position = position_dodge(0.2))
+
+# Step 7 of 11
+
+my_plot <- ggplot(mtcars, aes(factor(am), mpg)) +
+                  geom_violin() +
+                  geom_boxplot(width = 0.2)
+
+# Step 8 of 11
+sales <- read.csv("/Users/zelimkhan/Desktop/Data/GitHub/DF/2.2 sales.csv") %>% as_tibble()
+
+# Step 9 of 11
+my_plot <- ggplot(sales, aes(income, sale)) + 
+            geom_point(aes(col = shop)) + 
+            geom_smooth()
+            
+# 2
+
+my_plot <- ggplot(sales, aes(income, sale)) + 
+                  geom_point(aes(color = shop)) + 
+                  geom_smooth(method = "lm")
+
+# 3
+my_plot <- ggplot(sales, aes(income, sale)) + 
+                  geom_point(aes(color = shop)) + 
+                  geom_smooth(color = "blue")
+
+# Step 10 of 11
+
+my_plot <- ggplot(sales, aes(x = shop, 
+                             y = income, 
+                             color = season,
+                             group = season)
+                            ) +
+                  stat_summary(fun.data = mean_cl_boot, 
+                               geom = "pointrange",
+                               position = position_dodge(0.2)
+                               )
+  
+# 2
+my_plot <- ggplot(sales, aes(x = shop, 
+                             y = income, 
+                             color = factor(season))) +
+                  stat_summary(fun.data = mean_cl_boot, 
+                               position = position_dodge(0.2))
+# Step 11 of 11
+my_plot <-  ggplot(sales, aes(x = date,
+                              y = sale,
+                              color = shop)) +
+                  stat_summary(fun.data = mean_cl_boot, 
+                               geom = "errorbar",
+                               position = position_dodge(0.2)) + # добавим стандартную ошибку
+                  stat_summary(fun.data = mean_cl_boot, 
+                               geom = "point",
+                               position = position_dodge(0.2)) + # добавим точки
+                  stat_summary(fun.data = mean_cl_boot,
+                               geom = "line",
+                               position = position_dodge(0.2)) # соединим линиями
