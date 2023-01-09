@@ -1,0 +1,181 @@
+---
+title: "Доля 2022 V2"
+author: "Zelimkhan Gudiev"
+date: "2022-11-28"
+output: html_document
+---
+
+```{r, include=FALSE}
+library(dplyr)
+library(readxl)
+```
+
+
+```{r, include=FALSE}
+# df <- read_excel("C:/Users/GudievZK/Downloads/2022.11.24 Выгрузка Тамерлана по закупкам 2022 год.xlsx") %>% as_tibble()
+sheets <- readxl::excel_sheets("C:/Users/GudievZK/Downloads/2022.11.24 Выгрузка Тамерлана по закупкам 2022 год.xlsx")
+exel_book <- sapply(sheets, read_excel, path = "C:/Users/GudievZK/Downloads/2022.11.24 Выгрузка Тамерлана по закупкам 2022 год.xlsx")
+str(exel_book)
+remove(sheets)
+
+df <- left_join(exel_book[["export"]], exel_book[["specStatus"]], by = "CODE")
+
+
+
+options(scipen = 999)
+
+df$IS_STANDARD_PRODUCT[df$specStatus == "3"] <- "Будет стандартизирована"
+df$IS_STANDARD_PRODUCT[df$specStatus == 2] <- "Будет детализирована и стандартизирована"
+df$IS_STANDARD_PRODUCT[df$specStatus == 1] <- "Удалена и стандартизирована"
+df$IS_STANDARD_PRODUCT[df$IS_STANDARD_PRODUCT == 1] <- "Cтандартизирована"
+
+# Количество позиций в различных статусах 
+filter(df, specStatus == "3")
+
+filter(df, IS_STANDARD_PRODUCT == "Будет стандартизирована") # 86
+filter(df, IS_STANDARD_PRODUCT == "Будет детализирована и стандартизирована") # 4
+filter(df, IS_STANDARD_PRODUCT == "Удалена и стандартизирована") # 19
+filter(df, IS_STANDARD_PRODUCT == "Cтандартизирована") # 3205
+
+f_names <- c("не конечный", "IS_STANDARD_PRODUCT")
+df[f_names] <- lapply(df[f_names], factor)
+str(df)
+
+as.data.frame(table(df$IS_STANDARD_PRODUCT)) %>% arrange(Freq)
+
+```
+
+
+### Этап 1
+
+## Сумма всех закупок без учета закупок КЖЦ и офсетных закупок
+
+```{r, include=FALSE}
+sum_1stage <- sum(df$KPGZ_SUM,na.rm = T)      # Общая сумма закупок
+sum_1stage_223 <- sum(df$KPGZ223_SUM,na.rm = T)   # Сумма закупок по 223-ФЗ
+sum_1stage_44 <- sum(df$KPGZ44_SUM,na.rm = T)    # Сумма закупок по 44-ФЗ
+```
+Общая сумма закупок составляет - `r sum_1stage` руб. Из них сумма закупок по 223-ФЗ - `r sum_1stage_223` руб, по 44-ФЗ - `r sum_1stage_44` руб, что составляет `r sum_1stage_223/sum_1stage * 100` % и `r sum_1stage_44/sum_1stage * 100` % от общей суммы закупок соотвтественно.
+
+## Количество всех закупок без учета закупок КЖЦ и офсетных закупок
+```{r, include=FALSE}
+amount_1stage <- sum(df$CON_COUNT, na.rm = T)
+amount_1stage_223 <- sum(df$CON223_COUNT, na.rm = T)
+amount_1stage_44 <- sum(df$CON44_COUNT, na.rm = T)
+
+```
+
+Общее количество всех закупок составляет `r amount_1stage`. Из них закупки по по 223-ФЗ - `r amount_1stage_223`, по 44-ФЗ -  `r amount_1stage_44``, что составляет `r amount_1stage_223/amount_1stage * 100` и `r amount_1stage_44/amount_1stage * 100` % от общего количества закупок соответственно.
+
+
+## Сумма стандартизированных закупок без учета закупок КЖЦ и офсетных закупок
+
+```{r, include=FALSE}
+sum_1stage_St <- sum(df$KPGZ_SUM[df$IS_STANDARD_PRODUCT %in% c("Будет стандартизирована", "Будет детализирована и стандартизирована", 
+                                               "Удалена и стандартизирована", "Cтандартизирована")],na.rm = T)      # Общая сумма закупок
+sum_1stage_223_St <- sum(df$KPGZ223_SUM[df$IS_STANDARD_PRODUCT %in% c("Будет стандартизирована", "Будет детализирована и стандартизирована", 
+                                               "Удалена и стандартизирована", "Cтандартизирована")],na.rm = T)   # Сумма закупок по 223-ФЗ
+sum_1stage_44_St <- sum(df$KPGZ44_SUM[df$IS_STANDARD_PRODUCT %in% c("Будет стандартизирована", "Будет детализирована и стандартизирована", 
+                                               "Удалена и стандартизирована", "Cтандартизирована")],na.rm = T)    # Сумма закупок по 44-ФЗ
+```
+
+Общая сумма **стандартизированных** закупок составляет - `r sum_1stage_St` руб. Из них сумма закупок по 223-ФЗ - `r sum_1stage_223_St` руб, по 44-ФЗ - `r sum_1stage_44_St` руб, что составляет `r sum_1stage_223_St/sum_1stage_St * 100` % и `r sum_1stage_44_St/sum_1stage_St * 100` % от общей суммы закупок соотвтественно.
+
+## Количество стандартизированных закупок без учета закупок КЖЦ и офсетных закупок
+
+```{r, include=FALSE}
+amount_1stage_St <- sum(df$CON_COUNT[df$IS_STANDARD_PRODUCT %in% c("Будет стандартизирована", "Будет детализирована и стандартизирована", 
+                                               "Удалена и стандартизирована", "Cтандартизирована")], na.rm = T)
+amount_1stage_223_St <- sum(df$CON223_COUNT[df$IS_STANDARD_PRODUCT %in% c("Будет стандартизирована", "Будет детализирована и стандартизирована", 
+                                               "Удалена и стандартизирована", "Cтандартизирована")], na.rm = T)
+amount_1stage_44_St <- sum(df$CON44_COUNT[df$IS_STANDARD_PRODUCT %in% c("Будет стандартизирована", "Будет детализирована и стандартизирована", 
+                                               "Удалена и стандартизирована", "Cтандартизирована")], na.rm = T)
+```
+Общее количество **стандартизированных** закупок составляет `r amount_1stage_St`. Из них закупки по по 223-ФЗ - `r amount_1stage_223_St`, по 44-ФЗ -  `r amount_1stage_44_St``, что составляет `r amount_1stage_223_St/amount_1stage_St * 100` и `r amount_1stage_44_St/amount_1stage_St * 100` % от общего количества закупок соответственно.
+
+```{r pressure, echo=FALSE}
+stage1_df <- tibble("Закон" = c("Всего", "По 223-ФЗ", "По 44-ФЗ"),
+                       "Общая сумма" = c(sum_1stage, sum_1stage_223, sum_1stage_44),
+                       "Общее количество" = c(amount_1stage, amount_1stage_223, amount_1stage_44),
+                       "Сумма стандартизированных" = c(sum_1stage_St, sum_1stage_223_St, sum_1stage_44_St),
+                       "Количество стандартизированных" = c(amount_1stage_St, amount_1stage_223_St, amount_1stage_44_St),
+                       "Доля стандартизированных (по сумме)" = c(sum_1stage_St/sum_1stage * 100, 
+                                                                 sum_1stage_223_St/sum_1stage_223 * 100,
+                                                                 sum_1stage_44_St/sum_1stage_44 * 100),
+                       "Доля стандартизированных (по количеству)" = c(amount_1stage_St/amount_1stage,
+                                                                      amount_1stage_223_St/amount_1stage_223,
+                                                                      amount_1stage_44_St/amount_1stage_44)
+                    )
+stage1_df
+```
+
+
+### Этап 2
+
+
+
+```{r}
+
+devNiokr <- c("^02.03.01*","^02.03.02*", "^02.03.90*", "^02.03.99*", "^02.13.01*", 
+                  "^02.13.02*", "^02.13.03*", "^03.08.03.01.02.09*", "^03.11*")
+
+df2 <- filter(df, !grepl(devNiokr, CODE))
+
+filter(df, grepl(devNiokr, CODE))
+
+df3 <- filter(df, grepl(devNiokr, CODE) & IS_STANDARD_PRODUCT == "0")
+
+devNiokrNeSt <- df3$CODE
+devNiokrNeSt <- paste("^", devNiokrNeSt, "*", sep = '')
+df2 <- filter(df, !grepl(devNiokrNeSt, df$CODE))
+
+## Сумма закупок
+sum_2stage <- sum(df2$KPGZ_SUM,na.rm = T)           
+sum_2stage_223 <- sum(df2$KPGZ223_SUM,na.rm = T)    
+sum_2stage_44 <- sum(df2$KPGZ44_SUM,na.rm = T)     
+
+## Количество закупок 
+amount_2stage <- sum(df2$CON_COUNT, na.rm = T)
+amount_2stage_223 <- sum(df2$CON223_COUNT, na.rm = T)
+amount_2stage_44 <- sum(df2$CON44_COUNT, na.rm = T)
+
+## Сумма стандартизированных закупок
+sum_2stage_St <- sum(df2$KPGZ_SUM[df2$IS_STANDARD_PRODUCT %in% c("Будет стандартизирована", "Будет детализирована и стандартизирована", 
+                                               "Удалена и стандартизирована", "Cтандартизирована")],na.rm = T)      
+sum_2stage_223_St <- sum(df2$KPGZ223_SUM[df2$IS_STANDARD_PRODUCT %in% c("Будет стандартизирована", "Будет детализирована и стандартизирована", 
+                                               "Удалена и стандартизирована", "Cтандартизирована")],na.rm = T)   
+sum_2stage_44_St <- sum(df2$KPGZ44_SUM[df2$IS_STANDARD_PRODUCT %in% c("Будет стандартизирована", "Будет детализирована и стандартизирована", 
+                                               "Удалена и стандартизирована", "Cтандартизирована")],na.rm = T)    
+
+## Количество стандартизированных закупок
+amount_2stage_St <- sum(df2$CON_COUNT[df2$IS_STANDARD_PRODUCT %in% c("Будет стандартизирована", "Будет детализирована и стандартизирована", 
+                                               "Удалена и стандартизирована", "Cтандартизирована")], na.rm = T)
+amount_2stage_223_St <- sum(df2$CON223_COUNT[df2$IS_STANDARD_PRODUCT %in% c("Будет стандартизирована", "Будет детализирована и стандартизирована", 
+                                               "Удалена и стандартизирована", "Cтандартизирована")], na.rm = T)
+amount_2stage_44_St <- sum(df2$CON44_COUNT[df2$IS_STANDARD_PRODUCT %in% c("Будет стандартизирована", "Будет детализирована и стандартизирована", 
+                                               "Удалена и стандартизирована", "Cтандартизирована")], na.rm = T)
+
+
+```
+
+
+```{r pressure, echo=FALSE}
+stage2_df <- tibble("Закон" = c("Всего", "По 223-ФЗ", "По 44-ФЗ"),
+                       "Общая сумма" = c(sum_2stage, sum_2stage_223, sum_2stage_44),
+                       "Общее количество" = c(amount_2stage, amount_2stage_223, amount_2stage_44),
+                       "Сумма стандартизированных" = c(sum_2stage_St, sum_2stage_223_St, sum_2stage_44_St),
+                       "Количество стандартизированных" = c(amount_2stage_St, amount_2stage_223_St, amount_2stage_44_St),
+                       "Доля стандартизированных (по сумме)" = c(sum_2stage_St/sum_2stage * 100, 
+                                                                 sum_2stage_223_St/sum_2stage_223 * 100,
+                                                                 sum_2stage_44_St/sum_2stage_44 * 100),
+                       "Доля стандартизированных (по количеству)" = c(amount_2stage_St/amount_2stage,
+                                                                      amount_2stage_223_St/amount_2stage_223,
+                                                                      amount_2stage_44_St/amount_2stage_44)
+                    )
+stage2_df
+```
+
+
+
+
+

@@ -1,0 +1,36 @@
+---
+title: "Доля 2022"
+author: "Zelimkhan Gudiev"
+date: "2022-11-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(readxl)
+
+```
+
+
+
+
+```{r setup, include=FALSE}
+df <- read_excel("C:/Users/GudievZK/Downloads/2022.11.24 Выгрузка Тамерлана по закупкам 2022 год.xlsx")
+df <- as_data_frame(df)
+df <- as_tibble(df)
+
+```
+
+
+```{r}
+str(df)
+options(scipen = 999)
+f_names <- c("не конечный", "IS_STANDARD_PRODUCT")
+df[f_names] <- lapply(df[f_names], factor)
+```
+
+
+```{r}
+sum(df$KPGZ_SUM,na.rm = T)
+```
+
