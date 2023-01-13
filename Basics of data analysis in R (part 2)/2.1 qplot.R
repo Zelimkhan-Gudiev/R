@@ -10,6 +10,9 @@ v <- diamonds$carat
 qplot(v)
 qplot(diamonds$carat)
 
+# Step 6 of 14
+depth_hist <- qplot(diamonds$depth)
+
 qplot(diamonds$carat, diamonds$price)
 
 my_plot <- qplot(x = price, y = carat, data = diamonds)
@@ -44,4 +47,29 @@ qplot(x = price,
       data = diamonds,
       col = I("black"), 
       geom = "density")
+
+# Step 9 of 14
+price_carat_clarity_points <- qplot(x = carat,
+                                    y = price,
+                                    data = diamonds,
+                                    color = clarity)
+
+# Step 11 of 14
+x_density <- qplot(x = x,
+                   data = diamonds,
+                   geom = 'density')
+
+
+# Step 12 of 14
+
+x_cut_density <- qplot(x = x,
+                   data = diamonds,
+                   color = cut,
+                   geom = 'density')
+
+# Step 13 of 14
+price_violin <- qplot(x = color,
+                      y = price,
+                      data = diamonds,
+                      geom = "violin")
 

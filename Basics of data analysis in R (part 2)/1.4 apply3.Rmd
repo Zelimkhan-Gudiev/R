@@ -98,6 +98,8 @@ for (i in cars) {
 ## We will can do easier all the above
 
 cars[sapply(cars, function(x) grepl(x, car))]
+sapply(cars, function(x) grepl(x, car))
+sapply(car, function(x) grepl(x, cars))
 # cars[lapply(cars, function(x) grepl(x, car))] # error
 
 cars_grep <- sapply(cars, function(x) grepl(x, car))
@@ -122,18 +124,457 @@ is.list(car_grep1)
 
 
 ## Step 5 of 16
+```{r}
+# Обратите внимание на следующее выражение, которое очень часто будет вам помогать при работе с данными:
+# давайте напишем команду, которая отбирает только количественные колонки в данных:
+iris_num <- iris[sapply(iris, is.numeric)]
 
+# Готово! sapply(iris, is.numeric) возвращает вектор логических значений, который мы и используем для индексации.
+# Этот пример также иллюстрирует идею, что lapply и sapply можно применять к dataframe. Так как dataframe - это в том числе и список.
+# Например, результат команды:
+sapply(iris[1:4], sd)
+# эквивалентна результату:
+apply(iris[1:4], 2, sd)
 
+# так как каждая колонка dataframe - это и есть элемент списка, то функция lapply и sapply
+# возвращает результат применения некоторой функции к каждой колонке данных!
+# Но тут есть одно но!
+# Как вы помните, apply производит все опперации именно над матрицами, поэтому если вы отправите в apply dataframe 
+# с разными типами данных, то R сначала приведет все колонки к одному типу, чтобы получилась матрица, 
+# т.к. в матрице могут храниться данные только одного типа! 
+# Это в свою очередь может привести к неожиданному результату:
+sapply(iris, is.numeric)
+
+apply(iris, 2, is.numeric)
+
+# По результатам команды apply можно подумать, что в данных нет количественных переменных! Дело в том, что перед тем как 
+# применить функцию is.numeric, сначала данные iris были переведены в матрицу,
+# а все переменные переведены в строки, как в наиболее общий тип данных. 
+# В результате получаем для каждой колонки FALSE.
+
+# Вот такой вот тонкий момент, о котором нужно помнить, применяя функцию apply к data.frame. 
+# В свою очередь с sapply и lapply такого не случится, т.к. в этом случае мы по очереди применим требуемую функцию к каждой колонке данных, 
+# как к каждому элементу списка!
+```
+
+```{r}
 ## Step 6 of 16
+tapply(mtcars$mpg, mtcars$am, function(x) mean(x))
+aggregate(mpg ~ am, mtcars, function(x) mean(x))
+aggregate(mpg ~ am, mtcars, mean)
+
+# by группирует не вектор в отличие от вышеуказанных функций, а целый датафрейм по какой-то переменной
+by(iris[1:4], iris$Species, colMeans)
+
+tapply(iris[1:4], iris$Species, mean) # error
+aggregate(. ~ Species, iris, mean)
+
+by(iris[1:4], iris$Species, 
+   function(x) sapply(x, 
+                      function(col) shapiro.test(col)$p.value))
+
+aggregate(. ~ Species, iris, function(x) shapiro.test(x)$p.value)
+```
 
 ## Step 7 of 16
+```{r}
+vapply(list, function, FUN.VALUE = type, ...)
+vapply(mtcars, mean, FUN.VALUE = numeric(1))
+sapply(mtcars, mean)
+
+mapply(rep, c(1, 2, 3, 4), c(1, 2, 3, 4))
+rep(c(1, 2, 3, 4), c(1, 2, 3, 4))
+rep(1, 3)
+
+x <- c(20, 25, 13)
+m <- c(0, 1, 2)
+s <- c(3, 5, 6)
+mapply(rnorm, x, m, s)
+```
+
 ## Step 8 of 16
 ## Step 9 of 16
+Давайте рассмотрим один небольшой пример работы с функцией mapply. Я оговорился, что она довольно специфична, однако иногда она все-таки оказывается довольно полезной.
+Допустим у нас есть матрица размером 100 на 200:
+```{r}
+m <- matrix(rnorm(100 * 200), nrow = 100)
+```
+И мы хотим присвоить имена строчкам и столбикам в этой матрице по принципу:
+row_1, row_2, row_3, ..., row_100 - для строк
+col_1, col_2, col_3, ..., col_200 - для колонок
+
+Тогда мы могли бы сгенерировать список данными именами следующим образом:
+```{r}
+m_names <- mapply(paste, list("row", "col"), list(1:100, 1:200), sep = "_")
+```
+
+> str(m_names) List of 2 
+$ : chr [1:100] "row_1" "row_2" "row_3" "row_4" ... 
+$ : chr [1:200] "col_1" "col_2" "col_3" "col_4" ...
+
 ## Step 10 of 16
+Хотелось бы рассмотреть еще один подводный камень применения функций семейства apply к dataframe.
+Предположим, мы решили написать простенькую функцию для расчета стандартного отклонения количественных переменных в данных.
+```{r}
+get_sd <- function(x){
+  num_var <- sapply(x, is.numeric)
+  sapply(x[, num_var], sd)
+}
+```
+Казалось бы, все логично и работает на различных примерах:
+```{r}
+get_sd(iris)
+```
+Но в нашем коде скрыта серьезная уязвимость!) Предположим, у нас есть набор данных, в котором только одна количественная переменная:
+```{r}
+my_df <- data.frame(x = 1:10, y = letters[1:10])
+get_sd(my_df)
+```
+Что вообще только что произошло? Дело в том, что существуют различные способы обращения к колонкам dataframe:
+
+```{r}
+my_df[1]    # получим dataframe
+my_df[[1]]  # получим вектор
+my_df[, 1]  # получим вектор
+```
+В случае, если у нас только одна количественная переменная, обращение x[, num_var] вернет колонку в виде вектора, а sapply применит функцию sd к каждому наблюдению вместо того, чтобы применить ко всей переменной.
+Таким образом, если вы хотите применить какую-либо функцию к неизвестному заранее числу колонок в данных, лучше используйте такую индексацию типа: my_df[col_index]. То есть:
+```{r}
+get_sd <- function(x){
+  num_var <- sapply(x, is.numeric)
+  sapply(x[num_var], sd)}
+
+get_sd(my_df)
+```
+
 ## Step 11 of 16
+
+Предположим у нас есть dataframe с двумя переменными name - название гена, expression - уровень экспрессии. Например:
+```{r}
+my_data <- data.frame(name = c("p1@HPS1", "p2@HPS2", "p@GOT1"),
+                      expression = c(120, 89, 45))
+```
+Обратите внимание, что само название гена спрятано внутри строки и указано после символа @. Напишите функцию my_names, которая получает на вход  датафрейм и вектор с именами тех генов, для которых мы хотим отобрать наблюдения уровня экспрессии. Допустим, мы хотим отобрать наблюдения только для генов 'HPS1' и 'GOT1', тогда результат работы функции будет следующий:
+```{r}
+names <- c('HPS1', 'GOT1')
+```
+my_names(my_data, names)
+     name expression
+1 p1@HPS1        120
+3  p@GOT1         45
+ 
+Таким образом в процессе проверки на вход вашей функции будет подаваться два аргумента:
+1. Датафрейм, c произвольным количеством строк, где имена генов сохранены в переменной names (фактор)  в формате ****@name , а уровень экспрессии в переменной expression.
+2. Вектор с именами генов, для которых мы хотим отобрать наблюдения. Гарантируется, что имена указанные в векторе есть в данных.
+Функция возвращает датафрейм с наблюдениями только для указанных генов.
+Для решения это задачи познакомитесь с функцией grepl, которая проверяет, содержится ли одна строчка в другой:
+
+grepl('HPS1', "p1@HPS1")
+[1] TRUE
+ 
+Пример работы функции
+```{r}
+test_data <- as.data.frame(list(name = c("p4@HPS1", "p7@HPS2", "p4@HPS3", "p7@HPS4", "p7@HPS5", "p9@HPS6", "p11@HPS7", "p10@HPS8", "p15@HPS9"), expression = c(118.84, 90.04, 106.6, 104.99, 93.2, 66.84, 90.02, 108.03, 111.83)))
+
+names <- c("HPS5", "HPS6", "HPS9", "HPS2", "HPS3", "HPS7", "HPS4", "HPS8")
+```
+my_names(test_data, names)
+      name expression
+2  p7@HPS2   90.04256
+3  p4@HPS3  106.59943
+4  p7@HPS4  104.98890
+5  p7@HPS5   93.19595
+6  p9@HPS6   66.84192
+7 p11@HPS7   90.01821
+8 p10@HPS8  108.02506
+9 p15@HPS9  111.82980
+ 
+  
+
+
+```{r}
+# короткое решение с использованием регулярного выражения https://habr.com/ru/post/545150/
+my_names <- function(dataset, names){
+  
+  # слепляем все слова в одну строку, разделив их символом "|",
+  # который на языке регулярных выражений означает "или",
+  # т.е. grepl("HPS7|HPS4", dataset$name) будет искать совпадение в dataset$name
+  # c "HPS7" или "HPS4"
+  names_line <- paste0(names, collapse = "|")
+  
+  # возвращаем датасет со строками, в которых нашлись с какими-то из имен,
+  # т.е. где команда grepl(names_line, dataset$name) вернула TRUE
+  return(dataset[grepl(names_line, dataset$name),])
+}
+
+# более длинное решение без регулярных выражений 
+my_names_2 <- function(dataset, names){
+
+  # получаем список с результатами поочередного применения имен из names к 
+  # колонке с именами в датасете
+  l <- lapply(names, grepl, dataset$name)
+  
+  # складываем поэлементно все листы, помня, что значение TRUE = 1, а значение 
+  # FALSE = 0,  т.е. после сложения в том елементе, где хотя бы один раз было TRUE
+  # в итоговом векторе на этом месте будет значение отличное от 0
+  sum_res <- Reduce("+", l)
+  
+  # возвращаем те строки датасета, у которых соответсвующие значения суммарного 
+  # вектора отлично от 0
+  return(dataset[sum_res > 0, ])
+}
+
+# тестирование
+test_data <- as.data.frame(list(name = c("p4@HPS1", "p7@HPS2", "p4@HPS3", "p7@HPS4", "p7@HPS5", "p9@HPS6", "p11@HPS7", "p10@HPS8", "p15@HPS9"), 
+                                expression = c(118.84, 90.04, 106.6, 104.99, 93.2, 66.84, 90.02, 108.03, 111.83)))
+
+
+names = c("HPS5", "HPS6", "HPS9", "HPS2", "HPS3", "HPS7", "HPS4", "HPS8")
+
+my_names(test_data, names)
+my_names_2(test_data, names)
+```
+
+# 3
+
+```{r}
+my_names <- function (dataset, names){    
+dataset[as.numeric(lapply(names, function(x) which(grepl(x, dataset$name)))), ]}
+my_names(dataset, names)
+```
+
+# 4
+```{r}
+my_names <- function (dataset, names){    
+gs = gsub('^.*\\@','',dataset[, 1])    
+return(dataset[gs %in% names, ])}
+```
+
+# 5
+```{r}
+my_names <- function (dataset, names) {
+    dataset[sapply(names, grep, dataset$name), ]
+}
+```
+# 6
+```{r}
+my_names <- function (dataset, names) {
+    dataset[gsub(".*@", "", dataset$name) %in% unique(names), ]
+}
+```
+# 7
+```{r}
+my_names <- function(dataset, names) dataset[mapply(function(x) grep(x, dataset[, 1]), names), ]
+my_names(dataset, names)
+```
+
 ## Step 12 of 16
+```{r}
+find_outliers <- function(t){
+  
+  t %>%
+    # делаем факторами все нечисловые колонки
+    mutate_if(Negate(is.numeric), factor) %>%
+    # группируем по колонкам-факторам
+    group_by_if(is.factor) %>%
+    # рассчитываем по группам критические значения и сравниваем значение х с
+    # критическими значениями для групп 
+    # переводим получившиеся TRUE/FALSE в integer
+    mutate(is_outlier = as.integer(x > mean(x) + 2 * sd(x) | 
+                                     x < mean(x) - 2 * sd(x))
+    ) 
+  
+}
+
+tt <- as.data.frame(Titanic)
+# тестирование 
+test_data <- read.csv("https://stepic.org/media/attachments/course/724/hard_task.csv")
+ans <- find_outliers(test_data)
+correct_answer <- read.csv("https://stepic.org/media/attachments/course/724/hard_task_ans.csv")
+correct_answer[correct_answer$is_outlier != ans$is_outlier,]
+
+test_data <- read.csv("https://stepic.org/media/attachments/course/724/test_data_2.csv")
+ans  <- find_outliers(test_data)
+correct_answer <- read.csv("https://stepic.org/media/attachments/course/724/test_data_2_ans.csv")
+correct_answer[correct_answer$is_outlier != ans$is_outlier,]
+```
+# 2
+```{r}
+find_outliers <- function(test){    
+tr1 <- split(test[, sapply(test, is.numeric)], lapply(test[, sapply(test, is.factor)], factor))   
+tr2 <- lapply(tr1, function(x) ifelse(abs(x - mean(x)) < 2 * sd(x), 0, 1))    
+test$is_outlier <- unsplit(tr2,  lapply(test[, sapply(test, is.factor)], factor))    
+return(test)}
+
+test <- mutate_if(as_tibble(t), Negate(is.numeric), factor)
+```
+# 3
+```{r}
+library(data.table)    
+find_outliers <- function(t){    
+fvar <- colnames(t[which(sapply(t, is.factor))])   
+t <- as.data.table(t)    
+t[, is_outlier := ifelse(((abs(x - mean(x))) >= (2 * sd(x))), 1, 0), by = fvar]}
+```
+# 4
+```{r}
+find_outliers <- function(t) {
+    num_cols <- sapply(t, is.numeric)
+    splitted <- split(t[, num_cols], t[!num_cols])
+    outliers <- lapply(splitted, function(x) as.numeric(abs(x - mean(x)) > sd(x) * 2))
+    t$is_outlier <- unsplit(outliers, t[!num_cols])
+    t
+}
+```
+# 5
+```{r}
+library(dplyr)    
+library(lazyeval)   
+find_outliers <- function(t){    
+numeric_index <- colnames(t)[sapply(t, is.numeric)]  
+factor_index <- colnames(t)[sapply(t, is.factor)]    
+t <- group_by_(t, .dots = factor_index) %>%    
+mutate_(is_outlier = interp(~ifelse(abs(mean(x) - x) > 2 * sd(x), 1, 0), x = as.name(numeric_index)))    
+return(t)}
+```
+
+
+
 ## Step 13 of 16
+```{r}
+smart_lm <- function(x){
+  
+  # отделяем целевую переменную в у
+  y <- x[, 1]
+  # все остальные переменные кроме целевой записываем в rest
+  rest <- as.data.frame(x[, -1])
+  
+  # применяем тест шапиро-уилка для всех переменных кроме целевой
+  shapiro_test <- lapply(rest, shapiro.test)
+  
+  # получаем вектор указывающий на колонки, где p.value > 0.05
+  test_res <- sapply(shapiro_test, function(x) x$p.value > 0.05)
+
+  # если в полученно векторе нет значений TRUE, возвращаем соответсвующее сообщение
+  if(sum(test_res) == 0){
+    return("There are no normal variables in the data")
+  }
+  else{
+  # в противном случае создаем датасет только с колонками, удовлетворившим 
+  # условиям теста Шапиро-Уилка
+  good_data <- as.data.frame(rest[, test_res])
+  
+  # задаем формулу для обучения модели
+  cols <- paste0(colnames(good_data), collapse = " + ")
+  form <- formula(paste0("y ~ ", cols))
+  
+  # обучаем модель
+  model <- lm(form, good_data)
+  
+  # возвращаем коэффициенты
+  return(model$coefficients)
+  }
+}
+
+# тестирование 
+test_data <- read.csv("https://stepik.org/media/attachments/course/724/test.csv")
+smart_lm(test_data)
+
+test_data <- data.frame(x = 1:100, y = 1:100, z = 1:100)
+smart_lm(test_data)
+
+test_data <- as.data.frame(list(V1 = c(20.1, 21.3, 24.2, 20, 20.7, 19.1, 21.3, 22, 20.2, 21.8, 20.3, 17, 21, 16.4, 24.1, 17.5, 23.7, 20.2, 20.2, 20.9, 21.1, 21.9, 19.3, 25.2, 18.7, 19.2, 21.6, 19.7, 18.4, 22.1),
+                                V2 = c(21.9, 17, 19.9, 21.1, 22, 21.4, 22.3, 18.5, 19.5, 20.6, 21.2, 23.7, 19.8, 18.2, 20.6, 21.1, 20.4, 18.8, 21.1, 19.8, 19.4, 20, 17.2, 19.5, 18.8, 18.3, 18.7, 22, 22, 21.2))
+                           )
+smart_lm(test_data)
+
+smart_lm(swiss)    
+```
+# 2
+```{r}
+smart_lm <- function(x){
+check_norm <- sapply(x[-1], function(var) shapiro.test(var)$p.value > 0.05)
+if (any(check_norm)){
+x = x[, c(1, (which(check_norm) + 1))]
+coef <- lm(x[[1]] ~ ., x[-1])$coef
+return(coef)
+} else{
+return('There are no normal variables in the data')}}
+```
+# 3
+```{r}
+smart_lm <- function(x){
+    is.normal <- sapply(x[-1], function(x) shapiro.test(x)$p > 0.05)
+    if (sum(is.normal) > 0) {
+      lm(x[c(T, is.normal)])$coeff
+    } else {
+      "There are no normal variables in the data"
+    }
+}
+```
 ## Step 14 of 16
+```{r}
+one_sample_t <- function(test_data, general_mean){
+  
+  test_data %>%
+  # выбираем только числовые колонки
+  select_if(is.numeric) %>%
+  # применяем т.тест к каждой колонки
+  lapply(t.test, NULL, "two.sided", general_mean) %>% 
+  # забираем из получившихся списков нужные нам значения параметров
+  lapply(function(x) c(t = x$statistic, df = x$parameter, x$p.value)) 
+}
+
+# Тестирование
+test_data <- iris
+general_mean <- 3
+```
+# 2
+```{r}
+one_sample_t <- function(test_data, general_mean){    
+  apply_t_test <- function(col){    
+    result <- t.test(col, mu = general_mean)    
+    return(c(result$statistic, result$parameter, result$p.value))
+    }    
+  num_var <- sapply(test_data, function(x) is.numeric(x))    
+  lapply(test_data[num_var], apply_t_test)
+}
+```
+
+# 3
+```{r}
+one_sample_t <- function(test_data, general_mean) {
+    lapply(test_data[sapply(test_data, is.numeric)],
+           function(x) unlist(t.test(x, mu = general_mean)[c("statistic", "parameter", "p.value")]))
+}
+```
+
 ## Step 15 of 16
+```{r}
+get_p_value <- function(test_list){
+  # применяем к каждому элемента листа функцию берущую p.value из списка с 
+  # результатами теста для конукретного набора данных
+  lapply(test_list, function(x) x$p.value)
+}
+
+# тестирование 
+normality_tests <- lapply(iris[, 1:4], shapiro.test)
+get_p_value(normality_tests)
+```
+# 2
+```{r}
+get_p_value <- function(test_data){    
+sapply(test_data, '[', 2)}
+
+iris[3]
+'['(iris, 3)
+```
+# 3
+```{r}
+get_p_value <- function(test_list){
+  return(lapply(test_list, function(x) x$p.value))
+}
+```
+
 ## Step 16 of 16
 

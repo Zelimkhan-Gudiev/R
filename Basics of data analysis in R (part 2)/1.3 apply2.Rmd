@@ -23,7 +23,7 @@ head(airquality)
 ?airquality
 ```
 ```{r}
-(airquality, 2, mean)
+apply(airquality, 2, mean)
 ```
 
 All arguments given instead of ... (apply(X, MARGIN, FUN, ...)) will be referred to the function to be applied
@@ -83,52 +83,90 @@ apply(d, 2, function(x) x[x < 0])
 
 ## Step 5 of 8
 Давайте завершим и слегка модифицируем задачу из предыдущей лекции. Напишите функцию get_negative_values, которая получает на вход dataframe произвольного размера. Функция должна для каждой переменной в данных проверять, есть ли в ней отрицательные значения. Если в переменной отрицательных значений нет, то эта переменная нас не интересует, для всех переменных, в которых есть отрицательные значения мы сохраним их в виде списка или матрицы, если число элементов будет одинаковым в каждой переменной (смотри пример работы функции).
+
 ```{r}
+get_negative_values <- function(test_data){
+  
+  # функция для фильтрации, которая возвращает из вектора все значения меньше 0 и не NA
+  neg_vec <- function(v)    v[v < 0 & !is.na(v)]
+  
+  # применяем функцию neg_vec с помощью lapply к каждому столбцу нашего датафрейма 
+  # и получаем лист со списками с отрицательными значениями каждой колонки
+  res_1 <- lapply(test_data, neg_vec)
+  
+  # с помощью lapply получаем длину каждого списка внутри нашего листа 
+  # и сохраняем в отдельный вектор
+  v_length <- lapply(res_1, length)
+  
+  # выкидываем из нашего листа все списки с нулевой длиной (оставшиеся 
+  # без элементов после фильтрации)
+  res_2 <- res_1[v_length > 0]
+  
+  # сохраняем в векторе с длинами только длины ненулевых списков
+  v_length_not_0 <- v_length[v_length > 0]
+  
+  # добавляем условие, которое проверяет, если количество уникальных 
+  # длин нащего в нашем векторе равно 1, т.е. все списки имеют одну длину,
+  # то преобразуем лист в матрицу
+  if(length(unique(v_length_not_0)) == 1){
+    
+    # количество колонок в матрице равно количеству длин в векторе
+    # с ненулевым длинами
+    return(matrix(unlist(res_2), ncol = length(v_length_not_0)))
+    
+  }
+  # в противном случае просто возвращаем лист с отрицательными элементами res_2
+  else return(res_2)
+}
+
+# тестирование
 test_data <- as.data.frame(list(V1 = c(-9.7, -10, -10.5, -7.8, -8.9), 
-                                  V2 = c(NA, -10.2, -10.1, -9.3, -12.2), 
-                                  V3 = c(NA, NA, -9.3, -10.9, -9.8)))
-```
+                                V2 = c(NA, -10.2, -10.1, -9.3, -12.2),
+                                V3 = c(NA, NA, -9.3, -10.9, -9.8)))
 get_negative_values(test_data)
-$V1
-[1]  -9.7 -10.0 -10.5  -7.8  -8.9
-$V2
-[1] -10.2 -10.1  -9.3 -12.2
-$V3
-[1]  -9.3 -10.9  -9.8
-```{r}
+
+
+
 test_data <- as.data.frame(list(V1 = c(NA, 0.5, 0.7, 8), 
-                                  V2 = c(-0.3, NA, 2, 1.2), 
-                                  V3 = c(2, -1, -5, -1.2)))
-```
+                                V2 = c(-0.3, NA, 2, 1.2),
+                                V3 = c(2, -1, -5, -1.2)))
 get_negative_values(test_data)
-$V2
-[1] -0.3
-$V3
-[1] -1.0 -5.0 -1.2
-```{r}
+
+
 test_data <- as.data.frame(list(V1 = c(NA, -0.5, -0.7, -8), 
                                 V2 = c(-0.3, NA, -2, -1.2), 
                                 V3 = c(1, 2, 3, NA)))
-```
 get_negative_values(test_data)
-       V1   V2
-[1,] -0.5 -0.3
-[2,] -0.7 -2.0
-[3,] -8.0 -1.2
+```
+
 
 ```{r}
-x <- test_data
-get_negative_values <- function(x) {
-  x[is.na(x)] <- 0
-  a <- apply(x, 2, function(x) x[x < 0])
-  a <- a[sapply(a, length) > 0]
-  if (length(unique(lengths(a))) == 1) {
-    a <- as.matrix(transform(a, matrix(a)))
-  } else a
+get_negative_values <- function(test_data){    
+negative_col <- apply(test_data, 2, function(x) any(x[!is.na(x)] < 0))    
+return(apply(test_data[negative_col], 2, function(x) x[!is.na(x) & x <0]))}
+
+```
+
+
+```{r}
+get_negative_values <- function(test_data){
+    Filter(length, apply(test_data, 2, function(x) subset(x, x < 0)))
+}
+
+get_negative_values(test_data = )
+```
+
+```{r}
+get_negative_values <- function(test_data){
+    test_data[is.na(test_data)] <- 0
+    apply(test_data[, apply(test_data, 2, min) < 0], 2, function(x) x[x < 0])
 }
 
 get_negative_values(test_data)
 ```
+
+
+
 ## Step 6 of 8
 Посмотрим различаются ли значения показатели Sepal.Length в зависомости от значения качественной переменной Species. Для данной задачи будем применять дисперсионный анализ.
 

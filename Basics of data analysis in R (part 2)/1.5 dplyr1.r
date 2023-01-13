@@ -44,3 +44,24 @@ m <- mutate(diamonds,
             log_carat = log(carat))
 
 mutate(mtcars, am = factor(am), vs = factor(vs))
+
+# Step 10 of 12
+library(ggplot2)
+
+d <- slice(diamonds, seq(1, nrow(diamonds), by = 2))
+# 2
+d <- diamonds[c(T,F), ]
+# 3
+d <- filter(diamonds, row_number() %% 2 != 0)
+# 4
+d <- diamonds %>% filter(rep(c(T, F), nrow(.) / 2))
+
+# Step 12 of 12
+my_df <- mtcars %>% 
+  select(mpg, hp, am, vs) %>% 
+  filter(mpg > 14, hp > 100) %>% 
+  arrange(desc(mpg)) %>% 
+  slice(1:10) %>% 
+  rename('Miles per gallon' = mpg, 
+         'Gross horsepower' = hp)
+
