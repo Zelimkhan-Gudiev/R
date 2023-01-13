@@ -46,8 +46,10 @@ df$IS_STANDARD_PRODUCT[df$dS == 6] <- "Нерегулярная"
 
 
 colnames(df)
+str(df)
+glimpse(df)
 
-df[c("isFinal", "IS_STANDARD_PRODUCT", "dS" )] <- c("isFinal", "IS_STANDARD_PRODUCT", 
+df[c("isFinal", "IS_STANDARD_PRODUCT", "dS1" )] <- c("isFinal", "IS_STANDARD_PRODUCT", 
                                                     "dS") %>% df[.] %>% lapply(., factor)
 
 df %>% 
