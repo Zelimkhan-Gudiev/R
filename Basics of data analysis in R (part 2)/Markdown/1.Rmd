@@ -1,0 +1,17 @@
+---
+title: "Untitled"
+author: "Zelimkhan"
+date: '2023-01-15'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, eval=FALSE)
+```
+
+
+
+```{r squares, eval=TRUE, cache=TRUE}
+1:4 ^ 2
+```
+
