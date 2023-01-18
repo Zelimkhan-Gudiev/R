@@ -1,0 +1,787 @@
+---
+title: "3.1 Здравствуйте, я ваш R Markdown!"
+author: "Zelimkhan"
+date: '2023-01-14'
+output: html_document
+---
+---
+title: "R Markdown"
+author: "Антон Антонов"
+---
+# 01-intro.Rmd
+
+## Что такое R Markdown
+
+>- Средство для создания динамических документов, отчётов и презентаций
+>- Инструмент для встраивания результатов исполнения кода на R в текст документа
+
+. . .
+
+<center>
+<img src="images/RMarkdownOutputFormats.png" alt="" style="width: 300px; height: 300px;"/>
+</center>
+
+## Зачем это нужно
+
+>- Для полной воспроизводимости результатов
+>- Для конвертирования исходного .Rmd файла в разные форматы:
+    + HTML
+    + PDF
+    + MS Word (ODT, RTF)
+    + Markdown
+    + Презентации: ioslides, reveal.js, Slidy, Beamer
+    + Шаблоны для web-сайтов
+>- Для удобства написания, разметки и форматирования документа
+>- Для распространения открытого кода, идей, алгоритмов и результатов исследований
+
+## Reproducible research и коллаборация
+
+>- [Статья в "Nature"](http://www.nature.com/news/1-500-scientists-lift-the-lid-on-reproducibility-1.19970): более 70% опрошенных исследователей не могут воспроизвести результаты, полученные коллегами
+>- В последнее время ситуация ухудшается: 
+    + Растут объёмы данных
+    + Используются сложные схемы обработки данных
+    + Применяемые модели и алгоритмы требуют тонкой настройки
+    + Формат традиционной журнальной статьи не отвечает современным требованиям
+>- [Ropensci reproducibility guide](http://ropensci.github.io/reproducibility-guide/)
+
+
+# 01-intro-demo.Rmd
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+The data used in this study is taken from <http://open.canada.ca/en/open-data>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure, pch = 15)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+# 02-rcode.Rmd
+
+## Inline code
+
+>- Простейший случай: вставка результата в виде текста прямо в строку
+>- Синтаксис: backtick ("`") - "r" - пробел - код на R - backtick
+>- Пример: "Теорема доказана в предположении, что число пи равно `` `r knitr::inline_expr('ceiling(pi)')` ``."
+>- Результат: "Теорема доказана в предположении, что число пи равно `r ceiling(pi)`."
+
+## Code chunks
+
+>- Основной способ вставки кода
+>- Каждый кусок (chunk, чанк) настраиваем с помощью опций
+>- Чанк может что-либо печатать, рисовать или вообще не иметь вывода
+
+## Синтаксис чанков
+
+```{r, echo=FALSE, comment=""}
+cat(c("```{r}",
+      "head(iris)",
+      "```"), 
+    sep='\n')
+```
+
+. . .
+
+```{r}
+head(iris)
+```
+
+## Опция echo=FALSE
+
+>- В фигурных скобках через запятую можно указывать _опции_ чанка
+>- По умолчанию печатается и код, и его результат
+>- Опция `echo=FALSE` подавит вывод кода:
+
+. . .
+
+```{r, echo=FALSE, comment=""}
+cat(c("```{r, echo=FALSE}",
+      "(1:10)^3",
+      "```"), 
+    sep='\n')
+```
+
+. . .
+
+```{r, echo=FALSE}
+(1:10)^3
+```
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+The data used in this study is taken from <http://open.canada.ca/en/open-data>.
+
+```{r, echo=FALSE}
+glacier <- read.csv("glacier.csv", na.strings = "..", comment.char = "#")
+```
+
+The data set contains `r nrow(glacier)` measurements of `r nlevels(glacier$GEO)` Canadian glacier mass balance, collected from `r min(glacier$Ref_Date)` till `r max(glacier$Ref_Date)`. Namely, the file includes these glaciers:
+
+```{r, echo=FALSE}
+levels(glacier$GEO)
+```
+
+Footer
+© 2023 GitHub, Inc.
+Footer navigation
+Terms
+
+
+
+
+# 02-rcode-demo.Rmd
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+The data used in this study is taken from <http://open.canada.ca/en/open-data>.
+
+```{r, echo=FALSE}
+glacier <- read.csv("glacier.csv", na.strings = "..", comment.char = "#")
+```
+
+The data set contains `r nrow(glacier)` measurements of `r nlevels(glacier$GEO)` Canadian glacier mass balance, collected from `r min(glacier$Ref_Date)` till `r max(glacier$Ref_Date)`. Namely, the file includes these glaciers:
+
+```{r, echo=FALSE}
+levels(glacier$GEO)
+```
+
+# 03-markdown.Rmd
+
+## Зачем нужен Markdown
+
+>- HTML -- это набор инструкций для браузера
+>- Написание HTML-страниц в ручном режиме очень неудобно
+>- Markdown -- текстовый формат, удобный для написания и чтения
+>- Markdown -- это инструмент конвертации такого текста в HTML
+
+## Пример
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+
+<body>
+<h1>Markdown example</h1>
+<p>You can use a bit of <strong>bold</strong> or <em>italics</em>.</p>
+</body>
+</html>
+```
+
+. . .
+
+```
+# Markdown example
+
+You can use a bit of **bold** or _italics_.
+```
+
+## Основные элементы Markdown
+
+>- `**Жирный** __шрифт__` --> **Жирный** __шрифт__
+>- `*Курсивный* _шрифт_` --> *Курсивный* _шрифт_
+>- Моноширинный шрифт `` `sum(x)` `` --> `sum(x)`
+>- Верхние и нижние индексы `A^2^~i~` --> A^2^~i~
+>- `~~Зачёркнутый~~ текст` --> ~~Зачёркнутый~~ текст
+>- Экранирование символов (escape): `\* \_ \\ \$` --> \* \_ \\ \$ 
+>- Автозамена тире и длинного тире: `-- ---` --> -- ---
+
+## Основные элементы Markdown
+
+>- Заголовки: `# Header 1` -- `###### Header 6`
+>- Гиперссылка: `<https://www.github.com/tonytonov>` --> <https://www.github.com/tonytonov>
+>- Гиперссылка в тексте: `[Мой гитхаб](https://www.github.com/tonytonov)` --> [Мой гитхаб](https://www.github.com/tonytonov)
+>- <http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf>
+
+## Поддержка latex
+
+>- Для сборки pdf нужна установка $\TeX$ (MiKTeX, TeX Live)
+>- `$\hat{\beta} = (X^T X)^{-1} X^T y$` --> $\hat{\beta} = (X^T X)^{-1} X^T y$
+>- `$$i \hbar \frac{\partial}{\partial t} ... $$` --> $$i \hbar \frac{\partial}{\partial t}\Psi(\mathbf{r},t) = \hat H \Psi(\mathbf{r},t)$$
+>- Полноценные возможности $\TeX$ (настройки, пакеты, макросы и т.д.)
+>- Формулы корректно отображаются в HTML благодаря MathJax
+
+
+# 03-markdown-demo.Rmd
+
+
+## Introduction
+
+The data used in this study is taken from <http://open.canada.ca/en/open-data>[^1].
+
+[^1]: Here is the [direct link](http://open.canada.ca/data/en/dataset/b52664cf-bfd9-49ad-849a-cb88c92553b9) to data download.
+
+```{r, echo=FALSE}
+glacier <- read.csv("glacier.csv", na.strings = "..", comment.char = "#")
+```
+
+The data set contains `r nrow(glacier)` measurements of `r nlevels(glacier$GEO)` Canadian glacier mass balance, collected from `r min(glacier$Ref_Date)` till `r max(glacier$Ref_Date)`. Namely, the file includes these glaciers:
+
+```{r, echo=FALSE}
+levels(glacier$GEO)
+```
+
+## Hypothesis
+
+We are interested in finding out whether there is a statistically significant change in mass balance over the observed time period. For these purposes we use **R** (version `r getRversion()`) and an appropriate statistical test called _t-test_: $$t = \frac{\overline{x} - \mu_0}{s/\sqrt{n}}.$$
+
+The workflow is as follows:
+
+1. Read the file and run data validation;
+2. Run t-test for each glacier and collect p-values;
+3. Support the evidence with
+    + a table of results;
+    + a plot that could help compare different glaciers.
+
+
+# 04-knitr.Rmd
+
+## knitr
+
+>- За обработку кода на R отвечает пакет `knitr`
+>- Он может быть использован отдельно от R Markdown 
+>- Изначальный фокус `knitr` -- pdf (LaTeX + R)
+## Chunk options
+
+>- Существуют глобальные настройки `knitr`
+>- Каждый чанк может иметь локальные настройки, переопределяющие глобальные
+>- Локальные настройки указываются через запятую
+>- Все возможные опции приведены на <http://yihui.name/knitr/options/>
+## Основные опции
+
+>- `echo` (default: `TRUE`) -- отображать ли исходный код чанка?
+>- `eval` (default: `TRUE`) -- исполнять ли код чанка?
+>- `include` (default: `TRUE`) -- отображать ли результат исполнения чанка?
+>- `error` (default: `FALSE`) -- добавлять ли в документ текст ошибок? 
+>- `message` (default: `TRUE`) -- добавлять ли в документ текст сообщений? 
+>- `warning` (default: `TRUE`) -- добавлять ли в документ текст предупреждений? 
+## Основные опции 
+
+>- `comment` (default: `'##'`) -- какой префикс добавлять перед каждой строкой вывода результатов?
+>- `results` (default: `'markup'`) -- каким образом выводить результаты исполнения?
+>- `highlight` (default: `TRUE`) -- подсвечивать ли синтаксис кода?
+>- `tidy` (default: `FALSE`) -- отформатировать ли код (отступы, пробелы)?
+## Графики
+
+>- `fig.height`, `fig.width` -- размеры изображения (в дюймах)
+>- `fig.align` (default: `'center'`) -- расположение графика на странице
+>- `fig.cap` (default: `NULL`) -- строка с подписью к графику
+. . .
+
+```{r, fig.width=8, fig.height=3, message=FALSE, echo=FALSE}
+require(ggplot2)
+ggplot(diamonds, aes(price, carat, color = cut)) + geom_point()
+```
+
+## Кеширование чанков
+
+>- Некоторые чанки могут содержать длинные вычисления
+>- Для таких чанков нужно выставить `cache=TRUE`
+>- Кеш срабатывает в том случае, если содержимое кода внутри чанка не изменилось
+>- Важно: если чанки взаимозависимы, нужно помнить о кеше!
+>- В этих случаях поможет опция `dependson`
+>- Важно: некоторые алгоритмы используют генераторы случайных чисел!
+## Метки чанков
+
+>- В фигурных скобках между "r" и опциями чанка может находиться метка чанка
+>- Чанки могут обращаться друг к другу по меткам
+. . .
+
+```{r, echo=FALSE, comment=""}
+cat(c("```{r chunk1, echo=TRUE, results='hide'}",
+      "cos(2*pi)",
+      "```"), 
+    sep='\n')
+```
+
+```{r, echo=FALSE, comment=""}
+cat(c("```{r chunk2, echo=FALSE, ref.label='chunk1'}",
+      "```"), 
+    sep='\n')
+```
+
+. . .
+
+```{r chunk1, echo=TRUE, results='hide'}
+cos(2*pi)
+```
+
+```{r chunk2, echo=FALSE, ref.label="chunk1"}
+```
+
+## Глобальные опции
+
+>- Задаются, как правило, в начале документа
+>- `knitr::opts_chunk$set(echo=FALSE, fig.width=5, fig.height=5)`
+>- Этот вызов удобно поместить в отдельный чанк с опцией `include=FALSE`
+
+# 04-knitr-demo.Rmd
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(tidyr)
+library(xtable)
+library(ggplot2)
+options(scipen = 0, digits = 3)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+## Introduction
+
+The data used in this study is taken from <http://open.canada.ca/en/open-data>[^1].
+
+[^1]: Here is the [direct link](http://open.canada.ca/data/en/dataset/b52664cf-bfd9-49ad-849a-cb88c92553b9) to data download.
+
+```{r}
+glacier <- read.csv("glacier.csv", na.strings = "..", comment.char = "#")
+```
+
+The data set contains `r nrow(glacier)` measurements of `r nlevels(glacier$GEO)` Canadian glacier mass balance, collected from `r min(glacier$Ref_Date)` till `r max(glacier$Ref_Date)`. Namely, the file includes these glaciers:
+
+```{r, comment=""}
+levels(glacier$GEO)
+```
+
+## Hypothesis
+
+We are interested in finding out whether there is a statistically significant change in mass balance over the observed time period. For these purposes we use **R** (version `r getRversion()`) and an appropriate statistical test called _t-test_: $$t = \frac{\overline{x} - \mu_0}{s/\sqrt{n}}.$$
+
+The workflow is as follows:
+
+1. Read the file and run data validation;
+2. Run t-test for each glacier and collect p-values;
+3. Support the evidence with
+    + a table of results;
+    + a plot that could help compare different glaciers.
+    
+## Analysis
+
+```{r analysis, cache=TRUE}
+glacier <- read.csv("glacier.csv", na.strings = "..", comment.char = "#")
+glacier <- glacier %>%
+  select(Ref_Date, GEO, MEASURE, Value) %>% 
+  filter(MEASURE == "Annual mass balance") %>% 
+  separate(GEO, c("Name", "Location"), sep = " - ")
+g1 <- glacier %>%
+  group_by(Name) %>% 
+  summarise(YearsObserved = n(), 
+            MeanChange = mean(Value, na.rm = T), 
+            WorstChange = min(Value, na.rm = T),
+            WorstYear = Ref_Date[which.min(Value)])
+g2 <- glacier %>% 
+  group_by(Name) %>% 
+  do({
+    tt <- t.test(.$Value, alternative = "less", mu = 0, conf.level = 0.99)
+    data.frame(PValue = tt$p.value, 
+               ConfidenceLimit = tt$conf.int[2])
+    })
+left_join(g1, g2, by = "Name") %>% 
+  knitr::kable(caption = "Descriptive statistics and confidence intervals", 
+               digits = c(0, 0, 2, 0, 0, 10, 2))
+```
+
+```{r ggplot, fig.width=8, fig.height=6}
+ggplot(glacier, aes(Ref_Date, Value)) + 
+  geom_line() + 
+  geom_hline(data = g1, aes(yintercept = MeanChange), 
+             color = "red", linetype = "dashed", alpha = 0.8) + 
+  facet_wrap(~Name, nrow = 2)
+```
+
+# 05-pandoc.Rmd
+
+## Как устроен R Markdown
+
+>- Исходный файл: .Rmd
+>- `knitr`: .Rmd --> .md
+>- `pandoc`: .md --> .html, .docx, .tex
+>- `latex`: .tex --> .pdf
+## YAML header
+
+>- В заголовке .Rmd-файла можно указывать различные опции
+>- Эти опции имеют отношение к генерации конечных файлов
+>- Опции задаются в особом формате (YAML) в виде списка ключей и значений
+## Конфигурации форматов
+
+>- Секция `output:` отвечает за формат конечного документа
+>- Каждый формат имеет собственные настройки
+. . .
+
+```
+output:
+  html_document:
+    toc_float: TRUE 
+    
+```
+
+## Параметры документа
+
+>- Содержимое документа может зависеть от внешних параметров
+>- Это могут быть различные сценарии, настройки алгоритмов, имена файлов и т.д.
+. . .
+
+```
+params:
+  n: 100
+  d: !r Sys.Date() 
+```
+
+# 05-pandoc-demo.Rmd
+
+---
+title: "Analyzing trends in Canadian glacier mass"
+author: "Anton Antonov"
+output:
+  html_document:
+    toc_float: yes
+  pdf_document:
+    keep_tex: yes
+    toc: yes
+params:
+  filename: glacier.csv
+bibliography: bibl.bib
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(tidyr)
+library(xtable)
+library(ggplot2)
+options(scipen = 0, digits = 3)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+## Introduction
+
+The data used in this study is taken from <http://open.canada.ca/en/open-data>[^1]. The algorithm is taken from @AntonovErmakov_RandomCubaturesQMC.
+
+[^1]: Here is the [direct link](http://open.canada.ca/data/en/dataset/b52664cf-bfd9-49ad-849a-cb88c92553b9) to data download.
+
+```{r}
+glacier <- read.csv(params$filename, na.strings = "..", comment.char = "#")
+```
+
+The data set contains `r nrow(glacier)` measurements of `r nlevels(glacier$GEO)` Canadian glacier mass balance, collected from `r min(glacier$Ref_Date)` till `r max(glacier$Ref_Date)`. Namely, the file includes these glaciers:
+
+```{r, comment=""}
+levels(glacier$GEO)
+```
+
+## Hypothesis
+
+We are interested in finding out whether there is a statistically significant change in mass balance over the observed time period. For these purposes we use **R** (version `r getRversion()`) and an appropriate statistical test called _t-test_: $$t = \frac{\overline{x} - \mu_0}{s/\sqrt{n}}.$$
+
+The workflow is as follows:
+
+1. Read the file and run data validation;
+2. Run t-test for each glacier and collect p-values;
+3. Support the evidence with
+    + a table of results;
+    + a plot that could help compare different glaciers.
+    
+## Analysis
+
+```{r analysis, cache=TRUE}
+glacier <- glacier %>%
+  select(Ref_Date, GEO, MEASURE, Value) %>% 
+  filter(MEASURE == "Annual mass balance") %>% 
+  separate(GEO, c("Name", "Location"), sep = " - ")
+g1 <- glacier %>%
+  group_by(Name) %>% 
+  summarise(YearsObserved = n(), 
+            MeanChange = mean(Value, na.rm = T), 
+            WorstChange = min(Value, na.rm = T),
+            WorstYear = Ref_Date[which.min(Value)])
+g2 <- glacier %>% 
+  group_by(Name) %>% 
+  do({
+    tt <- t.test(.$Value, alternative = "less", mu = 0, conf.level = 0.99)
+    data.frame(PValue = tt$p.value, 
+               ConfidenceLimit = tt$conf.int[2])
+    })
+left_join(g1, g2, by = "Name") %>% 
+  knitr::kable(caption = "Descriptive statistics and confidence intervals", 
+               digits = c(0, 0, 2, 0, 0, 10, 2))
+```
+
+```{r ggplot, fig.width=8, fig.height=6}
+ggplot(glacier, aes(Ref_Date, Value)) + 
+  geom_line() + 
+  geom_hline(data = g1, aes(yintercept = MeanChange), 
+             color = "red", linetype = "dashed", alpha = 0.8) + 
+  facet_wrap(~Name, nrow = 2)
+```
+## Bibliography
+
+
+# 06-html.Rmd
+
+
+```{r setup, echo=FALSE}
+options(width = 110)
+```
+
+## HTML tags
+
+>- Отсюда и далее говорим только об HTML
+>- При сборке .Rmd разметка markdown заменяется HTML тегами
+>- Но теги можно использовать и напрямую
+>- `<u>Подчёркнутый текст</u>` --> <u>Подчёркнутый текст</u>
+## CSS
+
+>- CSS -- способ изменять стили отображения элементов, не меняя текст markdown-файла
+>- Уровень абстракции: разметка отдельно, стили отдельно
+. . .
+
+```
+output:
+  html_document:
+    css: styles.css
+```
+
+## HTML-презентации
+
+>- ioslides, slidy, revealjs (+ beamer)
+>- Слайды отделяются друг от друга заголовками первого и второго уровней
+>- Или принудительно при помощи строки из дефисов: `----`
+>- У каждого формата свои удобства для показа, визуального оформления, конфигурации и т.п.
+## ggvis
+
+>- HTML хорош тем, что он может быть интерактивным за счёт javascript
+>- ggvis -- это "web-friendly" наследник ggplot2
+>- Синтаксис очень похож:
+```
+library(ggplot2)
+ggplot(mtcars, aes(x = wt, y = mpg, color = factor(cyl))) +
+  geom_point(size = 5)
+```
+
+. . .
+
+```
+library(ggvis)
+ggvis(mtcars, x = ~wt, y = ~mpg, fill = ~factor(cyl)) %>%
+  layer_points(size := 100)
+```
+
+
+# 06-html-demo.Rmd
+
+---
+title: "Analyzing trends in Canadian glacier mass"
+author: "Anton Antonov"
+output:
+  html_document:
+    toc_float: yes
+  pdf_document:
+    keep_tex: yes
+    toc: yes
+params:
+  filename: glacier.csv
+bibliography: bibl.bib
+urlcolor: blue
+---
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(tidyr)
+library(xtable)
+library(ggvis)
+options(scipen = 0, digits = 3)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+## Introduction
+
+The data used in this study is taken from <http://open.canada.ca/en/open-data>[^1]. The algorithm is taken from @AntonovErmakov_RandomCubaturesQMC.
+
+[^1]: Here is the [direct link](http://open.canada.ca/data/en/dataset/b52664cf-bfd9-49ad-849a-cb88c92553b9) to data download.
+
+```{r}
+glacier <- read.csv(params$filename, na.strings = "..", comment.char = "#")
+```
+
+The data set contains `r nrow(glacier)` measurements of `r nlevels(glacier$GEO)` Canadian glacier mass balance, collected from `r min(glacier$Ref_Date)` till `r max(glacier$Ref_Date)`. Namely, the file includes these glaciers:
+
+```{r, comment=""}
+levels(glacier$GEO)
+```
+
+## Hypothesis
+
+We are interested in finding out whether there is a statistically significant change in mass balance over the observed time period. For these purposes we use **R** (version `r getRversion()`) and an appropriate statistical test called _t-test_: $$t = \frac{\overline{x} - \mu_0}{s/\sqrt{n}}.$$
+
+The workflow is as follows:
+
+1. Read the file and run data validation;
+2. Run t-test for each glacier and collect p-values;
+3. Support the evidence with
+    + a table of results;
+    + a plot that could help compare different glaciers.
+    
+## Analysis
+
+```{r analysis, cache=TRUE}
+glacier <- glacier %>%
+  select(Ref_Date, GEO, MEASURE, Value) %>% 
+  filter(MEASURE == "Annual mass balance") %>% 
+  separate(GEO, c("Name", "Location"), sep = " - ")
+
+g1 <- glacier %>%
+  group_by(Name) %>% 
+  summarise(YearsObserved = n(), 
+            MeanChange = mean(Value, na.rm = T), 
+            WorstChange = min(Value, na.rm = T),
+            WorstYear = Ref_Date[which.min(Value)])
+
+g2 <- glacier %>% 
+  group_by(Name) %>% 
+  do({
+    tt <- t.test(.$Value, alternative = "less", mu = 0, conf.level = 0.99)
+    data.frame(PValue = tt$p.value, 
+               ConfidenceLimit = tt$conf.int[2])
+    })
+
+left_join(g1, g2, by = "Name") %>% 
+  knitr::kable(caption = "Descriptive statistics and confidence intervals", 
+               digits = c(0, 0, 2, 0, 0, 10, 2))
+```
+
+```{r ggvis, fig.width=8, fig.height=6}
+ggvis(glacier, ~Ref_Date, ~Value, stroke = ~Name) %>% 
+  layer_lines() 
+```
+
+The conducted analysis supports the evidence that Canadian glaciers are <u>melting</u>.
+
+## Bibliography
+
+
+# _output.yaml
+evealjs::revealjs_presentation:
+    theme: serif
+    highlight: tango
+    center: true
+    transition: fade
+    pandoc_args: [ 
+      "--include-in-header", "custom.css"
+    ]
+Footer
+
+# custom.css
+
+<style type="text/css">
+.reveal .slide h1 { font-size: 150%; text-decoration: underline; }
+.reveal .slide h2 { font-size: 150%; text-decoration: underline; }
+
+body {
+  background: #8080ff;
+  background-color: #8080ff;
+}
+
+.reveal h1,
+.reveal h2 {
+  margin: 0 0 40px 0;
+  color: #000000;
+  font-family: Ubuntu, sans-serif;
+  line-height: 0.9em; 
+}
+
+.reveal .slides section .fragment {
+  opacity: 0.1;
+  visibility: visible;
+}
+
+.reveal p { 
+  text-align: left; 
+  font-family: Ubuntu, sans-serif; 
+}
+
+.reveal center { 
+  font-family: Ubuntu, sans-serif; 
+}
+
+.reveal ul { 
+  list-style-type: square;  
+  text-align: left; 
+  font-family: Ubuntu, sans-serif; 
+}
+
+.reveal ol { 
+  padding-left: 1.5em;
+  text-align: left; 
+  font-family: Ubuntu, sans-serif; 
+}
+
+.reveal code {
+  background: #ffffff;
+  color: #000000;
+  font-family: Ubuntu Mono, monospace;
+}
+
+.reveal pre code {
+  display: block; 
+  padding: 0.5em;
+  background: #ffffff;
+  color: #000000;
+  font-family: Ubuntu Mono, monospace;
+}
+
+</style>
+
+# analysis.R
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

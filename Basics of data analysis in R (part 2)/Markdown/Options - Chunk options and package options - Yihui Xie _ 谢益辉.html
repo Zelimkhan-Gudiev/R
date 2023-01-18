@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<!-- saved from url=(0032)https://yihui.org/knitr/options/ -->
+<html lang="en-us"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style id="giscus-css">
+  .giscus, .giscus-frame {
+    width: 100%;
+    min-height: 150px;
+  }
+
+  .giscus-frame {
+    border: none;
+    color-scheme: light dark;
+  }
+  .giscus-frame--loading {
+    opacity: 0;
+  }
+</style>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Options - Chunk options and package options  - Yihui Xie | 谢益辉</title>
+    <meta property="og:title" content="Options - Yihui Xie | 谢益辉">
+    
+    <meta name="twitter:card" content="summary">
+
+    
+      
+    
+
+    
+      
+      <meta property="description" content="The knitr package provides a lot of chunk options for customizing nearly all components of code chunks, such as the source code, text output, plots, and the language of the chunk. It also offers some &amp;hellip;">
+      <meta property="og:description" content="The knitr package provides a lot of chunk options for customizing nearly all components of code chunks, such as the source code, text output, plots, and the language of the chunk. It also offers some &amp;hellip;">
+      
+    
+
+    
+    
+    
+    <meta name="twitter:image" content="https://yihui.org/images/logo.png">
+    
+    
+
+    
+
+    
+    
+
+
+<link rel="stylesheet" href="./Options - Chunk options and package options - Yihui Xie _ 谢益辉_files/heetch-light.min.css">
+
+
+
+    <link rel="stylesheet" href="./Options - Chunk options and package options - Yihui Xie _ 谢益辉_files/style.css">
+    <link rel="stylesheet" href="./Options - Chunk options and package options - Yihui Xie _ 谢益辉_files/fonts.css">
+    
+
+
+
+
+
+
+<link rel="stylesheet" href="./Options - Chunk options and package options - Yihui Xie _ 谢益辉_files/custom.css">
+
+  <style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+
+  
+  <body class="knitr"><div id="MathJax_Message" style="display: none;"></div>
+    <header class="masthead">
+      
+
+<h1><a href="https://yihui.org/knitr/" style="border: none;"><img src="./Options - Chunk options and package options - Yihui Xie _ 谢益辉_files/knit-logo.png" alt="knitr logo" title="knitr logo"></a></h1>
+<p class="tagline">knitr: elegant, flexible, and fast dynamic report generation with R</p>
+
+
+      <nav class="menu">
+  <ul>
+  
+  
+  <li><a href="https://yihui.org/knitr/">Home</a></li>
+  
+  <li class="active"><a href="https://yihui.org/knitr/options/">Options</a></li>
+  
+  <li><a href="https://yihui.org/knitr/hooks/">Hooks</a></li>
+  
+  <li><a href="https://yihui.org/knitr/demo/">Examples</a></li>
+  
+  <li><a href="https://yihui.org/knitr/faq/">FAQ</a></li>
+  
+  <li><a href="https://github.com/yihui/knitr" target="_blank">Github repo</a></li>
+  
+  <li><a href="https://yihui.org/">Yihui Xie</a></li>
+  
+  
+
+<li class="menu-extra"></li>
+
+
+
+<li><a href="https://github.com/yihui/yihui.org/edit/master/content/knitr/options.md" target="_blank">Edit this page</a></li>
+
+
+<li><a href="https://yihui.org/knitr/index.xml" type="application/rss+xml" title="RSS feed">Subscribe</a></li>
+
+<li><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" title="Attribution-NonCommercial-ShareAlike 4.0 International" target="_blank">License</a></li>
+
+
+  </ul>
+</nav>
+
+    </header>
+
+    <article class="main">
+      <header class="title">
+      
+<h1>Options</h1>
+<h1><span class="subtitle">Chunk options and package options</span></h1>
+
+<h3>
+2020-06-30</h3>
+
+<hr>
+
+
+      </header>
+
+
+ <nav id="TableOfContents">
+
+<ul>
+<li><a href="https://yihui.org/knitr/options/#chunk-options">Chunk Options</a>
+<ul>
+<li><a href="https://yihui.org/knitr/options/#code-evaluation">Code evaluation</a></li>
+<li><a href="https://yihui.org/knitr/options/#text-output">Text output</a></li>
+<li><a href="https://yihui.org/knitr/options/#code-decoration">Code decoration</a></li>
+<li><a href="https://yihui.org/knitr/options/#cache">Cache</a></li>
+<li><a href="https://yihui.org/knitr/options/#plots">Plots</a></li>
+<li><a href="https://yihui.org/knitr/options/#animation">Animation</a></li>
+<li><a href="https://yihui.org/knitr/options/#code-chunk">Code chunk</a></li>
+<li><a href="https://yihui.org/knitr/options/#child-documents">Child documents</a></li>
+<li><a href="https://yihui.org/knitr/options/#language-engines">Language engines</a></li>
+<li><a href="https://yihui.org/knitr/options/#option-templates">Option templates</a></li>
+<li><a href="https://yihui.org/knitr/options/#extracting-source-code">Extracting source code</a></li>
+<li><a href="https://yihui.org/knitr/options/#other-chunk-options">Other chunk options</a></li>
+</ul></li>
+<li><a href="https://yihui.org/knitr/options/#package-options">Package Options</a></li>
+<li><a href="https://yihui.org/knitr/options/#global-r-options">Global R Options</a></li>
+</ul>
+</nav> 
+
+
+
+
+<p>The <strong>knitr</strong> package provides a lot of chunk options for customizing nearly all
+components of code chunks, such as the source code, text output, plots, and the
+language of the chunk. It also offers some options at the package level to
+customize the knitting process. This page documents all chunk options and
+package options available in <strong>knitr</strong>. The default values of these options are
+in parentheses in the list items.</p>
+
+<h2 id="chunk-options">Chunk Options <span class="anchor"><a href="https://yihui.org/knitr/options/#chunk-options">#</a></span></h2>
+
+<p>Chunk options are written in chunk headers. The syntax for chunk headers depends
+on the document format, e.g., for <code>.Rnw</code> documents (R + LaTeX), chunk headers
+are written with <code>&lt;&lt; &gt;&gt;=</code>, and for <code>.Rmd</code> documents, chunk headers are written
+with <code>```{r}</code>. The examples below are primarily for <code>.Rmd</code> documents (R
+Markdown), but in most cases, the chunk options can be used with any document
+format.</p>
+
+<p>Chunk options are written in the form <code>tag=value</code> like this:</p>
+
+<pre><code class="language-md hljs language-markdown"><span class="hljs-code">```{r, my-chunk, echo=FALSE, fig.height=4, dev='jpeg'}
+```</span>
+</code></pre>
+
+<p>A special chunk option is the chunk label (e.g., <code>my-chunk</code> in the above
+example). Only the chunk label does not need a <code>tag</code> (i.e., you only provide the
+<code>value</code>). If you prefer the form <code>tag=value</code>, you could also use the chunk
+option <code>label</code> explicitly, e.g.,</p>
+
+<pre><code class="language-md hljs language-markdown"><span class="hljs-code">```{r, label='my-chunk'}
+```</span>
+</code></pre>
+
+<p>The chunk label for each chunk is assumed to be unique within the document. This
+is especially important for cache and plot filenames, because these filenames
+are based on chunk labels. Chunks without labels will be assigned labels like
+<code>unnamed-chunk-i</code>, where <code>i</code> is an incremental number.</p>
+
+<p>You may use <code>knitr::opts_chunk$set()</code> to change the default values of chunk
+options in a document. For example, you may put this in the first code chunk of
+your document:</p>
+
+<pre><code class="language-md hljs language-markdown"><span class="hljs-code">```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = '', fig.width = 6, fig.height = 6
+)
+```</span>
+</code></pre>
+
+<p>Below are a few more tips about chunk options:</p>
+
+<ol>
+<li><p>The chunk header must be written on one line. You must not break the line.</p></li>
+
+<li><p>Try to avoid spaces, periods (<code>.</code>), and underscores (<code>_</code>) in chunk labels
+and paths. If you need separators, you are recommended to use hyphens (<code>-</code>)
+instead. For example, <code>setup-options</code> is a good label, whereas
+<code>setup.options</code> and <code>chunk 1</code> are bad; <code>fig.path = 'figures/mcmc-'</code> is a
+good path for figure output, and <code>fig.path = 'markov chain/monte carlo'</code> is
+bad.</p></li>
+
+<li><p>All option values must be <em>valid R expressions</em>. You may think of them as
+values to be passed to function arguments.</p>
+
+<ul>
+<li>For example, options that take <em>character</em> values must be quoted, e.g.,
+<code>results = 'asis'</code> and <code>out.width = '\\textwidth'</code> (remember that a
+literal backslash needs double backslashes).</li>
+<li>In theory, the chunk label should be quoted, too. However, for the sake
+of convenience, it will be automatically quoted if you did not (e.g.,
+<code>```{r, 2a}</code> will parsed as <code>```{r, '2a'}</code>).</li>
+<li>You can write arbitrarily complicated expressions as long as they are
+valid R code.</li>
+</ul></li>
+</ol>
+
+<p>Alternatively, you can write chunk options in the body of a code chunk after
+<code>#|</code>, e.g.,</p>
+
+<pre><code class="language-md hljs language-markdown"><span class="hljs-code">```{r}
+#| my-chunk, echo = FALSE, fig.width = 10,
+#| fig.cap = "This is a long long
+#|   long long caption."
+
+plot(cars)
+```</span>
+</code></pre>
+
+<p>For this syntax, chunk options must be written on <em>continuous</em> lines (i.e., all
+lines must start with the special comment prefix such as <code>⁠#|⁠</code>) at the beginning
+of the chunk body. The blank line between the options and code is optional. This
+syntax allows for hard-wrapping the options. You can break the options onto as
+many lines as you wish. If the same option is provided in both the chunk body
+and in the chunk header (inside <code>```{}</code>), the former will override the
+latter. You can also use the YAML syntax to write options inside a chunk in the
+form <code>tag: value</code>. Normally you have to provide only one option per line, e.g.,</p>
+
+<pre><code class="language-md hljs language-markdown"><span class="hljs-code">```{r}
+#| echo: false
+#| fig.width: 10
+```</span>
+</code></pre>
+
+<p>If you choose to use the YAML syntax, the option values must be valid YAML
+values instead of raw R expressions.</p>
+
+<p>Below is a list of chunk options in <strong>knitr</strong> documented in the format
+“<code>option</code>: (<code>default value</code>; type of value)“.</p>
+
+<h3 id="code-evaluation">Code evaluation <span class="anchor"><a href="https://yihui.org/knitr/options/#code-evaluation">#</a></span></h3>
+
+<ul>
+<li><code>eval</code>: (<code>TRUE</code>; logical or numeric) Whether to evaluate the code chunk. It
+can also be a numeric vector to choose which R expression(s) to evaluate,
+e.g., <code>eval = c(1, 3, 4)</code> will evaluate the first, third, and fourth
+expressions, and <code>eval = -(4:5)</code> will evaluate all expressions except the
+fourth and fifth.</li>
+</ul>
+
+<h3 id="text-output">Text output <span class="anchor"><a href="https://yihui.org/knitr/options/#text-output">#</a></span></h3>
+
+<ul>
+<li><p><code>echo</code>: (<code>TRUE</code>; logical or numeric) Whether to display the source code in
+the output document. Besides <code>TRUE</code>/<code>FALSE</code>, which shows/hides the source
+code, we can also use a numeric vector to choose which R expression(s) to
+echo in a chunk, e.g., <code>echo = 2:3</code> means to echo only the 2nd and 3rd
+expressions, and <code>echo = -4</code> means to exclude the 4th expression.</p></li>
+
+<li><p><code>results</code>: (<code>'markup'</code>; character) Controls how to display the text results.
+Note that this option only applies to normal text output (not warnings,
+messages, or errors). The possible values are as follows:</p>
+
+<ul>
+<li><p><code>markup</code>: Mark up text output with the appropriate environments
+depending on the output format. For example, for R Markdown, if the text
+output is a character string <code>"[1] 1 2 3"</code>, the actual output that
+<strong>knitr</strong> produces will be:</p>
+
+<pre><code class="language-md hljs language-markdown"><span class="hljs-code">```
+[1] 1 2 3
+```</span>
+</code></pre>
+
+<p>In this case, <code>results='markup'</code> means to put the text output in fenced
+code blocks (<code>```</code>).</p></li>
+
+<li><p><code>asis</code>: Write text output as-is, i.e., write the raw text results
+directly into the output document without any markups.</p>
+
+<pre><code class="language-md hljs language-markdown"><span class="hljs-code">```{r, results='asis'}
+cat("I'm raw **Markdown** content.\n")
+```</span>
+</code></pre></li>
+
+<li><p><code>hold</code>: Hold all pieces of text output in a chunk and flush them to the
+end of the chunk.</p></li>
+
+<li><p><code>hide</code> (or <code>FALSE</code>): Hide text output.</p></li>
+</ul></li>
+
+<li><p><code>collapse</code>: (<code>FALSE</code>; logical) Whether to, if possible, collapse all the
+source and output blocks from one code chunk into a single block (by
+default, they are written to separate blocks). This option only applies to
+Markdown documents.</p></li>
+
+<li><p><code>warning</code>: (<code>TRUE</code>; logical) Whether to preserve warnings (produced by
+<code>warning()</code>) in the output. If <code>FALSE</code>, all warnings will be suppressed. It
+can also take numeric values as indices to select a subset of warnings to
+include in the output. Note that these values reference the indices of the
+warnings themselves (e.g., <code>3</code> means “the third warning thrown from this
+chunk”) and not the indices of which expressions are allowed to emit
+warnings.</p></li>
+
+<li><p><code>error</code>: (<code>TRUE</code>; logical) Whether to preserve errors (from <code>stop()</code>). By
+default, the code evaluation will not stop even in case of errors! If we
+want to stop on errors, we need to set this option to <code>FALSE</code>. Note that R
+Markdown has changed this default value to <code>FALSE</code>. When the chunk option
+<code>include = FALSE</code>, <strong>knitr</strong> will stop on error, because it is easy to
+overlook potential errors in this case (if you understand this caveat and
+want to ignore potential errors anyway, you may set <code>error = 0</code>).</p></li>
+
+<li><p><code>message</code>: (<code>TRUE</code>; logical) Whether to preserve messages emitted by
+<code>message()</code> (similar to the option <code>warning</code>).</p></li>
+
+<li><p><code>include</code>: (<code>TRUE</code>; logical) Whether to include the chunk output in the
+output document. If <code>FALSE</code>, nothing will be written into the output
+document, but the code is still evaluated and plot files are generated if
+there are any plots in the chunk, so you can manually insert figures later.</p></li>
+
+<li><p><code>strip.white</code>: (<code>TRUE</code>; logical) Whether to remove blank lines in the
+beginning or end of a source code block in the output.</p></li>
+
+<li><p><code>class.output</code>: (<code>NULL</code>; character) A vector of class names to be added to
+the text output blocks. This option only works for HTML output formats in R
+Markdown. For example, with <code>class.output = c('foo', 'bar')</code>, the text
+output will be placed in <code>&lt;pre class="foo bar"&gt;&lt;/pre&gt;</code>.</p></li>
+
+<li><p><code>class.message</code>/<code>class.warning</code>/<code>class.error</code>: (<code>NULL</code>; character) Similar
+to <code>class.output</code>, but applied to messages, warnings, and errors in R
+Markdown output. Please see the “Code Decoration” section for
+<code>class.source</code>, which applies similarly to source code blocks.</p></li>
+
+<li><p><code>attr.output</code>/<code>attr.message</code>/<code>attr.warning</code>/<code>attr.error</code>: (<code>NULL</code>;
+character) Similar to the <code>class.*</code> options above, but for specifying
+arbitrary fenced code block attributes for Pandoc; <code>class.*</code> is a special
+application of <code>attr.*</code>, e.g., <code>class.source = 'numberLines'</code> is equivalent
+to <code>attr.source = '.numberLines'</code>, but <code>attr.source</code> can take arbitrary
+attribute values, e.g., <code>attr.source = c('.numberLines', 'startFrom="11"')</code>.</p></li>
+
+<li><p><code>render</code>: (<code>knitr::knit_print</code>; <code>function(x, options, ...)</code>) A function to
+print the visible values in a chunk. The value passed to the first argument
+of this function (i.e., <code>x</code>) is the value evaluated from each expression in
+the chunk. The list of current chunk options is passed to the argument
+<code>options</code>. This function is expected to return a character string. For more
+information, check out the package vignette about custom chunk rendering:
+<code>vignette('knit_print', package = 'knitr')</code>.</p></li>
+
+<li><p><code>split</code>: (<code>FALSE</code>; logical) Whether to split the output into separate files
+and include them in LaTeX by <code>\input{}</code> or HTML by <code>&lt;iframe&gt;&lt;/iframe&gt;</code>. This
+option only works for <code>.Rnw</code>, <code>.Rtex</code>, and <code>.Rhtml</code> documents.</p></li>
+</ul>
+
+<h3 id="code-decoration">Code decoration <span class="anchor"><a href="https://yihui.org/knitr/options/#code-decoration">#</a></span></h3>
+
+<ul>
+<li><p><code>tidy</code>: (<code>FALSE</code>) Whether to reformat the R code. Other possible values are
+as follows:</p>
+
+<ul>
+<li><code>TRUE</code> (equivalent to <code>tidy = 'formatR'</code>): Call the function
+<code>formatR::tidy_source()</code> to reformat the code.</li>
+<li><code>'styler'</code>: Use <code>styler::style_text()</code> to reformat the code.</li>
+<li>A custom function of the form <code>function(code, ...) {}</code> to return the
+reformatted code.</li>
+<li>If reformatting fails, the original R code will not be changed (with a
+warning).</li>
+</ul></li>
+
+<li><p><code>tidy.opts</code>: (<code>NULL</code>; list) A list of options to be passed to the function
+determined by the <code>tidy</code> option, e.g.,
+<code>tidy.opts = list(blank = FALSE, width.cutoff = 60)</code> for <code>tidy = 'formatR'</code>
+to remove blank lines and try to cut the code lines at 60 characters.</p></li>
+
+<li><p><code>prompt</code>: (<code>FALSE</code>; logical) Whether to add the prompt characters in the R
+code. See <code>prompt</code> and <code>continue</code> on the help page <code>?base::options</code>. Note
+that adding prompts can make it difficult for readers to copy R code from
+the output, so <code>prompt = FALSE</code> may be a better choice. This option may not
+work well when the chunk option <code>engine</code> is not <code>R</code>
+(<a href="https://github.com/yihui/knitr/issues/1274" target="_blank">#1274</a>).</p></li>
+
+<li><p><code>comment</code>: (<code>'##'</code>; character) The prefix to be added before each line of
+the text output. By default, the text output is commented out by <code>##</code>, so if
+readers want to copy and run the source code from the output document, they
+can select and copy everything from the chunk, since the text output is
+masked in comments (and will be ignored when running the copied text). Set
+<code>comment = ''</code> remove the default <code>##</code>.</p></li>
+
+<li><p><code>highlight</code>: (<code>TRUE</code>; logical) Whether to syntax highlight the source code.</p></li>
+
+<li><p><code>class.source</code>: (NULL; character) Class names for source code blocks in the
+output document. Similar to the <code>class.*</code> options for output such as
+<code>class.output</code>.</p></li>
+
+<li><p><code>attr.source</code>: (<code>NULL</code>; character) Attributes for source code blocks.
+Similar to the <code>attr.*</code> options for output such as <code>attr.output</code>.</p></li>
+
+<li><p><code>lang</code>: (<code>NULL</code>; character) The language name of a code chunk. By default,
+the language name is the engine name, e.g., <code>r</code>. This option is primarily
+for syntax highlighting of Markdown-based output documents.</p></li>
+
+<li><p><code>size</code>: (<code>'normalsize'</code>; character) Font size of the chunk output from
+<code>.Rnw</code> documents. See <a href="https://www.overleaf.com/learn/latex/Font_sizes,_families,_and_styles" target="_blank">this
+page</a>
+for possible sizes.</p></li>
+
+<li><p><code>background</code>: (<code>'#F7F7F7'</code>; character) Background color of the chunk output
+of <code>.Rnw</code> documents.</p></li>
+
+<li><p><code>indent</code>: (character) A string to be added to each line of the chunk output.
+Typically it consists of white spaces. This option is assumed to be
+read-only, and <strong>knitr</strong> sets its value while parsing the document. For
+example, for the chunk below, <code>indent</code> is a character string of two spaces:</p>
+
+<pre><code class="language-markdown hljs"><span class="hljs-code">```{r}
+rnorm(10)
+```</span>
+</code></pre></li>
+</ul>
+
+<h3 id="cache">Cache <span class="anchor"><a href="https://yihui.org/knitr/options/#cache">#</a></span></h3>
+
+<ul>
+<li><p><code>cache</code>: (<code>FALSE</code>; logical) Whether to cache a code chunk. When evaluating
+code chunks for the second time, the cached chunks are skipped (unless they
+have been modified), but the objects created in these chunks are loaded from
+previously saved databases (<code>.rdb</code> and <code>.rdx</code> files), and these files are
+saved when a chunk is evaluated for the first time, or when cached files are
+not found (e.g., you may have removed them by hand). Note that the filename
+consists of the chunk label with an MD5 digest of the R code and chunk
+options of the code chunk, which means any changes in the chunk will produce
+a different MD5 digest, and hence invalidate the cache. See more information
+on <a href="https://yihui.org/knitr/demo/cache/">this page.</a></p></li>
+
+<li><p><code>cache.path</code>: (<code>'cache/'</code>; character) A prefix to be used to generate the
+paths of cache files. For R Markdown, the default value is based on the
+input filename, e.g., the cache paths for the chunk with the label <code>FOO</code> in
+the file <code>INPUT.Rmd</code> will be of the form <code>INPUT_cache/FOO_*.*</code>.</p></li>
+
+<li><p><code>cache.vars</code>: (<code>NULL</code>; character) A vector of variable names to be saved in
+the cache database. By default, all variables created in the current chunks
+are identified and saved, but you may want to manually specify the variables
+to be saved, because the automatic detection of variables may not be robust,
+or you may want to save only a subset of variables.</p></li>
+
+<li><p><code>cache.globals</code>: (<code>NULL</code>; character) A vector of the names of variables that
+are not created from the current chunk. This option is mainly for
+<code>autodep = TRUE</code> to work more precisely—a chunk <code>B</code> depends on chunk <code>A</code>
+when any of <code>B</code>’s global variables are <code>A</code>’s local variables. In case the
+automatic detection of global variables (i.e., when <code>cache.globals = NULL</code>
+or <code>TRUE</code>) in a chunk fails, you may manually specify the names of global
+variables via this option (see
+<a href="https://github.com/yihui/knitr/issues/1403" target="_blank">#1403</a> for an example). In
+addition, <code>cache.globals = FALSE</code> means detecting all variables in a code
+chunk, no matter if they are global or local variables.</p></li>
+
+<li><p><code>cache.lazy</code>: (<code>TRUE</code>; logical) Whether to <code>lazyLoad()</code> or directly <code>load()</code>
+objects. For very large objects, lazyloading may not work, so
+<code>cache.lazy = FALSE</code> may be desirable (see
+<a href="https://github.com/yihui/knitr/issues/572" target="_blank">#572</a>).</p></li>
+
+<li><p><code>cache.comments</code>: (<code>NULL</code>; logical) If <code>FALSE</code>, changing comments in R code
+chunks will not invalidate the cache database.</p></li>
+
+<li><p><code>cache.rebuild</code>: (<code>FALSE</code>; logical) If <code>TRUE</code>, reevaluate the chunk even if
+the cache does not need to be invalidated. This can be useful when you want
+to conditionally invalidate the cache, e.g.,
+<code>cache.rebuild = !file.exists("some-file")</code> can rebuild the chunk when
+<code>some-file</code> does not exist (see
+<a href="https://github.com/yihui/knitr/issues/238" target="_blank">#238</a>).</p></li>
+
+<li><p><code>dependson</code>: (<code>NULL</code>; character or numeric) A character vector of chunk
+labels to specify which other chunks this chunk depends on. This option
+applies to cached chunks only—sometimes the objects in a cached chunk may
+depend on other cached chunks, so when other chunks are changed, this chunk
+must be updated accordingly.</p>
+
+<ul>
+<li>If <code>dependson</code> is a numeric vector, it means the indices of chunk
+labels, e.g., <code>dependson = 1</code> means this chunk depends on the first
+chunk in the document, and <code>dependson = c(-1, -2)</code> means it depends on
+the previous two chunks (negative indices stand for numbers of chunks
+before this chunk, and note they are always relative to the current
+chunk).</li>
+<li>Please note this option does not work when set as a global chunk option
+via <code>opts_chunk$set()</code>; it must be set as a local chunk option.</li>
+</ul></li>
+
+<li><p><code>autodep</code>: (<code>FALSE</code>; logical) Whether to analyze dependencies among chunks
+automatically by detecting global variables in the code (may not be
+reliable), so <code>dependson</code> does not need to be set explicitly.</p></li>
+</ul>
+
+<h3 id="plots">Plots <span class="anchor"><a href="https://yihui.org/knitr/options/#plots">#</a></span></h3>
+
+<ul>
+<li><p><code>fig.path</code>: (<code>'figure/'</code>; character) A prefix to be used to generate figure
+file paths. <code>fig.path</code> and chunk labels are concatenated to generate the
+full paths. It may contain a directory like <code>figure/prefix-</code>; the directory
+will be created if it does not exist.</p></li>
+
+<li><p><code>fig.keep</code>: (<code>'high'</code>; character) How plots in chunks should be kept.
+Possible values are as follows:</p>
+
+<ul>
+<li><code>high</code>: Only keep high-level plots (merge low-level changes into
+high-level plots).</li>
+<li><code>none</code>: Discard all plots.</li>
+<li><code>all</code>: Keep all plots (low-level plot changes may produce new plots).</li>
+<li><code>first</code>: Only keep the first plot.</li>
+<li><code>last</code>: Only keep the last plot.</li>
+<li>If set to a numeric vector, the values are indices of (low-level) plots
+to keep.</li>
+</ul>
+
+<p>Low-level plotting commands include <code>lines()</code> and <code>points()</code>, etc. To better
+understand <code>fig.keep</code>, consider the following chunk:</p>
+
+<pre><code class="language-md hljs language-markdown"><span class="hljs-code">```{r, test-plot}
+plot(1)         # high-level plot
+abline(0, 1)    # low-level change
+plot(rnorm(10)) # high-level plot
+# many low-level changes in a loop (a single R expression)
+for(i in 1:10) {
+    abline(v = i, lty = 2)
+}
+```</span>
+</code></pre>
+
+<p>Normally this produces 2 plots in the output (because <code>fig.keep = 'high'</code>).
+For <code>fig.keep = 'none'</code>, no plots will be saved. For <code>fig.keep = 'all'</code>, 4
+plots are saved. For <code>fig.keep = 'first'</code>, the plot produced by <code>plot(1)</code> is
+saved. For <code>fig.keep = 'last'</code>, the last plot with 10 vertical lines is
+saved.</p></li>
+
+<li><p><code>fig.show</code>: (<code>'asis'</code>; character) How to show/arrange the plots. Possible
+values are as follows:</p>
+
+<ul>
+<li><code>asis</code>: Show plots exactly in places where they were generated (as if
+the code were run in an R terminal).</li>
+<li><code>hold</code>: Hold all plots and output them at the end of a code chunk.</li>
+<li><code>animate</code>: Concatenate all plots into an animation if there are multiple
+plots in a chunk.</li>
+<li><code>hide</code>: Generate plot files but hide them in the output document.</li>
+</ul></li>
+
+<li><p><code>dev</code>: (<code>'pdf'</code> for LaTeX output and <code>'png'</code> for HTML/Markdown; character)
+The graphical device to generate plot files. All graphics devices in base R
+and those in <strong>Cairo</strong>, <strong>svglite</strong>, <strong>ragg</strong>, and <strong>tikzDevice</strong> are
+supported, e.g., <code>pdf</code>, <code>png</code>, <code>svg</code>, <code>jpeg</code>, <code>tiff</code>, <code>cairo_pdf</code>,
+<code>CairoJPEG</code>, <code>CairoPNG</code>, <code>svglite</code>, <code>gridSVG</code>, <code>ragg_png</code>, <code>tikz</code>, and so
+on. See <code>names(knitr:::auto_exts)</code> for the full list. Besides these devices,
+you can also provide a character string that is the name of a function of
+the form <code>function(filename, width, height)</code>. The units for the image size
+are <em>always</em> inches (even for bitmap devices, in which DPI is used to
+convert between pixels and inches).</p>
+
+<p>The chunk options <code>dev</code>, <code>fig.ext</code>, <code>fig.width</code>, <code>fig.height</code>, and <code>dpi</code> can
+be vectors (shorter ones will be recycled), e.g., <code>dev = c('pdf', 'png')</code>
+creates a <code>PDF</code> and a <code>PNG</code> file for the same plot.</p></li>
+
+<li><p><code>dev.args</code>: (<code>NULL</code>; list) More arguments to be passed to the device, e.g.,
+<code>dev.args = list(bg = 'yellow', pointsize = 10)</code> for <code>dev = 'png'</code>. This
+option depends on the specific device (see the device documentation). When
+<code>dev</code> contains multiple devices, <code>dev.args</code> can be a list of lists of
+arguments, and each list of arguments is passed to each individual device,
+e.g.,
+<code>dev = c('pdf', 'tiff'), dev.args = list(pdf = list(colormodel = 'cmyk', useDingats = TRUE), tiff = list(compression = 'lzw'))</code>.</p></li>
+
+<li><p><code>fig.ext</code>: (<code>NULL</code>; character) File extension of the figure output. If
+<code>NULL</code>, it will be derived from the graphical device; see
+<code>knitr:::auto_exts</code> for details.</p></li>
+
+<li><p><code>dpi</code>: (<code>72</code>; numeric) The DPI (dots per inch) for bitmap devices
+(<code>dpi * inches = pixels</code>).</p></li>
+
+<li><p><code>fig.width</code>, <code>fig.height</code>: (both are <code>7</code>; numeric) Width and height of the
+plot (in inches), to be used in the graphics device.</p></li>
+
+<li><p><code>fig.asp</code>: (<code>NULL</code>; numeric) The aspect ratio of the plot, i.e., the ratio
+of height/width. When <code>fig.asp</code> is specified, the height of a plot (the
+chunk option <code>fig.height</code>) is calculated from <code>fig.width * fig.asp</code>.</p></li>
+
+<li><p><code>fig.dim</code>: (<code>NULL</code>; numeric) A numeric vector of length 2 to provide
+<code>fig.width</code> and <code>fig.height</code>, e.g., <code>fig.dim = c(5, 7)</code> is a shorthand of
+<code>fig.width = 5, fig.height = 7</code>. If both <code>fig.asp</code> and <code>fig.dim</code> are
+provided, <code>fig.asp</code> will be ignored (with a warning).</p></li>
+
+<li><p><code>out.width</code>, <code>out.height</code>: (<code>NULL</code>; character) Width and height of the plot
+in the output document, which can be different with its physical <code>fig.width</code>
+and <code>fig.height</code>, i.e., plots can be scaled in the output document.
+Depending on the output format, these two options can take special values.
+For example, for LaTeX output, they can be <code>.8\\linewidth</code>, <code>3in</code>, or <code>8cm</code>;
+for HTML, they may be <code>300px</code>. For <code>.Rnw</code> documents, the default value for
+<code>out.width</code> will be changed to <code>\\maxwidth</code>, which is defined <a href="https://yihui.org/knitr/demo/framed/">on this
+page.</a> It can also be a percentage, e.g., <code>'40%'</code> will be
+translated to <code>0.4\linewidth</code> when the output format is LaTeX.</p></li>
+
+<li><p><code>out.extra</code>: (<code>NULL</code>; character) Extra options for figures. It can be an
+arbitrary string, to be inserted in <code>\includegraphics[]</code> in LaTeX output
+(e.g., <code>out.extra = 'angle=90'</code> to rotate the figure by 90 degrees), or
+<code>&lt;img /&gt;</code> in HTML output (e.g.,
+<code>out.extra = 'style="border:5px solid orange;"'</code>).</p></li>
+
+<li><p><code>fig.retina</code>: (<code>1</code>; numeric) This option only applies to HTML output. For
+<a href="https://en.wikipedia.org/wiki/Retina_Display" target="_blank">Retina displays,</a> setting this
+option to a ratio (usually 2) will change the chunk option <code>dpi</code> to
+<code>dpi * fig.retina</code>, and <code>out.width</code> to <code>fig.width * dpi / fig.retina</code>
+internally. For example, the physical size of an image is doubled, and its
+display size is halved when <code>fig.retina = 2</code>.</p></li>
+
+<li><p><code>resize.width</code>, <code>resize.height</code>: (<code>NULL</code>; character) The width and height to
+be used in <code>\resizebox{}{}</code> in LaTeX output. These two options are not
+needed unless you want to resize TikZ graphics, because there is no natural
+way to do it. However, according to the <strong>tikzDevice</strong> authors, TikZ
+graphics are not meant to be resized, to maintain consistency in style with
+other text in LaTeX. If only one of them is <code>NULL</code>, <code>!</code> will be used (read
+the documentation of <strong>graphicx</strong> if you do not understand this).</p></li>
+
+<li><p><code>fig.align</code>: (<code>'default'</code>; character) Alignment of figures in the output
+document. Possible values are <code>default</code>, <code>left</code>, <code>right</code>, and <code>center</code>. The
+default is not to make any alignment adjustments.</p></li>
+
+<li><p><code>fig.link</code>: (<code>NULL</code>; character) A link to be added onto the figure.</p></li>
+
+<li><p><code>fig.env</code>: (<code>'figure'</code>; character) The LaTeX environment for figures, e.g.,
+you may set <code>fig.env = 'marginfigure'</code> to get <code>\begin{marginfigure}</code>. This
+option requires <code>fig.cap</code> be specified.</p></li>
+
+<li><p><code>fig.cap</code>: (<code>NULL</code>; character) A figure caption.</p></li>
+
+<li><p><code>fig.alt</code>: (<code>NULL</code>; character) The alternative text to be used in the <code>alt</code>
+attribute of the <code>&lt;img&gt;</code> tags of figures in HTML output. By default, the
+chunk option <code>fig.cap</code> will be used as the alternative text if provided.</p></li>
+
+<li><p><code>fig.scap</code>: (<code>NULL</code>; character) A short caption. This option is only
+meaningful to LaTeX output. A short caption is inserted in <code>\caption[]</code>, and
+usually displayed in the “List of Figures” of a PDF document.</p></li>
+
+<li><p><code>fig.lp</code>: (<code>'fig:'</code>; character) A label prefix for the figure label to be
+inserted in <code>\label{}</code>. The actual label is made by concatenating this
+prefix and the chunk label, e.g., the figure label for
+<code>```{r, foo-plot}</code> will be <code>fig:foo-plot</code> by default. Note that the
+insertion of <code>\label{}</code> depends on the chunk being rendered as LaTeX (see
+<a href="https://github.com/rstudio/rmarkdown/issues/2391" target="_blank">this issue</a>).</p></li>
+
+<li><p><code>fig.id</code>: (<code>NULL</code>; logical) When <code>TRUE</code>, automatic IDs will be assigned to
+images generated from code chunks in R Markdown, i.e., images will be
+written in HTML code like <code>&lt;img id="..." /&gt;</code>. The default ID consists of
+<code>fig.lp</code> (a prefix), <code>label</code> (the chunk label), and <code>fig.cur</code> (the current
+figure number in the chunk). Any non-alphanumeric characters in the ID will
+be substituted with dashes, e.g., <code>'fig:hello world 1'</code> will become
+<code>'fig-hello-world-1'</code>. Alternatively, users can provide a function to
+generate the ID. The function takes the list of the current chunk options as
+the input and should return a character string, e.g.,
+<code>fig.id = function(options) { paste0('img-', options$label, options$fig.cur) }</code>.</p></li>
+
+<li><p><code>fig.pos</code>: (<code>''</code>; character) A character string for the figure position
+arrangement to be used in <code>\begin{figure}[]</code>.</p></li>
+
+<li><p><code>fig.subcap</code>: (<code>NULL</code>) Captions for subfigures. When there are multiple
+plots in a chunk, and neither <code>fig.subcap</code> nor <code>fig.cap</code> is <code>NULL</code>,
+<code>\subfloat{}</code> will be used for individual plots (you need to add
+<code>\usepackage{subfig}</code> in the preamble). See
+<a href="https://github.com/yihui/knitr-examples/blob/master/067-graphics-options.Rnw" target="_blank">067-graphics-options.Rnw</a>
+for an example.</p></li>
+
+<li><p><code>fig.ncol</code>: (<code>NULL</code>; integer) The number of columns of subfigures; see <a href="https://github.com/yihui/knitr/issues/1327#issuecomment-346242532" target="_blank">this
+issue</a>
+for examples (note that <code>fig.ncol</code> and <code>fig.sep</code> only work for LaTeX
+output).</p></li>
+
+<li><p><code>fig.sep</code>: (<code>NULL</code>; character) A character vector of separators to be
+inserted among subfigures. When <code>fig.ncol</code> is specified, <code>fig.sep</code> defaults
+to a character vector of which every N-th element is <code>\newline</code> (where <code>N</code>
+is the number of columns), e.g., <code>fig.ncol = 3</code> means
+<code>fig.sep = c('', '', '\\newline', '', '', '\\newline', '', ...)</code>. The <em>i</em>-th
+separator is added after the <em>i</em>-th subfigure, except when the length of
+<code>fig.sep</code> is greater than the number of subfigures, in which case the first
+<code>fig.sep</code> element is added before the first subfigure, and the (<em>i+1</em>)-th
+element is added after the <em>i</em>-th subfigure.</p></li>
+
+<li><p><code>fig.process</code>: (<code>NULL</code>; function) A function to post-process figure files.
+It should take the path of a figure file, and return the (new) path of the
+figure to be inserted in the output. If the function contains the <code>options</code>
+argument, the list of chunk options will be passed to this argument.</p></li>
+
+<li><p><code>fig.showtext</code>: (<code>NULL</code>; logical) If <code>TRUE</code>, call
+<code>showtext::showtext_begin()</code> before drawing plots. See the documentation of
+the <a href="https://cran.rstudio.com/package=showtext" target="_blank"><strong>showtext</strong></a> package for
+details.</p></li>
+
+<li><p><code>external</code>: (<code>TRUE</code>; logical) Whether to externalize tikz graphics
+(pre-compile tikz graphics to PDF). It is only used for the <code>tikz()</code> device
+in the <strong>tikzDevice</strong> package (i.e., when <code>dev='tikz'</code>), and it can save
+time for LaTeX compilation.</p></li>
+
+<li><p><code>sanitize</code>: (<code>FALSE</code>; character) Whether to sanitize tikz graphics (escape
+special LaTeX characters). See the documentation of the <strong>tikzDevice</strong>
+package.</p></li>
+</ul>
+
+<p>There are two hidden options that are not designed to be set by users: <code>fig.cur</code>
+(the current figure number or index when there are multiple figures), and
+<code>fig.num</code> (the total number of figures in a chunk). The purpose of these two
+options is to help <strong>knitr</strong> deal with the filenames of multiple figures as well
+as animations. In some cases, we can make use of them to write animations into
+the output using plot files that are saved manually (see the <a href="https://github.com/yihui/knitr/releases/download/doc/knitr-graphics.pdf" target="_blank">graphics
+manual</a>
+for examples).</p>
+
+<h3 id="animation">Animation <span class="anchor"><a href="https://yihui.org/knitr/options/#animation">#</a></span></h3>
+
+<ul>
+<li><p><code>interval</code>: (<code>1</code>; numeric) Time interval (number of seconds) between
+animation frames.</p></li>
+
+<li><p><code>animation.hook</code>: (<code>knitr::hook_ffmpeg_html</code>; function or character) A hook
+function to create animations in HTML output; the default hook uses FFmpeg
+to convert images to a WebM video.</p>
+
+<ul>
+<li><p>Another hook function is <code>knitr::hook_gifski</code> based on the
+<a href="https://cran.r-project.org/package=gifski" target="_blank"><strong>gifski</strong></a> package to
+create GIF animations.</p></li>
+
+<li><p>This option can also take a character string <code>'ffmpeg'</code> or <code>'gifski'</code> as
+a shorthand of the corresponding hook function, e.g.,
+<code>animation.hook = 'gifski'</code> means <code>animation.hook = knitr::hook_gifski</code>.</p></li>
+
+<li><p><code>aniopts</code>: (<code>'controls,loop'</code>; character) Extra options for animations;
+see the documentation of the LaTeX <a href="https://ctan.org/pkg/animate" target="_blank"><strong>animate</strong>
+package.</a></p></li>
+</ul></li>
+
+<li><p><code>ffmpeg.bitrate</code> (<code>1M</code>; character) To be passed to the <code>-b:v</code> argument of
+FFmpeg to control the quality of WebM videos.</p></li>
+
+<li><p><code>ffmpeg.format</code> (<code>webm</code>; character) The video format of FFmpeg, i.e., the
+filename extension of the video.</p></li>
+</ul>
+
+<h3 id="code-chunk">Code chunk <span class="anchor"><a href="https://yihui.org/knitr/options/#code-chunk">#</a></span></h3>
+
+<ul>
+<li><p><code>code</code>: (<code>NULL</code>; character) If provided, it will override the code in the
+current chunk. This allows us to programmatically insert code into the
+current chunk. For example, <code>code = readLines('test.R')</code> will use the
+content of the file <code>test.R</code> as the code for the current chunk.</p></li>
+
+<li><p><code>file</code>: (<code>NULL</code>; character) If provided, it will override the <code>code</code> option
+by reading the chunk content from external files. A chunk option
+<code>file = "test.R"</code> is equivalent to <code>code = xfun::read_all("test.R")</code>.</p></li>
+
+<li><p><code>ref.label</code>: (<code>NULL</code>; character) A character vector of labels of the chunks
+from which the code of the current chunk is inherited (see the demo for
+<a href="https://yihui.org/knitr/demo/reference/">chunk references</a>). If the vector is wrapped in <code>I()</code>
+and the chunk option <code>opts.label</code> is not set, it means that the current
+chunk will also inherit the chunk options (in addition to the code) of the
+referenced chunks. See the chunk option <code>opts.label</code> for more information on
+inheriting chunk options.</p></li>
+</ul>
+
+<h3 id="child-documents">Child documents <span class="anchor"><a href="https://yihui.org/knitr/options/#child-documents">#</a></span></h3>
+
+<ul>
+<li><code>child</code>: (<code>NULL</code>; character) A character vector of paths of child documents
+to be knitted and input into the main document.</li>
+</ul>
+
+<h3 id="language-engines">Language engines <span class="anchor"><a href="https://yihui.org/knitr/options/#language-engines">#</a></span></h3>
+
+<ul>
+<li><p><code>engine</code>: (<code>'R'</code>; character) The language name of the code chunk. Possible
+values can be found in <code>names(knitr::knit_engines$get())</code>, e.g., <code>python</code>,
+<code>sql</code>, <code>julia</code>, <code>bash</code>, and <code>c</code>, etc. The object <code>knitr::knit_engines</code> can
+be used to set up engines for other languages. The <a href="https://yihui.org/knitr/demo/engines/">demo
+page</a> contains examples of different engines.</p></li>
+
+<li><p><code>engine.path</code>: (<code>NULL</code>; character) The path to the executable of the
+<code>engine</code>. This option makes it possible to use alternative executables in
+your system, e.g., the default <code>python</code> may be at <code>/usr/bin/python</code>, and you
+may set <code>engine.path = '~/anaconda/bin/python'</code> to use a different version
+of Python.</p>
+
+<p><code>engine.path</code> can also be a list of paths, which makes it possible to set
+different engine paths for different engines, e.g.,</p>
+
+<pre><code class="language-r hljs">knitr<span class="hljs-operator">::</span>opts_chunk<span class="hljs-operator">$</span>set<span class="hljs-punctuation">(</span>engine.path <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+  python <span class="hljs-operator">=</span> <span class="hljs-string">'~/anaconda/bin/python'</span><span class="hljs-punctuation">,</span>
+  ruby <span class="hljs-operator">=</span> <span class="hljs-string">'/usr/local/bin/ruby'</span>
+<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+</code></pre>
+
+<p>The names of the list correspond to the names of the engines.</p></li>
+
+<li><p><code>engine.opts</code>: (<code>NULL</code>; character) Additional arguments passed to the
+engines. At the chunk level, the option can be specified as a string or a
+list of options.</p>
+
+<pre><code class="language-markdown hljs"><span class="hljs-code">```{bash, engine.opts='-l'}
+echo $PATH
+```</span>
+
+<span class="hljs-code">```{cat, engine.opts = list(file = "my_custom.css")}
+h2 {
+  color: blue;
+}
+```</span>
+</code></pre>
+
+<p>At the global level, it could be a list of strings named by engines. Like
+<code>engine.path</code>, this is useful to template arguments via
+<code>knitr::opts_chunk$set()</code>.</p>
+
+<pre><code class="language-r hljs">knitr<span class="hljs-operator">::</span>opts_chunk<span class="hljs-operator">$</span>set<span class="hljs-punctuation">(</span>engine.opts <span class="hljs-operator">=</span> <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+  perl <span class="hljs-operator">=</span> <span class="hljs-string">'-Mstrict -Mwarnings'</span><span class="hljs-punctuation">,</span>
+  bash <span class="hljs-operator">=</span> <span class="hljs-string">'-o errexit'</span>
+<span class="hljs-punctuation">)</span><span class="hljs-punctuation">)</span>
+</code></pre>
+
+<p>Each engine as its own use of <code>engine.opts</code> and defines specific options.
+One should consult the documentation of each engine. Some examples are in
+the R Markdown Cookbook for the <a href="https://bookdown.org/yihui/rmarkdown-cookbook/eng-cat.html" target="_blank"><code>cat</code>
+engine</a> and the
+<a href="https://bookdown.org/yihui/rmarkdown-cookbook/eng-sass.html" target="_blank"><code>sass</code>/<code>scss</code>
+engine</a>.</p></li>
+</ul>
+
+<h3 id="option-templates">Option templates <span class="anchor"><a href="https://yihui.org/knitr/options/#option-templates">#</a></span></h3>
+
+<ul>
+<li><p><code>opts.label</code>: (<code>NULL</code>; character) This option provides a mechanism to
+inherit chunk options from either the option template <code>knitr::opts_template</code>
+(see <code>?knitr::opts_template</code>) or other code chunks. It takes a character
+vector of labels. For each label in the vector, <strong>knitr</strong> will first try to
+find chunk options set in <code>knitr::opts_template</code> with this label, and if
+found, apply these chunk options to the current chunk. Then try to find
+another code chunk with this label (called the “referenced code chunk”) in
+the document, and if found, also apply its chunk options to the current
+chunk.</p>
+
+<p>The precedence of chunk options is: local chunk options &gt; referenced code
+chunk options &gt; <code>knitr::opts_template</code> &gt; <code>knitr::opts_chunk</code>.</p>
+
+<p>The special value <code>opts.label = TRUE</code> means <code>opts.label = ref.label</code>, i.e.,
+to inherit chunk options from chunks referenced by the <code>ref.label</code> option.
+See the example #121 in <a href="https://github.com/yihui/knitr-examples" target="_blank">the knitr-examples
+repository</a> for demos of various
+usage of <code>ref.label</code> and <code>opts.label</code>.</p></li>
+</ul>
+
+<h3 id="extracting-source-code">Extracting source code <span class="anchor"><a href="https://yihui.org/knitr/options/#extracting-source-code">#</a></span></h3>
+
+<ul>
+<li><code>purl</code>: (<code>TRUE</code>; logical) When running <code>knitr::purl()</code> to extract source
+code from a source document, whether to include or exclude a certain code
+chunk.</li>
+</ul>
+
+<h3 id="other-chunk-options">Other chunk options <span class="anchor"><a href="https://yihui.org/knitr/options/#other-chunk-options">#</a></span></h3>
+
+<ul>
+<li><code>R.options</code>: (<code>NULL</code>; list) Local R options for a code chunk. These options
+are set temporarily via <code>options()</code> before the code chunk, and restored
+after the chunk.</li>
+</ul>
+
+<h2 id="package-options">Package Options <span class="anchor"><a href="https://yihui.org/knitr/options/#package-options">#</a></span></h2>
+
+<p>The package options can be changed using the object
+<a href="https://yihui.org/knitr/objects/"><code>knitr::opts_knit</code></a> (<em>not to be confused with
+<code>knitr::opts_chunk</code></em>). For example:</p>
+
+<pre><code class="language-r hljs">knitr<span class="hljs-operator">::</span>opts_knit<span class="hljs-operator">$</span>set<span class="hljs-punctuation">(</span>progress <span class="hljs-operator">=</span> <span class="hljs-literal">TRUE</span><span class="hljs-punctuation">,</span> verbose <span class="hljs-operator">=</span> <span class="hljs-literal">TRUE</span><span class="hljs-punctuation">)</span>
+</code></pre>
+
+<p>See <code>?knitr::opts_knit</code> for the alternative approach to setting package options
+using the R base function <code>options()</code>.</p>
+
+<p>Available package options are as follows:</p>
+
+<ul>
+<li><p><code>aliases</code>: (<code>NULL</code>; character) A named character vector to specify the
+aliases of chunk options, e.g., <code>c(h = 'fig.height', w = 'fig.width')</code> tells
+<strong>knitr</strong> that the chunk option <code>h</code> really means <code>fig.height</code>, and <code>w</code> is an
+alias for <code>fig.width</code>. This option can be used to save some typing effort
+for long option names.</p></li>
+
+<li><p><code>base.dir</code>: (<code>NULL</code>; character) An absolute directory under which the plots
+are generated.</p></li>
+
+<li><p><code>base.url</code>: (<code>NULL</code>; character) The base URL of images on HTML pages.</p></li>
+
+<li><p><code>concordance</code>: (<code>FALSE</code>; logical) Whether to write a concordance file to map
+the output line numbers to the input line numbers. This enables one to
+navigate from the output to the input, and can be helpful especially when a
+TeX error occurs. This feature is only for <code>.Rnw</code> documents, and implemented
+in RStudio.</p></li>
+
+<li><p><code>eval.after</code>: (<code>c('fig.cap', 'fig.scap', 'fig.alt')</code>; character) A character
+vector of option names. These options will be evaluated <em>after</em> a chunk has
+been evaluated, and all other options will be evaluated before a chunk. For
+example, for <code>fig.cap = paste('p-value is', t.test(x)$p.value)</code>, it will be
+evaluated after the chunk according to the value of <code>x</code> if
+<code>eval.after = 'fig.cap'</code>.</p></li>
+
+<li><p><code>global.par</code>: (<code>FALSE</code>; logical) If <code>TRUE</code>, the <code>par()</code> settings from the
+previous code chunk will be preserved and applied to the next code chunk (of
+course, this only applies to base R graphics). By default, <strong>knitr</strong> opens a
+new graphical device to record plots and close it after evaluating the code,
+so <code>par()</code> settings will be discarded.</p></li>
+
+<li><p><code>header</code>: (<code>NULL</code>; character) The text to be inserted into the output
+document before the document begins (e.g., after <code>\documentclass{article}</code>
+in LaTeX, or after <code>&lt;head&gt;</code> in HTML). This is useful for defining commands
+and styles in the LaTeX preamble or HTML header. The beginning of document
+is found using the pattern defined in
+<code>knitr::knit_patterns$get('document.begin')</code>. This option is only for <code>.Rnw</code>
+and <code>.Rhtml</code> documents.</p></li>
+
+<li><p><code>label.prefix</code>: (<code>c(table = 'tab:')</code>; character) The prefix for labels.
+Currently only the prefix for table labels generated by <code>knitr::kable()</code> is
+supported.</p></li>
+
+<li><p><code>latex.options.color</code>, <code>latex.options.graphicx</code> (<code>NULL</code>): Options for the
+LaTeX packages <strong>color</strong> and <strong>graphicx</strong>, respectively. These options are
+only for <code>.Rnw</code> documents.</p></li>
+
+<li><p><code>latex.tilde</code> (<code>NULL</code>; character): The LaTeX command string for the tilde
+character in the syntax highlighted chunk output from <code>.Rnw</code> documents (see
+<a href="https://github.com/yihui/knitr/issues/1992" target="_blank">the issue #1992</a> for examples).</p></li>
+
+<li><p><code>out.format</code>: (<code>NULL</code>; character) Possible values are <code>latex</code>, <code>sweave</code>,
+<code>html</code>, <code>markdown</code>, and <code>jekyll</code>. It will be automatically determined based
+on the input file, and this option will affect the set of hooks to be set
+(see <code>?knitr::render_latex</code> for example). Note this option has to be set
+<em>before</em> <code>knitr::knit()</code> runs (it will not work if you set it inside the
+document).</p></li>
+
+<li><p><code>progress</code>: (<code>TRUE</code>; logical) Whether to display a progress bar when running
+<code>knitr::knit()</code>.</p></li>
+
+<li><p><code>root.dir</code>: (<code>NULL</code>; character) The root directory when evaluating code
+chunks. If <code>NULL</code>, the directory of the input document will be used.</p></li>
+
+<li><p><code>self.contained</code>: (<code>TRUE</code>; logical) Whether the output document should be
+self-contained (TeX styles to be written in the <code>.tex</code> document, and CSS
+styles to be written in the <code>.html</code> document). This option only applies to
+<code>.Rnw</code> and <code>.Rhtml</code> documents.</p></li>
+
+<li><p><code>unnamed.chunk.label</code>: (<code>unnamed-chunk</code>; character) The label prefix for
+unnamed chunks.</p></li>
+
+<li><p><code>upload.fun</code>: (<code>identity</code>; function) A function that takes a file path,
+processes the file, and returns a character string when the output format is
+HTML or Markdown. Typically, it is a function to upload an image and return
+the link to the image, e.g.,
+<code>knitr::opts_knit$set(upload.fun = knitr::imgur_upload)</code> can upload a file
+to <a href="https://imgur.com/" target="_blank">http://imgur.com</a> (see <code>?knitr::imgur_upload</code>).</p></li>
+
+<li><p><code>verbose</code>: (<code>FALSE</code>; logical) Whether to show verbose information (e.g., R
+code in each chunk and message logs), or only show chunk labels and options.</p></li>
+</ul>
+
+<h2 id="global-r-options">Global R Options <span class="anchor"><a href="https://yihui.org/knitr/options/#global-r-options">#</a></span></h2>
+
+<p>Global R options are set with <code>options()</code> in base R. Below is a list of options
+that affect the behavior of <strong>knitr</strong>:</p>
+
+<ul>
+<li><p><code>knitr.bib.prefix</code>: (<code>R-</code>; character) The prefix for keys of bibliography
+entries generated by <code>knitr::write_bib()</code>.</p></li>
+
+<li><p><code>knitr.child.warning</code>: (<code>TRUE</code>; logical) When a code chunk uses the <code>child</code>
+option to include child documents, a warning will be issued if the code
+chunk is not empty (because the code will be ignored). This option can be
+set to <code>FALSE</code> to suppress the warning.</p></li>
+
+<li><p><code>knitr.digits.signif</code>: (<code>FALSE</code>; logical) When formatting numeric values
+from inline R expressions, whether to use <code>format()</code> (<code>TRUE</code>) or <code>round()</code>
+(<code>FALSE</code>). The former means that the global option <code>digits</code> (set via
+<code>option(digits =)</code>) specifies the number of significant digits. The latter
+means the option <code>digits</code> specifies the number of decimal places.</p></li>
+
+<li><p><code>knitr.duplicate.label</code>: (<code>NULL</code>) If set to <code>"allow"</code>, duplicate chunk
+labels will be allowed in the same document.</p></li>
+
+<li><p><code>knitr.include.graphics.ext</code>: (<code>FALSE</code>; logical) Whether to keep the
+filename extension when including a plot file path in <code>\includegraphics{}</code>
+for LaTeX output.</p></li>
+
+<li><p><code>knitr.progress.fun</code>: (<code>knitr:::txt_pb</code>; function) A function of the form
+<code>function(total, labels) {}</code>. This function should take arguments <code>total</code>
+(the total number of chunks) and <code>labels</code> (the vector of chunk labels),
+create a progress bar, and return a list of two methods:
+<code>list(update = function(i) {}, done = function() {})</code>. The <code>update()</code> method
+takes <code>i</code> (the index of the current chunk) as the input and updates the
+progress bar. The <code>done()</code> method closes the progress bar.</p>
+
+<p>Below is an example of using the <strong>cli</strong> progress bar:</p>
+
+<pre><code class="language-r hljs"><span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>total<span class="hljs-punctuation">,</span> labels<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+  id <span class="hljs-operator">=</span> cli<span class="hljs-operator">::</span>cli_progress_bar<span class="hljs-punctuation">(</span>
+    total <span class="hljs-operator">=</span> total<span class="hljs-punctuation">,</span> .auto_close <span class="hljs-operator">=</span> <span class="hljs-literal">FALSE</span>
+  <span class="hljs-punctuation">)</span>
+  <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+    update <span class="hljs-operator">=</span> <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>i<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+      cli<span class="hljs-operator">::</span>cli_progress_update<span class="hljs-punctuation">(</span>id <span class="hljs-operator">=</span> id<span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    done <span class="hljs-operator">=</span> <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+      cli<span class="hljs-operator">::</span>cli_process_done<span class="hljs-punctuation">(</span>id<span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+
+<p>And below is an example of using a Windows progress bar (which works only on
+Windows, obviously):</p>
+
+<pre><code class="language-r hljs"><span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>total<span class="hljs-punctuation">,</span> labels<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+  pb <span class="hljs-operator">=</span> winProgressBar<span class="hljs-punctuation">(</span><span class="hljs-string">"Knitting..."</span><span class="hljs-punctuation">,</span> <span class="hljs-built_in">max</span> <span class="hljs-operator">=</span> total<span class="hljs-punctuation">)</span>
+  <span class="hljs-built_in">list</span><span class="hljs-punctuation">(</span>
+    update <span class="hljs-operator">=</span> <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span>i<span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+      setWinProgressBar<span class="hljs-punctuation">(</span>pb<span class="hljs-punctuation">,</span> i<span class="hljs-punctuation">,</span> label <span class="hljs-operator">=</span> labels<span class="hljs-punctuation">[</span>i<span class="hljs-punctuation">]</span><span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+    done <span class="hljs-operator">=</span> <span class="hljs-keyword">function</span><span class="hljs-punctuation">(</span><span class="hljs-punctuation">)</span> <span class="hljs-punctuation">{</span>
+      close<span class="hljs-punctuation">(</span>pb<span class="hljs-punctuation">)</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">)</span>
+<span class="hljs-punctuation">}</span>
+</code></pre></li>
+
+<li><p><code>knitr.progress.output</code>: (<code>""</code>; character or connection) For the default
+text progress bar in <strong>knitr</strong>, this option can be used to specify the
+output target of the progress bar. By default, the progress is written to
+<code>stdout()</code>. If you prefer using <code>stderr</code> instead, you can set this option to
+<code>stderr()</code>.</p></li>
+
+<li><p><code>knitr.purl.inline</code>: (<code>FALSE</code>; logical) Whether to include inline R code in
+the <code>knitr::purl()</code> output.</p></li>
+
+<li><p><code>knitr.svg.object</code>: (<code>FALSE</code>; logical) If <code>TRUE</code>, <code>svg</code> plots will be
+embedded as raw XML (<code>&lt;svg&gt;</code>) in self-contained HTML output, and they will
+be included in <code>&lt;object&gt;</code> tags if the HTML output is not self-contained. If
+<code>FALSE</code>, the <code>&lt;img&gt;</code> tag will be used.</p></li>
+</ul>
+
+
+
+  <footer>
+  
+<nav class="post-nav">
+  <span class="nav-prev">← <a href="https://yihui.org/knitr/faq/">Frequently Asked Questions</a></span>
+  <span class="nav-next"></span>
+</nav>
+
+
+
+<section class="comments">
+<script src="./Options - Chunk options and package options - Yihui Xie _ 谢益辉_files/client.js" data-repo="yihui/yihui.org" data-repo-id="MDEwOlJlcG9zaXRvcnk4MDc3NDg0NA==" data-category="Comments" data-category-id="DIC_kwDOBNCGvM4COkjD" data-mapping="pathname" data-strict="1" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="bottom" data-theme="preferred_color_scheme" data-lang="en" data-loading="lazy" crossorigin="anonymous" defer="">
+</script><div class="giscus"><iframe class="giscus-frame" title="Comments" scrolling="no" allow="clipboard-write" src="./Options - Chunk options and package options - Yihui Xie _ 谢益辉_files/widget.html" loading="lazy"></iframe></div>
+</section>
+
+
+
+
+
+<script async="" src="./Options - Chunk options and package options - Yihui Xie _ 谢益辉_files/header-link.min.js"></script>
+
+
+
+
+
+
+
+<script async="" src="./Options - Chunk options and package options - Yihui Xie _ 谢益辉_files/MathJax.js"></script>
+
+
+  
+
+
+
+
+
+
+
+<script src="./Options - Chunk options and package options - Yihui Xie _ 谢益辉_files/load-highlight.js" defer=""></script>
+
+
+
+  
+  <hr>
+  <div class="copyright">© <a href="https://yihui.org/">Yihui Xie</a> 2001 - 2023</div>
+  
+  </footer>
+  </article>
+  
+  <script defer="" src="./Options - Chunk options and package options - Yihui Xie _ 谢益辉_files/vaafb692b2aea4879b33c060e79fe94621666317369993" integrity="sha512-0ahDYl866UMhKuYcW078ScMalXqtFJggm7TmlUtp0UlD4eQk0Ixfnm5ykXKvGJNFjLMoortdseTfsRT8oCfgGA==" data-cf-beacon="{&quot;rayId&quot;:&quot;789f90295b5a376e&quot;,&quot;version&quot;:&quot;2022.11.3&quot;,&quot;r&quot;:1,&quot;token&quot;:&quot;ace6508d6b504d5983f39a620a11478b&quot;,&quot;si&quot;:100}" crossorigin="anonymous"></script>
+
+
+
+</body></html>

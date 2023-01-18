@@ -1,0 +1,105 @@
+---
+title: "Analyzing trends in Canadian glacier mass"
+author: "Zelimkhan"
+date: '2023-01-14'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+The data used in this study is taken from <http://open.canada.ca/en/open-data>.
+
+```{r, echo=FALSE}
+glacier <- read.csv("https://raw.githubusercontent.com/tonytonov/Rcourse/master/R%20markdown/demos/glacier.csv", na.strings = "..", comment.char = "#", stringsAsFactors = T)
+```
+
+The data set contains `r nrow(glacier)` measurements of `r nlevels(glacier$GEO)` Canadian glacier mass balance, collected from `r min(glacier$Ref_Date)` till `r max(glacier$Ref_Date)`. Namely, the file includes these glaciers:
+
+```{r, echo=FALSE}
+levels(glacier$GEO)
+```
+
+
+# Step 8 of 9
+
+Среди шести изучаемых ледников самую короткую историю наблюдений имеет `r table(glacier$GEO)`. При этом ледник, для которого медианное значение изменения (переменная Value для Annual Mass Balance) наиболее близко к нулю, называется `r `. Единственное пропущенное значение содержит история наблюдений ледника `r `.
+
+```{r}
+library(dplyr)
+# Среди шести изучаемых ледников самую короткую историю наблюдений имеет
+glacier %>% group_by(GEO) %>% 
+  summarise(Count = length(GEO)) %>% 
+  arrange(Count)
+
+# При этом ледник, для которого медианное значение изменения (переменная Value для Annual Mass Balance) наиболее близко к нулю, называется. Единственное пропущенное значение содержит история наблюдений ледника.
+glacier %>% 
+  group_by(GEO, MEASURE) %>% 
+  filter(MEASURE == "Annual mass balance") %>% 
+  summarise(Count = length(GEO),
+            Median = median(Value)) %>% 
+  arrange(Median)
+```
+
+# 2 
+```{r}
+glacier %>%  group_by(GEO) %>% 
+  summarise(n = n()) %>%  
+  arrange(n) %>% 
+  filter(row_number()==1) %>% 
+  select(GEO)
+
+glacier %>%  group_by(GEO, MEASURE) %>% 
+  summarise(med = median(Value, na.rm = T)) %>% 
+  arrange(desc(med)) %>%
+  head(1) %>% 
+  select(GEO)
+
+
+glacier$GEO[is.na(glacier$Value)]
+```
+
+# 3
+```{r}
+tapply(glacier$Ref_Date, glacier$GEO, range)
+tapply(glacier$Value, interaction(glacier$GEO, glacier$MEASURE), function(x) median(x, na.rm = T))
+tapply(glacier$Value, glacier$GEO, anyNA)
+```
+# 3 
+```{r}
+#1
+glacier_g <- group_by(glacier, GEO)
+levels(glacier$GEO)[which(summarise(glacier_g, min(Ref_Date))[2] == max(summarise(glacier_g, min(Ref_Date))[2]))]
+
+#2
+glacier_g <- filter(glacier_g, MEASURE == 'Annual mass balance')
+glacier_med <- summarise(glacier_g, m_val = median(Value, na.rm = T))
+levels(glacier$GEO)[which(glacier_med$m_val == max(glacier_med$m_val))]
+
+#3
+glacier$GEO[which(is.na(glacier$Value))]
+```
+
+```{r}
+glacier %>% 
+  group_by(GEO) %>% 
+  summarise_at("Ref_Date", min)
+
+glacier %>% 
+  filter(as.integer(MEASURE) == 1) %>% 
+  group_by(GEO) %>% 
+  summarise_at("Value", median)
+
+glacier %>% 
+  filter(as.integer(MEASURE) == 1) %>% 
+  group_by(GEO) %>% 
+  summarise_at("Value", median, na.rm = T)
+```
+
+
+
+
+Footer
