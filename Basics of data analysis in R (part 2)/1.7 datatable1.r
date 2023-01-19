@@ -86,10 +86,37 @@ levels(as.factor(products$brand))
 unique(products$brand) %>% length()
 
 # step 9 of 11
-filter.expensive.available <- function(products, brands) {
-  
-}
-# step 10 of 11
+products$brand %>% unique() %>% table() %>% sum()
 
+brands <- c("Hiltt", "Kipor")
+products[(price >= 5000000 & available == T & brand %in% brands)]
+
+filter.expensive.available <- function(products, brands) {
+  products[(price >= 500000 & available == T & brand %in% brands)]
+}
+
+sample.products <- data.table(price = c(10000, 600000, 700000, 1000000),
+                              brand = c("a", "b", "c", "d"),
+                              available = c(T, T, F, T))
+
+filter.expensive.available(sample.products, c("a", "c", "d"))
+
+# 2
+filter.expensive.available <- function(products, brands) {    
+  products[brand %in% brands][price >= 500000][available == T]}
+
+# 3
+filter.expensive.available <- function(products, brands) {
+  r <- products[brand %in% brands & available==TRUE & price>=5000*100]
+  r
+}
+
+# 4
+filter.expensive.available <- function(products, brands) {
+  products[(price > 500000) & (available == T) & (brand %in% brands)]
+}
+
+# step 10 of 11
+5000 * 1000
 
 # step 11 of 11
