@@ -160,3 +160,52 @@ ordered.short.purchase.data <- function(purchases){
 
 
 # step 11 of 11
+# Напишите функцию purchases.median.order.price, у которой один аргумент: purchases, и которая возвращает медианную стоимость заказа (число).
+# Группировку стоит проводить с помощью data.table. Записи с неположительным количеством купленных товаров (возвраты) игнорировать.
+# Обратите внимание, что одному заказу может соответствовать несколько записей – «позиций» с одинаковым ordernumber, и что при расчете 
+# стоимости заказа надо учитывать ситуации, когда пользователь купил несколько товаров одного типа (их количество указано в quantity).
+
+purchases.median.order.price <- function(purchases) {
+  s <- purchases[quantity >= 0, .(sumOfOrder = sum(price * quantity)),  by = ordernumber]
+  median(s$sumOfOrder)
+}
+
+# Cheking
+sample.purchases <- data.table(price = c(100000, 6000, 7000, 5000000),
+                               ordernumber = c(1,2,2,3),
+                               quantity = c(1,2,1,-1),
+                               product_id = 1:4)
+
+purchases <- sample.purchases
+purchases.median.order.price(sample.purchases)
+# 59500 median(c(100000, (6000 * 2 + 7000)))
+
+
+# 2
+purchases.median.order.price <- function(purchases) {    
+  median(purchases[quantity >= 0][, list(w = sum(price * quantity)), by=list(ordernumber)]$w)
+}
+
+# 3
+
+purchases.median.order.price <- function(purchases) {
+  purchases %>% 
+    filter(quantity > 0) %>% 
+    group_by(ordernumber) %>% 
+    summarise(order_total = sum(price * quantity)) %>% 
+    summarise(median(order_total)) %>% .[[1]]
+}
+
+# 4
+purchases.median.order.price <- function(purchases) {
+  purchases[quantity > 0, .(value = sum(price * quantity)), by=ordernumber][, median(value)]
+}
+
+# 5
+purchases.median.order.price <- function(purchases) {
+  purchases[quantity >= 0, .(price = sum(price*quantity)), 
+            by = ordernumber][,.(med = median(price))] %>%
+    as.numeric()
+}
+
+
