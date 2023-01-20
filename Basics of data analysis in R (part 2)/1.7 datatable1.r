@@ -117,6 +117,28 @@ filter.expensive.available <- function(products, brands) {
 }
 
 # step 10 of 11
-5000 * 1000
+# Создайте функцию ordered.short.purchase.data, которая будет принимать purchases, объект data.table, и возвращать таблицу 
+# только со столбцами с номером заказа и ID продукта.
+# Упорядочите результат по убыванию стоимости купленного товара. Возвраты (записи с отрицательным количеством предметов в позиции) надо удалить.
+purchases <- fread("C:/Users/GudievZK/Desktop/GitHub/DF/1.7_Stepic_DataTable/purchases.csv", encoding = "UTF-8")
+
+ordered.short.purchase.data <- function(purchases) {
+  
+}
+# Experiment
+purchases[order(price, decreasing = T) & quantity >= 0, list(ordernumber, product_id)]
+sample.purchases[order(price, decreasing = T) & quantity >= 0, list(ordernumber, product_id)]
+sample.purchases[quantity >= 0 & order(price, decreasing = T), ]
+
+# Проверка
+
+sample.purchases <- data.table(price = c(100000, 6000, 7000, 5000000),
+                               ordernumber = 1:4,
+                               quantity = c(1,2,1,-1),
+                               product_id = 1:4)
+
+ordered.short.purchase.data(sample.purchases)
+
+
 
 # step 11 of 11
