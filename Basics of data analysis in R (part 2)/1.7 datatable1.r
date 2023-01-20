@@ -123,22 +123,40 @@ filter.expensive.available <- function(products, brands) {
 purchases <- fread("C:/Users/GudievZK/Desktop/GitHub/DF/1.7_Stepic_DataTable/purchases.csv", encoding = "UTF-8")
 
 ordered.short.purchase.data <- function(purchases) {
-  
+  purchases[quantity >= 0, ][order(price, decreasing = T), list(ordernumber, product_id)]  
 }
-# Experiment
-purchases[order(price, decreasing = T) & quantity >= 0, list(ordernumber, product_id)]
-sample.purchases[order(price, decreasing = T) & quantity >= 0, list(ordernumber, product_id)]
-sample.purchases[quantity >= 0 & order(price, decreasing = T), ]
 
 # Проверка
-
 sample.purchases <- data.table(price = c(100000, 6000, 7000, 5000000),
                                ordernumber = 1:4,
                                quantity = c(1,2,1,-1),
                                product_id = 1:4)
-
 ordered.short.purchase.data(sample.purchases)
 
+# 2
+ordered.short.purchase.data<- function(purchases) {    
+  purchases[order(-price)][quantity >= 0][, .(ordernumber, product_id)]
+}
+
+# 3 
+ordered.short.purchase.data <- function(purchases) {
+  purchases[quantity >= 0][order(-price), .(ordernumber, product_id)]
+}
+
+# 4
+ordered.short.purchase.data <- function(purchases) {
+  first <- purchases[order(-price)]
+  second <- first[!(quantity < 0), .(ordernumber, product_id)]
+  second
+}
+
+# 5
+ordered.short.purchase.data <- function(purchases){
+  purchases1 <- purchases[!purchases$quantity<0]
+  purchases2 <- purchases1[order(purchases1$price, decreasing = T)]
+  purchases3 <- purchases2[, c("ordernumber", "product_id")]
+  return(purchases3)
+}
 
 
 # step 11 of 11
