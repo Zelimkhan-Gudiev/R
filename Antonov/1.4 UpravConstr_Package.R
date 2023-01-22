@@ -210,7 +210,7 @@ sessionInfo()
 
 
 
-
+installed.packages()
 
 
 
