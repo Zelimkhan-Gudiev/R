@@ -280,7 +280,9 @@ describe(df)
 
 
 #### Step 9 of 12 ####
-dfread.csv("https://github.com/tonytonov/Rcourse/blob/master/R%20programming/avianHabitat.csv")
+df <- read.csv("/Users/zelimkhan/Desktop/Data/GitHub/DF/Antonov/avianHabitat.csv")
+
+
 #### Step 10 of 12 ####df
 #### Step 11 of 12 ####
 #### Step 12 of 12 ####
