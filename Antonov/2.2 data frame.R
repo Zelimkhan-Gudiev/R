@@ -283,9 +283,34 @@ describe(df)
 df <- read.csv("/Users/zelimkhan/Desktop/Data/GitHub/DF/Antonov/avianHabitat.csv")
 
 
-#### Step 10 of 12 ####df
+#### Step 10 of 12 #### !
+# Помогите Арчибальду! Cкачайте файл по ссылке, добавьте новые данные в общий дата фрейм и повторите подсчёт общего покрытия, 
+# добавив переменную total_coverage. В качестве ответа пришлите величину среднего покрытия с точностью до второго знака: X.XX
+# Подсказки:
+# общий массив будет содержать 1088 наблюдений;
+# добавление данных Карлоша увеличит среднее по переменной общего покрытия, но незначительно.
+
+df1 <- read.csv("https://raw.githubusercontent.com/tonytonov/Rcourse/master/R%20programming/avianHabitat.csv") %>% as_tibble()
+df2 <- read.csv("https://raw.githubusercontent.com/tonytonov/Rcourse/master/R%20programming/avianHabitat2.csv", 
+                sep = ";", skip = 5,  comment.char = "%", quote = "", na.strings = "Don't remember") %>% as_tibble()
+df2  <- mutate(df2, Observer = "Karlosh") %>% 
+  select(Site, Observer, names(df2))
+df <- rbind(df1, df2)
+sum(!complete.cases(df))
+any(!complete.cases(df))
+chek_percent_range <- function(x) {
+  any(x < 0 | x > 100)
+}
+lapply(df[, c("PA", "PDB", "PW", "PE", "PH", "PL", "PB")], chek_percent_range)
+lapply(select_at(df, vars(starts_with("P"))), chek_percent_range)
+df <- mutate(df, sumOfcoverege = rowSums(select_at(df, vars(starts_with("P")))))
+summary(df$sumOfcoverege)
+
+
 #### Step 11 of 12 ####
 #### Step 12 of 12 ####
 
 
-iris
+length("Аэрофотосъёмка ландшафта уже выявила земли богачей и процветающих крестьян.")
+library(stringr)
+str_length("Аэрофотосъёмка ландшафта уже выявила земли богачей и процветающих крестьян.")
