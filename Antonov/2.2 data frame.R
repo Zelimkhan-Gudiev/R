@@ -302,12 +302,28 @@ chek_percent_range <- function(x) {
   any(x < 0 | x > 100)
 }
 lapply(df[, c("PA", "PDB", "PW", "PE", "PH", "PL", "PB")], chek_percent_range)
-lapply(select_at(df, vars(starts_with("P"))), chek_percent_range)
+sapply(select_at(df, vars(starts_with("P"))), chek_percent_range)
 df <- mutate(df, sumOfcoverege = rowSums(select_at(df, vars(starts_with("P")))))
 summary(df$sumOfcoverege)
 
 
 #### Step 11 of 12 ####
+
+# Растительность Аляски, как мы уже знаем, достаточно скудна. Исследователям интересно, какие выдающиеся экземпляры растений удалось обнаружить?
+# На массиве avianHabitat найдите максимальные высоты по каждому виду растений и отсортируйте эти виды по убыванию, от самого высокого к самому низкому.
+# Подсказки:
+# вас будут интересовать только данные переменных, отвечающих за высоты растений. Такие переменные заканчиваются на Ht;
+# индексация с двойными скобками похожа на индексацию по значку доллара $, но есть одна тонкость: сравните результат.
+avian <- read.csv("https://raw.githubusercontent.com/tonytonov/Rcourse/master/R%20programming/avianHabitat.csv") %>% as_tibble()
+
+my_var <- "Site"; avian$my_var
+my_var <- "Site"; avian[[my_var]]
+# данные Карлоша можно не учитывать: он вылетел из аспирантуры.
+
+avian %>% 
+  select_at(vars(ends_with("Ht"))) %>% 
+  apply(2, max) %>% sort(, decreasing = T)
+
 #### Step 12 of 12 ####
 
 

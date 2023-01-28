@@ -1,0 +1,259 @@
+---
+title: "Факторы"
+author: "<i>Основы программирования на R</i><br><br>Антон Антонов"
+output: 
+  revealjs::revealjs_presentation:
+    theme: serif
+    highlight: tango
+    center: false
+    transition: fade
+    pandoc_args: [ 
+      "--slide-level", "1", 
+      "--include-in-header", "custom.css"
+    ]
+---
+
+```{r setup, echo=FALSE}
+options(width = 110)
+```
+
+# Факторы
+
+>- В статистике существует деление на _количественные_ и _качественные_ переменные
+>- Для качественных переменных есть `factor`
+>- Фактор -- это гибрид целочисленного (integer) и строкового (character) вектора
+
+. . .
+
+```{r}
+set.seed(1337)
+f <- factor(sample(LETTERS, 30, replace = TRUE))
+f
+```
+
+# Уровни фактора
+
+. . .
+
+```{r}
+as.numeric(f)
+as.character(f)
+```
+
+. . .
+
+```{r}
+levels(f)
+nlevels(f)
+```
+
+# Уровни фактора
+
+Индексирование определено для `==` и `!=`:
+
+```{r}
+f[f == "A"] <- "Z"
+f
+```
+
+. . .
+Удаление пустых градаций фактора (а)
+
+```{r}
+(f <- droplevels(f))
+```
+
+# Преобразование уровней фактора
+
+. . .
+
+```{r}
+levels(f) <- tolower(levels(f))
+#levels(f) <- letters[LETTERS %in% levels(f)]
+f
+```
+
+. . .
+
+```{r}
+levels(f)[1] <- "bbb"
+f
+```
+
+# Упорядоченные факторы
+
+>- Если категории качественной переменной упорядочены, то это _порядковая_ переменная
+>- Упорядоченный фактор: функция `ordered` либо аргумент `ordered = TRUE` для `factor`
+
+. . .
+
+```{r}
+temp <- c("freezing cold", "cold", "comfortable", "hot", "burning hot")
+#
+typeof(temp)
+str(temp)
+sort(temp)
+temp[temp > "hot"]
+#
+temp <- factor(temp)
+typeof(temp)
+str(temp)
+sort(temp)
+temp[temp >= "hot"]
+#
+temp <- factor(temp, ordered = T)
+typeof(temp)
+str(temp)
+sort(temp)
+temp[temp >= "hot"]
+
+###
+ft <- ordered(sample(temp, 14, replace = TRUE), temp)
+ft
+ft[ft >= "hot"]
+#
+ordered(temp, temp)
+factor(temp, ordered = T, temp)
+factor(temp, ordered = T)
+```
+
+# Преобразование количественной переменной в качественную
+
+>- `cut` разбивает `numeric` вектор на интервалы
+>- `table` производит подсчёт количества элементов для каждого уровня фактора
+
+. . .
+
+```{r}
+cut(rnorm(10), -5:5)
+cut(1:100, 5) %>% table()
+table(cut(rnorm(1000), -5:5))
+```
+
+
+# options
+
+>- У сессии R есть набор активных настроек, отвечающих за подсчёт и вывод результатов вычислений
+>- `?options` :
+    + `digits` -- количество знаков при печати чисел
+    + `error` -- поведение при ошибке
+    + `width` -- длина строки при печати векторов и матриц
+>- По умолчанию, все строковые переменные становятся факторами, отменить такое поведение можно вызовом `options(stringsAsFactors = FALSE)`
+
+# tapply
+
+>- Факторы чаще всего встречаются как переменные в дата фреймах
+>- Одна из наиболее распространённых задач -- подсчёт некоторой статистики по группам
+
+. . .
+
+```{r}
+#?warpbreaks
+str(warpbreaks)
+tapply(warpbreaks$breaks, warpbreaks$wool, max)
+```
+
+# Step 10
+
+Используйте показанную мной связку из двух функций, чтобы превратить количественную переменную mag (сила землетрясения в баллах по шкале Рихтера) дата фрейма quakes в качественную. Интервалы должны быть длиной в полбалла, начиная с минимального, при этом левый конец интервала включается. Теперь отсортируйте общее количество случаев, попавших в каждую категорию, в порядке убывания.
+Подсказки:
+придётся чуть-чуть повозиться с аргументами;
+интервалы должны быть в точности такими, как указаны в ответах.
+```{r}
+quakes
+min(quakes$mag)
+list(mean(quakes$mag, na.rm = T), range(quakes$mag))
+cut(quakes$mag, c(4, 4.5, 5, 5.5, 6, 6.5), right = F) %>% table() %>% sort(decreasing = T)
+
+#2
+sort(table(cut(quakes$mag, seq(4, 6.5, by = 0.5), r = F)), d = T)
+
+```
+
+# Step 12
+Теперь, когда у нас есть переменная site_name, мы можем оценить общее покрытие в каждой из исследованных местностей. Используйте комбинацию site_name и total_coverage, чтобы определить тот регион, в котором среднее общее покрытие, скажем, наименьшее.
+```{r}
+library(dplyr)
+avian <- read.csv("https://raw.githubusercontent.com/tonytonov/Rcourse/master/R%20programming/avianHabitat.csv")
+avian$site_name <- str_replace(avian$Site, "[:digit:]+", "")
+avian <- mutate(avian, total_covarage = rowSums(select_at(avian, vars(starts_with("P")))))
+aggregate(total_covarage ~ site_name, avian, mean) %>% arrange(total_covarage)
+
+# 2
+#install.packages('stringr')
+library(stringr)
+df <- read.csv("https://raw.githubusercontent.com/tonytonov/Rcourse/master/R%20programming/avianHabitat.csv")
+#отбираем только те столбцы, у которых встречается P
+df2 <- df[names(df)[str_detect(names(df),"^P")]]
+#добавляем суммы по строчкам
+df2$total_coverage <- apply(df2,1,sum)
+#удаляем цифры из значений и даем новой переменной
+df2$site_name <- str_replace(df$Site, "[:digit:]+", "")
+#считаем среднее для видов
+df2$site_name <- factor(df2$site_name)
+sort(tapply(df2$total_coverage, df2$site_name, mean))
+
+#3
+x <- read.csv("avianHabitat.csv")
+x$total <- rowSums(x[grepl("^P.", names(x))])
+x$sname <- factor(gsub("[0-9]", "", as.character(x$Site)))
+which.min(tapply(x$total, x$sname, mean))
+
+#4
+avian <- read.csv('avianHabitat.csv')
+avian$total_coverage <- rowSums(avian[,names(avian)[str_detect(names(avian), "^P")]])
+avian$site_name <- factor(str_replace(avian$Site, "[:digit:]+", ""))
+tapply(avian$total_coverage, avian$site_name, mean)
+
+```
+# Step 13
+
+Наши любимые учёные, конечно же, соревнуются между собой. Самоё почётное, как нам уже известно, -- найти самый высокий экземпляр вида. В конце сезона исследователи подводят итоги и определяют самого удачливого, который торжественно объявляется чемпионом. После чего все пьют горячий грог и травят байки у костра.
+Хорошо у них там!
+Давайте поможем нашим друзьям определить, кто из них нашёл самые большие экземпляры по каждому виду.
+```{r}
+# 0
+avian %>%
+  select(Observer, DBHt, WHt, EHt, AHt, HHt, LHt) %>% 
+  arrange(...)
+# 1
+height_columns <- str_detect(names(avian),pattern = 'Ht$')
+aggregate(avian[height_columns],by=list(avian$Observer), max)
+
+#2
+hight_variables <- names(avian)[str_detect(names(avian), "Ht")]
+hight_max <- sapply(avian[,hight_variables], max)
+data.frame(hight_max, avian$Observer[hight_max])
+
+#3
+apply(avian[str_detect(names(avian), "Ht")], 2, function(x) avian$Observer[which.max(x)])
+
+#4
+avian[str_detect(names(avian), "Ht")] %>% 
+  apply(2, function(x) avian$Observer[which.max(x)])
+
+#5
+height_variables <- names(avian)[str_detect(names(avian), "Ht$")]
+sapply(height_variables, function(x) names(which.max(tapply(avian[[x]], avian$Observer, max))))
+
+
+
+
+```
+
+
+# Глоссарий
+
+. . .
+
+`?factor`
+
+`?levels`, `?nlevels`, `?droplevels`
+
+`?ordered`
+
+`?cut`, `?table`
+
+`?options`
+
+`?tapply`
