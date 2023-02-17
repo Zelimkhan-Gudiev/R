@@ -23,6 +23,7 @@ setwd("/Users/zelimkhan/Desktop/Data/GitHub/DF/")
 
 yt <- read.csv2("yt.csv")
 
+yt <- read_sheet("https://docs.google.com/spreadsheets/d/1YfS5NoVQzoR8VMHqtfdtWF3BBqeGPaxYwel4ARNofPY/edit#gid=0")
 str(yt)
 
 
