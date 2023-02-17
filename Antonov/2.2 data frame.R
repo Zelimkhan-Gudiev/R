@@ -283,7 +283,7 @@ describe(df)
 df <- read.csv("/Users/zelimkhan/Desktop/Data/GitHub/DF/Antonov/avianHabitat.csv")
 
 
-#### Step 10 of 12 ####
+#### Step 10 of 12 #### !
 # Помогите Арчибальду! Cкачайте файл по ссылке, добавьте новые данные в общий дата фрейм и повторите подсчёт общего покрытия, 
 # добавив переменную total_coverage. В качестве ответа пришлите величину среднего покрытия с точностью до второго знака: X.XX
 # Подсказки:
@@ -294,7 +294,7 @@ df1 <- read.csv("https://raw.githubusercontent.com/tonytonov/Rcourse/master/R%20
 df2 <- read.csv("https://raw.githubusercontent.com/tonytonov/Rcourse/master/R%20programming/avianHabitat2.csv", 
                 sep = ";", skip = 5,  comment.char = "%", quote = "", na.strings = "Don't remember") %>% as_tibble()
 df2  <- mutate(df2, Observer = "Karlosh") %>% 
-        select(Site, Observer, names(df2))
+  select(Site, Observer, names(df2))
 df <- rbind(df1, df2)
 sum(!complete.cases(df))
 any(!complete.cases(df))
@@ -302,13 +302,31 @@ chek_percent_range <- function(x) {
   any(x < 0 | x > 100)
 }
 lapply(df[, c("PA", "PDB", "PW", "PE", "PH", "PL", "PB")], chek_percent_range)
-lapply(select_at(df, vars(starts_with("P"))), chek_percent_range)
+sapply(select_at(df, vars(starts_with("P"))), chek_percent_range)
 df <- mutate(df, sumOfcoverege = rowSums(select_at(df, vars(starts_with("P")))))
 summary(df$sumOfcoverege)
 
 
 #### Step 11 of 12 ####
+
+# Растительность Аляски, как мы уже знаем, достаточно скудна. Исследователям интересно, какие выдающиеся экземпляры растений удалось обнаружить?
+# На массиве avianHabitat найдите максимальные высоты по каждому виду растений и отсортируйте эти виды по убыванию, от самого высокого к самому низкому.
+# Подсказки:
+# вас будут интересовать только данные переменных, отвечающих за высоты растений. Такие переменные заканчиваются на Ht;
+# индексация с двойными скобками похожа на индексацию по значку доллара $, но есть одна тонкость: сравните результат.
+avian <- read.csv("https://raw.githubusercontent.com/tonytonov/Rcourse/master/R%20programming/avianHabitat.csv") %>% as_tibble()
+
+my_var <- "Site"; avian$my_var
+my_var <- "Site"; avian[[my_var]]
+# данные Карлоша можно не учитывать: он вылетел из аспирантуры.
+
+avian %>% 
+  select_at(vars(ends_with("Ht"))) %>% 
+  apply(2, max) %>% sort(, decreasing = T)
+
 #### Step 12 of 12 ####
 
 
-iris
+length("Аэрофотосъёмка ландшафта уже выявила земли богачей и процветающих крестьян.")
+library(stringr)
+str_length("Аэрофотосъёмка ландшафта уже выявила земли богачей и процветающих крестьян.")

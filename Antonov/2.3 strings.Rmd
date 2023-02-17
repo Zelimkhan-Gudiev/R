@@ -1,0 +1,320 @@
+---
+title: "Строки"
+author: "<i>Основы программирования на R</i><br><br>Антон Антонов"
+output: 
+  revealjs::revealjs_presentation:
+    theme: serif
+    highlight: tango
+    center: false
+    transition: fade
+    pandoc_args: [ 
+      "--slide-level", "1", 
+      "--include-in-header", "custom.css"
+    ]
+---
+
+```{r setup, echo=FALSE}
+options(width = 110)
+```
+
+# Строки
+
+>- Строка (string) -- это элемент вектора типа `character`
+>- Большинство функций, оперирующих на строках, векторизованы
+
+. . .
+
+```{r}
+s <- c("Терпение и труд всё перетрут", 
+       "Кончил дело — гуляй смело", 
+       "Без труда не вытащишь и рыбку из пруда",
+       'Работа не волк, в лес не убежит')
+```
+
+```{r, echo=FALSE}
+#s <- enc2utf8(s)
+```
+. . .
+
+>- Как правило, для строк используют двойные кавычки
+>- Одинарные кавычки тоже можно использовать: `'Операция "Ы"'`
+
+. . .
+
+```{r, echo=FALSE}
+'Операция "Ы"'
+```
+
+# Функции `paste`/`paste0`
+
+>- Выполняют конкатенацию строковых векторов с учётом правил переписывания
+>- Аргумент `sep` -- разделитель между элементами (для `paste` по умолчанию пробел, для `paste0` -- пустая строка)
+>- Аргумент `collapse` -- "схлопывает" вектор в одну строку
+
+. . .
+
+```{r}
+paste(c("углекислый", "веселящий"), "газ")
+paste0(c("угликислый", "веселящий"), "газ") # paste0 - это, по сути, paste с аргументом sep = ""
+paste(c("угликислый", "веселящий"), "газ", sep = "") 
+paste(c("угликислый", "веселящий"), "газ", collapse = "")
+
+```
+
+. . .
+
+```{r}
+paste(c("углекислый", "веселящий"), "газ", sep = "_")
+
+```
+. . .
+
+```{r}
+paste(c("углекислый", "веселящий"), "газ", collapse = ", а также ")
+
+```
+
+# Функция `strsplit`
+
+>- Выполняет разбиение строкового вектора
+>- Результат -- список!
+
+. . .
+
+```{r}
+strsplit(s, " и ", fixed = TRUE)
+```
+
+# Функция `strsplit`
+
+. . .
+
+Если не указывать аргумент `fixed` (по умолчанию `FALSE`), то строка, по которой проводится разбиение, будет рассматриваться как регулярное выражение:
+
+. . .
+
+```{r}
+strsplit(s, "[[:punct:]]")
+```
+
+# Регулярные выражения
+
+>- "Метаязык" поиска и манипуляции подстрок
+>- Образец для поиска может включать обычные символы и т.н. _wildcards_
+
+. . .
+
+```{r}
+grep("труд", s)
+```
+
+```{r}
+grepl("труд", s)
+```
+
+. . .
+
+```{r}
+gsub("\\b[[:alpha:]]{4,5}\\b", "####",  s)
+```
+
+# Пакет `stringr`
+
+. . .
+
+```{r}
+# install.packages("stringr")
+library(stringr)
+```
+
+
+Пакет содержит множество функций для работы со строками. Эти функции векторизованы и являются consistent:
+
+```{r}
+str_extract(s, "н.")
+```
+
+. . .
+
+```{r}
+str_replace(s, "[иа]", "?")
+```
+
+# Пакет `stringr`
+
+. . .
+
+Ко многим функциям можно добавить `_all`, чтобы искать все вхождения, а не первое:
+
+```{r}
+str_extract_all(s, "н.")
+```
+
+. . .
+
+```{r}
+str_replace_all(s, "[иае]", "?")
+```
+
+# Функции `tolower`/`toupper`
+
+. . .
+
+Манипулирование регистром:
+```{r}
+tolower(month.name)
+```
+
+```{r}
+toupper(month.abb)
+```
+
+# Step 3
+```{r}
+length("Аэрофотосъёмка ландшафта уже выявила земли богачей и процветающих крестьян.")
+nchar("Аэрофотосъёмка ландшафта уже выявила земли богачей и процветающих крестьян.")
+str_length("Аэрофотосъёмка ландшафта уже выявила земли богачей и процветающих крестьян.")
+length(NA)
+length("NA")
+nchar(NA)
+nchar("NA")
+str_length(NA)
+str_length("NA")
+
+```
+
+# Пути к файлам
+
+. . .
+
+У сессии R есть понятие _рабочей директории_:
+```{r}
+getwd()
+head(list.files())
+list.dirs("..", recursive = FALSE) # Все файлы, находящиеся на один уровень выше относительно рабочей директории
+```
+
+>- Смена рабочей директории -- функция `setwd`.
+>- При создании нового проекта в RStudio рабочим каталогом становится тот, в котором расположен файл проекта, `.Rproj`
+>- Под Windows разделителями каталогов могут быть либо `/`, либо `\\`
+
+# Форматирование чисел
+
+. . .
+
+```{r}
+c(pi, exp(pi))
+```
+
+. . .
+
+```{r}
+formatC(c(pi, exp(pi)), digits = 3)
+format(c(pi, exp(pi)), digits = 3)
+formatC(c(pi, exp(pi)), digits = 4)
+format(c(pi, exp(pi)), digits = 4)
+
+```
+
+. . .
+
+```{r}
+formatC(c(pi, exp(pi)), digits = 3, format = "e")
+format(c(pi, exp(pi)), digits = 3, format = "e")
+```
+
+# Функция `cat`
+
+>- Обычно для вывода неявно используется функция `print`
+>- Функция `cat` печатает объекты "как есть"
+
+. . .
+
+```{r}
+print('Операция "Ы"'); cat('Операция "Ы"')
+```
+
+. . .
+
+```{r}
+print("Трус\tБалбес\nБывалый"); cat("Трус\tБалбес\nБывалый")
+```
+
+# Step 6
+В память о бедном Йорике я подготовил небольшую тираду и обработал её средствами stringr. Вы не могли бы дать мне небольшой лингвистический обзор этого предложения? Выполните следующий код, чтобы начать работу с фразой в удобной форме:
+```{r}
+library(stringr)
+
+hamlet <- "To be, or not to be: that is the question:
+Whether 'tis nobler in the mind to suffer
+The slings and arrows of outrageous fortune,
+Or to take arms against a sea of troubles,
+And by opposing end them?"
+hamlet <- c("to", "be", "or", "not", "to", "be", "that", "is", "the", "question", 
+"whether", "tis", "nobler", "in", "the", "mind", "to", "suffer", 
+"the", "slings", "and", "arrows", "of", "outrageous", "fortune", 
+"or", "to", "take", "arms", "against", "a", "sea", "of", "troubles", 
+"and", "by", "opposing", "end", "them")
+
+hamlet <- str_replace_all(hamlet, "[:punct:]", "")
+str_extract_all(hamlet, "[:punct:]")
+hamlet <- tolower(unlist(str_split(hamlet, "[:space:]")))
+
+str_extract_all(hamlet, "to") %>% unlist() %>% length() # Количество слов "to" - 4
+str_count(hamlet, "to") %>% sum()
+
+# 
+sum(hamlet=="to")
+sum(grepl("[fqw]", hamlet))
+sum(grepl("b.", hamlet))
+sum(nchar(hamlet)==7)
+# 
+length(grep("to", hamlet)) # to # 4
+length(grep("[fqw]", hamlet)) # fqw # 7
+length(grep("[b.]", hamlet)) # b.... # 5
+length(grep("\\b[[:alpha:]]{7}\\b",  hamlet)) # 7 char # 3
+# 
+sum(hamlet == 'to')
+length(grep("[fqw]", hamlet))
+sum(str_detect(hamlet, "b."))
+sum(str_length(hamlet)==7)
+#
+sum(str_detect(hamlet,"to"))
+sum(str_detect(hamlet,"[fqw]"))
+sum(str_detect(hamlet,"b."))
+sum(str_length(hamlet)==7)
+#
+length(unlist(str_extract_all(hamlet, "to")))
+length(hamlet[nchar(hamlet) == 7])
+length(hamlet[!is.na(str_extract(hamlet, "b."))])
+length(hamlet[!is.na(str_extract(hamlet, "[fqw]"))])
+#
+# number of times "to" appears:
+sum(as.numeric(str_detect(hamlet, "to")))
+ # number of words containing one of the following letters: "f", "q", "w":
+sum(as.numeric(str_detect(hamlet, "[fqw]")))
+ # number of words containing "b" followed by any char
+sum(as.numeric(str_detect(hamlet, "b.")))
+ # number of words that are 7 characters in length
+sum(as.numeric(str_detect(hamlet, "^.......$")))
+```
+
+# Step 7
+# Step 8
+
+
+# Глоссарий
+
+. . .
+
+`?paste`, `?paste0`, `?strsplit`
+
+`?grep`, `?grepl`, `?gsub`
+
+`library(stringr)`: `?str_extract`, `?str_replace`, +`_all`
+
+`?tolower`, `?toupper`
+
+`?getwd`, `?setwd`, `?list.dirs`, `?list.files`
+
+`?formatC`, `?cat`
