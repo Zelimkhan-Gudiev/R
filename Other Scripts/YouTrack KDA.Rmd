@@ -1,0 +1,84 @@
+---
+title: "KTD development analysis"
+author: "Zelimkhan"
+date: '2023-02-22'
+output: html_document
+---
+
+<style>
+body {
+text-align: justify}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include=FALSE}
+library(dplyr)
+library(readxl)
+library(xml2)
+library(rvest)
+library(htmlTable)
+library(googlesheets4)
+library(rvest)
+library(writexl)
+library(knitr)
+```
+
+##
+```{r include=FALSE}
+# Reading data
+yt <- read_sheet("https://docs.google.com/spreadsheets/d/1hXDJbsgdGZdjXxkxcaKKNJk9EwhP2CIPNaY5NilxkvY/edit?usp=sharing")
+# Tronsorming data
+yt[, c('reason', 'year_plan_st', 'kvartal', 'kind_tz', 'executor_depir','stage', 'executor_ac', 
+       'teamleader', 'deputy', 'contract', 'pcp', 'criteria', 'f2', 
+       'method', 'tegs', 'grade_duration', 'grade_numb_ret_depir', 
+       'grade_numb_ret_oiv', 'tru')] <- lapply(yt[, c('reason', 'year_plan_st', 'kvartal', 'kind_tz', 'executor_depir','stage', 'executor_ac', 
+                                                      'teamleader', 'deputy', 'contract', 'pcp', 'criteria', 'f2', 
+                                                      'method', 'tegs', 'grade_duration', 'grade_numb_ret_depir', 
+                                                      'grade_numb_ret_oiv', 'tru')], as.factor)
+```
+
+<div style="text-align: justify">
+  \ Для анализа из ИСУП YouTrack сформирована [выборка](https://docs.google.com/spreadsheets/d/1hXDJbsgdGZdjXxkxcaKKNJk9EwhP2CIPNaY5NilxkvY/edit?usp=sharing) из `r nrow(yt)` задач по разработке комплектов типовых документом (далее - КТД), которые отвечают одновременно следующим условиям:\
+1. Относятся к процессу разработки КТД.\
+2. Находятся в статусе "Завершено".\
+3. Процесс разработки задач полностью ввелся в ИСУП YouTrack.
+</div>
+
+```{r}
+yt %>% 
+  select(time_ac:duration) %>% 
+  summary() %>% as.data.frame()
+```
+
+```{r}
+yt %>% 
+  select(reason, year_plan_st, kvartal, kind_tz, numb_ret_depir, numb_ret_oiv,
+         teamleader, deputy, contract, pcp, criteria, f2, method, tegs, time_ac:tru) %>% 
+  summary()
+
+```
+
+
+```{r include=FALSE}
+yt %>% 
+        filter(reason %in% c("План по стандартизации","Поручение ДЭПиР или руководства"), kind_tz == "ТТЗ") %>% 
+        group_by(kind_tz, tru, year_plan_st, deputy) %>% 
+        summarise(mean_duration = mean(duration, trim = 0.05),
+                  sd_duration = sd(duration),
+                  numb_ret_depir = mean(numb_ret_depir),
+                  sd_numb_ret_depir = sd(numb_ret_depir),
+                  numb_ret_oiv = mean(numb_ret_oiv),
+                  sd_numb_ret_oiv = sd(numb_ret_oiv),
+                  n = length(tru)) %>% 
+        arrange(deputy, tru, year_plan_st)
+
+hist(yt$duration)
+hist(yt$numb_ret_depir)
+hist(yt$numb_ret_oiv)
+
+filter(yt, duration > 350)
+```
+
