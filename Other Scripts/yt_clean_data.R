@@ -143,8 +143,6 @@ suspicious_ktd %>%
 
 
 
-
-
 filter(yt, is.na(yt$time_rev_oiv) & time_ac < 10)[["id"]] %>% 
   paste(collapse = ", ")
 
@@ -157,5 +155,4 @@ yt %>%
     ),
     sheet = "list1"
   )
-
 
