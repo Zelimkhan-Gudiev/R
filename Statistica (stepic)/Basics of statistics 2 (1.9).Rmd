@@ -117,10 +117,13 @@ most_significant(test_data)
 ```
 v2
 ```{r}
-most_significant  <- function(test_data){    
-	chisq_tests <- sapply(test_data, function(col) chisq.test(table(col))$p.value)    
-	min_p  <- which(chisq_tests == min(chisq_tests))    
-	return(colnames(test_data)[min_p])
+
+x <- test_data
+most_significant <- function(x){
+  contingency_cols <- sapply(x, table)
+  chisq_for_cols <- apply(contingency_cols, 2, chisq.test)
+  p_values <- sapply(chisq_for_cols, "[", 3)
+  return(colnames(x[which(p_values == min(unlist(p_values)))]))
 }
 ```
 v3
@@ -132,12 +135,10 @@ most_significant <- function(df) {
 ```
 v4
 ```{r}
-x <- test_data
-most_significant <- function(x){
-  contingency_cols <- sapply(x, table)
-  chisq_for_cols <- apply(contingency_cols, 2, chisq.test)
-  p_values <- sapply(chisq_for_cols, "[", 3)
-  return(colnames(x[which(p_values == min(unlist(p_values)))]))
+most_significant  <- function(test_data){    
+	chisq_tests <- sapply(test_data, function(col) chisq.test(table(col))$p.value)    
+	min_p  <- which(chisq_tests == min(chisq_tests))    
+	return(colnames(test_data)[min_p])
 }
 ```
 v5
@@ -252,41 +253,18 @@ get_important_cases(test_data)
 3 18 16 27 18 19             Yes
 
 ```{r}
-means <- lapply(iris[-5], mean)
-iris$important_cases <- as.factor(ifelse(rowSums(iris[-5] > means) > 2, 'Yes', 'No'))
-
-x <- test_data
-means <- lapply(x, mean)
-apply(x, 2, function(x) x > colMeans(x))
-x$important_cases <- as.factor(ifelse(rowSums(x) > means, 1, 0))
-
-
-
+x <- iris[, 1:4]
+get_important_cases <- function(x) {
+  means <- sapply(x, function(x) x > mean(x))
+  rs <- rowSums(means)
+  x$important_cases <- factor(rs > floor(ncol(x)/2), levels = c(FALSE, TRUE), labels = c("No", "Yes"))
+  return(x)
+}
+```
+Cheking
+```{r}
+get_important_cases(x)
 ```
 
 # Exircise 7 of 8
 # Exircise 8 of 8
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
