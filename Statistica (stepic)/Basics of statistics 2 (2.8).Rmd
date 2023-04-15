@@ -1,0 +1,624 @@
+---
+title: "Basics of statistics 2 (2.8)"
+author: "Zelimkhan"
+date: '2023-04-08'
+output: html_document
+---
+# Exircise 1 of 8
+Давайте приступать к анализу данных в R. В этом уроке задачи будут посвящены логистической регрессии и проверке переменных на нормальность распределения!
+
+Возможно, вам будет полезен урок по применению логистической регрессии в R (https://stepik.org/lesson/10226/step/1?unit=2535).
+
+
+# Exircise 2 of 8
+Начнем с простого и вспомним, как применять логистическую регрессию в R. Напишите функцию get_coefficients, которая получает на вход dataframe с двумя переменными x (фактор с произвольным числом градаций) и y (фактор с двумя градациями). Функция строит логистическую модель, где y — зависимая переменная, а x — независимая, и возвращает вектор со значением экспоненты коэффициентов модели. 
+
+Пример работы функции.
+```{r}
+test_data <- read.csv("https://stepik.org/media/attachments/course/524/test_data_01.csv")
+str(test_data)
+# переведем переменные в фактор 
+test_data <- transform(test_data, x = factor(x), y = factor(y)) 
+get_coefficients(test_data)
+
+
+```
+(Intercept)          x2                 x3   
+0.9000000         2.5396825         0.6666667
+
+```{r}
+get_coefficients <- function(dataset){
+  coef <- glm(y ~ x, test_data, family = "binomial")$coef
+  exp(coef)
+}
+```
+v2
+```{r}
+get_coefficients  <- function(dataset){    
+	fit <- glm(y ~ x, dataset, family = 'binomial')    
+	return(exp(fit$coefficients))    
+}
+```
+v3
+```{r}
+get_coefficients <- function(x) exp(glm(y ~ x, x, family = "binomial")$coefficients)
+```
+v4
+```{r}
+get_coefficients <- function(dataset) {
+  sapply(glm(y ~ x, dataset, family = "binomial")$coefficients, exp)
+}
+```
+
+
+# Exircise 3 of 9
+Если в нашей модели есть количественные предикторы, то в интерцепте мы будем иметь значение, соответствующее базовому уровню категориальных предикторов и нулевому уровню количественных. Это не всегда осмысленно. Например, нам не интересен прогноз для людей нулевого возраста или роста. В таких ситуациях количественную переменную имеет смысл предварительно центрировать так, чтобы ноль являлся средним значением переменной. Самый простой способ центрировать переменную — отнять от каждого наблюдения среднее значение всех наблюдений.
+xcentered_i = x_i − x_ср
+
+В этом задании вашей задачей будет написать функцию centered, которая получает на вход датафрейм и имена переменных, которые необходимо центрировать так, как это описано выше. Функция должна возвращать этот же датафрейм, только с центрированными указанными переменными.
+
+Пример работы функции:
+```{r}
+test_data <- read.csv("https://stepic.org/media/attachments/course/524/cen_data.csv")
+test_data
+```
+    X1   X2   X3   X4
+1  8.5  9.7 10.7 10.3
+2  8.1 12.8  9.7 12.6
+3  9.6  7.4  8.4 12.7
+4  9.6 10.9  7.7  8.0
+5 11.9 13.7 12.3 11.0
+
+```{r}
+var_names = c("X4", "X2", "X1")
+centered(test_data, var_names)
+```
+
+     X1   X2   X3    X4
+1 -1.04 -1.2 10.7 -0.62
+2 -1.44  1.9  9.7  1.68
+3  0.06 -3.5  8.4  1.78
+4  0.06  0.0  7.7 -2.92
+5  2.36  2.8 12.3  0.08
+
+```{r}
+centered <- function(test_data, var_names){
+  test_data[var_names] <- sapply(test_data[var_names], function(x) x - mean(x))
+  test_data
+}
+```
+v2
+```{r}
+centered <- function(test_data, var_names){
+  test_data[,var_names] <- scale(test_data[,var_names],center = T, scale = F)
+return(test_data)
+}
+```
+v3
+```{r}
+centered <- function(x,y){
+  x[y] <- x[y] - lapply(X = x[y], FUN = mean)
+  x
+}
+```
+v4
+```{r}
+centered <- function(df, var_names){
+    library(dplyr)
+    mutate_at(df, var_names, funs(.-mean(.)))}
+```
+v5
+```{r}
+centered <- function(data, columns) {
+    data[columns] <- sweep(data[columns], 2L, colMeans(data[columns]))
+    data
+}
+```
+
+
+# Exircise 4 of 9
+Представьте, что мы работаем в аэропорту в службе безопасности и сканируем багаж пассажиров. В нашем распоряжении есть информация о результатах проверки багажа за предыдущие месяцы. Про каждую вещь мы знаем:
+
+являлся ли багаж запрещенным - is_prohibited (No - разрешенный, Yes - запрещенный) 
+его массу (кг) - weight
+длину (см) - length
+ширину (см) - width
+тип багажа (сумка или чемодан) - type.
+
+Напишите функцию get_features, которая получает на вход набор данных о багаже. Строит логистическую регрессию, где зависимая переменная - являлся ли багаж запрещенным, а предикторы - остальные переменные, и возвращает вектор с названиями статистически значимых переменных (p < 0.05) (в модели без взаимодействия). Если в данных нет значимых предикторов, функция возвращает строку с сообщением  "Prediction makes no sense".
+
+Пример работы функции и описание переменных:
+```{r}
+test_data <- read.csv("https://stepic.org/media/attachments/course/524/test_luggage_1.csv", stringsAsFactors = T)
+str(test_data)
+```
+
+```{r}
+get_features(test_data)
+# "Prediction makes no sense"
+```
+
+```{r}
+test_data <- read.csv("https://stepic.org/media/attachments/course/524/test_luggage_2.csv", stringsAsFactors = T)
+str(test_data)
+get_features(test_data)
+# "length" "width"  "type"
+```
+Обратите внимаение функция возвращает именно названия исходных переменных, а не typeBad или typeSuitcase! Ведь нас интересует именно влияние переменной в целом.
+Подсказка. Для отбора значимых предикторов воспользуйтесь функцией anova()
+```{r}
+fit <- glm(x ~ y, data, family = "binomial")
+result <- anova(fit, test = "Chisq")  # тут и будет вся нужная информация!
+```
+
+```{r}
+get_features <- function(dataset){
+  fit <- glm(is_prohibited ~ ., test_data, family = "binomial")
+  an <- anova(fit, test = "Chisq")
+  if (sum(an$`Pr(>Chi)` < 0.05, na.rm = T) >= 1) {
+  f <- subset(an, an$`Pr(>Chi)` < 0.05)
+  row.names(f)
+  } else {"Prediction makes no sense"
+  }
+}
+```
+v2
+```{r}
+get_features <- function(test_data){
+  fit <- glm(is_prohibited ~ ., test_data, family = "binomial")
+  re <- anova(fit, test = "Chisq")
+  ts <- row.names(na.omit(re[re$`Pr(>Chi)` < 0.05 , ]))
+  ifelse(length(ts) > 0, return(ts), c("Prediction makes no sense"))
+}
+```
+v3
+```{r}
+get_features <- function(test_data){
+  fit <- glm(is_prohibited ~ ., test_data, family = "binomial")
+  result <- anova(fit, test = "Chisq")
+  features <- colnames(test_data)[result$P < 0.05 & !is.na(result$P)]
+  if (length(features) == 0) return("Prediction makes no sense")
+  return(features)
+}
+```
+v4
+```{r}
+get_features <- function(test_data){
+  fit <- glm(is_prohibited ~ weight + length + width + type, test_data, family = 'binomial')
+  result <- as.matrix(anova(fit, test = 'Chisq')[5])
+  name <- as.vector(apply(result, 2 , function(x) names(which(x < 0.05))))
+  ifelse(length(name) == 0, return('Prediction makes no sense'), return(name))
+}
+```
+v5
+```{r}
+get_features <- function(test_data){
+  fit <- glm(is_prohibited~.,family = 'binomial' , test_data )
+  new <- data.frame(anova(fit, test = "Chisq"))
+  new <- as.data.frame(new)
+  new <- na.omit(new)
+  d <- row.names(new[which(new$Pr..Chi. < 0.05), ])
+  ifelse(length(d) == 0, 
+         return('Prediction makes no sense'),
+         return(d))
+}
+```
+
+
+# Exircise 5 of 9
+Интересной особенностью логистической регрессии является тот факт, что ее предсказания — это не конкретный класс, к которому мы отнесем новое наблюдение, а вероятность отнесения к каждому из классов! Если вас интересует, как принимать решение о классификации новых объектов в логистической регрессии, посмотрите наш урок по этой теме в курсе по R, где мы разбираем этот вопрос.
+
+В результате, построив регрессионную модель, мы можем сделать вероятностное предсказание для каждого нового наблюдения. Иногда при решении практических задач бывает важным обратить внимание на те объекты, которые получили максимальное значение вероятности принадлежности к одному из классов.
+
+Продолжим нашу работу в службе безопасности! Разобравшись с тем, какие предикторы могут помогать нам предсказывать запрещенный багаж, давайте применим наши знания для повышения безопасности в аэропорту. Обучим наш алгоритм различать запрещенный и разрешенный багаж на уже имеющихся данных и применим его для сканирования нового багажа!
+
+Напишите функцию, которая принимает на вход два набора данных. Первый dataframe, как и в предыдущей задаче, содержит информацию об уже осмотренном багаже (запрещенный или нет, вес, длина, ширина, тип сумки). 
+
+Второй набор данных — это информация о новом багаже, который сканируется прямо сейчас. В данных также есть информация:  вес, длина, ширина, тип сумки и имя пассажира (смотри описание переменных в примере). 
+
+Используя первый набор данных, обучите регрессионную модель различать запрещенный и разрешенный багаж. При помощи полученной модели для каждого наблюдения в новых данных предскажите вероятность того, что багаж является запрещенным. Пассажиров, чей багаж получил максимальное значение вероятности, мы попросим пройти дополнительную проверку. 
+
+Итого, ваша функция принимает два набора данных и возвращает имя пассажира с наиболее подозрительным багажом. Если несколько пассажиров получили максимальное значение вероятности, то верните вектор с несколькими именами. 
+
+В этой задаче для предсказания будем использовать все предикторы, даже если некоторые из них оказались незначимыми. Для предсказания стройте модель без взаимодействия предикторов.
+
+Пример работы функции:
+```{r}
+test_data <- read.csv("https://stepic.org/media/attachments/course/524/test_data_passangers.csv", stringsAsFactors = T)
+str(test_data)
+```
+'data.frame':  30 obs. of  5 variables:
+ $ is_prohibited: Factor w/ 2 levels "No","Yes": 1 1 1 1 1 1 1 1 1 1 ...
+ $ weight       : int  81 72 79 89 87 91 74 76 74 84 ...
+ $ length       : int  49 49 60 49 54 42 54 49 49 53 ...
+ $ width        : int  13 25 22 24 13 25 17 22 12 26 ...
+ $ type         : Factor w/ 2 levels "Bag","Suitcase": 2 2 2 2 2 2 2 2 2 2 ...
+
+```{r}
+data_for_predict <-read.csv("https://stepic.org/media/attachments/course/524/predict_passangers.csv", stringsAsFactors = T)
+str(data_for_predict)
+```
+'data.frame':  10 obs. of  5 variables:
+ $ weight    : int  81 80 76 87 80 70 95 72 73 76
+ $ length    : int  56 47 54 59 59 53 54 42 45 49
+ $ width     : int  24 18 20 19 19 21 19 22 23 18
+ $ type      : Factor w/ 2 levels "Bag","Suitcase": 2 1 1 1 2 1 2 2 2 1
+ $ passangers: Factor w/ 10 levels "Anatoliy","Bob",..: 2 1 3 6 9 8 10 5 4 7
+
+```{r}
+most_suspicious(test_data, data_for_predict)
+```
+[1] Svetozar # пассажира звали Светозар!
+
+```{r}
+most_suspicious <- function(test_data, data_for_predict){
+  fit <- glm(is_prohibited ~ ., test_data, family = "binomial")
+  data_for_predict$is_prohibited <- predict(fit, newdata = data_for_predict, type = "response")
+  ind <- which(data_for_predict$is_prohibited == max(data_for_predict$is_prohibited))
+  data_for_predict$passangers[ind]
+}
+```
+v2
+```{r}
+most_suspicious <- function(test_data, data_for_predict){    
+	fit <- glm(is_prohibited ~., test_data, family = 'binomial')    
+	probs <- predict(fit, newdata = data_for_predict, type = 'response')    
+	index <- which(probs == max(probs))    
+	passanger_name <- data_for_predict$passangers[index]    
+	return(passanger_name)    
+}
+```
+v3
+```{r}
+most_suspicious <- function(test_data, data_for_predict){
+    fit <- glm(is_prohibited ~ ., test_data, family = "binomial")
+    data_for_predict$result <- predict(fit, data_for_predict, type = "response")
+    subset(data_for_predict, result == max(result), "passangers", drop = T)
+}
+
+```
+v4
+```{r}
+most_suspicious <- function(test_data, data_for_predict){
+  fit <- glm(factor(is_prohibited) ~ ., test_data, family = "binomial")
+  pred <- predict(fit, data_for_predict)
+  data_for_predict[pred == max(pred), "passangers"]
+}
+```
+v5
+```{r}
+library(dplyr)
+most_suspicious <- function(test_data, data_for_predict) {
+  test_data %>%
+    glm(is_prohibited ~ . , . , family = 'binomial') %>%
+    predict(newdata = data_for_predict) %>%
+    mutate(data_for_predict, fit = .) %>%
+    filter(fit == max(fit)) %>%
+    pull(passangers)
+}
+```
+
+# Exircise 6 of 9
+Напишите функцию normality_test, которая получает на вход dataframe с произвольным количеством переменных разных типов (количественные, строки, факторы) и проверяет нормальность распределения количественных переменных. Функция должна возвращать вектор значений p-уровней значимости теста shapiro.test для каждой количественной переменной.
+
+Вот такая задача уж точно встретится вам в реальной практике не один раз!
+```{r}
+normality_test(iris)
+```
+Sepal.Length  Sepal.Width Petal.Length  Petal.Width 
+1.018116e-02 1.011543e-01 7.412263e-10 1.680465e-08 
+
+```{r}
+test <- read.csv("https://stepic.org/media/attachments/course/524/test.csv")
+dataset <- test
+normality_test(test)
+```
+         V1          V3          V5          V6 
+0.568208352 0.245833708 0.314189423 0.009373741
+
+```{r}
+normality_test <- function(test){
+        library(dplyr)
+        test[sapply(test, is.numeric)] %>% 
+            sapply(shapiro.test) %>% as.data.frame() %>% 
+                  filter(row.names(.) == "p.value") %>% unlist()
+}
+```
+v2
+```{r}
+normality_test <- function(dataset){    
+	numeric_var <- sapply(dataset, is.numeric)  
+	sapply(dataset[numeric_var], function(x) shapiro.test(x)$p.value)    
+}
+```
+v3
+```{r}
+normality_test <- function(dataset){
+    sapply(Filter(is.numeric, dataset), function(x) shapiro.test(x)$p.value)
+}
+```
+v4
+```{r}
+normality_test <- function(df){
+  library(dplyr)
+  unlist(df %>% summarise_if(is.numeric, funs(shapiro.test(.)$p.value)))
+}
+```
+v5
+```{r}
+normality_test <- function(dataset){
+  unlist(sapply(dataset,FUN=function(x){if(is.numeric(x))shapiro.test(x)$p.value}))
+}
+```
+
+# Exircise 7 of 9
+Напишите функцию smart_anova, которая получает на вход dataframe с двумя переменными x и y. Переменная x — это количественная переменная, переменная y - фактор, разбивает наблюдения на три группы.
+Если распределения во всех группах значимо не отличаются от нормального, а дисперсии в группах гомогенны, функция должна сравнить три группы при помощи дисперсионного анализа и вернуть именованный вектор со значением p-value, имя элемента — "ANOVA".
+Если хотя бы в одной группе распределение значимо отличается от нормального или дисперсии негомогенны, функция сравнивает группы при помощи критерия Краскела — Уоллиса и возвращает именованный вектор со значением p-value, имя вектора  — "KW".
+Распределение будем считать значимо отклонившимся от нормального, если в тесте shapiro.test() p < 0.05.
+Дисперсии будем считать не гомогенными, если в тесте bartlett.test() p < 0.05.
+Пример работы функции:
+```{r}
+test_data <- read.csv("https://stepic.org/media/attachments/course/524/s_anova_test.csv", stringsAsFactors = T)
+str(test_data)
+```
+'data.frame':	30 obs. of  2 variables:
+ $ x: num  1.08 0.07 -1.02 -0.45 0.81 -1.27 -0.75 1.47 -0.2 -1.48 ...
+ $ y: Factor w/ 3 levels "A","B","C": 1 1 1 1 1 1 1 1 1 1 ...
+```{r}
+smart_anova(test_data)
+```
+ ANOVA 
+0.265298
+Подсказка:
+Вытащить значение p-value из результатов применения функции aov() — та еще задача! Один из вариантов:
+```{r}
+fit <- aov(x ~ y, test)
+p_value <- summary(fit)[[1]]$'Pr(>F)'[1]
+```
+
+```{r}
+smart_anova <- function(test_data){
+  p_sh <- aggregate(x ~ y, test_data, function(x) shapiro.test(x)$p.value)
+  p_bt <- bartlett.test(test_data$x ~ test_data$y)$p.value
+  if (all(p_sh$x >= 0.05) & p_bt >= 0.05) {
+    anv <- summary(aov(x ~ y, test_data))[[1]]$'Pr(>F)'[1]
+    names(anv) <- "ANOVA"
+    return(anv)
+    } else {
+      kw <- kruskal.test(x ~ y, test_data)$p.value
+      names(kw) <- "KW"
+      return(kw)
+      }
+}
+```
+v2
+```{r}
+smart_anova <- function(test_data) {
+  all.normal <- all(aggregate(x ~ y, test_data, function(x) shapiro.test(x)$p)$x >= 0.05)
+  all.homogen <- bartlett.test(x ~ y, test_data)$p.value >= 0.05
+  
+  if(all.normal & all.homogen) {
+    c(ANOVA = anova(aov(x ~ y, test_data))$P[1])
+  } else {
+    c(KW = kruskal.test(x ~ y, test_data)$p.value)
+  }
+}
+```
+v3
+```{r}
+library(dplyr)
+smart_anova <- function(test_data) {
+  normality.p.value <- test_data %>% group_by(y) %>% summarise(pv = shapiro.test(x)$p.value) %>% .[["pv"]]
+  homogenity.p.value <- bartlett.test(test_data$x, test_data$y)$p.value
+  
+  if (any(normality.p.value < 0.05) || homogenity.p.value < 0.05) {
+    c(KW = kruskal.test(x ~ y, test_data)$p.value)
+  } else {
+    c(ANOVA = summary(aov(x ~ y, test_data))[[1]]$'Pr(>F)'[[1]])
+  }
+}
+```
+v4
+```{r}
+smart_anova <- function(test_data){
+  normal <- aggregate(x ~ y, test_data, function(x) shapiro.test(x)$p.value)$x
+  homogen <- bartlett.test(x ~ y, test_data)$p.value
+  if(any(normal < 0.05) | homogen < 0.05){
+    c(KW = kruskal.test(x ~ y, test_data)$p.value)
+  } else {
+    c(ANOVA = summary(aov(x ~ y, test_data))[[1]]$'Pr(>F)'[1])
+  } 
+}
+```
+v5
+```{r}
+smart_anova <- function(test_data) {
+  sh <-sapply(levels(test_data$y), function(l)
+       shapiro.test(test_data$x[which(test_data$y == c(l))])$p.value)
+  
+  bar <- bartlett.test(x ~ y, test_data)$p.value
+  
+  if (all(sh >= 0.05) & bar >= 0.05) {
+    ano <- summary(aov(x ~ y, test_data))[[1]]$'Pr(>F)'[1]
+    names(ano) <- "ANOVA"
+    return(ano)
+    
+  } else {
+    kw <- kruskal.test(x ~ y, test_data)$p.value
+    names(kw) <- "KW"
+    return(kw)
+  }
+  #end of fun
+}
+```
+
+
+# Exircise 8 of 9
+Напишите функцию normality_by, которая принимает на вход dataframe c тремя переменными. Первая переменная количественная, вторая и третья имеют две градации и разбивают наши наблюдения на группы. Функция должна проверять распределение на нормальность в каждой получившейся группе и возвращать dataframe с результатами применения теста shapiro.test (формат вывода смотри ниже).
+
+Рассмотрим пример работы функции. В данных mtcars есть две группирующие переменные am и vs, и обе переменные имеют две градации 0 и 1. В результате получаем 4 группы:
+am   vs
+1    1
+1    0
+0    1
+0    0
+Теперь для переменной mpg в каждой из четырех групп можно проверить распределение на нормальность при помощи функции shapiro.test  и вывести получившийся p-value:
+```{r}
+normality_by(mtcars[, c("mpg", "am", "vs")])
+```
+  am vs   p_value
+1  0  0 0.5041144
+2  0  1 0.6181271
+3  1  0 0.5841903
+4  1  1 0.4168822
+
+```{r}
+test_data <- read.csv("https://stepic.org/media/attachments/course/524/test_for_norm.csv")
+test_data[sapply(test_data, is.integer)] <- sapply(select_if(test_data, is.integer), as.factor)
+str(test_data)
+```
+'data.frame':	40 obs. of  3 variables:
+ $ x: num  10.9 14 8.1 11 9.5 11 8.5 11.7 5.4 6.8 ...
+ $ y: int  1 1 0 1 1 0 0 0 0 1 ...
+ $ z: int  2 2 2 3 3 3 3 3 2 3 ...
+
+```{r}
+normality_by(test_data)
+```
+  y z    p_value
+1 0 2 0.21976723
+2 0 3 0.62381802
+3 1 2 0.19603547
+4 1 3 0.04782269
+
+Итого: функция должна возвращать dataframe размером 4 на 3. 
+Название столбцов: 
+1 — имя первой группирующей переменной
+2 — имя второй группирующей переменной
+3 — p_value
+Подсказка: хороший пример того, когда при помощи функции group_by и summarise из пакета dplyr решается в три строчки! Кстати, обработка данных при помощи dplyr разбирается в курсе Основы программирования на R, прикладываю ссылку на урок.
+```{r}
+normality_by <- function(test){
+  v1 <- aggregate(x ~ y + z, test, function(x) shapiro.test(x)$p.value)
+  v1 <- rename(v1, p_value = x)
+  v1
+}
+```
+v2
+```{r}
+normality_by <- function(test){    
+	grouped_data <- aggregate(test[, 1], by = list(test[, 2], test[, 3]),                                  
+	FUN = function(x) {shapiro.test(x)$p.value})                                  
+	names(grouped_data) <- c(colnames(test)[2:3],'p_value')                                  
+	return(grouped_data)    
+}
+```
+v3 Используя dplyr (при условии, что мы знаем имена переменных в данных):
+```{r}
+library(dplyr)    
+normality_by <- function(test_data){    
+	result <- test_data %>% group_by(y, z) %>%     
+	summarize(p_value = shapiro.test(x)$p.value)     
+	return(result)    
+}
+```
+v4 Более общее решение с dplyr:
+```{r}
+library(dplyr)    
+
+get_p_value <- function(x){      
+	shapiro.test(x)$p.value    
+}    
+normality_by <- function(test){    
+	grouped <- test %>%    
+		group_by_(.dots = colnames(.)[2:3]) %>%         
+		summarise_each(funs(get_p_value))         
+		names(grouped)[3] <- 'p_value'         
+		return(grouped)         
+}
+```
+
+
+# Exircise 9 of 9
+Тесты тестами, а графики никто не отменял! Мой вам совет: всегда визуализируйте ваши переменные и их взаимосвязи. Иногда то, что сразу становится видным на графике (например, выброс или очевидно странная форма распределения), может ускользнуть от внимания во время статистического анализа. 
+
+При помощи библиотеки ggplot2 визуализируйте распределение переменной Sepal.Length в трех группах в данных Iris. Сохраните график в переменную obj, но не выводите график на печать.
+
+Должно получиться:
+Рис 1
+На ответ это не повлияет, но чтобы сделать плотности распределения прозрачными, используйте аргумент alpha в настройках geom_density:
+```{r}
+geom_density(alpha = 0.2) 
+```
+Классные графики в ggplot2, не правда ли?) А при помощи чего вы визуализируете даные?
+```{r}
+library(ggplot2)
+obj <- ggplot(iris)
+data(iris)
+ggplot(iris, aes(Sepal.Length, fill = Species)) + 
+  geom_density(alpha = 0.2)
+# не выводите график на печать
+```
+v2
+```{r}
+obj <- ggplot(data = iris, aes(x = Sepal.Length, fill = Species))+
+  geom_density(alpha = 0.5) +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(x="Sepal Length", y = "Density", fill = "Species", 
+       title = "Density plot of Sepal Length")
+```
+
+
+
+# величина значения alpha определяет степень прозрачности
+# Exircise 9 of 9
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
