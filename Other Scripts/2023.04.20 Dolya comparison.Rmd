@@ -1,0 +1,85 @@
+---
+title: "Dolya comparison"
+author: "Zelimkhan Gudiev"
+date: "2023-04-20"
+output: html_document
+---
+# Install and attach R packages
+```{r}
+library(readxl)
+library(dplyr)
+library(googlesheets4)
+library(googledrive)
+library(tidyverse)
+library(stringr)
+
+```
+
+# Settings
+```{r}
+options(scipen = 999)
+```
+
+
+# Authentificate to Google Drive
+```{r}
+drive_auth()
+```
+# Read dataset proIt (dataset was provided by proIt)
+```{r}
+proIt <- read_sheet("https://docs.google.com/spreadsheets/d/1RxJitJkloSnQAZlRC35EAkXjJ8pCmr62AnkzeIFXMtA/edit#gid=1547704543", skip = 1)
+```
+
+# Transform dataset proIt
+```{r}
+proIt$CREATED_DATE <- str_extract_all(proIt$CREATED_DATE, "^.{10}") %>% unlist()
+proIt[, c("не конечный", "IS_STANDARD_PRODUCT", "Нерегулярные закупки")] <- lapply(proIt[, c("не конечный", "IS_STANDARD_PRODUCT", "Нерегулярные закупки")], factor)
+```
+
+# Read dataset dkp (dataset was provided by DKP)
+```{r}
+dkp <- read_sheet("https://docs.google.com/spreadsheets/d/1q6uMAerJgKlTrxOKz4GLR2xqnR4oFzUQN5zI28i_waY/edit#gid=1045133026", col_types = "ccDcccdccc")
+```
+# Transform dataset dkp
+```{r}
+# dkp[, c("КПГЗ (конечный) Код", "КПГЗ (конечный) Наименование")] <- lapply(dkp[, c("КПГЗ (конечный) Код", "КПГЗ (конечный) Наименование")], factor)
+```
+
+# Data analysis
+```{r}
+levels(dkp$`КПГЗ (конечный) Код`) %>% length() # 2426 уникальных КПГЗ
+
+dkp %>% group_by("КПГЗ (конечный) Код") %>% 
+  summarise(KPGZ_SUM22 = sum(dkp$`НМЦ, руб.`, na.rm = T))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
