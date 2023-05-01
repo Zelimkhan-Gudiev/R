@@ -42,22 +42,104 @@ dkp <- read_sheet("https://docs.google.com/spreadsheets/d/1q6uMAerJgKlTrxOKz4GLR
 ```
 # Transform dataset dkp
 ```{r}
-# dkp[, c("КПГЗ (конечный) Код", "КПГЗ (конечный) Наименование")] <- lapply(dkp[, c("КПГЗ (конечный) Код", "КПГЗ (конечный) Наименование")], factor)
+dkp[, c("КПГЗ (конечный) Код", "КПГЗ (конечный) Наименование")] <- lapply(dkp[, c("КПГЗ (конечный) Код", "КПГЗ (конечный) Наименование")], factor)
 ```
 
+
+
+
 # Data analysis
+
+```{r}
+proIt %>% 
+  filter(IS_STANDARD_PRODUCT == 1) %>% 
+  select(CODE) %>% 
+  unique() %>% 
+  nrow() # 3344 - the number of unique KPGZ with a sign of standardization
+  
+# length(unique(proIt$CODE[proIt$IS_STANDARD_PRODUCT == 1]))
+```
+
+
 ```{r}
 levels(dkp$`КПГЗ (конечный) Код`) %>% length() # 2426 уникальных КПГЗ
 
-dkp %>% group_by("КПГЗ (конечный) Код") %>% 
-  summarise(KPGZ_SUM22 = sum(dkp$`НМЦ, руб.`, na.rm = T))
+```
 
+```{r}
+proIt_st <- subset(proIt, IS_STANDARD_PRODUCT == 1)
+```
+# Common KPGZ
+```{r}
+dkp_ag <- dkp %>% 
+              group_by(dkp$`КПГЗ (конечный) Код`) %>% 
+              summarise(KPGZ_SUM22 = sum(`НМЦ, руб.`, na.rm = T),
+                        CON_COUNT22_dkp = length(`НМЦ, руб.`))
+
+common_kpgz <- semi_join(proIt_st, dkp_ag, by = c("CODE" = "dkp$`КПГЗ (конечный) Код`")) %>% # 2314 - количество общих КПГЗ (коды) в выгрузках ПроИТ и ДКП
+  select(CODE, NAME, IS_STANDARD_PRODUCT, CREATED_DATE, DELETED_DATE, KPGZ_SUM22, CON_COUNT22) %>% 
+  left_join(dkp_ag, by = c("CODE" = "dkp$`КПГЗ (конечный) Код`")) %>% 
+  rename(c(KPGZ_SUM22_proIt = KPGZ_SUM22.x,
+          KPGZ_SUM22_dkp = KPGZ_SUM22.y),
+         CON_COUNT22_proIt = CON_COUNT22) %>% 
+  mutate_at(c("KPGZ_SUM22_dkp", "KPGZ_SUM22_proIt"), replace_na, 0) %>% 
+  mutate(difference_sum = KPGZ_SUM22_proIt - KPGZ_SUM22_dkp,
+         difference_count = CON_COUNT22_proIt - CON_COUNT22_dkp) %>% 
+  mutate_at("difference_sum", round, 1)
+
+filter(common_kpgz, difference_sum < 0)     # 1,476 - number of KPGZ in which KPGZ_SUM22_proIt < KPGZ_SUM22_dkp
+filter(common_kpgz, difference_sum == 0)    # 35    - number of KPGZ in which KPGZ_SUM22_proIt = KPGZ_SUM22_dkp
+filter(common_kpgz, difference_sum > 0)     # 803   - number of KPGZ in which KPGZ_SUM22_proIt > KPGZ_SUM22_dkp
+filter(common_kpgz, difference_count < 0)   # 426   - number of KPGZ in which CON_COUNT22_proIt < CON_COUNT22_dkp
+filter(common_kpgz, difference_count == 0)  # 307   - number of KPGZ in which CON_COUNT22_proIt = CON_COUNT22_dkp
+filter(common_kpgz, difference_count > 0)   # 1581  - number of KPGZ in which CON_COUNT22_proIt > CON_COUNT22_dkp
+
+ss_data <- gs4_create(name = "common_kpgz",
+                            sheets = list("common_kpgz_list" = common_kpgz))
+gs4_browse(ss_data)
+
+drive_get("common_kpgz") %>% 
+  read_sheet()
+
+```
+
+# Only ProIT
+```{r}
+only_proIt <- anti_join(proIt_st, dkp_ag, by = c("CODE" = "dkp$`КПГЗ (конечный) Код`")) %>% 
+  select(CODE, NAME, IS_STANDARD_PRODUCT, CREATED_DATE, DELETED_DATE, KPGZ_SUM22, CON_COUNT22) %>% 
+  rename(c(KPGZ_SUM22_proIt = KPGZ_SUM22,
+           CON_COUNT22_proIt = CON_COUNT22)) %>% 
+  mutate_at(c("KPGZ_SUM22_proIt", "CON_COUNT22_proIt"), replace_na, 0)
+
+sheet_write(only_proIt, ss_data,
+            sheet = "only_proIt")
+
+```
+# Only dkp
+```{r}
+only_dkp <- anti_join(dkp_ag, proIt,
+                      by = c("dkp$`КПГЗ (конечный) Код`" = "CODE")) %>% 
+            rename(KPGZ_SUM22_dkp = KPGZ_SUM22)
+sheet_write(only_dkp, ss_data,
+            sheet = "only_dkp")
 ```
 
 
 
+1. Сколько уникальных КПГЗ с признаком стандартизации содержится в выгрузке ПроИТ?
+Ответ: Выгрузка ПроИТ содержит `length(unique(proIt$CODE[proIt$IS_STANDARD_PRODUCT == 1]))` 3344 уникальных КПГЗ с признаком стандартизации.
+
+2. Сколько уникальных КПГЗ с признаком стандартизации содержится в выгрузке ДКП?
+Ответ: Выгрузка ДКП содержит `levels(dkp$`КПГЗ (конечный) Код`) %>% length()` 2426 уникальных КПГЗ по которым были проведены закупки с использованием КТД.
+
+3. Какие позиции КПГЗ с признаком стандартизации, которые содержатся в выгрузке ПроИТ есть также и в выгрузке ДКП?
+
+4. Как соотносятся между собой суммы и количество закупок по позициям КПГЗ с признаком стандартизации, которые содержатся в выгрузке ПроИТ и которые содержатся также и в выгрузке ДКП? Если есть разница, в количестве и в сумме закупок, то чем ее можно объяснить?
+
+5. Какие позиции КПГЗ с признаком стандартизации, которые содержатся в выгрузке ПроИТ, отстутсвуют в выгрзке ДКП? Если такие позиции есть, то чем это можно объяснить?
 
 
+6. Какие позиции КПГЗ с признаком стандартизации, которые содержатся в выгрузке ДКП, отстутсвуют в выгрзке ПроИТ? Если такие позиции есть, то чем это можно объяснить?
 
 
 
