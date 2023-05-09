@@ -94,12 +94,10 @@ filter(common_kpgz, difference_count < 0)   # 426   - number of KPGZ in which CO
 filter(common_kpgz, difference_count == 0)  # 307   - number of KPGZ in which CON_COUNT22_proIt = CON_COUNT22_dkp
 filter(common_kpgz, difference_count > 0)   # 1581  - number of KPGZ in which CON_COUNT22_proIt > CON_COUNT22_dkp
 
-ss_data <- gs4_create(name = "common_kpgz",
-                            sheets = list("common_kpgz_list" = common_kpgz))
-gs4_browse(ss_data)
-
-drive_get("common_kpgz") %>% 
-  read_sheet()
+ss_data <- gs4_find("dolya_comp")
+sheet_write(common_kpgz,
+            ss_data,
+            sheet = "common_kpgz")
 
 ```
 
@@ -119,7 +117,11 @@ sheet_write(only_proIt, ss_data,
 ```{r}
 only_dkp <- anti_join(dkp_ag, proIt,
                       by = c("dkp$`КПГЗ (конечный) Код`" = "CODE")) %>% 
-            rename(KPGZ_SUM22_dkp = KPGZ_SUM22)
+            rename(KPGZ_SUM22_dkp = KPGZ_SUM22) %>% 
+            left_join(dkp[, c("КПГЗ (конечный) Код", "КПГЗ (конечный) Наименование")],
+                      by = c("dkp$`КПГЗ (конечный) Код`" = "КПГЗ (конечный) Код")) %>% 
+            select("dkp$`КПГЗ (конечный) Код`", "КПГЗ (конечный) Наименование",
+                   "KPGZ_SUM22_dkp", "CON_COUNT22_dkp")
 sheet_write(only_dkp, ss_data,
             sheet = "only_dkp")
 ```

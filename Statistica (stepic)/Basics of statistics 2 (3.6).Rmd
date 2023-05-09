@@ -214,33 +214,24 @@ get_pc(test_data)
 Для выполнения анализа главных компонент используйте функцию prcomp(). Изучите результат применения этой функции к данным, чтобы найти, где хранятся значения выделенных главных компонент.
 
 ```{r}
-d <- test_data
-get_pc <- function(d){
-  prc <- prcomp(d)
-  cbind(d, prc$x[, c(1, 2)])
+get_pc <- function(test_data){
+  prc <- prcomp(test_data)
+  cbind(test_data, prc$x[, c(1, 2)])
 }
 ```
 v2
 ```{r}
-get_pc <- function(test){    
-	fit <- prcomp(test)    
-	test<- cbind(test, fit$x[,1:2])    
-	return(test)    
+get_pc <- function(test_data) {
+  cbind(test_data, prcomp(d)$x[, 1:2])
 }
 ```
 v3
 ```{r}
-get_pc <- function(d) {
-  cbind(d, prcomp(d)$x[, 1:2])
+get_pc <- function(test_data){
+  return(cbind(test_data, prcomp(test_data, rank. = 2)$x))
 }
 ```
 v4
-```{r}
-get_pc <- function(d){
-  return( cbind( d, prcomp(d, rank. = 2)$x ) )
-}
-```
-v5
 ```{r}
 get_pc <- function(test_data){
   fit <- prcomp(test_data)
@@ -255,6 +246,7 @@ get_pc <- function(test_data){
 Усложним предыдущую задачу! Напишите функцию get_pca2, которая принимает на вход dataframe с произвольным числом количественных переменных. Функция должна рассчитать, какое минимальное число главных компонент объясняет больше 90% изменчивости в исходных данных и добавлять значения этих компонент в исходный dataframe в виде новых переменных.
 Рассмотрим работу функции на примере встроенных данных swiss:
 ```{r}
+data(swiss)
 fit <- prcomp(swiss)
 summary(fit)
 ```
@@ -284,19 +276,43 @@ str(result)
  
 ```{r}
 get_pca2 <- function(data){
-
+  length_min_one <- as.vector(summary(prcomp(data))$importance[3,])[as.vector(summary(prcomp(data))$importance[3,]) <= 0.9]
+  prcomp(data)
+  prc <- summary(prcomp(data))
+  prc2 <- prc$x[ , 1:(length(length_min_one) + 1)]
+  cbind(data, prc2)
 }
+```
 
-fit <- prcomp(swiss)
-s <- summary(fit)
-
-subset(s, s$importance[3,] <= 0.9)
-
-select_at(s, )
-  
-s$importance[3,] <= 0.9
-
-as.vector(summary(prcomp(test_data))$importance[3,])
+v2
+```{r}
+data <- swiss
+get_pca2 <- function(data){
+  vec <- as.vector(summary(prcomp(data))$importance[3, ])
+  vec1 <- vec[vec <= 0.9]               
+  prcomp(data)
+  prc <- summary(prcomp(data))
+  prc2 <- prc$x[ , 1:(length(vec1) + 1)]
+  cbind(data, prc2)
+}
+```
+v3
+```{r}
+get_pca2 <- function(df){
+   fit <- prcomp(df)
+   pcs <- summary(fit)$importance[3, ]
+   ind <- which(pcs > 0.9)[1]
+   cbind(df, fit$x[, 1:ind])
+}
+```
+v4
+```{r}
+get_pca2 <- function(d){  
+  fit <- prcomp(d)  
+  cumulative_proportion <- summary(fit)[["importance"]][3,]  
+  pos <- Position(function(x) x > 0.9, cumulative_proportion)  
+  cbind(d, fit$x[, 1:pos])
+}
 
 ```
 
@@ -348,10 +364,69 @@ is_multicol(test_data)
 ```
 [1] "V2" "V1" "V4" "V3"
 
+v1
 ```{r}
-is_multicol <- function(d){
-
+is_multicol <- function(df){
+  # число колонок в датафрейме
+  len <- length(df)
+  # имена колонок датафрейма
+  cols <- colnames(df)
+  # список для вывода
+  output <- c()
+  
+  # берем последовательно все колонки с первой до предпоследней
+  for(i in 1:(len-1)){
+    # для каждой взятой колонки берем последовательно все колонки идущие после неё
+    for(j in (i+1):len){
+      # смотрим на корреляцию колонки i со всеми, что идут после нее с помощью cor()
+      # если корреляция по модулю (abs) равна единице - добавляем имена колонок i и j в output
+      # в задаче есть ссылка, где объясняется почему надо брать для сравнения "isTRUE(all.equal())" вместо "=="
+      if(isTRUE(all.equal(abs(cor(df[, i], df[, j])), 1))){
+        # добавление имен колонок i и j в output
+        output <- c(output, cols[i], cols[j])
+      }
+    }
+  }
+  # если output пустой (длина равна 0) - возвращаем сообщение об отсутствии корреляций
+  if(length(output) == 0){
+    return("There is no collinearity in the data")
+  }
+  # в противном случае возвращаем уникальные значения output
+  else{
+    return(unique(output))
+  }
 }
+```
+v2
+```{r}
+is_multicol <- function(d){    
+  d <- abs(cor(d))     
+  d[lower.tri(d)] <- 0    
+  diag(d) <- 0    
+  index <- which((1-d) < 1e-10, arr.ind = T)    
+  if (length(index) == 0){      
+    return('There is no collinearity in the data')    
+  } else {      
+    return(rownames(d)[index])      
+  }      
+}
+```
+
+
+
+Задача для супергероев 
+```{r}
+x <- iris[,-5]
+high.corr <- function (x){
+  t <- x[,sapply(x,  is.numeric)]
+  r <- cor(t)
+  r <- upper.tri(r, diag = F) * r
+  mr <- r[which.max(abs(r))]
+  ind <- which(r == mr, arr.ind = TRUE)
+  print <- c(rownames(r)[ind[,"row"]],  colnames(r)[ind[,"col"]])
+  return(print)
+}
+high.corr(x)
 ```
 
 
@@ -379,8 +454,15 @@ str(swiss)
 # сначала создайте переменную cluster в данных swiss
 
 # дополните код, чтобы получить график
+d <- dist(swiss)
+fit <- hclust(d)
+swiss$cluster <- as.factor(cutree(fit, 2))
+
 library(ggplot2)
-my_plot <- ggplot(swiss, aes(Education, Catholic, col = ))
+my_plot <- ggplot(swiss, aes(Education, Catholic, col = cluster)) + 
+  geom_point() + 
+  geom_smooth(method = "lm")
+
 ```
 
 
