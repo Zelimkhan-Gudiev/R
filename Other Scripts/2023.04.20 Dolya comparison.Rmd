@@ -12,6 +12,8 @@ library(googlesheets4)
 library(googledrive)
 library(tidyverse)
 library(stringr)
+# install.packages("purrr")
+library(purrr)
 
 ```
 
@@ -24,6 +26,7 @@ options(scipen = 999)
 # Authentificate to Google Drive
 ```{r}
 drive_auth()
+ss_data <- gs4_find("2023.05.10 dolya_comp")
 ```
 # Read dataset proIt (dataset was provided by proIt)
 ```{r}
@@ -76,6 +79,9 @@ dkp_ag <- dkp %>%
               summarise(KPGZ_SUM22 = sum(`НМЦ, руб.`, na.rm = T),
                         CON_COUNT22_dkp = length(`НМЦ, руб.`))
 
+write_sheet(dkp_ag, ss_data,
+            sheet = "Выгрузка ДКП (агрег)")
+
 common_kpgz <- semi_join(proIt_st, dkp_ag, by = c("CODE" = "dkp$`КПГЗ (конечный) Код`")) %>% # 2314 - количество общих КПГЗ (коды) в выгрузках ПроИТ и ДКП
   select(CODE, NAME, IS_STANDARD_PRODUCT, CREATED_DATE, DELETED_DATE, KPGZ_SUM22, CON_COUNT22) %>% 
   left_join(dkp_ag, by = c("CODE" = "dkp$`КПГЗ (конечный) Код`")) %>% 
@@ -94,10 +100,10 @@ filter(common_kpgz, difference_count < 0)   # 426   - number of KPGZ in which CO
 filter(common_kpgz, difference_count == 0)  # 307   - number of KPGZ in which CON_COUNT22_proIt = CON_COUNT22_dkp
 filter(common_kpgz, difference_count > 0)   # 1581  - number of KPGZ in which CON_COUNT22_proIt > CON_COUNT22_dkp
 
-ss_data <- gs4_find("dolya_comp")
-sheet_write(common_kpgz,
-            ss_data,
-            sheet = "common_kpgz")
+
+# sheet_write(common_kpgz,
+#            ss_data,
+#            sheet = "common_kpgz")
 
 ```
 
@@ -109,8 +115,8 @@ only_proIt <- anti_join(proIt_st, dkp_ag, by = c("CODE" = "dkp$`КПГЗ (кон
            CON_COUNT22_proIt = CON_COUNT22)) %>% 
   mutate_at(c("KPGZ_SUM22_proIt", "CON_COUNT22_proIt"), replace_na, 0)
 
-sheet_write(only_proIt, ss_data,
-            sheet = "only_proIt")
+# sheet_write(only_proIt, ss_data,
+#            sheet = "only_proIt")
 
 ```
 # Only dkp
@@ -122,10 +128,44 @@ only_dkp <- anti_join(dkp_ag, proIt,
                       by = c("dkp$`КПГЗ (конечный) Код`" = "КПГЗ (конечный) Код")) %>% 
             select("dkp$`КПГЗ (конечный) Код`", "КПГЗ (конечный) Наименование",
                    "KPGZ_SUM22_dkp", "CON_COUNT22_dkp")
-sheet_write(only_dkp, ss_data,
-            sheet = "only_dkp")
+# sheet_write(only_dkp, ss_data,
+#           sheet = "only_dkp")
+```
+# Read dataset mkr (dataset was provided by Alena)
+```{r}
+mkr <- read_sheet("https://docs.google.com/spreadsheets/d/1rHlznynn82Rzv9XcQiDzBvv74OUr9p2oV_HvvRakJ6k/edit#gid=1236302566")
 ```
 
+```{r}
+unique(mkr$`Код КПГЗ`) %>% length() # 3813 - количество КПГЗ (уникальных кодов) в выгрузке МКР
+
+common_kpgz_proIt_mkr <- semi_join(proIt_st[, c("CODE", "NAME", "IS_STANDARD_PRODUCT", "CREATED_DATE", 
+                       "DELETED_DATE", "KPGZ_SUM22", "CON_COUNT22")], mkr, 
+          by = c("CODE" = "Код КПГЗ")) %>% 
+  select(CODE, NAME, IS_STANDARD_PRODUCT, CREATED_DATE, DELETED_DATE, KPGZ_SUM22, CON_COUNT22) %>% 
+  left_join(mkr, by = c("CODE" = "Код КПГЗ"),
+                        suffix = c("_proIt", "_mkr")) %>% 
+  mutate_at(c("KPGZ_SUM22", "CON_COUNT22",
+              "Количество закупок (контрактов/договоров)",
+              "Сумма контрактов/договоров, тыс. руб."), replace_na, 0) %>%
+   mutate("Сумма контрактов/договоров,руб." = `Сумма контрактов/договоров, тыс. руб.` * 1000) %>% 
+   select(- `Сумма контрактов/договоров, тыс. руб.`) %>% 
+   mutate(difference_sum = KPGZ_SUM22 - `Сумма контрактов/договоров,руб.`,
+         difference_count = CON_COUNT22 -  `Количество закупок (контрактов/договоров)`) %>% 
+  rename(`Количество закупок (контрактов/договоров) (МКР)` = `Количество закупок (контрактов/договоров)`,
+         `Сумма контрактов/договоров,руб. (МКР)` = `Сумма контрактов/договоров,руб.`) %>% 
+  mutate_at("difference_sum", round, 1)
+
+write_sheet(common_kpgz_proIt_mkr, ss_data,
+            sheet = "common_kpgz_proIt_mkr")
+
+sum(mkr$`Сумма контрактов/договоров, тыс. руб.`, na.rm = T) * 1000
+```
+# Only mkr
+```{r}
+full_join(proIt_st, dkp_ag, 
+          by = c("CODE" = "dkp$`КПГЗ (конечный) Код`"))
+```
 
 
 1. Сколько уникальных КПГЗ с признаком стандартизации содержится в выгрузке ПроИТ?
@@ -151,7 +191,64 @@ sheet_write(only_dkp, ss_data,
 
 
 
+```{r}
+proIt <- read_sheet("https://docs.google.com/spreadsheets/d/1id4WRqnZ1Z2JGvaWtd7rqZjwJ9y-7WJcUTW6a1eiAeU/edit#gid=1118822109", sheet = "Выгрузка ПроАйТи")
+dkp <- read_sheet("https://docs.google.com/spreadsheets/d/1id4WRqnZ1Z2JGvaWtd7rqZjwJ9y-7WJcUTW6a1eiAeU/edit#gid=1614552", sheet = "Выгрузка ДКП (агрег)")
+mkr <- read_sheet("https://docs.google.com/spreadsheets/d/1id4WRqnZ1Z2JGvaWtd7rqZjwJ9y-7WJcUTW6a1eiAeU/edit#gid=647282146", sheet = "Выгрузка МКР")
+```
 
+```{r}
+proIt_dkp_mkr <- semi_join(proIt, dkp, by = c("code_kpgz_proIt" = "code_kpgz_dkp")) %>% 
+  left_join(dkp, by = c("code_kpgz_proIt" = "code_kpgz_dkp")) %>% 
+  left_join(mkr, by = c("code_kpgz_proIt" = "code_kpgz_mkr")) %>% 
+  select(code_kpgz = code_kpgz_proIt,
+         name_kpgz = name_kpgz_proIt,
+         con_sum_proIt, con_count_proIT,
+         nmc_sum_dkp, con_count_dkp,
+         con_sum_mkr, con_count_mkr)
+
+sheet_write(proIt_dkp_mkr, ss_data,
+            sheet = "general")
+
+semi_join(proIt, mkr, by = c("code_kpgz_proIt" = "code_kpgz_mkr")) %>% 
+  left_join(mkr, by = c("code_kpgz_proIt" = "code_kpgz_mkr"))
+
+?merge
+
+df <- merge(proIt, dkp, 
+      by.x =  "code_kpgz", 
+      by.y = "code_kpgz",
+      all = T) %>% 
+  merge(mkr, by.x =  "code_kpgz", 
+      by.y = "code_kpgz",
+      all = T)
+
+sheet_write(df, ss_data,
+            sheet = "general1")
+
+
+
+```
+
+
+```{r}
+Reduce(function (proIt, dkp, mkr) {merge(proIt, dkp, mkr, all = TRUE) },   # Full join
+                       list(proIt, dkp, mkr))
+
+merge(proIt, dkp, mkr,
+      by = c("code_kpgz_proIt", "code_kpgz_dkp", "code_kpgz_mkr"),
+      all = T)
+
+list(proIt, dkp, mkr) %>% 
+  reduce(full_join,
+         by = c("code_kpgz_proIt", "code_kpgz_dkp", "code_kpgz_mkr"))
+
+
+
+
+
+
+```
 
 
 
