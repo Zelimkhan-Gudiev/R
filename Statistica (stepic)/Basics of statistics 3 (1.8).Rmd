@@ -258,34 +258,128 @@ smart_model(test_data)
 ```
 v1
 ```{r}
-smart_model <- function(test_data) {
-  VIF <- function(test_data) {
-  # Создаем копию набора данных, исключая первый столбец (предполагаемый отклик)
-  test_df <- data.frame(test_data[, -1])
+VIF <- function(test_data) {
+  # !!! оставляем первый столбец, т.к. его отделение происходит в функции smart_model
+  test_df <- data.frame(test_data)
+  
   # Создаем пустой вектор для хранения значений VIF
   VIF_df <- numeric(0)
+  
   # Проходим по всем столбцам в наборе данных
   for (i in 1:ncol(test_df)) {
     # Строим линейную модель для текущего столбца, предсказывая его значения на основе остальных столбцов
     model <- lm(test_df[, i] ~ as.matrix(test_df[, -i]), data = test_df)
+    
     # Вычисляем значение VIF для текущего столбца на основе коэффициента детерминации модели
     VIF_test <- 1 / (1 - summary(model)$r.squared)
+    
     # Добавляем значение VIF в конец вектора VIF_df
     VIF_df <- c(VIF_df, VIF_test)
+    
     # Задаем имя текущего столбца как имя соответствующего элемента вектора VIF_df
     names(VIF_df)[i] <- names(test_df)[i]
   }
+  
   # Возвращаем вектор, содержащий значения VIF для каждого столбца в наборе данных
   return(VIF_df)
-  }
-
-  
-  
-  
 }
 
+smart_model <- function(df){
+  # отделяем зависимую переменную от независимых
+  # зависимая
+  y <- df[, 1]
+  # независимые
+  X <- df[, -1]
+  
+  # рассчитываем для независимых коэффициенты vif с помощью модифицированной функции VIF
+  vifs <- VIF(X)
+  
+  # получаем индекс колонки с максимальным VIF (первое значение для отсортированных по убыванию)
+  # примечание: order возвращает индексы, а не сами значения
+  max_index <- order(vifs, decreasing = TRUE)[1]
+  
+  # цикл: до тех пор пока в массиве vifs максимальное значение будет больше 10
+  while(vifs[max_index] > 10){
+    # удаляем колонку с максимальным VIF из независимых переменных
+    X <- X[, -max_index, drop=FALSE]
+    
+    # если количество признаков в массиве после удаления больше 1
+    if(dim(X)[2] > 1){
+      # пересчитываем VIF для нового набора независимых переменных
+      vifs <- VIF(X)
+      # получаем новый индекс с максимальным значение VIF 
+      max_index <- order(vifs, decreasing = TRUE)[1]
+    }
+    else{
+      break
+    }
+
+  }
+  # строим модель на оставшихся признаках
+  model <- lm(y ~ as.matrix(X))
+  return(model$coefficients)
+}
+```
+v2
+```{r}
+VIF <- function(d) {
+  x <- d[,-1]
+  if (ncol(d) > 2) {
+    sapply(names(x), function(y) 1/(1-summary(lm(as.formula(paste(y,"~.")), x))$r.sq) )
+  } else 0
+}
+           
+smart_model <- function(d) {
+  vif <- VIF(d)
+  if (max(vif) > 10) { 
+    smart_model(d[, -(which.max(vif) + 1)])
+  } else lm(d)$coeff
+}
 ```
 
+v3
+```{r}
+VIF <- function(data)
+{
+  sapply(names(data[-1]), function(name) {
+    m = lm(as.formula(paste(name, "~ .")), data[-1])
+    r2 = summary(m)$r.squared
+    1 / (1 - r2)})
+} 
+
+smart_model <-  function(test_data){
+  while(max(VIF(test_data)) > 10){
+    ind <- which.max(VIF(test_data))
+    test_data <- test_data[-(ind + 1)]
+  }
+  
+  lm(test_data)$coefficients
+}
+```
+v4
+```{r}
+smart_model <-  function(test_data){
+    # Создаем df без оригинальной ЗП
+    d <- test_data[-1]
+    # Задаем начальный максимальный VIF больше 10 
+    max_vif=11
+    # Гоняем код пока не останется VIF больше 10
+    while(max_vif>10) {
+        # Находим все VIF в d
+        y <- sapply(colnames(d), function(x) {
+            1/(1-summary(lm(as.formula(paste(x,"~.")),d))$r.squared)
+        })
+        # Находим текущий максимальный VIF
+        max_vif <- max(y)
+        # Убираем переменную из d с наибольшим VIF, если тот больше 10
+        if (max_vif>10) {
+            d <- d[-which.max(y)]
+        }
+    }
+    # Получаем коэффициенты
+    lm(test_data[,1]~.,d)$coef
+}
+```
 
 
 
@@ -313,6 +407,66 @@ transform_x(test_data)
 # [1] 127.80008 150.96166  74.15172  94.50195  97.35135 113.12344  94.39574  53.92765  57.14654 128.14497
 ```
 
+v1
+```{r}
+# функция для применения степени лямбда к х (правило трансформации)
+apply_lambda <- function(x, lambda){
+  if(lambda < 0) return(-x**lambda)
+  else if(lambda == 0) return(log(x))
+  else return(x**lambda)
+}
 
+# основная функция
+transform_x <-  function(test_data){
+  # разделяем переменные
+  y <- test_data[, 1]
+  x <- test_data[, 2]
+  
+  # задаем диапазон для лямбда
+  lambdas <- seq(-2,2,0.1)
+  
+  # ставим начальное максимальное значение корреляции на 0
+  max_cor <- 0
+  # переменная для сохранения ответа
+  final_x <- NULL
+  
+  # проходим по всем лямбда из диапазона
+  for(lambda in lambdas){
+    # трансформируем х под текущую лямбда
+    new_x <- apply_lambda(x, lambda)
+    # считаем трансформацию между трансформированным х и у
+    new_cor <- cor(y, new_x)
+    
+    # если текущая корреляция больше по модулю чем значение в max_cor
+    if(abs(new_cor) > abs(max_cor)){
+      # записываем в max_cor текущее значение
+      max_cor <- new_cor
+      # записываем в ответ текущий трансформированный х
+      final_x <- new_x
+    }
+  }
+  return(final_x)
+}
+```
+
+v2
+```{r}
+transform_x <- function(test_data) {
+    y <- test_data[[1]]
+    x <- test_data[[2]]
+    # Диапазон значений лямбда
+    l <- seq(-2, 2, 0.1)
+    # Трансформация
+    d <- outer(x, l, "^")
+    # Изменяем знак
+    d[, l < 0] <- -d[, l < 0]
+    # Для случая, где лямбда равна нулю
+    d[, l == 0] <- log(x)
+    # Расчёт корреляций
+    r <- cor(d, y)[, 1]
+    # Выбор оптимального значения
+    d[, which.max(abs(r))]
+}
+```
 
 
