@@ -257,10 +257,21 @@ list(proIt, dkp, mkr) %>%
 
 
 
+```{r}
+salary_6_before_tax6 <- (50000 / 18) * 6 
+tax6 <- salary_6_before_tax6 * 0.13
+salary_6_before_tax6 - tax6
 
 
 
+salary_12_before_tax12 <- (50000 / 18) * 12 
+tax12 <- salary_12_before_tax12 * 0.13
+salary_12_before_tax12 - tax12
+```
 
 
 
+(50000 / 18) * 12
+
+16666.67 + 33333.33
 

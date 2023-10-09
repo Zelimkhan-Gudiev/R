@@ -313,6 +313,64 @@ transform_x(test_data)
 # [1] 127.80008 150.96166  74.15172  94.50195  97.35135 113.12344  94.39574  53.92765  57.14654 128.14497
 ```
 
+v1
+```{r}
+transform_x <- function(test_data) {
+  abs((cor.test(test_data$x^p, test_data$y^p)$estimate))
+}
+
+p <- seq(-2,2, by = 0.1)
+cor <- as.numeric(lapply(p, transform_x)) 
+qplot(p,cor)
+max(cor,na.rm = T)          #максимальное значение коррелляции
+p[which.max(cor)]           #p значение, соотв. максимальному значению корреляции
+
+p <- 2
+```
+```{r}
+transform_x <- function(test_data) {
+    # Диапазон значений лямбда
+    l <- seq(-2, 2, 0.1)
+    # Трансформация
+    d <- outer(test_data[,2], l, "^")
+    # Изменяем знак
+    d[, l < 0] <- -d[, l < 0]
+    # Для случая, где лямбда равна нулю
+    d[, l == 0] <- log(test_data[, 2])
+    # Расчёт корреляций
+    r <- cor(d, test_data[,1])[, 1]
+    l[which.max(abs(r))]
+}
+
+set.seed(42)
+test_data <- data.frame(y = rnorm(10, 10, 1), x = rnorm(10, 10, 1))  
+transform_x(test_data)
+# [1] 127.80008 150.96166  74.15172  94.50195  97.35135 113.12344  94.39574  53.92765  57.14654 128.14497
+```
+
+
+
+
+```{r}
+find_lambda <- function(x, y, start = -5, end = 5, by = 0.1) {
+    # Диапазон значений лямбда
+    l <- seq(start, end, by)
+    # Трансформация
+    d <- outer(x, l, "^")
+    # Изменяем знак
+    d[, l < 0] <- -d[, l < 0]
+    # Для случая, где лямбда равна нулю
+    d[, l == 0] <- log(x)
+    # Расчёт корреляций
+    r <- cor(d, y)[, 1]
+    l[which.max(abs(r))]
+}
+
+x <- mtcars$hp
+y <- mtcars$mpg
+
+find_lambda(x, y)
+```
 
 
 
