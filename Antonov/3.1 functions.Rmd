@@ -30,7 +30,7 @@ fun_list <- c(mean, max)
 sapply(fun_list, function(f) f(1:100))
 sapply(iris[sapply(iris, is.numeric)], mean)
 
-c(mean, min, max) %>% 
+c(min, mean, max) %>% 
   sapply(function(f) f(1:100))
 ```
 
@@ -149,10 +149,16 @@ methods(plot)[1:20]
 
 Определяется либо ключевым словом `return`: 
 ```{r}
+v <- 1:100
+v[sample(v, 10)] <- NA
+v[v == "NA"] %>% length()
+
 has_na <- function(v) {
   for (k in v) if (is.na(k)) return(TRUE)
   return(FALSE)
 }
+
+has_na(v)
 ```
 
 . . .
@@ -275,28 +281,63 @@ decorate_string(pattern = ".:", 1:2, 3:4, 5:6, sep = "&")    # ".:1&3&5:." ".:2&
 P.S. Функции такого рода не праздное развлечение: похожие задачи могут возникать при построении путей к файлам или, например, HTTP запросов.
 ```{r}
 decorate_string <- function(pattern, ...) {
-  rev_pat <- stri_reverse(pattern)
-  paste0(pattern, ... , rev_pat)
+  res1 <- paste(...)
+  rev_pat <- paste(rev(strsplit(pattern, "")[[1]]), collapse = "")
+  res <- paste0(pattern, res1, rev_pat)
+  return(res)
+}
+```
+v2
+```{r}
+decorate_string <- function(pattern, ...) {
+    paste0(pattern, paste(...), intToUtf8(rev(utf8ToInt(pattern))))
+}
+```
+v3
+```{r}
+decorate_string <- function(pattern, ...) { 
+     paste0(pattern, paste(...), stringi::stri_reverse(pattern))
+}
+```
+
+# Step 9
+Давайте напишем бинарный оператор! Пусть %+% действует на два числовых вектора, складывая их поэлементно, но без учёта правил переписывания: если длина векторов различна, то возвращаем вектор большей длины, но с пропущенными значениями в конце.
+
+Например, 
+
+1:5 %+% 1:2   # c(2, 4, NA, NA, NA)
+5 %+% c(2, 6) # c(7, NA) 
+
+```{r}
+"%+%" <- function(x, y) {
+  max_len <- max(length(x), length(y))
+  x_padded <- c(x, rep(NA, max_len - length(x)))
+  y_padded <- c(y, rep(NA, max_len - length(y)))
+  result <- x_padded + y_padded
+  return(result)
 }
 
-decorate_string(pattern = "123", "abc", "def")
-decorate_string(pattern = "123", c("abc", "def"))
-
-str_length(c("abc", "def"))
-
-length(c("abc", "def"))
-length("abc", "def")
-
-paste("123", "abc", sep = "")
-paste("123", c("abc", "def"), sep = "", collapse = " ")
-paste("123", c("abc", "def"), sep = "")
-pattern <- "123"
-stri_reverse("123")
-
-install.packages("stringi")
-library(stringi)
-library(stringr)
+x <- 1:5
+y <- 1:2
 ```
+v2
+```{r}
+'%+%' <- function(x, y) {
+    length(x) <- length(y) <- max(length(x), length(y))
+    x + y
+}
+```
+
+v3
+```{r}
+"%+%" <- function(x, y) {
+    i <- seq_len(max(length(x), length(y)))
+    x[i] + y[i]
+}
+```
+
+
+
 
 
 # Глоссарий
