@@ -58,7 +58,10 @@ ktd_2 <- select(ktd_2, name, kpgz_code, kpgz_name,
 # ktd$okpd2_section_name
 
 
+ktd_forLetter <- read_excel("C:/Users/GudievZK/Desktop/GitHub/2023.10.08 KTD classifacation/Source documentation/2023.10.10 ktd.xlsx")
+
+
 
 
 # write_xlsx(ktd, "/Users/zelimkhan/Desktop/Data/GitHub/2023.10.08 KTD classifacation/2023.10.08 ktd.xlsx")
-write_xlsx(ktd_2, "C:/Users/GudievZK/Desktop/GitHub/2023.10.08 KTD classifacation/ktd.xlsx")
+# write_xlsx(ktd_2, "C:/Users/GudievZK/Desktop/GitHub/2023.10.08 KTD classifacation/ktd.xlsx")

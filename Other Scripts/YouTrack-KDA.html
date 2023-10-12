@@ -256,6 +256,7 @@ if (window.hljs) {
 
 
 
+
 <style type="text/css">
 .main-container {
 max-width: 940px;
@@ -277,6 +278,9 @@ outline: none;
 summary {
 display: list-item;
 }
+details > summary > p:only-child {
+display: inline;
+}
 pre code {
 padding: 0;
 }
@@ -295,23 +299,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -373,6 +371,87 @@ text-align: justify}
 2. Находятся в статусе “Завершено”.<br />
 3. Процесс разработки задач полностью ввелся в ИСУП YouTrack.</p>
 </div>
+<pre class="r"><code>yt %&gt;% 
+  select(time_ac:duration) %&gt;% 
+  summary() %&gt;% as.data.frame()</code></pre>
+<pre><code>##    Var1           Var2              Freq
+## 1              time_ac  Min.   :  0.00  
+## 2              time_ac  1st Qu.:  5.99  
+## 3              time_ac  Median : 13.22  
+## 4              time_ac  Mean   : 18.88  
+## 5              time_ac  3rd Qu.: 23.04  
+## 6              time_ac  Max.   :120.37  
+## 7              time_ac       NA&#39;s   :4  
+## 8         time_rev_oiv Min.   :  0.000  
+## 9         time_rev_oiv 1st Qu.:  5.855  
+## 10        time_rev_oiv Median :  8.925  
+## 11        time_rev_oiv Mean   : 11.750  
+## 12        time_rev_oiv 3rd Qu.: 12.825  
+## 13        time_rev_oiv Max.   :117.660  
+## 14        time_rev_oiv      NA&#39;s   :13  
+## 15      time_rev_depir  Min.   : 0.000  
+## 16      time_rev_depir  1st Qu.: 2.855  
+## 17      time_rev_depir  Median : 4.970  
+## 18      time_rev_depir  Mean   : 7.560  
+## 19      time_rev_depir  3rd Qu.: 9.990  
+## 20      time_rev_depir  Max.   :52.820  
+## 21      time_rev_depir       NA&#39;s   :8  
+## 22        time_vn_sogl  Min.   : 0.000  
+## 23        time_vn_sogl  1st Qu.: 0.115  
+## 24        time_vn_sogl  Median : 0.750  
+## 25        time_vn_sogl  Mean   : 2.520  
+## 26        time_vn_sogl  3rd Qu.: 2.635  
+## 27        time_vn_sogl  Max.   :44.660  
+## 28        time_vn_sogl              &lt;NA&gt;
+## 29          time_depir  Min.   :  0.96  
+## 30          time_depir  1st Qu.: 22.32  
+## 31          time_depir  Median : 36.28  
+## 32          time_depir  Mean   : 42.00  
+## 33          time_depir  3rd Qu.: 54.15  
+## 34          time_depir  Max.   :161.51  
+## 35          time_depir              &lt;NA&gt;
+## 36            time_oiv  Min.   :  5.67  
+## 37            time_oiv  1st Qu.: 14.94  
+## 38            time_oiv  Median : 18.29  
+## 39            time_oiv  Mean   : 27.34  
+## 40            time_oiv  3rd Qu.: 26.96  
+## 41            time_oiv  Max.   :255.65  
+## 42            time_oiv       NA&#39;s   :2  
+## 43        time_prep_rg  Min.   : 1.970  
+## 44        time_prep_rg  1st Qu.: 7.258  
+## 45        time_prep_rg  Median :15.775  
+## 46        time_prep_rg  Mean   :16.688  
+## 47        time_prep_rg  3rd Qu.:23.820  
+## 48        time_prep_rg  Max.   :45.110  
+## 49        time_prep_rg       NA&#39;s   :1  
+## 50             time_rg   Min.   : 0.00  
+## 51             time_rg   1st Qu.: 5.01  
+## 52             time_rg   Median : 8.73  
+## 53             time_rg   Mean   :10.69  
+## 54             time_rg   3rd Qu.:15.12  
+## 55             time_rg   Max.   :30.43  
+## 56             time_rg       NA&#39;s   :6  
+## 57            time_mrg   Min.   :0.000  
+## 58            time_mrg   1st Qu.:0.195  
+## 59            time_mrg   Median :1.690  
+## 60            time_mrg   Mean   :1.543  
+## 61            time_mrg   3rd Qu.:2.150  
+## 62            time_mrg   Max.   :5.950  
+## 63            time_mrg      NA&#39;s   :33  
+## 64          time_eaist Min.   :  0.040  
+## 65          time_eaist 1st Qu.:  2.145  
+## 66          time_eaist Median :  4.260  
+## 67          time_eaist Mean   : 12.489  
+## 68          time_eaist 3rd Qu.:  6.050  
+## 69          time_eaist Max.   :283.880  
+## 70          time_eaist              &lt;NA&gt;
+## 71            duration   Min.   : 22.0  
+## 72            duration   1st Qu.:100.0  
+## 73            duration   Median :133.0  
+## 74            duration   Mean   :148.5  
+## 75            duration   3rd Qu.:177.0  
+## 76            duration   Max.   :517.0  
+## 77            duration              &lt;NA&gt;</code></pre>
 <pre class="r"><code>yt %&gt;% 
   select(reason, year_plan_st, kvartal, kind_tz, numb_ret_depir, numb_ret_oiv,
          teamleader, deputy, contract, pcp, criteria, f2, method, tegs, time_ac:tru) %&gt;% 
