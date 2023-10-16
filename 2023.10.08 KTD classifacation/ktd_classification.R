@@ -4,20 +4,19 @@ library(tidyverse)
 library(dplyr)
 library(stringr)
 library(writexl)
-library(xlsx)
 library(stringr)
 
 ##### Read list of tz #####
-# ktd <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/2023.10.08 KTD classifacation/Source documentation/2023.10.08 tz.xls")
-ktd <- read_excel("C:/Users/GudievZK/Desktop/GitHub/2023.10.08 KTD classifacation/Source documentation/2023.10.08 tz.xls")
+ktd <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/2023.10.08 KTD classifacation/Source documentation/2023.10.08 tz.xls")
+# ktd <- read_excel("C:/Users/GudievZK/Desktop/GitHub/2023.10.08 KTD classifacation/Source documentation/2023.10.08 tz.xls")
 colnames(ktd) <- c("name", "kpgz", "status_of_tz", "stz", "Mandatory_usage", "date_of_last_change_of_the_tz", "date_of_approval_of_the_tz")
 ktd <- fill(ktd, c("name", "status_of_tz", "stz", "Mandatory_usage", "date_of_last_change_of_the_tz", "date_of_approval_of_the_tz"))
 ktd <- separate(ktd, col = "kpgz", sep = "^\\S*\\K\\s+", into = c("kpgz_code", "kpgz_name"))
 ktd <- ktd %>% select("name", "kpgz_code", "kpgz_name")
 
 ##### Read list of kpgz #####
-# kpgz <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/2023.10.08 KTD classifacation/Source documentation/2023.10.08 kpgz.xlsx", skip = 3) %>% 
-kpgz <- read_excel("C:/Users/GudievZK/Desktop/GitHub/2023.10.08 KTD classifacation/Source documentation/2023.10.08 kpgz.xlsx", skip = 3) %>%
+kpgz <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/2023.10.08 KTD classifacation/Source documentation/2023.10.08 kpgz.xlsx", skip = 3) %>% 
+# kpgz <- read_excel("C:/Users/GudievZK/Desktop/GitHub/2023.10.08 KTD classifacation/Source documentation/2023.10.08 kpgz.xlsx", skip = 3) %>%
   filter(!row_number() %in% 1)
 colnames(kpgz) <- c("id_kpgz", "kpgz", "okpd2", "is_standartised", 
                     "ktru", "package", "status_of_kpgz", "is_actual", 
@@ -33,7 +32,8 @@ ktd$okpd2_class_code <- str_extract(ktd$okpd2_code, "..")
 
 
 ##### Read list of okpd #####
-okpd <- read_excel("C:/Users/GudievZK/Desktop/GitHub/2023.10.08 KTD classifacation/Source documentation/2023.10.10 okpd.xlsx")
+okpd <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/2023.10.08 KTD classifacation/Source documentation/2023.10.10 okpd.xlsx")
+# okpd <- read_excel("C:/Users/GudievZK/Desktop/GitHub/2023.10.08 KTD classifacation/Source documentation/2023.10.10 okpd.xlsx")
 colnames(okpd) <- c("N", "okpd2_code", "okpd2_name")
 
 ### Create new columns with information about okpd2
@@ -55,8 +55,8 @@ ktd <- ktd %>%
            str_starts(okpd2_code, "01|02|03") ~ "пюгдек A", 
            str_starts(okpd2_code, "05|06|07|08|09") ~ "пюгдек B",
            str_starts(okpd2_code, "10|11|12|13|14|15|
-                                              16|17|18|19|20|21|22|23|24|
-                                              25|26|27|28|29|30|31|32|33") ~ "пюгдек C",
+                                              |16|17|18|19|20|21|22|23|24|
+                                              |25|26|27|28|29|30|31|32|33") ~ "пюгдек C",
            str_starts(okpd2_code, "35") ~ "пюгдек D",
            str_starts(okpd2_code, "36|37|38|39") ~ "пюгдек E",
            str_starts(okpd2_code, "41|42|43") ~ "пюгдек F",
@@ -77,8 +77,8 @@ ktd <- ktd %>%
            str_starts(okpd2_code, "01|02|03") ~ "опндсйжхъ яекэяйнцн, кеямнцн х пшамнцн унгъиярбю",
            str_starts(okpd2_code, "05|06|07|08|09") ~ "опндсйжхъ цнпмнднашбючыху опнхгбндярб",
            str_starts(okpd2_code, "10|11|12|13|14|15|
-                                              16|17|18|19|20|21|22|23|24|
-                                              25|26|27|28|29|30|31|32|33") ~ "опндсйжхъ напюаюршбючыху опнхгбндярб",
+                                              |16|17|18|19|20|21|22|23|24|
+                                              |25|26|27|28|29|30|31|32|33") ~ "опндсйжхъ напюаюршбючыху опнхгбндярб",
            str_starts(okpd2_code, "35") ~ "щкейрпнщмепцхъ, цюг, оюп х йнмдхжхнмхпнбюмхе бнгдсую",
            str_starts(okpd2_code, "36|37|38|39") ~ "бнднямюафемхе; бндннрбедемхе, сяксцх он сдюкемхч х пейскэрхбюжхх нрунднб",
            str_starts(okpd2_code, "41|42|43") ~ "яннпсфемхъ х ярпнхрекэмше пюанрш",
@@ -99,15 +99,32 @@ ktd <- ktd %>%
 # a<- c(94:96)
 # substr(paste0("^", a, "|", collapse = ""), 1, nchar(paste0("^", a, "|", collapse = ""))-1)
 
+
 #### Creating kpgz_code_4digits_code & kpgz_code_4digits_name columns ####
 
 ktd$kpgz_code_4digits_code <- str_extract(ktd$kpgz_code, ".....")
 ktd <- left_join(ktd, subset(kpgz, nchar(kpgz$kpgz_code) == 5, select = c(kpgz_code, kpgz_name)), 
                    by = c("kpgz_code_4digits_code" = "kpgz_code"))
+ktd <- rename(ktd, kpgz_code_4digits_name = kpgz_name.y,
+              kpgz_name = kpgz_name.x)
 
-write_xlsx(ktd, "C:/Users/GudievZK/Desktop/GitHub/2023.10.08 KTD classifacation/ktd.xlsx")
+ktd <- select(ktd, name, okpd2_section_code, okpd2_section_name,
+                         okpd2_class_code, okpd2_class_name,
+                         okpd2_code, okpd2_name,
+                         kpgz_code_4digits_code, kpgz_code_4digits_name,
+                         kpgz_code, kpgz_name)
+
+# write_xlsx(ktd, "C:/Users/GudievZK/Desktop/GitHub/2023.10.08 KTD classifacation/ktd.xlsx")
+write_xlsx(ktd, "/Users/zelimkhan/Desktop/Data/GitHub/2023.10.08 KTD classifacation/ktd.xlsx")
 
 
 
+ktd %>% 
+  group_by(kpgz_code_4digits_name) %>% 
+  summarise(count_tz = length(unique(name))) %>% arrange(desc(count_tz))
 
 
+
+write_xlsx(df, "/Users/zelimkhan/Desktop/Data/GitHub/2023.10.08 KTD classifacation/df.xlsx")
+
+df_d <- df[duplicated(df$name), ]
