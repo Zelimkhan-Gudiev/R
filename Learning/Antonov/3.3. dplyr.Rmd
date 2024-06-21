@@ -1,0 +1,221 @@
+---
+title: "Предобработка данных средствами tidyr и dplyr"
+author: "<i>Основы программирования на R</i><br><br>Антон Антонов"
+output: 
+  revealjs::revealjs_presentation:
+    theme: serif
+    highlight: tango
+    center: false
+    transition: fade
+    pandoc_args: [ 
+      "--slide-level", "1", 
+      "--include-in-header", "custom.css"
+    ]
+---
+
+```{r setup, echo=FALSE}
+options(width = 110)
+```
+
+# Концепция "tidy data"
+
+. . .
+
+В статистике стандартная форма записи табличных данных: 
+
+>- стоблец -- переменная
+>- строка -- наблюдение
+
+. . .
+
+Это очень удобно для дата фрейма в R
+
+. . .
+
+Не во всех областях анализа данных это так
+
+. . .
+
+Hadley Wickham: `tidyr`, `dplyr`, `ggplot2`, `ggvis`, ...
+
+# Пакет tidyr
+
+. . .
+
+Рассмотрим случайные данные:
+
+```{r}
+set.seed(1122)
+df <- data.frame(Name = c("John", "Peter", "Mary", "Caroline"),
+                 DrugA_T1 = runif(4, 35, 36),
+                 DrugA_T2 = runif(4, 36, 39),
+                 DrugB_T1 = runif(4, 36, 36.6),
+                 DrugB_T2 = runif(4, 37, 38.5)
+); df
+```
+
+# Связка `gather`-`spread`
+
+. . .
+
+Из "широкого" в "длинный" формат (wide to long):
+```{r}
+library(tidyr)
+gather(df, Variable, Temperature, -Name) 
+```
+
+# Связка `separate`-`unite`
+
+. . .
+
+Разделение переменных:
+
+```{r}
+df <- gather(df, Variable, Temperature, -Name)
+df <- separate(df, Variable, c("DrugType", "Time"), "_")
+df
+```
+
+# `dplyr`: функция `select`
+
+. . .
+
+```{r, message=FALSE}
+library(dplyr)
+select(df, Time, Temperature)
+```
+
+. . .
+
+```{r, eval=FALSE}
+select(df, 3:4)
+select(df, starts_with("T"))
+select(df, -Name, -DrugType)
+````
+
+# `dplyr`: функция `filter`
+
+. . .
+
+```{r}
+filter(df, Temperature > 37, Name %in% c("John", "Mary"))
+```
+
+# `dplyr`: функция `arrange`
+
+. . . 
+
+```{r}
+arrange(df, Name, -Temperature)
+```
+
+# `dplyr`: функция `mutate`
+
+. . . 
+
+```{r}
+mutate(df, DrugType = gsub("Drug", "", DrugType))
+```
+
+# `dplyr`: связка функций `group_by` и `summarise`
+
+. . . 
+
+```{r}
+summarize(group_by(df, Time), 
+          AvgTemp = mean(Temperature))
+```
+
+# Полезные ссылки
+
+>- `library(data.table)`
+>- Cheat sheet по tidyr и dplyr: [https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+>- Современный взгляд на предобработку данных: dplyr, tidyr и magrittr. [https://github.com/tonytonov/spbr-1-dataproc](https://github.com/tonytonov/spbr-1-dataproc)
+
+# Конвейеры: оператор `%>%`
+
+```{r}
+df <- data.frame(type = c(1, 1, 2, 2, 3, 3), value = c(5, 10, 50, 100, 7, 7))
+```
+
+. . .
+
+Вложенные вызовы, создание (перезапись) дата фреймов:
+
+```{r, eval=FALSE}
+arrange(
+  summarise(
+    group_by(df, type), 
+    total = sum(value)
+  ),
+  -total
+)
+```
+
+```{r, eval=FALSE}
+a <- group_by(df, type)
+b <- summarise(a, total = sum(value))
+c <- arrange(b, -total)
+```
+
+. . .
+
+Конвейер:
+```{r, eval=FALSE}
+df %>%
+  group_by(type) %>%
+  summarise(total = sum(value)) %>%
+  arrange(-total)
+```
+
+# Конвейеры: оператор `%>%`
+
+Чувствуете, как от простейших функций на дата фреймах вроде str и summary мы добрались до практически безграничных возможностей? Раньше мы могли только в полуручном режиме оценить, что происходит в avianHabitat. Теперь же мы в несколько простых строчек кода можем упаковать манипуляции с переменными на лету, сложные условия фильтрации и подсчёты с агрегацией по группам. 
+
+Это последняя демонстрация ваших джедайских возможностей с дата фреймами!
+
+Возьмите исходный avianHabitat. Примените к нему процедуру объединения по географической локации (Site). Мы будем работать со всеми имеющимися видами одновременно. Интересующая нас характеристика -- высота растений (*Ht). 
+
+Теперь произведите следующий подсчёт по всем комбинациям места (Site) и наблюдателя (Observer). Интересующая нас статистика -- количество тех замеров, где обнаруживается хотя бы один экземпляр вида. Соберите эту статистику по всем видам. У вас получится таблица, в которой тройке вида (место M, наблюдатель N, вид P) соответствует число замеров в M, произведенных N, где обнаружен хотя бы один P.
+
+Не будем сверять всю таблицу: в ответе укажите только диапазон нашей ключевой статистики для пяти записей в этой таблице. Удачи!
+
+Подсказки: 
+
+логично предположить, что "хотя бы один экземпляр найден" означает "максимальная высота вида строго больше нуля";
+если вы выбрали dplyr, то может пригодиться summarise_each;
+ещё раз о расшифровке записей в таблице: например, тройке (McAdamCreek, RR, L) соответствует число K. Это значит, что мы рассматриваем только замеры вида L, произведённые исследователем RR в месте McAdamCreek. Если в текущем замере высота L больше нуля, то там есть хотя бы один экземпляр, этот замер идёт в зачёт (+1). Всего таких замеров K.
+ссылка на данные.
+```{r}
+df <- read.csv("https://raw.githubusercontent.com/tonytonov/Rcourse/master/R%20programming/avianHabitat.csv")
+```
+
+```{r}
+library(dplyr)
+library(stringr)
+avian <- read.csv('https://raw.githubusercontent.com/tonytonov/Rcourse/master/R%20programming/avianHabitat.csv')
+
+avian %>%
+  select(Site, Observer, contains("Ht")) %>%
+  mutate(Site = factor(str_replace(Site, "[:digit:]+", ""))) %>%
+  group_by(Site, Observer) %>%
+  summarise_if(is.numeric, funs(sum(.>0)))
+```
+v2
+```{r}
+result <- df %>% 
+  select(Site, Observer, contains("Ht")) %>%
+  transform(Site = as.factor(sub("\\d+","",.$Site))) %>% 
+  group_by(Site, Observer) %>% 
+  across(funs(sum(.>0)))
+View(result)
+```
+
+
+. . .
+
+Эквивалентная запись:
+
+>- `x %>% f` <br>  `f(x)`
+>- `x %>% f(y)` <br> `f(x, y)`
+>- `x %>% f(y, param = .)` <br> `f(y, param = x)`
