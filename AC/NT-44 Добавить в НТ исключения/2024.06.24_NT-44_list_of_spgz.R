@@ -1,3 +1,12 @@
+library(readxl)
+library(dplyr)
+library(googlesheets4)
+library(googledrive)
+library(tidyverse)
+library(stringr)
+library(purrr)
+library(rlang)
+library(writexl)
 
 spgz <- read_excel("C:/Users/GudievZK/Desktop/GitHub/AC/NT-44 Добавить в НТ исключения/2024.06.24 _NT-44_Каталог_СПГЗ с характ. с у.о. равно.xlsx", skip = 3)
 spgz <- spgz[-1,]
@@ -10,7 +19,13 @@ spgz <-fill(spgz, "Идентификатор СПГЗ", "Наименование СПГЗ", "КПГЗ", "ОКПД-2", "
 spgz <- spgz %>% filter(spgz$`Значение характеристики` == "Необходимо указать значение характеристики или удалить данный текст") %>% 
           distinct(`Идентификатор СПГЗ`,.keep_all = T)
 
+
+spgz <- filter(spgz, spgz$`Наименование характеристики` %in% c("Функциональные характеристики", "Технические характеристики",
+                                                 "Качественные характеристики", "Эксплуатационные характеристики") & 
+        spgz$`Значение характеристики` == "Необходимо указать значение характеристики или удалить данный текст") %>% 
+        distinct(`Идентификатор СПГЗ`,.keep_all = T)
+
 table(as.factor(spgz$Стандартизирована))
 
-# spgz <- spgz %>% filter(str_detect(spgz$`Значение характеристики`, "^Необходимо указать")) %>% 
-#    distinct(`Идентификатор СПГЗ`,.keep_all = T)
+write_xlsx(spgz,"C:/Users/GudievZK/Desktop/GitHub/AC/NT-44 Добавить в НТ исключения/2024.06.24 _NT-44_spgz.xlsx")
+
