@@ -144,7 +144,13 @@ These datasets were sourced from the official Divvy system and released by Motiv
 The data has been vetted for public use and adheres to privacy requirements (no personally identifiable information).<br>
 Licensing information: Divvy License Agreement
 
-
-
-
 </div>
+
+# Step 2. Process
+
+```{r}
+install.packages("googlesheets4")
+library(googlesheets4)
+df <- read_sheet("https://docs.google.com/spreadsheets/d/1U-zZ-Kpvs4RNjsL4q2W32h7BdjzENRiAPSkeKPVSEN0/edit?usp=sharing", sheet = "Divvy_Trips_2019_Q1")
+```
+
