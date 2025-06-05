@@ -1,0 +1,86 @@
+---
+title: "Zelimhan Gudiev HW7"
+output: html_document
+date: "2022-11-04"
+---
+
+```{r, warning=FALSE}
+path_dir <- getwd()
+myCpu<-read.csv(paste0(path_dir, "/myCpu.csv"))
+library(neuralnet)
+n=names(myCpu)
+f=as.formula(paste("class ~", paste( n[!n %in% "class"], collapse = "+" )))
+
+#разделим данные на обучающую и тестовую выборку
+ind <- sample(2, nrow(myCpu), replace=TRUE, prob=c(0.7, 0.3))
+Train <- myCpu[ind==1,]
+Test <- myCpu[ind==2,]
+
+#создадим нейронную сеть с 3мя скрытыми слоями 9, 7 и 5 перцептронов
+nn = neuralnet(f, Train, hidden = c(9,7,5), linear.output = FALSE, threshold = 0.01)
+plot(nn, rep = "best") 
+```
+
+```{r, warning=FALSE,echo=FALSE,include=FALSE}
+library(dplyr)
+compute = neuralnet::compute
+```
+
+```{r}
+nn.results = compute(nn, Test)
+
+prediction <- as.data.frame(round(nn.results$net.result)) 
+colnames(prediction) <- c("common","faulty", "normal", "uncommon", "unusual")
+
+prediction <- prediction %>%
+  mutate(class = names(.)[max.col(.)])
+
+results = data.frame(actual = Test$class, prediction = prediction$class)
+
+# Матрица классификации:
+library(caret)
+t = table(results)
+print(confusionMatrix(t))
+```
+Теперь применим метод главных компонент и сравним результаты
+```{r}
+pca_Train = Train %>% select( -class )
+pca_Test = Test
+pca = prcomp(pca_Train, scale = T)
+
+pr_var = (pca$sdev)^2 
+prop_varex = pr_var / sum(pr_var)
+plot( prop_varex, type = "b" )
+plot( cumsum( prop_varex ), type="b")
+```
+
+В данном случае целесообразно взять 12-17 главных компонент. Для лабораторной возьмем 15
+создадим новые данные на основе главных компонент, и строим модель.
+```{r}
+Train = data.frame(class = Train$class, pca$x)
+t = as.data.frame(predict(pca, newdata = pca_Test))
+
+new_Train = Train[, 1:9]
+new_Test =  t[, 1:8]
+
+n = names( new_Train )
+f = as.formula( paste( "class ~", paste( n[!n %in% "class" ], collapse = "+" )))
+nn = neuralnet(f, new_Train, hidden = c(9,7,5), linear.output = FALSE, threshold=0.01)
+
+plot(nn, rep = "best")
+```
+Тестируем модель
+```{r}
+nn.results = compute(nn, new_Test)
+
+prediction <- round(nn.results$net.result) %>%
+  as.data.frame(col.names = c("common","faulty", "normal", "uncommon", "unusual"))
+colnames(prediction) <- c("common","faulty", "normal", "uncommon", "unusual")
+
+prediction <- prediction %>%
+  mutate(class = names(.)[max.col(.)])
+
+results=data.frame(actual = Test$class, prediction=prediction$class)
+t = table(results) 
+print(confusionMatrix(t))
+```
