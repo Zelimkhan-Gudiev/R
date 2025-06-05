@@ -1,0 +1,150 @@
+---
+title: 'Case study: How does a bike-share navigate speedy success?'
+author: "Zelimkhan"
+date: '2025-05-31'
+output: html_document
+---
+# Introduction
+<div style="text-align: justify">
+This is my capstone project of the Google Data Analytics Professional Certificate. 
+In this case study, I work for a fictional company, Cyclistic, along with some key team members. In order to answer the business questions, follow the steps of the data analysis process: Ask, Prepare, Process, Analyze, Share, and Act. 
+
+</div>
+
+# Scenario 
+<div style="text-align: justify">
+I am a junior data analyst working on the marketing analyst team at Cyclistic, a bike-share company in Chicago. The director of marketing believes the company’s future success depends on maximizing the number of annual memberships. Therefore, my team wants to understand how casual riders and annual members use Cyclistic bikes differently. From these insights, my team will design a new marketing strategy to convert casual riders into annual members. But first, Cyclistic executives must approve my recommendations, so they must be backed up with compeling data insights and professional data visualizations. 
+</div>
+
+### Characters and teams
+<div style="text-align: justify">
+* __Cyclistic:__ A bike-share program that features more than 5,800 bicycles and 600 docking stations. Cyclistic sets itself apart by also offering reclining bikes, hand tricycles, and cargo bikes, making bike-share more inclusive to people with disabilities and riders who can’t use a standard two-wheeled bike. The majority of riders opt for traditional bikes; about 8% of riders use the assistive options. Cyclistic users are more likely to ride for leisure, but about 30% use the bikes to commute to work each day.
+* __Lily Moreno:__ The director of marketing and your manager. Moreno is responsible for the development of campaigns and initiatives to promote the bike-share program. These may include email, social media, and other channels. 
+* __Cyclistic marketing analytics team:__ A team of data analysts who are responsible for colecting, analyzing, and reporting data that helps guide Cyclistic marketing strategy. You joined this team six months ago and have been busy learning about Cyclistic’s mission and business goals—as wel as how you, as a junior data analyst, can help Cyclistic achieve them. 
+* __Cyclistic executive team:__ The notoriously detail-oriented executive team wil decide whether to approve the recommended marketing program. 
+</div>
+
+### About the company
+<div style="text-align: justify">
+In 2016, Cyclistic launched a successful bike-share oering. Since then, the program has grown to a eet of 5,824 bicycles that are geotracked and locked into a network of 692 stations across Chicago. The bikes can be unlocked from one station and returned to any other station in the system anytime. <br>
+
+Until now, Cyclistic’s marketing strategy relied on building general awareness and appealing to broad consumer segments. One approach that helped make these things possible was the flexibility of its pricing plans: single-ride passes, full-day passes, and annual memberships. Customers who purchase single-ride or full-day passes are referred to as casual riders. Customers who purchase annual memberships are Cyclistic members.<br>
+
+Cyclistic’s finance analysts have concluded that annual members are much more protable than casual riders. Although the pricing flexibility helps Cyclistic attract more customers, Moreno believes that maximizing the number of annual members will be key to future growth. Rather than creating a marketing campaign that targets all-new customers, Moreno believes there is a solid opportunity to convert casual riders into members. She notes that casual riders are already aware of the Cyclistic program and have chosen Cyclistic for their mobility needs.<br>
+
+Moreno has set a clear goal: Design marketing strategies aimed at converting casual riders into annual members. In order to do that, however, the team needs to beer understand how annual members and casual riders differ, why casual riders would buy a membership, and how digital media could affect their marketing tactics. Moreno and her team are interested in analyzing the Cyclistic historical bike trip data to identify trends.
+
+Three questions will guide the future marketing program: <br>
+1. How do annual members and casual riders use Cyclistic bikes dierently? <br>
+2. Why would casual riders buy Cyclistic annual memberships? <br>
+3. How can Cyclistic use digital media to inuence casual riders to become members? <br>
+
+Moreno has assigned you the first question to answer: How do annual members and casual riders use Cyclistic bikes dierently?
+
+# Step 1. Ask 
+<br>
+
+|№|  Type  |  Questions  |  Answers  |
+|-|--------|-------------|----------|
+|<br> |<br> |<br> |<br> |
+|1|  Guiding questions  |  What is the problem you are trying to solve?  | The problem is understanding how annual members and casual riders use Cyclistic bikes differently. This insight will help the marketing team design strategies to convert casual riders into annual members, which are more profitable for the company.|
+|<br> |<br> |<br> |<br> |
+|2| Guiding questions | How can your insights drive business decisions? | By identifying key differences in usage patterns (e.g., ride duration, frequency, preferred days/times), the marketing team can tailor campaigns to highlight the benefits of annual memberships for casual riders. This could include targeted promotions, personalized messaging, or incentives based on their behavior. |
+|<br> |<br> |<br> |<br> |
+|3| Key tasks | Identify the business task | Analyze historical bike trip data to compare usage patterns between casual riders and annual members, and provide actionable recommendations to convert casual riders into members. |
+|<br> |<br> |<br> |<br> |
+|4| Key tasks | Consider key stakeholders | 1) Lily Moreno (Director of Marketing): Needs data-driven insights to justify marketing strategies. <br> 2) Cyclistic Executive Team: Requires compelling evidence to approve recommendations. <br> 3) Marketing Analytics Team: Relies on accurate analysis to guide campaign design.|
+|<br> |<br> |<br> |<br> |
+|5| Deliverable | A clear statement of the business task | Analyze Cyclistic's historical bike-share data to identify differences in usage patterns between casual riders and annual members. The goal is to provide actionable insights that will inform a marketing strategy aimed at converting casual riders into annual members, thereby increasing profitability.|
+<br>
+
+# Step 2. Prepare 
+<div style="text-align: justify">
+### Guiding Questions & Responses <br>
+
+1. Where is your data located? <br>
+
+The data is publicly available in this two datasets: <br>
+* [Divvy 2019 Q1](https://docs.google.com/spreadsheets/d/1uCTsHlZLm4L7-ueaSLwDg0ut3BP_V4mKDo2IMpaXrk4/template/preview?resourcekey=0-dQAUjAu2UUCsLEQQt20PDA#gid=1797029090)<br>
+* [Divvy 2020 Q1](https://docs.google.com/spreadsheets/d/179QVLO_yu5BJEKFVZShsKag74ZaUYIF6FevLYzs3hRc/template/preview#gid=640449855)<br>
+
+2. How is the data organized? <br>
+
+The datasets are organized as quarterly google sheets files, with each row representing a bike trip and columns including: <br>
+1&nbsp;) ride_id, rideable_type (bike type) <br>
+2&nbsp;) started_at, ended_at (timestamps) <br>
+3&nbsp;) member_casual (user type) <br>
+4&nbsp;) start_station_id, end_station_id (location data) <br>
+
+3. Are there issues with bias or credibility in this data? Does your data ROCCC? <br>
+
+1&nbsp;) Reliable: Yes, sourced from a licensed provider (Motivate International Inc.). <br>
+2&nbsp;) Original: First-party system-generated (Cyclistic’s operational system) operational data. <br>
+3&nbsp;) Comprehensive: Covers all trips during the specified quarters, including key fields. <br>
+4&nbsp;) Current: Q1 2019 and Q1 2020 are accurate within their timeframes. <br>
+5&nbsp;) Cited: Licensed and publicly cited via [Divvy's data agreement](https://divvybikes.com/data-license-agreement) <br>
+6&nbsp;) Potential Bias: Excludes personally identifiable information (PII), so demographic analysis is limited. <br>
+
+4. How are you addressing licensing, privacy, security, and accessibility? <br>
+
+1&nbsp;) Licensing: Complies with Divvy's public data use license. <br>
+2&nbsp;) Privacy: No percenal information concluded. <br>
+3&nbsp;) Security: Data stored securely in google sheets. <br>
+4&nbsp;) Accessibility: Data in google sheets format ensures compatibility with Exel, R or SQL. <br>
+
+5. How did you verify the data's integrity? <br>
+
+Data integrity was checked by: <br>
+1&nbsp;) Removing duplicates and incomplete records. <br>
+2&nbsp;) Ensuring start times precede end times. <br>
+3&nbsp;) Filtering out trips with negative or zero durations. <br>
+4&nbsp;) Verifying consistent labeling of user types. <br>
+5&nbsp;) Running summary statistics to confirm data completeness and logical consistency. <br>
+
+6. How does it help you answer you questions? <br>
+
+This data allows analysis of how casual riders and annual members use Cyclistic bikes differently by providing trip-level details such as ride length, frequency, timing, and bike type preferences. These insights are crucial for designing targeted marketing strategies.
+
+
+7. Are there any problems with the data? <br>
+
+Yes: <br>
+1&nbsp;) Column names are inconsistent between the two datasets (e.g., usertype in 2019 vs member_casual in 2020). <br>
+2&nbsp;) The data does not include demographic or payment information, limiting deeper customer profiling. Seasonal and external factors are not directly captured but may affect usage. The dataset size requires careful handling to avoid memory issues. <br>
+
+### Key Tasks
+
+|№|  Task  |  Details  |
+|-|--------|-------------|
+|<br> |<br> |<br> |
+| 1 | Download data	| Downloaded Q1 2019 and Q1 2020 google sheets files. |
+|<br> |<br> |<br> |
+| 2 | Store appropriately	| Files stored in google drive folder [Source data](https://drive.google.com/drive/folders/1BO4tpPfs25t5z5Sq2a-neWuLGSlcVdyR).|
+|<br> |<br> |<br> |
+| 3 | Identify how it’s organized	| The datasets are organized as quarterly google sheets files, with each row representing a bike trip and columns including: <br> 1&nbsp;) ride_id, rideable_type (bike type) <br> 2&nbsp;) started_at, ended_at (timestamps) <br> 3&nbsp;) member_casual (user type) <br> 4&nbsp;) start_station_id, end_station_id (location data) <br>
+|<br> |<br> |<br> |
+| 4 | Sort and filter the data | Previewed and confirmed need to normalize column names and filter out invalid rows (e.g., negative ride_length).	| 
+|<br> |<br> |<br> |
+| 5 | Determine credibility of data	| ... |
+|<br> |<br> |<br> |
+
+### Deliverable: Description of All Data Sources Used <br>
+
+Data Sources Used: <br>
+This project utilizes two publicly available datasets from the Chicago Divvy bike-share system:<br>
+Divvy_Trips_2019_Q1: [Link](https://docs.google.com/spreadsheets/d/1U-zZ-Kpvs4RNjsL4q2W32h7BdjzENRiAPSkeKPVSEN0/edit?gid=1797029090#gid=1797029090). <br>
+Covers January–March 2019.<br>
+Key fields: trip_id, start_time, end_time, bikeid, from_station_name, to_station_name, usertype.<br>
+
+Divvy_Tripdata_2020_Q1: [Link](https://docs.google.com/spreadsheets/d/18vpR9boxiVwoI2k0Pu2Sm6ghfJ_KJAtOozjTCjRLjac/edit?gid=640449855#gid=640449855). <br>
+Covers January–March 2020. <br>
+Key fields: ride_id, started_at, ended_at, rideable_type, member_casual, start_station_name, end_station_name. <br>
+
+These datasets were sourced from the official Divvy system and released by Motivate International Inc..
+The data has been vetted for public use and adheres to privacy requirements (no personally identifiable information).<br>
+Licensing information: Divvy License Agreement
+
+
+
+
+</div>
