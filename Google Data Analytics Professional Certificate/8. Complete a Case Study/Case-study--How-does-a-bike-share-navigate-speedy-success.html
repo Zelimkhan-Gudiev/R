@@ -256,6 +256,7 @@ if (window.hljs) {
 
 
 
+
 <style type="text/css">
 .main-container {
 max-width: 940px;
@@ -277,6 +278,9 @@ outline: none;
 summary {
 display: list-item;
 }
+details > summary > p:only-child {
+display: inline;
+}
 pre code {
 padding: 0;
 }
@@ -295,23 +299,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -364,11 +362,10 @@ speedy success?</h1>
 <h1>Introduction</h1>
 <div style="text-align: justify">
 <p>This is my capstone project of the Google Data Analytics Professional
-Certificate. Welcome to the Cyclistic bike-share analysis case study! In
-this case study, I work for a fictional company, Cyclistic, along with
-some key team members. In order to answer the business questions, follow
-the steps of the data analysis process: Ask, Prepare, Process, Analyze,
-Share, and Act.</p>
+Certificate. In this case study, I work for a fictional company,
+Cyclistic, along with some key team members. In order to answer the
+business questions, follow the steps of the data analysis process: Ask,
+Prepare, Process, Analyze, Share, and Act.</p>
 </div>
 </div>
 <div id="scenario" class="section level1">
@@ -454,13 +451,13 @@ members and casual riders use Cyclistic bikes dierently?</p>
 <p><br></p>
 <table>
 <colgroup>
-<col width="3%" />
-<col width="25%" />
-<col width="40%" />
-<col width="31%" />
+<col width="20%" />
+<col width="20%" />
+<col width="20%" />
+<col width="37%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>№</th>
 <th>Type</th>
 <th>Questions</th>
@@ -468,13 +465,13 @@ members and casual riders use Cyclistic bikes dierently?</p>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td><br></td>
 <td><br></td>
 <td><br></td>
 <td><br></td>
 </tr>
-<tr>
+<tr class="even">
 <td>1</td>
 <td>Guiding questions</td>
 <td>What is the problem you are trying to solve?</td>
@@ -483,13 +480,13 @@ use Cyclistic bikes differently. This insight will help the marketing
 team design strategies to convert casual riders into annual members,
 which are more profitable for the company.</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><br></td>
 <td><br></td>
 <td><br></td>
 <td><br></td>
 </tr>
-<tr>
+<tr class="even">
 <td>2</td>
 <td>Guiding questions</td>
 <td>How can your insights drive business decisions?</td>
@@ -499,13 +496,13 @@ tailor campaigns to highlight the benefits of annual memberships for
 casual riders. This could include targeted promotions, personalized
 messaging, or incentives based on their behavior.</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><br></td>
 <td><br></td>
 <td><br></td>
 <td><br></td>
 </tr>
-<tr>
+<tr class="even">
 <td>3</td>
 <td>Key tasks</td>
 <td>Identify the business task</td>
@@ -513,13 +510,13 @@ messaging, or incentives based on their behavior.</td>
 casual riders and annual members, and provide actionable recommendations
 to convert casual riders into members.</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><br></td>
 <td><br></td>
 <td><br></td>
 <td><br></td>
 </tr>
-<tr>
+<tr class="even">
 <td>4</td>
 <td>Key tasks</td>
 <td>Consider key stakeholders</td>
@@ -529,13 +526,13 @@ Requires compelling evidence to approve recommendations. <br> 3)
 Marketing Analytics Team: Relies on accurate analysis to guide campaign
 design.</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><br></td>
 <td><br></td>
 <td><br></td>
 <td><br></td>
 </tr>
-<tr>
+<tr class="even">
 <td>5</td>
 <td>Deliverable</td>
 <td>A clear statement of the business task</td>
@@ -618,45 +615,45 @@ handling to avoid memory issues. <br></p>
 <h3>Key Tasks</h3>
 <table>
 <colgroup>
-<col width="4%" />
-<col width="36%" />
-<col width="59%" />
+<col width="25%" />
+<col width="29%" />
+<col width="45%" />
 </colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>№</th>
 <th>Task</th>
 <th>Details</th>
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td><br></td>
 <td><br></td>
 <td><br></td>
 </tr>
-<tr>
+<tr class="even">
 <td>1</td>
 <td>Download data</td>
 <td>Downloaded Q1 2019 and Q1 2020 google sheets files.</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><br></td>
 <td><br></td>
 <td><br></td>
 </tr>
-<tr>
+<tr class="even">
 <td>2</td>
 <td>Store appropriately</td>
 <td>Files stored in google drive folder <a href="https://drive.google.com/drive/folders/1BO4tpPfs25t5z5Sq2a-neWuLGSlcVdyR">Source
 data</a>.</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><br></td>
 <td><br></td>
 <td><br></td>
 </tr>
-<tr>
+<tr class="even">
 <td>3</td>
 <td>Identify how it’s organized</td>
 <td>The datasets are organized as quarterly google sheets files, with
@@ -665,28 +662,28 @@ ride_id, rideable_type (bike type) <br> 2 ) started_at, ended_at
 (timestamps) <br> 3 ) member_casual (user type) <br> 4 )
 start_station_id, end_station_id (location data) <br></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><br></td>
 <td><br></td>
 <td><br></td>
 </tr>
-<tr>
+<tr class="even">
 <td>4</td>
 <td>Sort and filter the data</td>
 <td>Previewed and confirmed need to normalize column names and filter
 out invalid rows (e.g., negative ride_length).</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><br></td>
 <td><br></td>
 <td><br></td>
 </tr>
-<tr>
+<tr class="even">
 <td>5</td>
 <td>Determine credibility of data</td>
 <td>…</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><br></td>
 <td><br></td>
 <td><br></td>
