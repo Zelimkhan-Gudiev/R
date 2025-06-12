@@ -710,6 +710,59 @@ Agreement</p>
 </div>
 </div>
 </div>
+<div id="step-3.-prepare" class="section level1">
+<h1>Step 3. Prepare</h1>
+<pre class="r"><code># Reading data
+trip_2019 &lt;- read_sheet(&quot;https://docs.google.com/spreadsheets/d/1U-zZ-Kpvs4RNjsL4q2W32h7BdjzENRiAPSkeKPVSEN0/edit?gid=1797029090#gid=1797029090&quot;)
+trip_2020 &lt;- read_sheet(&quot;https://docs.google.com/spreadsheets/d/18vpR9boxiVwoI2k0Pu2Sm6ghfJ_KJAtOozjTCjRLjac/edit?gid=640449855#gid=640449855&quot;)</code></pre>
+<pre class="r"><code>colnames(trip_2019)</code></pre>
+<pre class="r"><code>colnames(trip_2020)</code></pre>
+<pre class="r"><code># Rename columns to match
+
+trip_2019 &lt;- trip_2019 %&gt;% 
+  rename(
+    ride_id = trip_id,
+    started_at = start_time,
+    ended_at = end_time,
+    member_casual = usertype,
+    start_station_id = from_station_id,
+    start_station_name = from_station_name,
+    end_station_id = to_station_id,
+    end_station_name = to_station_name
+  )</code></pre>
+<pre class="r"><code># Change columns order in trip_2019
+
+trip_2019 &lt;- trip_2019 %&gt;% 
+  select(ride_id, 
+         started_at, 
+         ended_at,
+         start_station_id,
+         start_station_name,
+         end_station_id,
+         end_station_name,
+         member_casual,
+         tripduration,
+         bikeid,
+         gender,
+         birthyear)
+
+
+# Change columns order in trip_2020
+trip_2020 &lt;- trip_2020 %&gt;% 
+  select(ride_id,
+         started_at,
+         ended_at,
+         start_station_id,
+         start_station_name,
+         end_station_id,
+         end_station_name,
+         member_casual,
+         rideable_type,
+         start_lat,
+         start_lng,
+         end_lat,
+         end_lng)</code></pre>
+</div>
 </div>
 </div>
 </div>

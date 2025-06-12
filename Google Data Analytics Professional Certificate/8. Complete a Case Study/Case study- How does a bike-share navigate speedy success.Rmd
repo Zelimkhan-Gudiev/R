@@ -225,34 +225,148 @@ information).<br> Licensing information: Divvy License Agreement
 :::
 
 # Step 3. Prepare
+### Guiding Questions & Responses <br>
+1. What tools are you choosing and why?
+Tool: R (via RStudio and R Markdown)
+Why:
+* R is powerfool for data manipulation, cleaning, and visualization.
+* It's free, open-source, and part of the tools recommended in the Google Data Analytics Certificate.
+* R can handle larger datasets and streamline reproducible workflows using scripts and reports.
 
-```{r}
-# Instaling neccesary packages
-install.packages("googlesheets4")
-install.packages("googledrive")
-install.packages("tidyverse")
+```{r setup, include=FALSE, label="Installing neccesary packages"}
+# Installing neccesary packages
+# install.packages("googlesheets4")
+# install.packages("googledrive")
+# install.packages("tidyverse")
+install.packages("lubridate")
+install.packages("janitor")
 library(googlesheets4)
 library(googledrive)
 library(tidyverse)
+library(dplyr)
+library(purrr)
+library(readxl)
+library(lubridate)
+library(janitor)
 ```
 
-```{r}
+```{r eval=FALSE, label="Reading data"}
 # Reading data
 trip_2019 <- read_sheet("https://docs.google.com/spreadsheets/d/1U-zZ-Kpvs4RNjsL4q2W32h7BdjzENRiAPSkeKPVSEN0/edit?gid=1797029090#gid=1797029090")
 trip_2020 <- read_sheet("https://docs.google.com/spreadsheets/d/18vpR9boxiVwoI2k0Pu2Sm6ghfJ_KJAtOozjTCjRLjac/edit?gid=640449855#gid=640449855")
 ```
 
-```{r}
-trip_2019
 
-colnames(trip_2019)
-colnames(trip_2020)
+
+```{r eval=FALSE, label="colnames trip_2019"}
+str(trip_2019)
+str(trip_2020)
+```
+
+```{r eval=FALSE, label="Rename columns to match"}
+# Rename columns to match
+
+trip_2019 <- trip_2019 %>% 
+  rename(
+    ride_id = trip_id,
+    started_at = start_time,
+    ended_at = end_time,
+    member_casual = usertype,
+    start_station_id = from_station_id,
+    start_station_name = from_station_name,
+    end_station_id = to_station_id,
+    end_station_name = to_station_name
+  )
+```
+
+
+```{r eval=FALSE, label="Change columns order to match"}
+# Change columns order in trip_2019
+
+trip_2019 <- trip_2019 %>% 
+  select(ride_id, 
+         started_at, 
+         ended_at,
+         start_station_id,
+         start_station_name,
+         end_station_id,
+         end_station_name,
+         member_casual,
+         tripduration,
+         bikeid,
+         gender,
+         birthyear)
+
+
+# Change columns order in trip_2020
+trip_2020 <- trip_2020 %>% 
+  select(ride_id,
+         started_at,
+         ended_at,
+         start_station_id,
+         start_station_name,
+         end_station_id,
+         end_station_name,
+         member_casual,
+         rideable_type,
+         start_lat,
+         start_lng,
+         end_lat,
+         end_lng)
+```
+
+```{r label="Calculate and format tripduration"}
+trip_2019 <- trip_2019 %>% 
+  mutate(
+    tripduration = as.difftime(tripduration, units = "secs"),
+    ride_id = as.character(ride_id)
+  )
+
+trip_2020 <- trip_2020 %>% 
+  mutate(
+  tripduration = ended_at - started_at
+) %>% 
+  relocate(tripduration, .after = member_casual)
+
+```
+
+
+```{r label="Merge the data"}
+trips <- bind_rows(trip_2019, trip_2020)
 ```
 
 ```{r}
-trip_2020
+glimpse(trips)
+trips <- trips %>% 
+  mutate(
+    start_station_id = as.character(start_station_id),
+    end_station_id = as.character(end_station_id),
+    bikeid = as.character(bikeid)
+  )
+
+```
+
+
+```{r}
+tabyl(trips, bikeid)
+trips$bikeid %>% length()
+trips$bikeid %>% n_distinct()
+
 ```
 
 ::::
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
