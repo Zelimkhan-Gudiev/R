@@ -249,11 +249,39 @@ library(readxl)
 library(lubridate)
 library(janitor)
 ```
+2. Have you ensured your data's integtity
+Data integrity involves the accuracy, completeness, consistency, and trustworthiness of data throughout its lifecycle.
+Yes. Data integrity was checked by:
+* Accuracy: 
+Data correctly represents the real-world values or events it's mean to describe.
+No, some data in the "tripduration" column is not accuracy. `trips %>% filter(tripduration <= 0) %>% count()` rides end before it start and it's duration is shown as 0 or negative. 
+```{r}
+trips %>% filter(tripduration <= 0)
+```
+
+
+To ensure the accuracy of data I decided to remove data about rides with 0 or negative trip duration.
+```{r label="Removes rides with 0 or negative trip duration"}
+trips %>% filter(tripduration > 0)
+
+```
+```{r}
+colSums(is.na(trips[, c("ride_id", "started_at", "ended_at", "member_casual", "gender")]))
+colSums(is.na(trips[, colnames(trips)]))
+```
+
+
+Data is factually correct and reflects the real world.
+* Completeness: All necessary data is present and accounted for.
+* Consistency: Data is free from internal contradictions and remains consistent over time.
+* Trustworthiness:  Data can be trusted and used to make informed decisions.
 
 ```{r eval=FALSE, label="Reading data"}
 # Reading data
 trip_2019 <- read_sheet("https://docs.google.com/spreadsheets/d/1U-zZ-Kpvs4RNjsL4q2W32h7BdjzENRiAPSkeKPVSEN0/edit?gid=1797029090#gid=1797029090")
 trip_2020 <- read_sheet("https://docs.google.com/spreadsheets/d/18vpR9boxiVwoI2k0Pu2Sm6ghfJ_KJAtOozjTCjRLjac/edit?gid=640449855#gid=640449855")
+head(trip_2019)
+lapply(list(trip_2019, trip_2020), head)
 ```
 
 
@@ -262,6 +290,7 @@ trip_2020 <- read_sheet("https://docs.google.com/spreadsheets/d/18vpR9boxiVwoI2k
 str(trip_2019)
 str(trip_2020)
 ```
+
 
 ```{r eval=FALSE, label="Rename columns to match"}
 # Rename columns to match
@@ -348,9 +377,6 @@ trips <- trips %>%
 
 
 ```{r}
-tabyl(trips, bikeid)
-trips$bikeid %>% length()
-trips$bikeid %>% n_distinct()
 
 ```
 
