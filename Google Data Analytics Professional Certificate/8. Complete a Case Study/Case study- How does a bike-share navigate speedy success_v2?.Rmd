@@ -1,0 +1,266 @@
+---
+title: 'Case study: How does a bike-share navigate speedy success_v2?'
+author: "Zelimkhan"
+date: '2025-05-31'
+output:
+  html_document: default
+  pdf_document: default
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# 1. Introduction
+
+::: {style="text-align: justify"}
+This is my capstone project of the Google Data Analytics Professional
+Certificate. In this case study, I work for a fictional company,
+Cyclistic, along with some key team members. In order to answer the
+business questions, follow the steps of the data analysis process: Ask,
+Prepare, Process, Analyze, Share, and Act.
+:::
+
+# 2. Scenario
+
+::: {style="text-align: justify"}
+I am a junior data analyst working on the marketing analyst team at
+Cyclistic, a bike-share company in Chicago. The director of marketing
+believes the company’s future success depends on maximizing the number
+of annual memberships. Therefore, my team wants to understand how casual
+riders and annual members use Cyclistic bikes differently. From these
+insights, my team will design a new marketing strategy to convert casual
+riders into annual members. But first, Cyclistic executives must approve
+my recommendations, so they must be backed up with compeling data
+insights and professional data visualizations.
+:::
+
+## 2.1 Characters and teams
+
+::: {style="text-align: justify"}
+-   **Cyclistic:** A bike-share program that features more than 5,800
+    bicycles and 600 docking stations. Cyclistic sets itself apart by
+    also offering reclining bikes, hand tricycles, and cargo bikes,
+    making bike-share more inclusive to people with disabilities and
+    riders who can’t use a standard two-wheeled bike. The majority of
+    riders opt for traditional bikes; about 8% of riders use the
+    assistive options. Cyclistic users are more likely to ride for
+    leisure, but about 30% use the bikes to commute to work each day.
+-   **Lily Moreno:** The director of marketing and your manager. Moreno
+    is responsible for the development of campaigns and initiatives to
+    promote the bike-share program. These may include email, social
+    media, and other channels.
+-   **Cyclistic marketing analytics team:** A team of data analysts who
+    are responsible for colecting, analyzing, and reporting data that
+    helps guide Cyclistic marketing strategy. You joined this team six
+    months ago and have been busy learning about Cyclistic’s mission and
+    business goals—as wel as how you, as a junior data analyst, can help
+    Cyclistic achieve them.
+-   **Cyclistic executive team:** The notoriously detail-oriented
+    executive team wil decide whether to approve the recommended
+    marketing program.
+:::
+
+## 2.2 About the company
+
+:::: {style="text-align: justify"}
+In 2016, Cyclistic launched a successful bike-share oering. Since then,
+the program has grown to a eet of 5,824 bicycles that are geotracked and
+locked into a network of 692 stations across Chicago. The bikes can be
+unlocked from one station and returned to any other station in the
+system anytime. <br>
+
+Until now, Cyclistic’s marketing strategy relied on building general
+awareness and appealing to broad consumer segments. One approach that
+helped make these things possible was the flexibility of its pricing
+plans: single-ride passes, full-day passes, and annual memberships.
+Customers who purchase single-ride or full-day passes are referred to as
+casual riders. Customers who purchase annual memberships are Cyclistic
+members.<br>
+
+Cyclistic’s finance analysts have concluded that annual members are much
+more protable than casual riders. Although the pricing flexibility helps
+Cyclistic attract more customers, Moreno believes that maximizing the
+number of annual members will be key to future growth. Rather than
+creating a marketing campaign that targets all-new customers, Moreno
+believes there is a solid opportunity to convert casual riders into
+members. She notes that casual riders are already aware of the Cyclistic
+program and have chosen Cyclistic for their mobility needs.<br>
+
+Moreno has set a clear goal: Design marketing strategies aimed at
+converting casual riders into annual members. In order to do that,
+however, the team needs to beer understand how annual members and casual
+riders differ, why casual riders would buy a membership, and how digital
+media could affect their marketing tactics. Moreno and her team are
+interested in analyzing the Cyclistic historical bike trip data to
+identify trends.
+
+Three questions will guide the future marketing program: <br> 1. How do
+annual members and casual riders use Cyclistic bikes dierently? <br> 2.
+Why would casual riders buy Cyclistic annual memberships? <br> 3. How
+can Cyclistic use digital media to inuence casual riders to become
+members? <br>
+
+Moreno has assigned you the first question to answer: How do annual
+members and casual riders use Cyclistic bikes dierently?
+<br>
+
+# 3. Step 1. Ask
+## 3.1 Guiding questions 
+|№| Questions   | Answers                   |
+|-|-------------|---------------------------|
+|1| What is the problem you are trying to solve? | The problem is understanding how annual members and casual riders use Cyclistic bikes differently. This insight will help the marketing team design strategies to convert casual riders into annual members, which are more profitable for the company. |
+|2| How can your insights drive business decisions? | By identifying key differences in usage patterns (e.g., ride duration, frequency, preferred days/times), the marketing team can tailor campaigns to highlight the benefits of annual memberships for casual riders. This could include targeted promotions, personalized messaging, or incentives based on their behavior. |
+
+## 3.2 Key tasks
+
+|№| tasks       | Results                   |
+|-|-------------|---------------------------|
+|1| Identify the business task | Analyze historical bike trip data to compare usage patterns between casual riders and annual members, and provide actionable recommendations to convert casual riders into members. |
+|2| Consider key stakeholders | 1) Lily Moreno (Director of Marketing): Needs data-driven insights to justify marketing strategies. <br> 2) Cyclistic Executive Team: Requires compelling evidence to approve recommendations. <br> 3) Marketing Analytics Team: Relies on accurate analysis to guide campaign design. |
+
+## 3.3 Deliverable
+|№| Deliverable | Result                    |
+|-|-------------|---------------------------|
+|1| A clear statement of the business task | Analyze Cyclistic's historical bike-share data to identify differences in usage patterns between casual riders and annual members. The goal is to provide actionable insights that will inform a marketing strategy aimed at converting casual riders into annual members, thereby increasing profitability. |
+<br>
+
+# 4. Step 2. Prepare
+::: {style="text-align: justify"}
+## 4.1 Guiding Questions
+|№| Questions   | Answers                   |
+|-|-------------|---------------------------|
+|1| Where is your data located? | The data is publicly available in this two datasets: <br> *[Divvy 2019Q1](https://docs.google.com/spreadsheets/d/1uCTsHlZLm4L7-ueaSLwDg0ut3BP_V4mKDo2IMpaXrk4/template/preview?resourcekey=0-dQAUjAu2UUCsLEQQt20PDA#gid=1797029090) <br> *[Divvy 2020Q1](https://docs.google.com/spreadsheets/d/179QVLO_yu5BJEKFVZShsKag74ZaUYIF6FevLYzs3hRc/template/preview#gid=640449855) |
+|2| How is the data organized? | The datasets are organized as quarterly google sheets files, with each row representing a bike trip and columns with trip's attributes|
+|3| Are there issues with bias or credibility in this data? Does your data ROCCC? | 1 ) Reliable: Yes, sourced from a licensed provider (Motivate International Inc.). <br> 2 ) Original: First-party system-generated (Cyclistic’s operational system) operational data. <br> 3 ) Comprehensive: Covers all trips during the specified quarters, including key fields. <br> 4 ) Current: Q1 2019 and Q1 2020 are accurate within their timeframes. <br> 5 ) Cited: Licensed and publicly cited via [Divvy's data agreement](https://divvybikes.com/data-license-agreement) <br> 6 ) Potential Bias: Excludes personally identifiable information (PII), so demographic analysis is limited. <br>|
+|4| How are you addressing licensing, privacy, security, and accessibility? | 1 ) Licensing: Complies with Divvy's public data use license. <br> 2 ) Privacy: No percenal information concluded. <br> 3 ) Security: Data stored securely in google sheets. <br> 4 ) Accessibility: Data in google sheets format ensures compatibility with Excel, R or SQL.|
+|5| How did you verify the data's integrity? | When reviewing the data in the tables, it was found that there is inconsistency in the name and number of columns between [Divvy 2019Q1](https://docs.google.com/spreadsheets/d/1uCTsHlZLm4L7-ueaSLwDg0ut3BP_V4mKDo2IMpaXrk4/template/preview?resourcekey=0-dQAUjAu2UUCsLEQQt20PDA#gid=1797029090) and [Divvy 2020Q1](https://docs.google.com/spreadsheets/d/179QVLO_yu5BJEKFVZShsKag74ZaUYIF6FevLYzs3hRc/template/preview#gid=640449855) datasets. <br> Data's integrity will be checked in more detail (accuracy, completness, consistency, trustworthiness) in the next step of analyses (step 3 "Process") |
+|6| How does it help you answer you questions? | This data allows analysis of how casual riders and annual members use Cyclistic bikes differently by providing trip-level details such as ride length, frequency, timing, and bike type preferences. These insights are crucial for designing targeted marketing strategies.|
+|7| Are there any problems with the data? | Yes: <br> 1 ) Column names are inconsistent between the two datasets (e.g., usertype in 2019 vs member_casual in 2020). <br> 2 ) The data does not include demographic or payment information, limiting deeper customer profiling. Seasonal and external factors are not directly captured but may affect usage. The dataset size requires careful handling to avoid memory issues. |
+
+## 4.1. Key tasks
+|№| Tasks       | Results |
+|-|-------------|---------------------------------|
+|1| Download data and store it appropriately| Downloaded [Divvy 2019Q1](https://docs.google.com/spreadsheets/d/1uCTsHlZLm4L7-ueaSLwDg0ut3BP_V4mKDo2IMpaXrk4/template/preview?resourcekey=0-dQAUjAu2UUCsLEQQt20PDA#gid=1797029090) and [Divvy 2020Q1](https://docs.google.com/spreadsheets/d/179QVLO_yu5BJEKFVZShsKag74ZaUYIF6FevLYzs3hRc/template/preview#gid=640449855) datasets. <br> Files stored in google drive folder [Source data](https://drive.google.com/drive/folders/1BO4tpPfs25t5z5Sq2a-neWuLGSlcVdyR). |
+|2| Identify how it’s organized | The datasets are organized as quarterly google sheets files, with each row representing a bike trip and columns with trip's attributes |
+|3| Sort and filter the data | Previewed and confirmed need to normalize column names and filter out invalid rows (e.g., negative ride_length). |
+| <br> | <br> | <br> |
+| 5 | Determine credibility of data | ... |
+| <br> | <br> | <br> |
+
+### Deliverable: Description of All Data Sources Used <br>
+
+Data Sources Used: <br> This project utilizes two publicly available
+datasets from the Chicago Divvy bike-share system:<br>
+Divvy_Trips_2019_Q1:
+[Link](https://docs.google.com/spreadsheets/d/1U-zZ-Kpvs4RNjsL4q2W32h7BdjzENRiAPSkeKPVSEN0/edit?gid=1797029090#gid=1797029090).
+<br> Covers January–March 2019.<br> Key fields: trip_id, start_time,
+end_time, bikeid, from_station_name, to_station_name, usertype.<br>
+
+Divvy_Tripdata_2020_Q1:
+[Link](https://docs.google.com/spreadsheets/d/18vpR9boxiVwoI2k0Pu2Sm6ghfJ_KJAtOozjTCjRLjac/edit?gid=640449855#gid=640449855).
+<br> Covers January–March 2020. <br> Key fields: ride_id, started_at,
+ended_at, rideable_type, member_casual, start_station_name,
+end_station_name. <br>
+
+These datasets were sourced from the official Divvy system and released
+by Motivate International Inc.. The data has been vetted for public use
+and adheres to privacy requirements (no personally identifiable
+information).<br> Licensing information: Divvy License Agreement
+:::
+
+# Step 3. Prepare
+### Guiding Questions & Responses <br>
+1. What tools are you choosing and why?
+Tool: R (via RStudio and R Markdown)
+Why:
+* R is powerfool for data manipulation, cleaning, and visualization.
+* It's free, open-source, and part of the tools recommended in the Google Data Analytics Certificate.
+* R can handle larger datasets and streamline reproducible workflows using scripts and reports.
+
+```{r setup, include=FALSE, label="Installing neccesary packages"}
+# Installing neccesary packages
+# install.packages("googlesheets4")
+# install.packages("googledrive")
+# install.packages("tidyverse")
+# install.packages("lubridate")
+# install.packages("janitor")
+library(googlesheets4)
+library(googledrive)
+library(tidyverse)
+library(dplyr)
+library(purrr)
+library(readxl)
+library(lubridate)
+library(janitor)
+```
+2. Have you ensured your data's integrity
+1) Data integrity involves the accuracy, completeness, consistency, and trustworthiness of data throughout its lifecycle.
+**Accuracy**: Data correctly represents the real-world values or events it's mean to describe.
+Definition
+The degree of conformity of a measure to a standard or a true value
+Example
+Addresses in the business database are identified as incorrect when compared to the public postal service database
+**Completeness:** All necessary data is present and accounted for.
+Definition
+The degree to which all required measures are known
+Example
+NULL/missing value for the item “Number of employees per store”
+**Consistency:** Data is free from internal contradictions and remains consistent over time.
+Definition
+The degree to which a set of measures is equivalent across systems
+Example
+Date of store opening stored in both MM/DD/YYYY and MM/YY formats
+**Trustworthiness:** Data can be trusted and used to make informed decisions.
+
+**Validity**
+Definition
+The concept of using data integrity principles to ensure measures conform to defined business rules or constraints
+Example
+Data collected five years ago used technology that is not approved or supported by the business
+
+
+
+
+
+2) What steps have you taken to ensure that your data is clean?
+**Dirty data** includes duplicate data, outdated data, incomplete data, incorrect or inaccurate data, and inconsistent data.
+These includes spelling and other texts errors, inconsistent labels, formats and field lane, missing data and duplicates
+3) How can you verify that your data is clean and ready to analyze?
+4) Have you documented your cleaning process so you can review and share those
+results?
+
+## 1. Reading data
+```{r label="Reading data"}
+trip_2019 <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional Certificate/8. Complete a Case Study/Divvy_Trips_2019_Q1.xlsx", )
+trip_2020 <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional Certificate/8. Complete a Case Study/Divvy_Trips_2020_Q1.xlsx")
+```
+
+## 2. Data viewing <br>
+### Looking at the tables <br>
+Data about bike share in 2019
+```{r Looking at the trip_2019}
+head(trip_2019)
+```
+Data about bike share in 2020
+```{r Looking at the trip_2020}
+head(trip_2020)
+```
+### Viewing the data structure <br>
+Structure data about bike share in 2019
+```{r label="Viewing the trip_2019 df structure"}
+str(trip_2019)
+```
+Structure data about bike share in 2020
+```{r label="Viewing the trip_2010 df structure"}
+str(trip_2020)
+```
+
+There are **inconsistencies** between two tables with data from 2019 and 2020. 
+
+| № |    inconsistencies          | Data from 2019 <br> (trip_2019 df) | Data from 2020 <br> (trip_2020 df) |
+|---|-----------------------------|------------------------------------|------------------------------------|
+| 1 | Different number of columns | Has `r length(trip_2019)` columns  | Has `r length(trip_2020)` columns  |
+| 2 | Different data              | Includes the following unique columns: <br> 1) bikeid <br> 2) tripduration <br> 3) gender <br> 4) birthyear  | Includes the following unique columns: <br> 1) rideable_type <br> 2) start_lat <br> 3) start_lng <br> 3) end_lat <br> 4) end_lng <br> |
+| 4 | Columns with same data have different names | 1) trip_id <br>  2) start_time <br> 3) end_time <br>  4) usertype <br>  5) from_station_id <br> 6) from_station_name <br> 7) to_station_id <br> 8) to_station_name <br> | 1) ride_id <br> 2) started_at <br> 3) ended_at <br> 4) member_casual <br> 5)  start_station_id <br> 6) start_station_name <br> 7) end_station_id <br> 8) end_station_name  |
+| 5 | Same values have different names | Column usertype has the following values: `r unique(trip_2019$usertype)` | Column member_casual has the following values: `r unique(trip_2020$member_casual)` |
+

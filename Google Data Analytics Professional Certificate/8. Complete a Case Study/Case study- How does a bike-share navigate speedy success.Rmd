@@ -249,47 +249,88 @@ library(readxl)
 library(lubridate)
 library(janitor)
 ```
-2. Have you ensured your data's integtity
-Data integrity involves the accuracy, completeness, consistency, and trustworthiness of data throughout its lifecycle.
-Yes. Data integrity was checked by:
-* Accuracy: 
-Data correctly represents the real-world values or events it's mean to describe.
-No, some data in the "tripduration" column is not accuracy. `trips %>% filter(tripduration <= 0) %>% count()` rides end before it start and it's duration is shown as 0 or negative. 
-```{r}
-trips %>% filter(tripduration <= 0)
+2. Have you ensured your data's integrity
+1) Data integrity involves the accuracy, completeness, consistency, and trustworthiness of data throughout its lifecycle.
+**Accuracy**: Data correctly represents the real-world values or events it's mean to describe.
+Definition
+The degree of conformity of a measure to a standard or a true value
+Example
+Addresses in the business database are identified as incorrect when compared to the public postal service database
+**Completeness:** All necessary data is present and accounted for.
+Definition
+The degree to which all required measures are known
+Example
+NULL/missing value for the item “Number of employees per store”
+**Consistency:** Data is free from internal contradictions and remains consistent over time.
+Definition
+The degree to which a set of measures is equivalent across systems
+Example
+Date of store opening stored in both MM/DD/YYYY and MM/YY formats
+**Trustworthiness:** Data can be trusted and used to make informed decisions.
+
+**Validity**
+Definition
+The concept of using data integrity principles to ensure measures conform to defined business rules or constraints
+Example
+Data collected five years ago used technology that is not approved or supported by the business
+
+
+
+
+
+2) What steps have you taken to ensure that your data is clean?
+**Dirty data** includes duplicate data, outdated data, incomplete data, incorrect or inaccurate data, and inconsistent data.
+These includes spelling and other texts errors, inconsistent labels, formats and field lane, missing data and duplicates
+3) How can you verify that your data is clean and ready to analyze?
+4) Have you documented your cleaning process so you can review and share those
+results?
+
+1. Reading data
+```{r label="Reading data}
+trip_2019 <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional Certificate/8. Complete a Case Study/Divvy_Trips_2019_Q1.xlsx")
+trip_2020 <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional Certificate/8. Complete a Case Study/Divvy_Trips_2020_Q1.xlsx")
 ```
 
 
-To ensure the accuracy of data I decided to remove data about rides with 0 or negative trip duration.
-```{r label="Removes rides with 0 or negative trip duration"}
-trips %>% filter(tripduration > 0)
 
-```
-```{r}
-colSums(is.na(trips[, c("ride_id", "started_at", "ended_at", "member_casual", "gender")]))
-colSums(is.na(trips[, colnames(trips)]))
-```
-
-
-Data is factually correct and reflects the real world.
-* Completeness: All necessary data is present and accounted for.
-* Consistency: Data is free from internal contradictions and remains consistent over time.
-* Trustworthiness:  Data can be trusted and used to make informed decisions.
-
-```{r eval=FALSE, label="Reading data"}
+```{r eval=FALSE, label="Reading data (from googlesheets)"}
 # Reading data
-trip_2019 <- read_sheet("https://docs.google.com/spreadsheets/d/1U-zZ-Kpvs4RNjsL4q2W32h7BdjzENRiAPSkeKPVSEN0/edit?gid=1797029090#gid=1797029090")
-trip_2020 <- read_sheet("https://docs.google.com/spreadsheets/d/18vpR9boxiVwoI2k0Pu2Sm6ghfJ_KJAtOozjTCjRLjac/edit?gid=640449855#gid=640449855")
-head(trip_2019)
-lapply(list(trip_2019, trip_2020), head)
+# trip_2019 <- read_sheet("https://docs.google.com/spreadsheets/d/1U-zZ-Kpvs4RNjsL4q2W32h7BdjzENRiAPSkeKPVSEN0/edit?gid=1797029090#gid=1797029090")
+# trip_2020 <- read_sheet("https://docs.google.com/spreadsheets/d/18vpR9boxiVwoI2k0Pu2Sm6ghfJ_KJAtOozjTCjRLjac/edit?gid=640449855#gid=640449855")
 ```
-
-
-
-```{r eval=FALSE, label="colnames trip_2019"}
+2. Data viewing
+### Looking at the tables
+Data about bike share in 2019
+```{r Looking at the trip_2019}
+head(trip_2019)
+```
+Data about bike share in 2020
+```{r Looking at the trip_2020}
+head(trip_2020)
+```
+### Viewing the data structure
+Structure data about bike share in 2019
+```{r eval=FALSE, label="Viewing the data structure"}
 str(trip_2019)
+```
+Structure data about bike share in 2020
+```{r eval=FALSE, label="Viewing the data structure"}
 str(trip_2020)
 ```
+
+Two tables with data from 2019 and 2020 have different numbers of columns (12 variables in trip_2019 df and 13 variables in trip_2020 df), differant names (trip_id in in trip_2019 df and ride_is in trip_2020 df) and formats ()
+
+There are **inconsistencies** between two tables with data from 2019 and 2020
+
+|   №  |    inconsistencies  | Data from 2019 <br> (trip_2019 df) | Data from 2020 <br> (trip_2020 df) |
+|------|---------------------|------------------------------------|------------------------------------|
+|  1   | Different number of columns | 12 | 13 |
+
+
+different number of columns, different names and formats of the columns of the same data 
+
+
+
 
 
 ```{r eval=FALSE, label="Rename columns to match"}
@@ -376,9 +417,34 @@ trips <- trips %>%
 ```
 
 
+lll
+
+Some data about in the "tripduration" column is not accuracy and doesn't represent real ride length. There are `trip_2019 %>% filter(tripduration <= 0) %>% count()` in trip_2019 dataframe and `trip_2020 %>% filter(tripduration <= 0) %>% count()` in trip_2019 dataframe with zero or negative trip duration. 
 ```{r}
+trips %>% filter(tripduration <= 0)
+trip_2019 %>% filter(tripduration <= 0)
+trip_2020 %>% filter(tripduration <= 0)
+n_distinct(trips$member_casual)
+unique(trips$member_casual)
+summarise(trips)
+```
+
+
+
+
+
+
+To ensure the accuracy of data I decided to remove data about rides with 0 or negative trip duration.
+```{r label="Removes rides with 0 or negative trip duration"}
+trips %>% filter(tripduration > 0)
 
 ```
+```{r}
+colSums(is.na(trips[, c("ride_id", "started_at", "ended_at", "member_casual", "gender")]))
+colSums(is.na(trips[, colnames(trips)]))
+```
+
+
 
 ::::
 
