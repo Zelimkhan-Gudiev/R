@@ -3,7 +3,7 @@ title: 'Case study: How does a bike-share navigate speedy success_v2?'
 author: "Zelimkhan"
 date: '2025-05-31'
 output:
-  html_document: default
+#  html_document: default
   pdf_document: default
 editor_options: 
   markdown: 
@@ -50,13 +50,13 @@ insights and professional data visualizations.
     promote the bike-share program. These may include email, social
     media, and other channels.
 -   **Cyclistic marketing analytics team:** A team of data analysts who
-    are responsible for colecting, analyzing, and reporting data that
+    are responsible for collecting, analyzing, and reporting data that
     helps guide Cyclistic marketing strategy. You joined this team six
     months ago and have been busy learning about Cyclistic’s mission and
     business goals—as wel as how you, as a junior data analyst, can help
     Cyclistic achieve them.
 -   **Cyclistic executive team:** The notoriously detail-oriented
-    executive team wil decide whether to approve the recommended
+    executive team will decide whether to approve the recommended
     marketing program.
 :::
 
@@ -88,7 +88,7 @@ program and have chosen Cyclistic for their mobility needs.<br>
 
 Moreno has set a clear goal: Design marketing strategies aimed at
 converting casual riders into annual members. In order to do that,
-however, the team needs to beer understand how annual members and casual
+however, the team needs to better understand how annual members and casual
 riders differ, why casual riders would buy a membership, and how digital
 media could affect their marketing tactics. Moreno and her team are
 interested in analyzing the Cyclistic historical bike trip data to
