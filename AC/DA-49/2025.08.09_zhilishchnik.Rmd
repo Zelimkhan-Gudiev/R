@@ -1,0 +1,51 @@
+---
+title: "DA-49"
+author: "Zelimkhan"
+date: "2025-08-02"
+output: html_document
+---
+# Install and attach necessary packages
+
+```{r}
+# install.packages("readxl")
+# install.packages("tidyverse")
+# install.packages("lubridate")
+# install.packages("psych")
+library(readxl)
+library(tidyverse)
+library(lubridate)
+library(psych)
+
+```
+# Read data
+```{r}
+source_df <- read_xlsx("/Users/zelimkhan/Downloads/2025.07.31_ DA-49_purchases_23-25_source_data_23-35_cleaned.xlsx")
+head(source_df)
+```
+
+# Process data
+```{r}
+factor_vars <- c("ИД заказчика", "Краткое название заказчика", "ГРБС", "Статус контракта", "Закон-основание", "Год заключения контракта",
+         "Месяц заключения контракта", "Метод определения поставщика", "Признак закупки у единственного поставщика", "Основание закупки у ед. поставщика",
+         "Признак закупки малого объема", "Признак \"Портал поставщиков\" по тексту", "Признак котировочной сессии",
+         "Признак стандартизированного контракта (мин)", "Признак стандартизированного контракта (макс)", 
+         "Признак НМЦ за единицу в лоте (0 - нет , 1 - да)", "Стандартизированный СПГЗ", "Метод расчета НМЦ",
+         "Признак прохождения экспертизы")
+source_df[, c(factor_vars)] <- lapply(source_df[, c(factor_vars)], as.factor)
+
+datetime_vars <- c("Дата заключения контракта", "Начало действия контракта", "Начало исполнения контракта", "Конец действия контракта","Конец исполнения контракта")
+source_df[, c(datetime_vars)] <- lapply(source_df[, c(datetime_vars)], ymd)
+
+numeric_vars <- select(source_df, where(is.numeric)) %>% colnames() %>% c(., "Количество участников торгов, шт.")
+source_df[, numeric_vars] <- lapply(source_df[, numeric_vars], as.numeric)
+
+glimpse(source_df)
+```
+
+# Analyse data
+## Descreptive statistics
+```{r, include=FALSE}
+summary(source_df)
+aggregate(source_df$`Цена за единицу СПГЗ, руб.`, by = list(source_df$ГРБС), mean)
+```
+
