@@ -1,0 +1,253 @@
+---
+title: "Lettuce_growth_days"
+author: "Zelimkhan"
+date: "2025-09-22"
+output: html_document
+---
+
+# 1. Install packages and attach libraryes
+```{r setup, echo=TRUE, results="hide", warning=FALSE, message=FALSE}
+# install.packages("psych")
+# install.packages("lubridate")
+# install.packages("purrr")
+# install.packages("GGally")
+library(psych)
+library(googlesheets4)
+library(tidyr)
+library(dplyr)
+library(janitor)
+library(ggplot2)
+library(lubridate)
+library(purrr)
+library(GGally)
+```
+
+# 2. Read data
+```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
+df_0 <- read_sheet("https://docs.google.com/spreadsheets/d/1esw9BCXZDO1h4hwuaKowia5eVmflEKTS6NiouamSYA0/edit?gid=723124268#gid=723124268", sheet = "Source_lettuce_dataset")
+```
+```{r}
+df_0
+```
+
+# 3. Exploratory data analysis (EDA)
+## 3.1 Understand the dataset
+What variables (columns) exist? 
+```{r}
+colnames(df_0)
+```
+
+What types of data do they contain (numeric, categorical, dates)?
+```{r}
+glimpse(df_0)
+```
+How many rows are there?
+```{r}
+dim(df_0)
+```
+
+## 3.2 Check data quality
+Are there missing values?
+```{r}
+colSums(is.na(df_0))
+```
+Are there any duplicates or errors?
+```{r}
+sapply(df_0, function(x) sum(duplicated(x)))
+```
+Are values in a reasonable range (e.g., temperature not 500°C)?
+```{r}
+df_0 %>% select(-Date) %>% summary()
+```
+```{r}
+df_0 <- df_0 %>% 
+  mutate(
+    # 1) Flatten: make every element a clean character string
+    Date = map_chr(Date, ~ if (inherits(.x, "POSIXt"))
+      format(.x, "%Y-%m-%d") else as.character(.x)),
+    Date = trimws(Date),
+    Date = gsub("[\u2010\u2011\u2012\u2013\u2014\u2212]", "-", Date), # normalize dashes
+    Date = na_if(Date, ""),
+    
+    # 2) Parse: try ISO (Y-m-d) then US (m/d/Y); keep first non-NA
+    Date = coalesce(
+      ydm(Date, tz = "UTC", quiet = TRUE),
+      mdy(Date, tz = "UTC", quiet = TRUE)
+    )
+  ) %>% arrange(Date)
+```
+Clean names 
+```{r}
+df <- clean_names(df_0)
+```
+
+## 3.3 Summarize statistics
+Data frame summary
+```{r}
+summary(df)
+```
+All statistics by plant id
+```{r}
+all_stats_by_id <- df %>% group_by(plant_id) %>% 
+  summarise(
+            date_min = min(date),
+            date_mean = mean(date),
+            date_median = median(date),
+            date_max = max(date),
+            temperature_c_min = min(temperature_c),
+            temperature_c_mean = mean(temperature_c),
+            temperature_c_median = median(temperature_c),
+            temperature_c_sd = sd(temperature_c),
+            temperature_c_max = max(temperature_c),
+            humidity_percent_min = min(humidity_percent),
+            humidity_percent_mean = mean(humidity_percent),
+            humidity_percent_median = median(humidity_percent),
+            humidity_percent_sd = sd(humidity_percent),
+            humidity_percent_max = max(humidity_percent),
+            tds_value_ppm_min = min(tds_value_ppm),
+            tds_value_ppm_mean = mean(tds_value_ppm),
+            tds_value_ppm_median = median(tds_value_ppm),
+            tds_value_ppm_sd = sd(tds_value_ppm),
+            tds_value_ppm_max = max(tds_value_ppm),
+            p_h_level_min = min(p_h_level),
+            p_h_level_mean = mean(p_h_level),
+            p_h_level_median = median(p_h_level),
+            p_h_level_sd = sd(p_h_level),
+            p_h_level_max = max(p_h_level),
+            growth_days_min = min(growth_days),
+            growth_days_mean = mean(growth_days),
+            growth_days_median = median(growth_days),
+            growth_days_sd = sd(growth_days),
+            growth_days_max = max(growth_days)
+  ) %>% 
+  mutate(
+    across(where(is.numeric), ~ round(.x, 2))
+         )
+all_stats_by_id
+```
+Summary of all statistics by plant id
+```{r}
+all_stats_by_id %>% summary()
+```
+Statistics (basic) by plant id
+```{r}
+all_stats_by_id %>% 
+  select(plant_id, temperature_c_mean,
+         humidity_percent_mean,
+         tds_value_ppm_mean,
+         p_h_level_mean,
+         growth_days_max)
+```
+
+Statistics by maximum growth day
+```{r}
+df %>% group_by(plant_id) %>% 
+  mutate(growth_days_max = max(growth_days)) %>% 
+  group_by(growth_days_max) %>% 
+  summarise(
+    plant_id_n = n_distinct(plant_id),
+            temperature_c_mean = mean(temperature_c),
+            humidity_percent_mean = mean(humidity_percent),
+            tds_value_ppm_mean = mean(tds_value_ppm),
+            p_h_level_mean = mean(p_h_level)
+  ) %>% 
+  mutate(
+    across(
+      where(is.numeric), ~ round(.x, 2)
+      )
+  )
+```
+
+# 3.4 Visualize relationships
+
+Histograms (distribution)
+```{r}
+df %>% select(where(is.numeric)) %>% 
+  pivot_longer(everything(),
+               names_to = "variable",
+               values_to = "value") %>% 
+  ggplot(aes(x = value, fill = variable)) +
+  geom_histogram(bins = 30, alpha = 0.6, color = "black", na.rm = TRUE) +
+  facet_wrap(~ variable, scales = "free", ncol = 3) +
+# theme_minimal() + 
+  guides(fill = "none")
+  
+```
+
+Boxplots (outliers).
+```{r}
+df %>% select(where(is.numeric)) %>% 
+  pivot_longer(everything(),
+               names_to = "variable",
+               values_to = "value") %>% 
+  ggplot(aes(x = variable, y = value)) +
+  geom_boxplot(outliers.alpha = 0.35) +
+  labs(x = NULL, y = NULL, title = "Boxplots of numeric variables") +
+  facet_wrap(~ variable, scales = "free", ncol = 3) +
+  # theme_minimal() +
+  guides(fill = "none")
+  
+```
+
+Time-series plots (trends over time)
+
+```{r}
+df %>%
+  pivot_longer(-c(date, plant_id), names_to = "variable", values_to = "value") %>% 
+  group_by(variable, date) %>%
+  summarise(
+    mean = mean(value, na.rm = TRUE),
+    p25  = quantile(value, 0.25, na.rm = TRUE),
+    p75  = quantile(value, 0.75, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(variable, date) %>% 
+  ggplot(aes(date, mean)) +
+  geom_ribbon(aes(ymin = p25, ymax = p75), alpha = 0.15) +
+  geom_line() +
+  facet_wrap(~ variable, scales = "free_y", ncol = 2) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  labs(x = NULL, y = NULL, title = "Daily mean with IQR band") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.grid.minor = element_blank())
+```
+c
+```{r}
+df %>% 
+  pivot_longer(-c(date, plant_id), names_to = "variable", values_to = "values") %>% 
+  group_by(variable, date) %>% 
+  summarise(mean = mean(values)) %>% 
+  arrange(variable, date) %>% 
+  ggplot(aes(x = date, y = mean)) +
+  geom_line() + 
+  facet_wrap(~ variable, scales = "free_y", ncol = 2) + 
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  labs(x = NULL, y = NULL, title = "Daily mean") + 
+  # theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.grid.minor = element_blank())
+```
+Scatterplots (check correlation)
+```{r}
+df %>% select(where(is.numeric)) %>% 
+  select(- plant_id) %>% 
+  ggpairs(progress = FALSE,
+          upper = list(continuous = wrap("cor", method = "pearson")),
+          diag = list(continuous = "densityDiag"),
+          lwer = list(continuous = wrap("points", alpha = 0.4, size = 0.7))
+    
+  )
+```
+
+# 3.5 Form hypotheses
+
+Does higher humidity improve growth?
+
+Are weekly growth patterns consistent?
+
+Is there seasonality in the data?
+
+
+
+
