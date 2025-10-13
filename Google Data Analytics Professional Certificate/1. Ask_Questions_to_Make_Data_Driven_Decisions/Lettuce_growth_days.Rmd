@@ -2,10 +2,14 @@
 title: "Lettuce_growth_days"
 author: "Zelimkhan"
 date: "2025-09-22"
-output: html_document
+output: 
+  html_document:
+    toc: true
+    toc_depth: 5
+    toc_float: true
 ---
 
-# 1. Install packages and attach libraryes
+# 0. Install packages and attach libraryes
 ```{r setup, echo=TRUE, results="hide", warning=FALSE, message=FALSE}
 # install.packages("psych")
 # install.packages("lubridate")
@@ -54,7 +58,22 @@ Analyze environmental conditions' impact on lettuce growth (finding patterns) an
 :::
 
 
-# 2. Read data
+# 2. Prepare
+## 2.1 Guiding questions
+| N | Questions |  Answers  |
+|-  |-----------|-----------|
+| 1 | Where is your data located?                                                   | The data is publicly available in Kaggle website at this [link](https://www.kaggle.com/datasets/jurijsruko/lettuce) |
+| 2 | How is the data organized?                                                    | The data is organized as a table containing data on 70 plants. The rows contain environmental conditions for each of the 70 plants on each day throughout the growing season. The columns contain information about the plant identifier (Plant_ID) and the following environmental conditions, which were recorded daily for each of the 70 plants throughout the growing season: Date; Temperature (°C); Humidity (%); TDS Value (ppm); pH Level; Growth Days.|
+| 3 | Are there issues with bias or credibility in this data? Does your data ROCCC? | 1) The lettuce growth dataset shows no major issues with bias or credibility, but as with any sample dataset, it may have some limitations: <br> 1.1) **Bias**: The dataset appears to come from a controlled educational or reaserch environment, so it may not present all real world farming conditions or varieties of lettuce. However, since it is used for analytical practice rather than policy or production decisions, the risk of bias affecting conclusions is minimal. <br> 1.2) **Credibility**: The data structure, values, and relationships appear internal consistent and realistic. Variable names, measurements units, and record counts align with exepted patterns, which supports the datasets credibility. <br> 2) **ROCCC** <br> 2.1) **Relaible.** The data is reliable (accurate, complete and unbiased). <br> 2.2) **Original.** The data is original. We can locate the original souce of data and we don't rely solely on third-party information. The dataset is original to the learning environment and was prepared for educational analysis by verified sources (Kaggle). <br> 2.3) **Comprehensive.** It includes all key variables needed to explore lettuce growth duration and related conditions, though it is simplified for training purposes. <br> 2.4) **Current.** The data sources aren't out of date or irrelivant. This data source is respected an their refresh their data reguraly. The dataset reflects a modern data structure and is suitable for current analytical tools (R, Excel, etc.), even if the measurements are not tied to a specific recent year. <br> 2.5) **Cited.** The data was obtaines from the Kaggle website. The dataset and its source are cited. <br>|
+| 4 | How are you addressing licensing, privacy, security, and accessibility?       |-----------|
+| 5 | How did you verify the data’s integrity?                                      |-----------|
+| 6 |	How does it help you answer you questions?                                    |-----------|
+| 7 | Are there any problems with the data?                                         |-----------|
+
+## 2.2 Key tasks
+## 2.3 Deliverables
+
+## 2.1 Read data
 ```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
 # df_0 <- read_sheet("https://docs.google.com/spreadsheets/d/1esw9BCXZDO1h4hwuaKowia5eVmflEKTS6NiouamSYA0/edit?gid=723124268#gid=723124268", sheet = "source_lettuce_dataset")
 df_0 <- read_excel("C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx", sheet = "source_lettuce_dataset")
