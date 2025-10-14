@@ -1486,8 +1486,8 @@ border-radius: 0px;
 </div>
 
 
-<div id="install-packages-and-attach-libraryes" class="section level1">
-<h1>0. Install packages and attach libraryes</h1>
+<div id="install-packages-and-attach-libraries" class="section level1">
+<h1>Install packages and attach libraries</h1>
 <pre class="r"><code># install.packages(&quot;psych&quot;)
 # install.packages(&quot;lubridate&quot;)
 # install.packages(&quot;purrr&quot;)
@@ -1653,8 +1653,8 @@ Avg 3 day growth, Growth since day before, etc.)</td>
 </div>
 </div>
 </div>
-<div id="prepare" class="section level1">
-<h1>2. Prepare</h1>
+<div id="step-2.-prepare" class="section level1" style="text-align: justify">
+<h1>Step 2. Prepare</h1>
 <div id="guiding-questions-1" class="section level2">
 <h2>2.1 Guiding questions</h2>
 <table>
@@ -1694,25 +1694,25 @@ data ROCCC?</td>
 <td>1) The lettuce growth dataset shows no major issues with bias or
 credibility, but as with any sample dataset, it may have some
 limitations: <br> 1.1) <strong>Bias</strong>: The dataset appears to
-come from a controlled educational or reaserch environment, so it may
+come from a controlled educational or research environment, so it may
 not present all real world farming conditions or varieties of lettuce.
 However, since it is used for analytical practice rather than policy or
 production decisions, the risk of bias affecting conclusions is minimal.
 <br> 1.2) <strong>Credibility</strong>: The data structure, values, and
 relationships appear internal consistent and realistic. Variable names,
-measurements units, and record counts align with exepted patterns, which
-supports the datasets credibility. <br> 2) <strong>ROCCC</strong> <br>
-2.1) <strong>Relaible.</strong> The data is reliable (accurate, complete
-and unbiased). <br> 2.2) <strong>Original.</strong> The data is
-original. We can locate the original souce of data and we don’t rely
+measurements units, and record counts align with excepted patterns,
+which supports the datasets credibility. <br> 2) <strong>ROCCC</strong>
+<br> 2.1) <strong>Relaible.</strong> The data is reliable (accurate,
+complete and unbiased). <br> 2.2) <strong>Original.</strong> The data is
+original. We can locate the original source of data and we don’t rely
 solely on third-party information. The dataset is original to the
 learning environment and was prepared for educational analysis by
 verified sources (Kaggle). <br> 2.3) <strong>Comprehensive.</strong> It
 includes all key variables needed to explore lettuce growth duration and
 related conditions, though it is simplified for training purposes. <br>
 2.4) <strong>Current.</strong> The data sources aren’t out of date or
-irrelivant. This data source is respected an their refresh their data
-reguraly. The dataset reflects a modern data structure and is suitable
+irrelevant. This data source is respected an their refresh their data
+regularly. The dataset reflects a modern data structure and is suitable
 for current analytical tools (R, Excel, etc.), even if the measurements
 are not tied to a specific recent year. <br> 2.5)
 <strong>Cited.</strong> The data was obtaines from the Kaggle website.
@@ -1722,31 +1722,189 @@ The dataset and its source are cited. <br></td>
 <td>4</td>
 <td>How are you addressing licensing, privacy, security, and
 accessibility?</td>
-<td>———–</td>
+<td>1. <strong>Licensing</strong> <br> The lettuce dataset is a practice
+dataset provided for educational purposes, so there are no licensing or
+intellectual property restrictions. <br> 2. <strong>Privacy</strong>
+<br> It does not contain personally identifiable information (PII), so
+privacy is not a concern. <br> 3. <strong>Security</strong> <br>
+Security risks are minimal, as the dataset stored locally on my Google
+Drive. <br> 4. <strong>Accessibility</strong> <br> Accessibility is
+ensured by keeping the data in standart formats (csv, xlsx, R data
+frames), which can be opened in widely available tools such as Excel,
+Rstudio or Google Sheets.</td>
 </tr>
 <tr class="odd">
 <td>5</td>
 <td>How did you verify the datas integrity?</td>
-<td>———–</td>
+<td>Data integrity involves the accuracy, completeness, consistency, and
+trustworthiness of data throughout its lifecycle. <br> 1.
+<strong>Accuracy:</strong> Data accurately reflects real-world
+information and is free from errors. <br> I inspected the dataset for
+unrealistic values (e.g., negative growth days or impossible
+measurements) and confirmed that all numerical values fall within
+expected ranges. <br> <em>Definition <br> Data accuracy refers to the
+degree to which data correctly represents the true, real-world
+information or events it describes, meaning it is correct, precise, and
+free from errors or distortions. Accurate data serves as a trustworthy
+foundation for effective decision-making, reliable analysis, and
+efficient operations, making it a critical component of overall data
+quality.</em> <br> 2. <strong>Completeness:</strong> All necessary data
+is present and not missing any required parts. <br> I checked for
+missing or empty cells using R functions such as summary() and is.na().
+<br> <em>Definition <br> Data completeness is a dimension of data
+quality that measures whether all necessary or required data is present
+and available for a dataset to fulfill its intended purpose. It ensures
+there are no missing values or gaps in critical information, preventing
+skewed analyses and enabling accurate decision-making</em>. <br> 3.
+<strong>Consistency:</strong> Data remains the same across different
+systems, applications, and over time. <br> I reviewed column names,
+formats, and data types to ensure that values were stored uniformly
+(e.g., all numeric columns have numeric data types).The Date column has
+list type and values with different formats. <br> <em>Definition <br>
+Data consistency - is the quality of data remaining accurate, uniform,
+and coherent across all systems, databases, and applications within an
+organization. It means that every copy or instance of the same data is
+identical and trustworthy, ensuring reliability and supporting accurate
+decision-making and efficient operations</em>. <br> 4.
+<strong>Trustworthiness:</strong> Users can depend on the data to be
+correct and dependable. <br> Since the dataset is a clean educational
+sample, I verified its source and confirmed it had not been altered
+during download or import (no unexpected changes in row count or
+structure). <br> Data is trustworthiness. <br> <em>Definition <br> Data
+trustworthiness refers to the degree to which information can be relied
+upon as accurate, credible, and secure, allowing users to confidently
+make decisions and conduct analyses based on it.</em> <br> Datas
+integrity will be checked in more detail (accuracy, completeness,
+consistency, trustworthiness) in the next step of analyses (step 3
+“Process”).</td>
 </tr>
 <tr class="even">
 <td>6</td>
 <td>How does it help you answer you questions?</td>
-<td>———–</td>
+<td>The dataset directly contains the variables needed (growth days and
+environmental factors), so it enables me to explore how growth varies by
+environmental conditions). <br> It provides the empirical basis for
+descriptive statistics and visualizations that can answer the practice
+assignment’s research questions.</td>
 </tr>
 <tr class="odd">
 <td>7</td>
 <td>Are there any problems with the data?</td>
-<td>———–</td>
+<td>The Date column has list type and values with different
+formats.</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="key-tasks-1" class="section level2">
 <h2>2.2 Key tasks</h2>
+<table>
+<colgroup>
+<col width="4%" />
+<col width="47%" />
+<col width="47%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th>Tasks</th>
+<th>Results</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Download data and store it appropriately</td>
+<td>Data downloaded and stored on my personal computer and Google Drive.
+Data available at these links: <br> 1) On the work computer:
+C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional
+Certificate/1.
+Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx,
+sheet = “source_lettuce_dataset <br> 2) On the laptop:
+/Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional
+Certificate/1.
+Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx
+<br> 3) On the <a href="https://docs.google.com/spreadsheets/d/1esw9BCXZDO1h4hwuaKowia5eVmflEKTS6NiouamSYA0/edit?gid=723124268#gid=723124268">Google
+Drive</a></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Identify how it’s orginized</td>
+<td>The data is organized as a table containing data on 70 plants. The
+rows contain environmental conditions for each of the 70 plants on each
+day throughout the growing season. The columns contain information about
+the plant identifier (Plant_ID) and the following environmental
+conditions, which were recorded daily for each of the 70 plants
+throughout the growing season: Date; Temperature (°C); Humidity (%); TDS
+Value (ppm); pH Level; Growth Days.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Sort and filter the data</td>
+<td>Data filtered and sorted</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Determine the credibility of the data</td>
+<td>The lettuce growth dataset shows no major issues with bias or
+credibility, but as with any sample dataset, it may have some
+limitations: <br> 1. <strong>Bias:</strong> The dataset appears to come
+from a controlled educational or research environment, so it may not
+present all real world farming conditions or varieties of lettuce.
+However, since it is used for analytical practice rather than policy or
+production decisions, the risk of bias affecting conclusions is minimal.
+<br> 2. <strong>Credibility:</strong> The data structure, values, and
+relationships appear internal consistent and realistic. Variable names,
+measurements units, and record counts align with excepted patterns,
+which supports the datasets credibility. <br> 2. <strong>ROCCC</strong>
+<br> 1) <strong>Reliable.</strong> The data is reliable (accurate,
+complete and unbiased). <br> 2) <strong>Original.</strong> The data is
+original. We can locate the original source of data and we don’t rely
+solely on third-party information. The dataset is original to the
+learning environment and was prepared for educational analysis by
+verified sources (Kaggle). <br> 3) <strong>Comprehensive.</strong> It
+includes all key variables needed to explore lettuce growth duration and
+related conditions, though it is simplified for training purposes. <br>
+4) <strong>Current.</strong> The data sources aren’t out of date or
+irrelevant. This data source is respected an their refresh their data
+regularly. The dataset reflects a modern data structure and is suitable
+for current analytical tools (R, Excel, etc.), even if the measurements
+are not tied to a specific recent year. <br> 5) <strong>Cited.</strong>
+The data was obtaines from the Kaggle website. The dataset and its
+source are cited.</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="deliverables-1" class="section level2">
 <h2>2.3 Deliverables</h2>
+<table>
+<colgroup>
+<col width="4%" />
+<col width="47%" />
+<col width="47%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th>Deliverable</th>
+<th>Answers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>A description of all data sourced used</td>
+<td>Only one primary dataset was used  “Lettuce Growth Dataset”
+(lettuce_dataset.xlsx). <br> No external data sources were added. The
+dataset contains fictitious or observation-based measurements related to
+lettuce growth duration and conditions, appropriate for descriptive
+analytics and visualization. <br> The data is publicly available in
+Kaggle website at this <a href="https://www.kaggle.com/datasets/jurijsruko/lettuce">link</a></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="read-data" class="section level2">
 <h2>2.1 Read data</h2>
@@ -1768,7 +1926,6 @@ df_0 &lt;- read_excel(&quot;C:/Users/GudievZK/Desktop/GitHub/Google Data Analyti
 ## 10        1 45147               29.8             68               577        6.3
 ## # â¹ 3,159 more rows
 ## # â¹ 1 more variable: `Growth Days` &lt;dbl&gt;</code></pre>
-</div>
 </div>
 <div id="exploratory-data-analysis-eda" class="section level1">
 <h1>3. Exploratory data analysis (EDA)</h1>
