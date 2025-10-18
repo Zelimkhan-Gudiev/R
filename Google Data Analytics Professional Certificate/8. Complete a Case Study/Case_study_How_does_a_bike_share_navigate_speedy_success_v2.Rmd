@@ -3,8 +3,8 @@ title: 'Case study: How does a bike-share navigate speedy success_v2?'
 author: "Zelimkhan"
 date: '2025-05-31'
 output:
-#  html_document: default
-  pdf_document: default
+  html_document: default
+#  pdf_document: default
 editor_options: 
   markdown: 
     wrap: 72
@@ -231,8 +231,11 @@ results?
 
 ## 1. Reading data
 ```{r label="Reading data"}
-trip_2019 <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional Certificate/8. Complete a Case Study/Divvy_Trips_2019_Q1.xlsx", )
-trip_2020 <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional Certificate/8. Complete a Case Study/Divvy_Trips_2020_Q1.xlsx")
+# trip_2019 <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional Certificate/8. Complete a Case Study/Divvy_Trips_2019_Q1.xlsx")
+# trip_2020 <- read_excel("/Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional Certificate/8. Complete a Case Study/Divvy_Trips_2020_Q1.xlsx")
+
+trip_2019 <- read_excel("C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/8. Complete a Case Study/Divvy_Trips_2019_Q1.xlsx")
+trip_2020 <- read_excel("C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/8. Complete a Case Study/Divvy_Trips_2020_Q1.xlsx")
 ```
 
 ## 2. Data viewing <br>
