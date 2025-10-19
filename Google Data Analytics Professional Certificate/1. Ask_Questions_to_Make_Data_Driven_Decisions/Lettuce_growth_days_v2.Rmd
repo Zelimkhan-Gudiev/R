@@ -26,48 +26,77 @@ library(purrr)
 library(GGally)
 library(readxl)
 ```
+
+::: {style="text-align: justify"}
 # Step 1. Ask
-## 1.1 Guiding questions
+## 1.1 Key tasks and Deliverable(s)
+
+### 1.1.1 A clear statement of the business task
+Determine how environmental factors (temperature, humidity, and total dissolved solids) influence lettuce growth and maturity time, in order to optimize greenhouse conditions and predict growth outcomes for future growing seasons.
+
+### 1.1.2 Key stakeholders
+Managers
+
+### 1.1.3 Smart questions
+| N | Type | Questions |
+| - |-----------|-----------|
+||||
+| 1 | Specific | Is there a connection between humidity and temperature? |
+||||
+| 2 | Measurable | How much growth is normal or expected over a one week period? |
+||||
+| 3 | Action-oriented | If total dissolved solids are increased when growing lettuce, will it shorten the time needed for the plants to reach maturity? |
+||||
+| 4 | Relevant | Based on the dataset, how can predictions about growth be made given the conditions? | 
+||||
+| 5 | Time - bound | 1) What is the data range for this data set? <br> 2) Do we need an understanding of this data for next season? |
+
+### 1.1.4 Scope of work (SOW)
+| N | Deliverables | Timeline | Milestones | Results | What SMART questions will be answered |
+|-  |-----------   | ----     |------------|------------|------------|
+|||||||
+| 1 | Clean dataset | Day 1 | Completion of data download and preparation | Dataset is clean and usable | - |
+|||||||
+| 2 | Exploratory data analysis (EDA) findings (form: spreadsheet, google doc summary) | Day 2 | Completion of EDA - understanding of dataset is formed | EDA highlights room for investigation. Questions were formulated based on the results of EDA. | **Specific:** Is the connection between humidity and temperature <br> <br> **Time - Bound:** What is the data range for this data set? |
+|||||||
+| 3 | Engineered features in the form of new columns (examples may include Avg 3 day growth, Growth since day before, etc.) | Day 3 | Completion of feature engineering | New columns engineered to provide more accessible information | **Measurable:** How much growth is normal or expected over a one week period? |
+|||||||
+| 4 | Statistical insights | Day 3 | Completion of statistical analysis | Statistical analysis conducted | **Action-oriented:** If total dissolved solids are increased when growing lettuce, will it shorten the time needed for the plants to reach maturity? <br> <br> **Relevant:** Based on the dataset, how can predictions about growth be made given the conditions? <br> <br> **Time - bound:** Do we need an understanding of this data for next season? |
+|||||||
+| 5 | Visual Aids (images, dashboards) | Days 4-5 | Completion of visualizations | Visualizations created | - |
+|||||||
+| 6 | Final report (spreadsheet and PowerPoint) | Day 6-10 | Final report submission | Final report completed | - |
+:::
+## 1.2 Guiding questions
 ::: {style="text-align: justify"}
 | N | Questions |  Answers  |
 |-  |-----------|-----------|
-| 1 | What is the problem you are trying to solve?   | The challenge lies in understanding (finding patterns) how environmental conditions influence lettuce growth time. This knowledge  will help inform decisions to optimize growth cycle. | 
+||||
+| 1 | What is the problem you are trying to solve?   | The challenge lies in understanding (finding patterns) how environmental conditions influence lettuce growth time. This knowledge  will help inform decisions to optimize growth cycle. |
+||||
 | 2 | How can you insights drive business decisions? | Knowing about environmental conditions that impact lettuce growth can help managers decide on construction of an appropriate greenhouse |
 
-## 1.2 Key tasks
-| N | Tasks     |  Results  |
-|-  |-----------|-----------|
-| 1 | Identify business task     | Analyze data (lettuce dataset) to understand how environmental conditions affect lettuce growth time. |
-| 2 | Consider key stakeholders  | Managers |
-| 3 | Create scope of work (SOW) | SOW is created |
-
-## 1.3 Deliverable(s)
-
-### 1.3.1 A clear statement of the business task
-Analyze environmental conditions' impact on lettuce growth (finding patterns) and provide actionable insights for optimizing growth cycles.
-
-### 1.3.2 Scope of work (SOW)
-| N | Deliverables | Timeline | Milestones | Results |
-|-  |-----------   | ----     |------------| -----------|
-| 1 | Clean dataset | Day 1 | Completion of data download and preparation | Dataset is clean and usable |
-| 2 | Exploratory data analysis (EDA) findings (form: spreadsheet, google doc summary) | Day 2 | Completion of EDA - understanding of dataset is formed | EDA highlights room for investigation. Questions were formulated based on the results of EDA. |
-| 3 | Engineered features in the form of new columns (examples may include Avg 3 day growth, Growth since day before, etc.) | Day 3 | Completion of feature engineering | New columns engineered to provide more accessible information | ... |
-| 4 | Statistical insights | Day 3 | Completion of statistical analysis | Statistical analysis conducted |
-| 5 | Visual Aids (images, dashboards) | Days 4-5 | Completion of visualizations | Visualizations created | 
-| 6 | Final report (spreadsheet and PowerPoint) | Day 6-10 | Final report submission | Final report completed |
-:::
-
-::: {style="text-align: justify"}
 # Step 2. Prepare
+## 2.2 Key tasks and deliverable(s)
+Download data and store it appropriately
+
+
 ## 2.1 Guiding questions
 | N | Questions |  Answers  |
 |-  |-----------|-----------|
+||||
 | 1 | Where is your data located?                                                   | The data is publicly available in Kaggle website at this [link](https://www.kaggle.com/datasets/jurijsruko/lettuce) |
+||||
 | 2 | How is the data organized?                                                    | The data is organized as a table containing data on 70 plants. The rows contain environmental conditions for each of the 70 plants on each day throughout the growing season. The columns contain information about the plant identifier (Plant_ID) and the following environmental conditions, which were recorded daily for each of the 70 plants throughout the growing season: Date; Temperature (?C); Humidity (%); TDS Value (ppm); pH Level; Growth Days.|
+||||
 | 3 | Are there issues with bias or credibility in this data? Does your data ROCCC? | 1) The lettuce growth dataset shows no major issues with bias or credibility, but as with any sample dataset, it may have some limitations: <br> 1.1) **Bias**: The dataset appears to come from a controlled educational or research environment, so it may not present all real world farming conditions or varieties of lettuce. However, since it is used for analytical practice rather than policy or production decisions, the risk of bias affecting conclusions is minimal. <br> 1.2) **Credibility**: The data structure, values, and relationships appear internal consistent and realistic. Variable names, measurements units, and record counts align with excepted patterns, which supports the datasets credibility. <br> 2) **ROCCC** <br> 2.1) **Relaible.** The data is reliable (accurate, complete and unbiased). <br> 2.2) **Original.** The data is original. We can locate the original source of data and we don't rely solely on third-party information. The dataset is original to the learning environment and was prepared for educational analysis by verified sources (Kaggle). <br> 2.3) **Comprehensive.** It includes all key variables needed to explore lettuce growth duration and related conditions, though it is simplified for training purposes. <br> 2.4) **Current.** The data sources aren't out of date or irrelevant. This data source is respected an their refresh their data regularly. The dataset reflects a modern data structure and is suitable for current analytical tools (R, Excel, etc.), even if the measurements are not tied to a specific recent year. <br> 2.5) **Cited.** The data was obtaines from the Kaggle website. The dataset and its source are cited. <br>|
+||||
 | 4 | How are you addressing licensing, privacy, security, and accessibility?       |1. **Licensing** <br> The lettuce dataset is a practice dataset provided for educational purposes, so there are no licensing or intellectual property restrictions. <br> 2. **Privacy** <br> It does not contain personally identifiable information (PII), so privacy is not a concern. <br> 3. **Security** <br> Security risks are minimal, as the dataset stored locally on my Google Drive. <br> 4. **Accessibility** <br> Accessibility is ensured by keeping the data in standart formats (csv, xlsx, R data frames), which can be opened in widely available tools such as Excel, Rstudio or Google Sheets.|
+||||
 | 5 | How did you verify the data?s integrity?                                      | Data integrity involves the accuracy, completeness, consistency, and trustworthiness of data throughout its lifecycle. <br> 1. **Accuracy:** Data accurately reflects real-world information and is free from errors.  <br> I inspected the dataset for unrealistic values (e.g., negative growth days or impossible measurements) and confirmed that all numerical values fall within expected ranges.  <br> *Definition  <br> Data accuracy refers to the degree to which data correctly represents the true, real-world information or events it describes, meaning it is correct, precise, and free from errors or distortions. Accurate data serves as a trustworthy foundation for effective decision-making, reliable analysis, and efficient operations, making it a critical component of overall data quality.* <br> 2. **Completeness:** All necessary data is present and not missing any required parts.  <br> I checked for missing or empty cells using R functions such as summary() and is.na(). <br> *Definition  <br> Data completeness is a dimension of data quality that measures whether all necessary or required data is present and available for a dataset to fulfill its intended purpose. It ensures there are no missing values or gaps in critical information, preventing skewed analyses and enabling accurate decision-making*. <br> 3. **Consistency:** Data remains the same across different systems, applications, and over time.  <br> I reviewed column names, formats, and data types to ensure that values were stored uniformly (e.g., all numeric columns have numeric data types).The Date column has list type and values with different formats.  <br> *Definition <br> Data consistency - is the quality of data remaining accurate, uniform, and coherent across all systems, databases, and applications within an organization. It means that every copy or instance of the same data is identical and trustworthy, ensuring reliability and supporting accurate decision-making and efficient operations*. <br> 4. **Trustworthiness:** Users can depend on the data to be correct and dependable. <br> Since the dataset is a clean educational sample, I verified its source and confirmed it had not been altered during download or import (no unexpected changes in row count or structure). <br> Data is trustworthiness.  <br> *Definition <br> Data trustworthiness refers to the degree to which information can be relied upon as accurate, credible, and secure, allowing users to confidently make decisions and conduct analyses based on it.*  <br> Data?s integrity will be checked in more detail (accuracy, completeness, consistency, trustworthiness) in the next step of analyses (step 3 ?Process?).  |
-| 6 |	How does it help you answer you questions?   | The dataset directly contains the variables needed (growth days and environmental factors), so it enables me to explore how growth varies by environmental conditions). <br> It provides the empirical basis for descriptive statistics and visualizations that can answer the practice assignment's research questions. |
+||||
+| 6 |	How does it help you answer you questions?   | The dataset directly contains the variables needed (growth days and environmental factors), so it enables me to explore how growth varies by environmental conditions). <br> It provides the empirical basis for descriptive statistics and visualizations that can answer the practice assignment's research questions.| 
+||||
 | 7 | Are there any problems with the data?        | The Date column has list type and values with different formats. |
 
 ## 2.2 Key tasks

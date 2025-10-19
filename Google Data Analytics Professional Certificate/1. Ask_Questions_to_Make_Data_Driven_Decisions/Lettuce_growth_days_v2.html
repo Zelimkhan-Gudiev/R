@@ -1503,10 +1503,229 @@ library(purrr)
 library(GGally)
 library(readxl)</code></pre>
 </div>
-<div id="step-1.-ask" class="section level1">
+<div id="step-1.-ask" class="section level1" style="text-align: justify">
 <h1>Step 1. Ask</h1>
+<div id="key-tasks-and-deliverables" class="section level2">
+<h2>1.1 Key tasks and Deliverable(s)</h2>
+<div id="a-clear-statement-of-the-business-task" class="section level3">
+<h3>1.1.1 A clear statement of the business task</h3>
+<p>Determine how environmental factors (temperature, humidity, and total
+dissolved solids) influence lettuce growth and maturity time, in order
+to optimize greenhouse conditions and predict growth outcomes for future
+growing seasons.</p>
+</div>
+<div id="key-stakeholders" class="section level3">
+<h3>1.1.2 Key stakeholders</h3>
+<p>Managers</p>
+</div>
+<div id="smart-questions" class="section level3">
+<h3>1.1.3 Smart questions</h3>
+<table>
+<colgroup>
+<col width="4%" />
+<col width="47%" />
+<col width="47%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th>Type</th>
+<th>Questions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Specific</td>
+<td>Is there a connection between humidity and temperature?</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Measurable</td>
+<td>How much growth is normal or expected over a one week period?</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Action-oriented</td>
+<td>If total dissolved solids are increased when growing lettuce, will
+it shorten the time needed for the plants to reach maturity?</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Relevant</td>
+<td>Based on the dataset, how can predictions about growth be made given
+the conditions?</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>Time - bound</td>
+<td>1) What is the data range for this data set? <br> 2) Do we need an
+understanding of this data for next season?</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="scope-of-work-sow" class="section level3">
+<h3>1.1.4 Scope of work (SOW)</h3>
+<table style="width:100%;">
+<colgroup>
+<col width="1%" />
+<col width="21%" />
+<col width="7%" />
+<col width="23%" />
+<col width="23%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th>Deliverables</th>
+<th>Timeline</th>
+<th>Milestones</th>
+<th>Results</th>
+<th>What SMART questions will be answered</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Clean dataset</td>
+<td>Day 1</td>
+<td>Completion of data download and preparation</td>
+<td>Dataset is clean and usable</td>
+<td>-</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Exploratory data analysis (EDA) findings (form: spreadsheet, google
+doc summary)</td>
+<td>Day 2</td>
+<td>Completion of EDA - understanding of dataset is formed</td>
+<td>EDA highlights room for investigation. Questions were formulated
+based on the results of EDA.</td>
+<td><strong>Specific:</strong> Is the connection between humidity and
+temperature <br> <br> <strong>Time - Bound:</strong> What is the data
+range for this data set?</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Engineered features in the form of new columns (examples may include
+Avg 3 day growth, Growth since day before, etc.)</td>
+<td>Day 3</td>
+<td>Completion of feature engineering</td>
+<td>New columns engineered to provide more accessible information</td>
+<td><strong>Measurable:</strong> How much growth is normal or expected
+over a one week period?</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Statistical insights</td>
+<td>Day 3</td>
+<td>Completion of statistical analysis</td>
+<td>Statistical analysis conducted</td>
+<td><strong>Action-oriented:</strong> If total dissolved solids are
+increased when growing lettuce, will it shorten the time needed for the
+plants to reach maturity? <br> <br> <strong>Relevant:</strong> Based on
+the dataset, how can predictions about growth be made given the
+conditions? <br> <br> <strong>Time - bound:</strong> Do we need an
+understanding of this data for next season?</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>Visual Aids (images, dashboards)</td>
+<td>Days 4-5</td>
+<td>Completion of visualizations</td>
+<td>Visualizations created</td>
+<td>-</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Final report (spreadsheet and PowerPoint)</td>
+<td>Day 6-10</td>
+<td>Final report submission</td>
+<td>Final report completed</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 <div id="guiding-questions" class="section level2">
-<h2>1.1 Guiding questions</h2>
+<h2>1.2 Guiding questions</h2>
 <div style="text-align: justify">
 <table>
 <colgroup>
@@ -1523,11 +1742,21 @@ library(readxl)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
 <td>1</td>
 <td>What is the problem you are trying to solve?</td>
 <td>The challenge lies in understanding (finding patterns) how
 environmental conditions influence lettuce growth time. This knowledge
 will help inform decisions to optimize growth cycle.</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr class="even">
 <td>2</td>
@@ -1538,122 +1767,7 @@ greenhouse</td>
 </tr>
 </tbody>
 </table>
-<div id="key-tasks" class="section level2">
-<h2>1.2 Key tasks</h2>
-<table>
-<colgroup>
-<col width="4%" />
-<col width="47%" />
-<col width="47%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>N</th>
-<th>Tasks</th>
-<th>Results</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>Identify business task</td>
-<td>Analyze data (lettuce dataset) to understand how environmental
-conditions affect lettuce growth time.</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>Consider key stakeholders</td>
-<td>Managers</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>Create scope of work (SOW)</td>
-<td>SOW is created</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="deliverables" class="section level2">
-<h2>1.3 Deliverable(s)</h2>
-<div id="a-clear-statement-of-the-business-task" class="section level3">
-<h3>1.3.1 A clear statement of the business task</h3>
-<p>Analyze environmental conditions’ impact on lettuce growth (finding
-patterns) and provide actionable insights for optimizing growth
-cycles.</p>
-</div>
-<div id="scope-of-work-sow" class="section level3">
-<h3>1.3.2 Scope of work (SOW)</h3>
-<table>
-<colgroup>
-<col width="2%" />
-<col width="28%" />
-<col width="10%" />
-<col width="30%" />
-<col width="28%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>N</th>
-<th>Deliverables</th>
-<th>Timeline</th>
-<th>Milestones</th>
-<th>Results</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>Clean dataset</td>
-<td>Day 1</td>
-<td>Completion of data download and preparation</td>
-<td>Dataset is clean and usable</td>
-</tr>
-<tr class="even">
-<td>2</td>
-<td>Exploratory data analysis (EDA) findings (form: spreadsheet, google
-doc summary)</td>
-<td>Day 2</td>
-<td>Completion of EDA - understanding of dataset is formed</td>
-<td>EDA highlights room for investigation. Questions were formulated
-based on the results of EDA.</td>
-</tr>
-<tr class="odd">
-<td>3</td>
-<td>Engineered features in the form of new columns (examples may include
-Avg 3 day growth, Growth since day before, etc.)</td>
-<td>Day 3</td>
-<td>Completion of feature engineering</td>
-<td>New columns engineered to provide more accessible information</td>
-</tr>
-<tr class="even">
-<td>4</td>
-<td>Statistical insights</td>
-<td>Day 3</td>
-<td>Completion of statistical analysis</td>
-<td>Statistical analysis conducted</td>
-</tr>
-<tr class="odd">
-<td>5</td>
-<td>Visual Aids (images, dashboards)</td>
-<td>Days 4-5</td>
-<td>Completion of visualizations</td>
-<td>Visualizations created</td>
-</tr>
-<tr class="even">
-<td>6</td>
-<td>Final report (spreadsheet and PowerPoint)</td>
-<td>Day 6-10</td>
-<td>Final report submission</td>
-<td>Final report completed</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="step-2.-prepare" class="section level1" style="text-align: justify">
+<div id="step-2.-prepare" class="section level1">
 <h1>Step 2. Prepare</h1>
 <div id="guiding-questions-1" class="section level2">
 <h2>2.1 Guiding questions</h2>
@@ -1672,9 +1786,19 @@ Avg 3 day growth, Growth since day before, etc.)</td>
 </thead>
 <tbody>
 <tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
 <td>1</td>
 <td>Where is your data located?</td>
 <td>The data is publicly available in Kaggle website at this <a href="https://www.kaggle.com/datasets/jurijsruko/lettuce">link</a></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
 </tr>
 <tr class="even">
 <td>2</td>
@@ -1688,6 +1812,11 @@ throughout the growing season: Date; Temperature (?C); Humidity (%); TDS
 Value (ppm); pH Level; Growth Days.</td>
 </tr>
 <tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
 <td>3</td>
 <td>Are there issues with bias or credibility in this data? Does your
 data ROCCC?</td>
@@ -1718,6 +1847,11 @@ are not tied to a specific recent year. <br> 2.5)
 <strong>Cited.</strong> The data was obtaines from the Kaggle website.
 The dataset and its source are cited. <br></td>
 </tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
 <tr class="even">
 <td>4</td>
 <td>How are you addressing licensing, privacy, security, and
@@ -1734,6 +1868,11 @@ frames), which can be opened in widely available tools such as Excel,
 Rstudio or Google Sheets.</td>
 </tr>
 <tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
 <td>5</td>
 <td>How did you verify the data?s integrity?</td>
 <td>Data integrity involves the accuracy, completeness, consistency, and
@@ -1778,6 +1917,11 @@ integrity will be checked in more detail (accuracy, completeness,
 consistency, trustworthiness) in the next step of analyses (step 3
 ?Process?).</td>
 </tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
 <tr class="even">
 <td>6</td>
 <td>How does it help you answer you questions?</td>
@@ -1788,6 +1932,11 @@ descriptive statistics and visualizations that can answer the practice
 assignment’s research questions.</td>
 </tr>
 <tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
 <td>7</td>
 <td>Are there any problems with the data?</td>
 <td>The Date column has list type and values with different
@@ -1796,7 +1945,7 @@ formats.</td>
 </tbody>
 </table>
 </div>
-<div id="key-tasks-1" class="section level2">
+<div id="key-tasks" class="section level2">
 <h2>2.2 Key tasks</h2>
 <table>
 <colgroup>
@@ -1876,7 +2025,7 @@ source are cited.</td>
 </tbody>
 </table>
 </div>
-<div id="deliverables-1" class="section level2">
+<div id="deliverables" class="section level2">
 <h2>2.3 Deliverables</h2>
 <table>
 <colgroup>
@@ -1904,6 +2053,8 @@ Kaggle website at this <a href="https://www.kaggle.com/datasets/jurijsruko/lettu
 </tr>
 </tbody>
 </table>
+</div>
+</div>
 </div>
 </div>
 <div id="read-data" class="section level2">
