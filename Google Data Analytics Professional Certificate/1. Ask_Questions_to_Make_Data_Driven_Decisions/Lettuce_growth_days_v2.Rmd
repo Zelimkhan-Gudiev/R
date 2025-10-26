@@ -77,9 +77,102 @@ Managers
 | 2 | How can you insights drive business decisions? | Knowing about environmental conditions that impact lettuce growth can help managers decide on construction of an appropriate greenhouse |
 
 # Step 2. Prepare
-## 2.2 Key tasks and deliverable(s)
-Download data and store it appropriately
 
+## 2.1 Key tasks and deliverable(s)
+
+### 2.1.1 Download data and store it appropriately
+Data downloaded and stored on my personal computer and Google Drive. Data available at these links:
+1) On the work computer: C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx, sheet = “source_lettuce_dataset
+2) On the laptop: /Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx
+3) On the Google Drive
+
+### 2.1.2 Identify how it’s orginized
+The data is organized as a table containing data on 70 plants. The rows contain environmental conditions for each of the 70 plants on each day throughout the growing season. The columns contain information about the plant identifier (Plant_ID) and the following environmental conditions, which were recorded daily for each of the 70 plants throughout the growing season: Date; Temperature (?C); Humidity (%); TDS Value (ppm); pH Level; Growth Days.
+
+### 2.1.3 Sort and filter the data
+Data filtered and sorted
+
+### 2.1.4 Determine the credibility of the data
+The following methodologies/frameworks were used to determine the credibility of the data: ROCCC; Data Integrity.
+
+#### 2.1.4.1 ROCCC
+
+| N | ROCCC Dimension |  Description  | Conclusion | Comments |
+|-  |-----------|-----------|-----------|-----------|
+| 1 | Reliable | Source is dependable and consistent. | Watch conclusion below the table  | It depends on ROCCC dimensions listed below |
+| 2 | Original | We get data from original source (or If we obtained data from a secondary or tertiary source, we could compare and verify it with the primary source) | The data is not original | We do not receive data from the original source, we also cannot identify the original source and have no way to compare it with the original data. However, since the data is provided and used for educational purposes, we may use it for educational purposes |
+| 3 | Comprehensive | Covers all necessary cases and variables. | It is not possible to determine the level of comprehensiveness of the data | It is logical to assume that data is greatly simplified for educational purposes and does not contain all necessary information needed to solve a business problem. Since it includes the following key variables it can be used for our educational purposes: Plant_ID; Date; Temperature (°C); Humidity (%); TDS Value (ppm); pH Level; Growth Days. |
+| 4 | Current | The data sources aren’t out of date or irrelevant | It is not possible to determine the level of this dimension | The data can be considered current, although it is not tired to a specific year |
+| 5 | Cited | Data source is cited and vetted | The source of the data was not cited or verified. | However, since the data is provided and used for training purposes the data can be used in our work. |
+__Reliable:__ The data isn't reliable
+
+__Conclusion about data credibility in according with ROCCC framework__. Data isn't credible.
+
+
+#### 2.1.4.2 Data integrity
+| N | Data integrity Dimension |  Description  | Conclusion | Comments |
+|-  |-----------|-----------|-----------|-----------|
+| 1 | Accuracy | The degree to which the data conforms to the actual entity being measured or described | It is not possible to determine the data's accuracy. | Since the data does not contain unrealistic values (such as days with negative growth, numerical values falling within an unexpected data range, or other impossible measurements), the data can be considered accurate.|  
+| 2 | Completeness | Data completeness is a dimension of data quality that measures whether all necessary or required data is present and available for a dataset to fulfill its intended purpose. |  It is not possible to determine the level of Completeness of the data | It is logical to assume that data is greatly simplified for educational purposes and does not contain all necessary information needed to solve a business problem. Since it includes the following key variables and  doesn't have missing values it can be used for our educational purposes: Plant_ID; Date; Temperature (°C); Humidity (%); TDS Value (ppm); pH Level; Growth Days. |
+| 3 | Consistency | Data follows the same format and rules. | Data is consistency | The Date column has inconsistencies in the date format, with some values showing as “9/12/2023” and others showing as “8/13/2023”.|
+| 4 | Trustworthiness | Data trustworthiness refers to the degree to which information can be relied upon as accurate, credible, and secure, allowing users to confidently make decisions and conduct analyses based on it. | The data isn't trustworthiness | The data isn't trustworthy due to low scores for data integrity dimensions listed above.| 
+
+#### 2.1.4.3 Bias
+The dataset appears to come from a controlled educational or research environment, so it may not present all real world farming conditions or varieties of lettuce. However, since it is used for analytical practice rather than policy or production decisions, the risk of bias affecting conclusions is minimal.
+
+
+
+All the terms you listed belong to a single logical hierarchy:
+Data Credibility → depends on both Data Integrity and Data Source Quality (ROCCC)
+Bias in Data → is a threat to both credibility and integrity.
+
+#### 2.1.4.1 Data credibility
+
+🧱 1. Data Credibility — the Overall Goal <br>
+Data credibility means how trustworthy and believable your data is for decision-making. <br>
+It answers the question: <br>
+“Can I confidently use this data to support my conclusions?” <br>
+Credibility depends on: <br>
+The integrity of the dataset itself (how well it was collected and maintained), and <br>
+The quality of its source (how reliable and appropriate that source is).<br>
+So, credibility = data integrity ✅ + ROCCC source quality ✅ − bias ❌<br>
+
+#### 2.1.4.2 Data integrity
+⚙️ 2. Data Integrity — the Internal Quality of the Data
+Ensures the data’s internal soundness and accuracy.
+Integrity is about what’s inside the dataset, not where it came from.
+
+| N | Integrity Dimension |  Description  | Conclusion | Comments |
+|-  |-----------|-----------|-----------|-----------|
+|||||
+| 1 | Accuracy | Values are correct and valid | Data accurately reflects real-world information and is free from errors. | I inspected the dataset for unrealistic values (e.g., negative growth days or impossible measurements) and confirmed that all numerical values fall within expected ranges. <br> 
+|||||
+| 2 | Completeness | No important values are missing. | All necessary data is present and not missing any required parts. | I checked for missing or empty cells using sorting and filtering options in google sheet. |
+|||||
+| 3 | Consistency | Data follows the same format and rules. | The Date column has inconsistencies in the date format, with some values showing as "9/12/2023" and others showing as "8/13/2023".  | I reviewed the column names, formats, data types, and values to ensure that the values were stored consistently, and found that the Date column had values with different formats. |
+|||||
+| 4 | Trustworthiness | Data hasn’t been tampered with; comes from a verified collection process. | The data is trustworthy. It was not tampered with and was obtained from a reliable source.| Data Since the dataset is a clean educational sample, I verified its source and confirmed it had not been altered during download or import (no unexpected changes in row count or structure). |
+
+#### 2.1.4.2 ROCCC
+
+
+
+
+
+
+
+
+The lettuce growth dataset shows no major issues with bias or credibility, but as with any sample dataset, it may have some limitations:
+1. Bias: The dataset appears to come from a controlled educational or research environment, so it may not present all real world farming conditions or varieties of lettuce. However, since it is used for analytical practice rather than policy or production decisions, the risk of bias affecting conclusions is minimal.
+2. Credibility: The data structure, values, and relationships appear internal consistent and realistic. Variable names, measurements units, and record counts align with excepted patterns, which supports the datasets credibility.
+2. ROCCC
+1) Reliable. The data is reliable (accurate, complete and unbiased).
+2) Original. The data is original. We can locate the original source of data and we don’t rely solely on third-party information. The dataset is original to the learning environment and was prepared for educational analysis by verified sources (Kaggle).
+3) Comprehensive. It includes all key variables needed to explore lettuce growth duration and related conditions, though it is simplified for training purposes.
+4) Current. The data sources aren’t out of date or irrelevant. This data source is respected an their refresh their data regularly. The dataset reflects a modern data structure and is suitable for current analytical tools (R, Excel, etc.), even if the measurements are not tied to a specific recent year.
+5) Cited. The data was obtaines from the Kaggle website. The dataset and its source are cited.
+
+### 2.1.5 A description of all data sourced used
 
 ## 2.1 Guiding questions
 | N | Questions |  Answers  |
