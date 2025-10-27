@@ -106,7 +106,7 @@ The following methodologies/frameworks were used to determine the credibility of
 | 5 | Cited | Data source is cited and vetted | The source of the data was not cited or verified. | However, since the data is provided and used for training purposes the data can be used in our work. |
 __Reliable:__ The data isn't reliable
 
-__Conclusion about data credibility in according with ROCCC framework__. Data isn't credible.
+__Conclusion on the credibility of the data in accordance with the ROCCC framework:__ Data isn't credible.
 
 
 #### 2.1.4.2 Data integrity
@@ -117,64 +117,20 @@ __Conclusion about data credibility in according with ROCCC framework__. Data is
 | 3 | Consistency | Data follows the same format and rules. | Data is consistency | The Date column has inconsistencies in the date format, with some values showing as “9/12/2023” and others showing as “8/13/2023”.|
 | 4 | Trustworthiness | Data trustworthiness refers to the degree to which information can be relied upon as accurate, credible, and secure, allowing users to confidently make decisions and conduct analyses based on it. | The data isn't trustworthiness | The data isn't trustworthy due to low scores for data integrity dimensions listed above.| 
 
+__Trustworthiness:__ The data isn't trustworthiness.
+__Conclusion on credibility of the data in accordance with the Data integrity conception:__ The data isn't credible.
+
 #### 2.1.4.3 Bias
 The dataset appears to come from a controlled educational or research environment, so it may not present all real world farming conditions or varieties of lettuce. However, since it is used for analytical practice rather than policy or production decisions, the risk of bias affecting conclusions is minimal.
 
+__Conclusion on the admissibility of using data:__
+The data are acceptable for use despite negative findings regarding the credibility of the data in accordance with both the ROCCC framework and the concept of data integrity, as well as the inability to demonstrate the absence of bias, as they are used for educational purposes.
 
-
-All the terms you listed belong to a single logical hierarchy:
-Data Credibility → depends on both Data Integrity and Data Source Quality (ROCCC)
-Bias in Data → is a threat to both credibility and integrity.
-
-#### 2.1.4.1 Data credibility
-
-🧱 1. Data Credibility — the Overall Goal <br>
-Data credibility means how trustworthy and believable your data is for decision-making. <br>
-It answers the question: <br>
-“Can I confidently use this data to support my conclusions?” <br>
-Credibility depends on: <br>
-The integrity of the dataset itself (how well it was collected and maintained), and <br>
-The quality of its source (how reliable and appropriate that source is).<br>
-So, credibility = data integrity ✅ + ROCCC source quality ✅ − bias ❌<br>
-
-#### 2.1.4.2 Data integrity
-⚙️ 2. Data Integrity — the Internal Quality of the Data
-Ensures the data’s internal soundness and accuracy.
-Integrity is about what’s inside the dataset, not where it came from.
-
-| N | Integrity Dimension |  Description  | Conclusion | Comments |
-|-  |-----------|-----------|-----------|-----------|
-|||||
-| 1 | Accuracy | Values are correct and valid | Data accurately reflects real-world information and is free from errors. | I inspected the dataset for unrealistic values (e.g., negative growth days or impossible measurements) and confirmed that all numerical values fall within expected ranges. <br> 
-|||||
-| 2 | Completeness | No important values are missing. | All necessary data is present and not missing any required parts. | I checked for missing or empty cells using sorting and filtering options in google sheet. |
-|||||
-| 3 | Consistency | Data follows the same format and rules. | The Date column has inconsistencies in the date format, with some values showing as "9/12/2023" and others showing as "8/13/2023".  | I reviewed the column names, formats, data types, and values to ensure that the values were stored consistently, and found that the Date column had values with different formats. |
-|||||
-| 4 | Trustworthiness | Data hasn’t been tampered with; comes from a verified collection process. | The data is trustworthy. It was not tampered with and was obtained from a reliable source.| Data Since the dataset is a clean educational sample, I verified its source and confirmed it had not been altered during download or import (no unexpected changes in row count or structure). |
-
-#### 2.1.4.2 ROCCC
-
-
-
-
-
-
-
-
-The lettuce growth dataset shows no major issues with bias or credibility, but as with any sample dataset, it may have some limitations:
-1. Bias: The dataset appears to come from a controlled educational or research environment, so it may not present all real world farming conditions or varieties of lettuce. However, since it is used for analytical practice rather than policy or production decisions, the risk of bias affecting conclusions is minimal.
-2. Credibility: The data structure, values, and relationships appear internal consistent and realistic. Variable names, measurements units, and record counts align with excepted patterns, which supports the datasets credibility.
-2. ROCCC
-1) Reliable. The data is reliable (accurate, complete and unbiased).
-2) Original. The data is original. We can locate the original source of data and we don’t rely solely on third-party information. The dataset is original to the learning environment and was prepared for educational analysis by verified sources (Kaggle).
-3) Comprehensive. It includes all key variables needed to explore lettuce growth duration and related conditions, though it is simplified for training purposes.
-4) Current. The data sources aren’t out of date or irrelevant. This data source is respected an their refresh their data regularly. The dataset reflects a modern data structure and is suitable for current analytical tools (R, Excel, etc.), even if the measurements are not tied to a specific recent year.
-5) Cited. The data was obtaines from the Kaggle website. The dataset and its source are cited.
 
 ### 2.1.5 A description of all data sourced used
+For this analytical task, the "lettuce growth" dataset from Kaggle was used.
 
-## 2.1 Guiding questions
+## 2.2 Guiding questions
 | N | Questions |  Answers  |
 |-  |-----------|-----------|
 ||||
@@ -182,28 +138,17 @@ The lettuce growth dataset shows no major issues with bias or credibility, but a
 ||||
 | 2 | How is the data organized?                                                    | The data is organized as a table containing data on 70 plants. The rows contain environmental conditions for each of the 70 plants on each day throughout the growing season. The columns contain information about the plant identifier (Plant_ID) and the following environmental conditions, which were recorded daily for each of the 70 plants throughout the growing season: Date; Temperature (?C); Humidity (%); TDS Value (ppm); pH Level; Growth Days.|
 ||||
-| 3 | Are there issues with bias or credibility in this data? Does your data ROCCC? | 1) The lettuce growth dataset shows no major issues with bias or credibility, but as with any sample dataset, it may have some limitations: <br> 1.1) **Bias**: The dataset appears to come from a controlled educational or research environment, so it may not present all real world farming conditions or varieties of lettuce. However, since it is used for analytical practice rather than policy or production decisions, the risk of bias affecting conclusions is minimal. <br> 1.2) **Credibility**: The data structure, values, and relationships appear internal consistent and realistic. Variable names, measurements units, and record counts align with excepted patterns, which supports the datasets credibility. <br> 2) **ROCCC** <br> 2.1) **Relaible.** The data is reliable (accurate, complete and unbiased). <br> 2.2) **Original.** The data is original. We can locate the original source of data and we don't rely solely on third-party information. The dataset is original to the learning environment and was prepared for educational analysis by verified sources (Kaggle). <br> 2.3) **Comprehensive.** It includes all key variables needed to explore lettuce growth duration and related conditions, though it is simplified for training purposes. <br> 2.4) **Current.** The data sources aren't out of date or irrelevant. This data source is respected an their refresh their data regularly. The dataset reflects a modern data structure and is suitable for current analytical tools (R, Excel, etc.), even if the measurements are not tied to a specific recent year. <br> 2.5) **Cited.** The data was obtaines from the Kaggle website. The dataset and its source are cited. <br>|
+| 3 | Are there issues with bias or credibility in this data? Does your data ROCCC? | See section "2.1.4 Determine the credibility of the data" |
 ||||
-| 4 | How are you addressing licensing, privacy, security, and accessibility?       |1. **Licensing** <br> The lettuce dataset is a practice dataset provided for educational purposes, so there are no licensing or intellectual property restrictions. <br> 2. **Privacy** <br> It does not contain personally identifiable information (PII), so privacy is not a concern. <br> 3. **Security** <br> Security risks are minimal, as the dataset stored locally on my Google Drive. <br> 4. **Accessibility** <br> Accessibility is ensured by keeping the data in standart formats (csv, xlsx, R data frames), which can be opened in widely available tools such as Excel, Rstudio or Google Sheets.|
+| 4 | How are you addressing licensing, privacy, security, and accessibility?       |1. **Licensing** <br> The lettuce dataset is a practice dataset provided for educational purposes, so there are no licensing or intellectual property restrictions. <br> 2. **Privacy** <br> It does not contain personally identifiable information (PII), so privacy is not a concern. <br> 3. **Security** <br> Security risks are minimal, as the dataset stored locally on my Google Drive. <br> 4. **Accessibility** <br> Accessibility is ensured by keeping the data in standard formats (csv, xlsx, R data frames), which can be opened in widely available tools such as Excel, Rstudio or Google Sheets.|
 ||||
-| 5 | How did you verify the data?s integrity?                                      | Data integrity involves the accuracy, completeness, consistency, and trustworthiness of data throughout its lifecycle. <br> 1. **Accuracy:** Data accurately reflects real-world information and is free from errors.  <br> I inspected the dataset for unrealistic values (e.g., negative growth days or impossible measurements) and confirmed that all numerical values fall within expected ranges.  <br> *Definition  <br> Data accuracy refers to the degree to which data correctly represents the true, real-world information or events it describes, meaning it is correct, precise, and free from errors or distortions. Accurate data serves as a trustworthy foundation for effective decision-making, reliable analysis, and efficient operations, making it a critical component of overall data quality.* <br> 2. **Completeness:** All necessary data is present and not missing any required parts.  <br> I checked for missing or empty cells using R functions such as summary() and is.na(). <br> *Definition  <br> Data completeness is a dimension of data quality that measures whether all necessary or required data is present and available for a dataset to fulfill its intended purpose. It ensures there are no missing values or gaps in critical information, preventing skewed analyses and enabling accurate decision-making*. <br> 3. **Consistency:** Data remains the same across different systems, applications, and over time.  <br> I reviewed column names, formats, and data types to ensure that values were stored uniformly (e.g., all numeric columns have numeric data types).The Date column has list type and values with different formats.  <br> *Definition <br> Data consistency - is the quality of data remaining accurate, uniform, and coherent across all systems, databases, and applications within an organization. It means that every copy or instance of the same data is identical and trustworthy, ensuring reliability and supporting accurate decision-making and efficient operations*. <br> 4. **Trustworthiness:** Users can depend on the data to be correct and dependable. <br> Since the dataset is a clean educational sample, I verified its source and confirmed it had not been altered during download or import (no unexpected changes in row count or structure). <br> Data is trustworthiness.  <br> *Definition <br> Data trustworthiness refers to the degree to which information can be relied upon as accurate, credible, and secure, allowing users to confidently make decisions and conduct analyses based on it.*  <br> Data?s integrity will be checked in more detail (accuracy, completeness, consistency, trustworthiness) in the next step of analyses (step 3 ?Process?).  |
+| 5 | How did you verify the data's integrity?                                      | Data integrity involves the accuracy, completeness, consistency, and trustworthiness of data throughout its lifecycle. <br> 1. **Accuracy:** I inspected the dataset for unrealistic values (e.g., negative growth days, numerical values falling within an unexpected data range or impossible measurements) using: Sorting and filtering in spreadsheet; R functions such as summary() and is.na().  <br> *Definition  <br> Data accuracy refers to the degree to which data correctly represents the true, real-world information or events it describes, meaning it is correct, precise, and free from errors or distortions. Accurate data serves as a trustworthy foundation for effective decision-making, reliable analysis, and efficient operations, making it a critical component of overall data quality.* <br> 2. **Completeness:** I checked for missing or empty cells using: Sorting and filtering in spreadsheet; R functions such as summary() and is.na(). <br> *Definition  <br> Data completeness is a dimension of data quality that measures whether all necessary or required data is present and available for a dataset to fulfill its intended purpose. It ensures there are no missing values or gaps in critical information, preventing skewed analyses and enabling accurate decision-making*. <br> 3. **Consistency:** <br> I reviewed column names, formats, and data types to ensure that values were stored uniformly (e.g., all numeric columns have numeric data types).  <br> *Definition <br> Data consistency - is the quality of data follows the same format and rules remaining accurate, uniform, and coherent across all systems, databases, and applications within an organization.*. <br> 4. **Trustworthiness:** Users can depend on the data to be correct and dependable. <br> Since the dataset is a clean educational sample, I verified its source and confirmed it had not been altered during download or import (no unexpected changes in row count or structure). <br> I   <br> *Definition <br> Data trustworthiness refers to the degree to which information can be relied upon as accurate, credible, and secure, allowing users to confidently make decisions and conduct analyses based on it.*  <br> Data?s integrity will be checked in more detail (accuracy, completeness, consistency, trustworthiness) in the next step of analyses (step 3 ?Process?).  |
 ||||
 | 6 |	How does it help you answer you questions?   | The dataset directly contains the variables needed (growth days and environmental factors), so it enables me to explore how growth varies by environmental conditions). <br> It provides the empirical basis for descriptive statistics and visualizations that can answer the practice assignment's research questions.| 
 ||||
 | 7 | Are there any problems with the data?        | The Date column has list type and values with different formats. |
 
-## 2.2 Key tasks
-| N | Tasks     |  Results  |
-|-  |-----------|-----------|
-| 1 | Download data and store it appropriately | Data downloaded and stored on my personal computer and Google Drive. Data available at these links: <br> 1) On  the work computer: C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx, sheet = "source_lettuce_dataset <br> 2) On the laptop: /Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx <br> 3) On the [Google Drive](https://docs.google.com/spreadsheets/d/1esw9BCXZDO1h4hwuaKowia5eVmflEKTS6NiouamSYA0/edit?gid=723124268#gid=723124268)|
-| 2 | Identify how it's orginized | The data is organized as a table containing data on 70 plants. The rows contain environmental conditions for each of the 70 plants on each day throughout the growing season. The columns contain information about the plant identifier (Plant_ID) and the following environmental conditions, which were recorded daily for each of the 70 plants throughout the growing season: Date; Temperature (?C); Humidity (%); TDS Value (ppm); pH Level; Growth Days.|
-| 3 | Sort and filter the data | Data filtered and sorted |
-| 4 | Determine the credibility of the data | The lettuce growth dataset shows no major issues with bias or credibility, but as with any sample dataset, it may have some limitations: <br> 1. **Bias:** The dataset appears to come from a controlled educational or research environment, so it may not present all real world farming conditions or varieties of lettuce. However, since it is used for analytical practice rather than policy or production decisions, the risk of bias affecting conclusions is minimal. <br> 2. **Credibility:** The data structure, values, and relationships appear internal consistent and realistic. Variable names, measurements units, and record counts align with excepted patterns, which supports the datasets credibility. <br> 2. **ROCCC** <br> 1) **Reliable.** The data is reliable (accurate, complete and unbiased). <br> 2) **Original.** The data is original. We can locate the original source of data and we don't rely solely on third-party information. The dataset is original to the learning environment and was prepared for educational analysis by verified sources (Kaggle). <br> 3) **Comprehensive.** It includes all key variables needed to explore lettuce growth duration and related conditions, though it is simplified for training purposes. <br> 4) **Current.** The data sources aren't out of date or irrelevant. This data source is respected an their refresh their data regularly. The dataset reflects a modern data structure and is suitable for current analytical tools (R, Excel, etc.), even if the measurements are not tied to a specific recent year. <br> 5) **Cited.** The data was obtaines from the Kaggle website. The dataset and its source are cited.
 
-## 2.3 Deliverables
-| N | Deliverable |  Answers  |
-|-  |-----------  |-----------|
-| 1 | A description of all data sourced used | Only one primary dataset was used ? ?Lettuce Growth Dataset? (lettuce_dataset.xlsx). <br> No external data sources were added. The dataset contains fictitious or observation-based measurements related to lettuce growth duration and conditions, appropriate for descriptive analytics and visualization. <br> The data is publicly available in Kaggle website at this [link](https://www.kaggle.com/datasets/jurijsruko/lettuce) |
 :::
 ## 2.1 Read data
 ```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
