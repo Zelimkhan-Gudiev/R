@@ -15,6 +15,7 @@ output:
 # install.packages("lubridate")
 # install.packages("purrr")
 # install.packages("GGally")
+install.packages("skimr") 
 library(psych)
 library(googlesheets4)
 library(tidyr)
@@ -25,6 +26,7 @@ library(lubridate)
 library(purrr)
 library(GGally)
 library(readxl)
+library(skimr)
 ```
 
 ::: {style="text-align: justify"}
@@ -152,18 +154,41 @@ For this analytical task, the "lettuce growth" dataset from Kaggle was used.
 :::
 
 ::: {style="text-align: justify"}
-# Step 3. Process
-
-## 3.1 Read data
+# Step 3. Process (EDA)
+## 3.1 Stage 1 of EDA: Data Discovery & Profiling (The "What is this?" Phase)
+### 3.1.1 Load and inspect data
 ```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
 df_0 <- read_sheet("https://docs.google.com/spreadsheets/d/1esw9BCXZDO1h4hwuaKowia5eVmflEKTS6NiouamSYA0/edit?gid=723124268#gid=723124268", sheet = "source_lettuce_dataset")
 
 # df_0 <- read_excel("C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx", sheet = "source_lettuce_dataset")
 ```
-
+Table overview
 ```{r}
 df_0
 ```
+Column names
+```{r}
+colnames(df_0)
+```
+Number of rows and columns
+```{r}
+dim(df_0)
+```
+
+
+Data types
+```{r}
+glimpse(df_0)
+```
+Data classes
+```{r}
+sapply(df_0, class)
+```
+
+
+
+
+
 
 # 3. Exploratory data analysis (EDA)
 ## 3.1 Understand the dataset
@@ -194,6 +219,7 @@ Are values in a reasonable range (e.g., temperature not 500°C)?
 ```{r}
 df_0 %>% select(-Date) %>% summary()
 ```
+
 ```{r}
 df_0 <- df_0 %>% 
   mutate(
