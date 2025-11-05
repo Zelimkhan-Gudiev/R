@@ -15,7 +15,7 @@ output:
 # install.packages("lubridate")
 # install.packages("purrr")
 # install.packages("GGally")
-install.packages("skimr") 
+# install.packages("skimr") 
 library(psych)
 library(googlesheets4)
 library(tidyr)
@@ -162,29 +162,80 @@ df_0 <- read_sheet("https://docs.google.com/spreadsheets/d/1esw9BCXZDO1h4hwuaKow
 
 # df_0 <- read_excel("C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx", sheet = "source_lettuce_dataset")
 ```
-Table overview
+#### Table overview
 ```{r}
 df_0
 ```
-Column names
+#### Column names
 ```{r}
 colnames(df_0)
 ```
-Number of rows and columns
+#### Number of rows and columns
 ```{r}
 dim(df_0)
 ```
-
-
-Data types
+#### Data types
 ```{r}
 glimpse(df_0)
 ```
-Data classes
+
+
+```{r}
+df_0 <- df_0 %>% 
+  mutate(
+    # 1) Flatten: make every element a clean character string
+    Date = map_chr(Date, ~ if (inherits(.x, "POSIXt"))
+      format(.x, "%Y-%m-%d") else as.character(.x)),
+    Date = trimws(Date),
+    Date = gsub("[\u2010\u2011\u2012\u2013\u2014\u2212]", "-", Date), # normalize dashes
+    Date = na_if(Date, ""),
+    
+    # 2) Parse: try ISO (Y-m-d) then US (m/d/Y); keep first non-NA
+    Date = coalesce(
+      ydm(Date, tz = "UTC", quiet = TRUE),
+      mdy(Date, tz = "UTC", quiet = TRUE)
+    )
+  ) %>% arrange(Date)
+
+```
+
+
+
+
+#### Data classes
 ```{r}
 sapply(df_0, class)
 ```
 
+#### Checking completeness
+
+```{r}
+colSums(is.na(df_0))
+```
+
+
+```{r}
+skim(df_0)
+```
+
+
+
+```{r}
+summary(df_0)
+```
+
+#### Checking uniqueness and duplicates
+```{r}
+sapply(df_0, function(x) sum(duplicated(x)))
+```
+
+```{r}
+distinct(df_0) %>% dim()
+```
+
+```{r}
+sapply(df_0, function(x) sum(n_distinct(x)))
+```
 
 
 

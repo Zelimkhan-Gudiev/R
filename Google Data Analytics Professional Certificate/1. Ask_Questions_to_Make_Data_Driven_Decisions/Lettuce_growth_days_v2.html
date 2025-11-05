@@ -1492,6 +1492,7 @@ border-radius: 0px;
 # install.packages(&quot;lubridate&quot;)
 # install.packages(&quot;purrr&quot;)
 # install.packages(&quot;GGally&quot;)
+# install.packages(&quot;skimr&quot;) 
 library(psych)
 library(googlesheets4)
 library(tidyr)
@@ -1501,7 +1502,8 @@ library(ggplot2)
 library(lubridate)
 library(purrr)
 library(GGally)
-library(readxl)</code></pre>
+library(readxl)
+library(skimr)</code></pre>
 </div>
 <div id="step-1.-ask" class="section level1" style="text-align: justify">
 <h1>Step 1. Ask</h1>
@@ -2116,13 +2118,18 @@ formats.</td>
 </div>
 </div>
 <div style="text-align: justify">
-<div id="step-3.-process" class="section level1">
-<h1>Step 3. Process</h1>
-<div id="read-data" class="section level2">
-<h2>3.1 Read data</h2>
+<div id="step-3.-process-eda" class="section level1">
+<h1>Step 3. Process (EDA)</h1>
+<div id="stage-1-of-eda-data-discovery-profiling-the-what-is-this-phase" class="section level2">
+<h2>3.1 Stage 1 of EDA: Data Discovery &amp; Profiling (The “What is
+this?” Phase)</h2>
+<div id="load-and-inspect-data" class="section level3">
+<h3>3.1.1 Load and inspect data</h3>
 <pre class="r"><code>df_0 &lt;- read_sheet(&quot;https://docs.google.com/spreadsheets/d/1esw9BCXZDO1h4hwuaKowia5eVmflEKTS6NiouamSYA0/edit?gid=723124268#gid=723124268&quot;, sheet = &quot;source_lettuce_dataset&quot;)
 
 # df_0 &lt;- read_excel(&quot;C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx&quot;, sheet = &quot;source_lettuce_dataset&quot;)</code></pre>
+<div id="table-overview" class="section level4">
+<h4>Table overview</h4>
 <pre class="r"><code>df_0</code></pre>
 <pre><code>## # A tibble: 3,169 × 7
 ##    Plant_ID Date  `Temperature (°C)` `Humidity (%)` `TDS Value (ppm)` `pH Level`
@@ -2139,6 +2146,253 @@ formats.</td>
 ## 10       10 9/12…               31.2             58               794        6.6
 ## # ℹ 3,159 more rows
 ## # ℹ 1 more variable: `Growth Days` &lt;dbl&gt;</code></pre>
+</div>
+<div id="column-names" class="section level4">
+<h4>Column names</h4>
+<pre class="r"><code>colnames(df_0)</code></pre>
+<pre><code>## [1] &quot;Plant_ID&quot;         &quot;Date&quot;             &quot;Temperature (°C)&quot; &quot;Humidity (%)&quot;    
+## [5] &quot;TDS Value (ppm)&quot;  &quot;pH Level&quot;         &quot;Growth Days&quot;</code></pre>
+</div>
+<div id="number-of-rows-and-columns" class="section level4">
+<h4>Number of rows and columns</h4>
+<pre class="r"><code>dim(df_0)</code></pre>
+<pre><code>## [1] 3169    7</code></pre>
+</div>
+<div id="data-types" class="section level4">
+<h4>Data types</h4>
+<pre class="r"><code>glimpse(df_0)</code></pre>
+<pre><code>## Rows: 3,169
+## Columns: 7
+## $ Plant_ID           &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, …
+## $ Date               &lt;chr&gt; &quot;9/12/2023&quot;, &quot;9/12/2023&quot;, &quot;9/12/2023&quot;, &quot;9/12/2023&quot;,…
+## $ `Temperature (°C)` &lt;dbl&gt; 31.2, 31.2, 31.2, 31.2, 31.2, 31.2, 31.2, 31.2, 31.…
+## $ `Humidity (%)`     &lt;dbl&gt; 62, 66, 69, 72, 72, 57, 52, 51, 80, 58, 66, 64, 51,…
+## $ `TDS Value (ppm)`  &lt;dbl&gt; 576, 657, 403, 729, 738, 793, 468, 768, 793, 794, 4…
+## $ `pH Level`         &lt;dbl&gt; 6.7, 6.8, 6.6, 6.6, 6.2, 6.4, 6.7, 6.1, 6.6, 6.6, 6…
+## $ `Growth Days`      &lt;dbl&gt; 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41,…</code></pre>
+</div>
+<div id="data-classes" class="section level4">
+<h4>Data classes</h4>
+<pre class="r"><code>sapply(df_0, class)</code></pre>
+<pre><code>##         Plant_ID             Date Temperature (°C)     Humidity (%) 
+##        &quot;numeric&quot;      &quot;character&quot;        &quot;numeric&quot;        &quot;numeric&quot; 
+##  TDS Value (ppm)         pH Level      Growth Days 
+##        &quot;numeric&quot;        &quot;numeric&quot;        &quot;numeric&quot;</code></pre>
+</div>
+<div id="checking-completeness" class="section level4">
+<h4>Checking completeness</h4>
+<pre class="r"><code>colSums(is.na(df_0))</code></pre>
+<pre><code>##         Plant_ID             Date Temperature (°C)     Humidity (%) 
+##                0                0                0                0 
+##  TDS Value (ppm)         pH Level      Growth Days 
+##                0                0                0</code></pre>
+<pre class="r"><code>skim(df_0)</code></pre>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">df_0</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">3169</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">7</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">6</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<colgroup>
+<col width="19%" />
+<col width="13%" />
+<col width="19%" />
+<col width="5%" />
+<col width="5%" />
+<col width="8%" />
+<col width="12%" />
+<col width="15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Date</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">8</td>
+<td align="right">9</td>
+<td align="right">0</td>
+<td align="right">48</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table style="width:100%;">
+<colgroup>
+<col width="19%" />
+<col width="11%" />
+<col width="15%" />
+<col width="7%" />
+<col width="7%" />
+<col width="4%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Plant_ID</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">35.44</td>
+<td align="right">20.24</td>
+<td align="right">1</td>
+<td align="right">18.0</td>
+<td align="right">35.0</td>
+<td align="right">53.0</td>
+<td align="right">70.0</td>
+<td align="left">▇▇▇▇▇</td>
+</tr>
+<tr class="even">
+<td align="left">Temperature (°C)</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">28.14</td>
+<td align="right">4.67</td>
+<td align="right">18</td>
+<td align="right">23.6</td>
+<td align="right">30.2</td>
+<td align="right">31.5</td>
+<td align="right">33.5</td>
+<td align="left">▂▂▁▅▇</td>
+</tr>
+<tr class="odd">
+<td align="left">Humidity (%)</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">64.87</td>
+<td align="right">8.99</td>
+<td align="right">50</td>
+<td align="right">57.0</td>
+<td align="right">65.0</td>
+<td align="right">73.0</td>
+<td align="right">80.0</td>
+<td align="left">▇▆▆▇▆</td>
+</tr>
+<tr class="even">
+<td align="left">TDS Value (ppm)</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">598.05</td>
+<td align="right">115.71</td>
+<td align="right">400</td>
+<td align="right">498.0</td>
+<td align="right">593.0</td>
+<td align="right">699.0</td>
+<td align="right">800.0</td>
+<td align="left">▇▇▇▇▇</td>
+</tr>
+<tr class="odd">
+<td align="left">pH Level</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">6.40</td>
+<td align="right">0.23</td>
+<td align="right">6</td>
+<td align="right">6.2</td>
+<td align="right">6.4</td>
+<td align="right">6.6</td>
+<td align="right">6.8</td>
+<td align="left">▆▇▃▇▆</td>
+</tr>
+<tr class="even">
+<td align="left">Growth Days</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">23.14</td>
+<td align="right">13.08</td>
+<td align="right">1</td>
+<td align="right">12.0</td>
+<td align="right">23.0</td>
+<td align="right">34.0</td>
+<td align="right">48.0</td>
+<td align="left">▇▇▇▇▆</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>summary(df_0)</code></pre>
+<pre><code>##     Plant_ID         Date           Temperature (°C)  Humidity (%)  
+##  Min.   : 1.00   Length:3169        Min.   :18.00    Min.   :50.00  
+##  1st Qu.:18.00   Class :character   1st Qu.:23.60    1st Qu.:57.00  
+##  Median :35.00   Mode  :character   Median :30.20    Median :65.00  
+##  Mean   :35.44                      Mean   :28.14    Mean   :64.87  
+##  3rd Qu.:53.00                      3rd Qu.:31.50    3rd Qu.:73.00  
+##  Max.   :70.00                      Max.   :33.50    Max.   :80.00  
+##  TDS Value (ppm)    pH Level      Growth Days   
+##  Min.   :400     Min.   :6.000   Min.   : 1.00  
+##  1st Qu.:498     1st Qu.:6.200   1st Qu.:12.00  
+##  Median :593     Median :6.400   Median :23.00  
+##  Mean   :598     Mean   :6.399   Mean   :23.14  
+##  3rd Qu.:699     3rd Qu.:6.600   3rd Qu.:34.00  
+##  Max.   :800     Max.   :6.800   Max.   :48.00</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div id="exploratory-data-analysis-eda" class="section level1">
