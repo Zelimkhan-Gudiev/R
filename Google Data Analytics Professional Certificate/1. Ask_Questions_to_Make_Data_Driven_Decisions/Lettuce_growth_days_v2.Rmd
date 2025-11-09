@@ -15,7 +15,8 @@ output:
 # install.packages("lubridate")
 # install.packages("purrr")
 # install.packages("GGally")
-# install.packages("skimr") 
+# install.packages("skimr")
+# install.packages("Writexl")
 library(psych)
 library(googlesheets4)
 library(tidyr)
@@ -27,6 +28,7 @@ library(purrr)
 library(GGally)
 library(readxl)
 library(skimr)
+library(writexl)
 ```
 
 ::: {style="text-align: justify"}
@@ -155,8 +157,8 @@ For this analytical task, the "lettuce growth" dataset from Kaggle was used.
 
 ::: {style="text-align: justify"}
 # Step 3. Process (EDA)
-## 3.1 Stage 1 of EDA: Data Discovery & Profiling (The "What is this?" Phase)
-### 3.1.1 Load and inspect data
+## 3.1 Stage 1 of EDA: Data Discovery & Profiling
+#### Load data
 ```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
 df_0 <- read_sheet("https://docs.google.com/spreadsheets/d/1esw9BCXZDO1h4hwuaKowia5eVmflEKTS6NiouamSYA0/edit?gid=723124268#gid=723124268", sheet = "source_lettuce_dataset")
 
@@ -178,165 +180,313 @@ dim(df_0)
 ```{r}
 glimpse(df_0)
 ```
-
-
-```{r}
-df_0 <- df_0 %>% 
-  mutate(
-    # 1) Flatten: make every element a clean character string
-    Date = map_chr(Date, ~ if (inherits(.x, "POSIXt"))
-      format(.x, "%Y-%m-%d") else as.character(.x)),
-    Date = trimws(Date),
-    Date = gsub("[\u2010\u2011\u2012\u2013\u2014\u2212]", "-", Date), # normalize dashes
-    Date = na_if(Date, ""),
-    
-    # 2) Parse: try ISO (Y-m-d) then US (m/d/Y); keep first non-NA
-    Date = coalesce(
-      ydm(Date, tz = "UTC", quiet = TRUE),
-      mdy(Date, tz = "UTC", quiet = TRUE)
-    )
-  ) %>% arrange(Date)
-
-```
-
-
-
-
 #### Data classes
 ```{r}
 sapply(df_0, class)
 ```
 
 #### Checking completeness
-
+Number of missing values in each column
 ```{r}
 colSums(is.na(df_0))
 ```
 
-
-```{r}
-skim(df_0)
-```
-
-
-
-```{r}
-summary(df_0)
-```
-
-#### Checking uniqueness and duplicates
+#### Checking duplicates
+Number of duplicate values in each column
 ```{r}
 sapply(df_0, function(x) sum(duplicated(x)))
 ```
 
+#### Checking uniqueness
+Number of unique rows
 ```{r}
 distinct(df_0) %>% dim()
 ```
-
+Number of unique values in each column
 ```{r}
 sapply(df_0, function(x) sum(n_distinct(x)))
 ```
 
-
-
-
-
-# 3. Exploratory data analysis (EDA)
-## 3.1 Understand the dataset
-What variables (columns) exist? 
+#### Transorm data
+Convert Date column from character into date 
 ```{r}
-colnames(df_0)
+df_0$Date <- mdy(df_0$Date)
+```
+Convert Plant_ID column from numeric into factor 
+```{r}
+df_0$Plant_ID <- as.factor(df_0$Plant_ID)
 ```
 
-What types of data do they contain (numeric, categorical, dates)?
-```{r}
-glimpse(df_0)
-```
-How many rows are there?
-```{r}
-dim(df_0)
-```
 
-## 3.2 Check data quality
-Are there missing values?
-```{r}
-colSums(is.na(df_0))
-```
-Are there any duplicates or errors?
-```{r}
-sapply(df_0, function(x) sum(duplicated(x)))
-```
-Are values in a reasonable range (e.g., temperature not 500°C)?
-```{r}
-df_0 %>% select(-Date) %>% summary()
-```
-
-```{r}
-df_0 <- df_0 %>% 
-  mutate(
-    # 1) Flatten: make every element a clean character string
-    Date = map_chr(Date, ~ if (inherits(.x, "POSIXt"))
-      format(.x, "%Y-%m-%d") else as.character(.x)),
-    Date = trimws(Date),
-    Date = gsub("[\u2010\u2011\u2012\u2013\u2014\u2212]", "-", Date), # normalize dashes
-    Date = na_if(Date, ""),
-    
-    # 2) Parse: try ISO (Y-m-d) then US (m/d/Y); keep first non-NA
-    Date = coalesce(
-      ydm(Date, tz = "UTC", quiet = TRUE),
-      mdy(Date, tz = "UTC", quiet = TRUE)
-    )
-  ) %>% arrange(Date)
-```
 Clean names 
 ```{r}
 df <- clean_names(df_0)
 ```
+<br>
 
-## 3.3 Summarize statistics
-Data frame summary
+#### Interpretation of the 1st stage EDA: Data Discovery & Profiling
+
+__Purpose and Approach__
+
+This stage focused on initial understanding and validation of the lettuce dataset to answer two main questions:
+
+What does the data contain?
+
+Is the data clean and ready for analysis?
+
+__📄 Findings__
+
+Dataset structure:
+The table contained 3,169 rows and 7 columns, representing multiple measurements for 70 individual plants across 48 observation days.
+Columns included: plant_id, date, temperature_c, humidity_percent, tds_value_ppm, p_h_level and growth_days
+
+__Uniqueness and duplication checks:__
+
+No duplicated rows were found (distinct(df_0) returned 3,169 unique rows).
+
+Each variable had a meaningful count of unique values (e.g., 70 plant IDs, 98 temperature readings, 9 pH levels), confirming valid variability across measurements.
+
+__Data type consistency:__
+
+The "date" column was initially stored as a character type and was converted to a proper Date format using mdy().
+
+The "plant_id" column was converted from numeric to factor, which correctly represents categorical identifiers.
+
+Column names were standardized with clean_names() for consistent syntax.
+
+__Quality assessment:__
+
+No missing values were reported.
+
+The only detected issue before transformation was inconsistent date formatting.
+
+After cleaning, all variables were in the correct type and ready for deeper analysis.
+
+__🧠 Concusion__
+
+The dataset was confirmed to be accurate, consistent, and complete.
+Minor formatting issues (dates, variable types) were corrected.
+Overall, this stage ensured data trustworthiness and integrity, making the dataset fully reliable for exploratory and statistical analysis.
+
+
+## 3.2 Univariate analysis ("Understanding individual variables" phase)
+
+#### Summary statistics
+Summary statistics using skim function
+```{r}
+skim(df)
+```
+
+Summary statistics using summary function
 ```{r}
 summary(df)
 ```
+
+#### Examine distribution and detecting outliers
+Examine distribution plotting histograms
+```{r}
+df %>% select(where(is.numeric)) %>% 
+  pivot_longer(everything(),
+               names_to = "variable",
+               values_to = "value") %>% 
+  ggplot(aes(x = value, fill = variable)) +
+  geom_histogram(bins = 30, alpha = 0.6, color = "black", na.rm = TRUE) +
+  facet_wrap(~ variable, scales = "free", ncol = 3) +
+# theme_minimal() + 
+  guides(fill = "none")
+```
+
+Detect outliers plotting boxplots
+```{r}
+df %>% select(where(is.numeric)) %>% 
+  pivot_longer(everything(),
+               names_to = "variable",
+               values_to = "value") %>% 
+  ggplot(aes(x = variable, y = value)) +
+  geom_boxplot(outliers.alpha = 0.35) +
+  labs(x = NULL, y = NULL, title = "Boxplots of numeric variables") +
+  facet_wrap(~ variable, scales = "free", ncol = 3) +
+  # theme_minimal() +
+  guides(fill = "none")
+```
+<br>
+
+#### Interpretation of the 2d stage EDA: Univariate analysis
+
+__🎯 Purpose__
+
+This step examined each variable independently to describe its distribution, variation, and potential outliers.
+
+__📈 Summary Statistics__
+
+Rows: 3,169
+
+Columns: 7
+
+Variable types: 1 Date (date), 1 Factor (plant_id), 5 Numeric (temperature_c, humidity_percent, tds_value_ppm, p_h_level, growth_days).
+
+Missing data: 0 across all columns.
+
+📅 Date Variable
+
+Range: 2023-08-03 → 2023-09-19 (48 unique days).
+→ Represents about 7 weeks of continuous monitoring.
+
+🪴 Plant ID
+
+70 unique plants, each measured several times (roughly 45 observations per plant).
+→ Confirms the dataset’s panel/time-series nature.
+
+__🔢 Numeric Variables__
+| N | Variable |  Interpretation  |
+|-  |-----------|-----------|
+| 1 | temperature_c | Moderate variation — typical indoor growing temperature, stable across time.|
+| 2 | humidity_percent | Reasonably humid environment — variation likely due to daily cycles.| 
+| 3 | tds_value_ppm | Stable nutrient concentration — healthy hydroponic range. |
+| 4 | p_h_level | Excellent — near-neutral, stable pH. |
+| 5 | growth_days | Data spans about 1.5 months: from 2023-08-03 to 2023-09-19.|
+
+__📊 Insights__
+
+No missing data or extreme anomalies.
+
+Boxplots showed relatively symmetric distributions for most environmental variables, with slight skewness or mild outliers in TDS and Growth Days.
+
+Overall, variability within variables supports robust analysis of growth-environment interactions.
+
+__🧠 Interpretation__
+
+Each variable behaves consistently with expectations for greenhouse data:
+
+Environmental factors are well-controlled but still varied enough to analyze correlations with plant growth.
+
+The dataset is statistically rich and suitable for later modeling (e.g., regression or correlation analysis).
+
+## 3.3 Bivariate/Multivariate analysis ("Understanding relationships" phase)
+
+```{r}
+df %>% select(where(is.numeric)) %>% 
+  cor(use = "complete.obs") %>% round(2)
+```
+
+
+```{r}
+df %>% select(where(is.numeric)) %>% 
+  cor(use = "complete.obs") %>% 
+  corrplot::corrplot(method = "color", 
+                     type = "upper", 
+                     order = "hclust",
+                     addCoef.col = "black",
+                     tl.cex = 0.8,
+                     tl.col = "black",
+                     tl.srt = 45,
+                     cl.pos = "n")
+```
+
+
+```{r}
+pairs(df)  
+```
+
+```{r}
+df %>% select(-plant_id, -date) %>% 
+  ggpairs()
+```
+__🎯 Purpose__
+
+This stage examined how environmental variables relate to each other and to the target variable — Growth Days.
+
+🔗 Correlation Matrix (Rounded to 2 decimals)
+|    Variable      |	temperature_c	 | humidity_percent	| tds_value_ppm	| p_h_level	| growth_days |
+|------------------|----------------|-------------------|---------------|-----------|-------------|
+| temperature_c    |	    1.00	    |       0.03        |     -0.01     |	    0.01	|   -0.07     |
+| humidity_percent |      0.03	    |       1.00	      |     -0.01     |    	0.02  |  	-0.01     |
+| tds_value_ppm	   |     -0.01      |      -0.01        |      1.00	    |    -0.01  | 	-0.02     |
+| p_h_level	       |      0.01	    |       0.02	      |     -0.01	    |     1.00	|    0.00     |
+| growth_days	     |     -0.07	    |      -0.01	      |     -0.02	    |     0.00	|    1.00     |
+
+__💡 Interpretation of Correlations__
+
+All correlations are weak (|r| < 0.1) — no strong linear dependencies among variables.
+
+Slight negative correlation between temperature_c and growth_days (-0.07) could indicate that higher temperatures may slightly accelerate early growth, reducing total growth duration.
+
+Other environmental factors (humidity_percent, tds_value_ppm, p_h_level) show minimal direct relationships to growth time.
+
+The correlation plot confirms overall independence of predictors, meaning multicollinearity is not a concern.
+
+__🧠 General Interpretation__
+
+The weak correlations suggest lettuce growth in this dataset is not linearly dominated by any single factor — growth may depend on nonlinear or combined environmental effects (e.g., optimal ranges rather than simple linear relationships).
+
+These findings justify future modeling efforts (like regression or machine learning) to explore interactions or thresholds rather than direct proportional effects.
+
+__✅ Summary of the Three Phases__
+| Phase	| Focus	| Key Findings |
+|-------|-------|--------------|
+| 3.1  Data Discovery & Profiling 	| Structure & cleanliness	     | Data was complete, consistent, and properly formatted.|
+| 3.2 Univariate Analysis	          | Individual variable behavior |	Variables showed natural variation without missing data; distributions were realistic.
+3.3 Bivariate/Multivariate Analysis |	Variable relationships	     | No strong linear relationships; temperature showed a slight negative association with growth days.|
+
+
+____
+
+
+
+
+
+
 All statistics by plant id
 ```{r}
-all_stats_by_id <- df %>% group_by(plant_id) %>% 
+all_stats_by_id <- df %>% group_by(plant_id) %>%
   summarise(
             date_min = min(date),
             date_mean = mean(date),
             date_median = median(date),
             date_max = max(date),
             temperature_c_min = min(temperature_c),
+            temperature_c_q1 = quantile(temperature_c, 0.25),
             temperature_c_mean = mean(temperature_c),
             temperature_c_median = median(temperature_c),
             temperature_c_sd = sd(temperature_c),
+            temperature_c_q3 = quantile(temperature_c, 0.75),
             temperature_c_max = max(temperature_c),
             humidity_percent_min = min(humidity_percent),
+            humidity_percent_q1 = quantile(humidity_percent, 0.25),
             humidity_percent_mean = mean(humidity_percent),
             humidity_percent_median = median(humidity_percent),
             humidity_percent_sd = sd(humidity_percent),
+            humidity_percent_q3 = quantile(humidity_percent, 0.75),
             humidity_percent_max = max(humidity_percent),
             tds_value_ppm_min = min(tds_value_ppm),
+            tds_value_ppm_q1 = quantile(tds_value_ppm, 0.25),
             tds_value_ppm_mean = mean(tds_value_ppm),
             tds_value_ppm_median = median(tds_value_ppm),
             tds_value_ppm_sd = sd(tds_value_ppm),
+            tds_value_ppm_q3 = quantile(tds_value_ppm, 0.75),
             tds_value_ppm_max = max(tds_value_ppm),
             p_h_level_min = min(p_h_level),
+            p_h_level_q1 = quantile(p_h_level, 0.25),
             p_h_level_mean = mean(p_h_level),
             p_h_level_median = median(p_h_level),
             p_h_level_sd = sd(p_h_level),
+            p_h_level_q3 = quantile(p_h_level, 0.75),
             p_h_level_max = max(p_h_level),
             growth_days_min = min(growth_days),
+            growth_days_q1 = quantile(growth_days, 0.25),
             growth_days_mean = mean(growth_days),
             growth_days_median = median(growth_days),
             growth_days_sd = sd(growth_days),
+            growth_days_q3 = quantile(growth_days, 0.75),
             growth_days_max = max(growth_days)
   ) %>% 
   mutate(
     across(where(is.numeric), ~ round(.x, 2))
          )
+
 all_stats_by_id
 ```
+
 Summary of all statistics by plant id
 ```{r}
 all_stats_by_id %>% summary()
@@ -344,13 +494,13 @@ all_stats_by_id %>% summary()
 Statistics (basic) by plant id
 ```{r}
 all_stats_by_id %>% 
-  select(plant_id, temperature_c_mean,
+  select(plant_id, 
+         temperature_c_mean,
          humidity_percent_mean,
          tds_value_ppm_mean,
          p_h_level_mean,
          growth_days_max)
 ```
-
 Statistics by maximum growth day
 ```{r}
 df %>% group_by(plant_id) %>% 
@@ -371,38 +521,7 @@ df %>% group_by(plant_id) %>%
 ```
 
 # 3.4 Visualize relationships
-
-Histograms (distribution)
-```{r}
-df %>% select(where(is.numeric)) %>% 
-  pivot_longer(everything(),
-               names_to = "variable",
-               values_to = "value") %>% 
-  ggplot(aes(x = value, fill = variable)) +
-  geom_histogram(bins = 30, alpha = 0.6, color = "black", na.rm = TRUE) +
-  facet_wrap(~ variable, scales = "free", ncol = 3) +
-# theme_minimal() + 
-  guides(fill = "none")
-  
-```
-
-Boxplots (outliers).
-```{r}
-df %>% select(where(is.numeric)) %>% 
-  pivot_longer(everything(),
-               names_to = "variable",
-               values_to = "value") %>% 
-  ggplot(aes(x = variable, y = value)) +
-  geom_boxplot(outliers.alpha = 0.35) +
-  labs(x = NULL, y = NULL, title = "Boxplots of numeric variables") +
-  facet_wrap(~ variable, scales = "free", ncol = 3) +
-  # theme_minimal() +
-  guides(fill = "none")
-  
-```
-
 Time-series plots (trends over time)
-
 ```{r}
 df %>%
   pivot_longer(-c(date, plant_id), names_to = "variable", values_to = "value") %>% 
@@ -443,7 +562,6 @@ df %>%
 Scatterplots (check correlation)
 ```{r}
 df %>% select(where(is.numeric)) %>% 
-  select(- plant_id) %>% 
   ggpairs(progress = FALSE,
           upper = list(continuous = wrap("cor", method = "pearson")),
           diag = list(continuous = "densityDiag"),
