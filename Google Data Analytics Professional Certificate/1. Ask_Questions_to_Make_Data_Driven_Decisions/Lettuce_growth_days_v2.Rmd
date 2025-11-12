@@ -17,6 +17,7 @@ output:
 # install.packages("GGally")
 # install.packages("skimr")
 # install.packages("Writexl")
+# install.packages("corrplot")
 library(psych)
 library(googlesheets4)
 library(tidyr)
@@ -29,6 +30,7 @@ library(GGally)
 library(readxl)
 library(skimr)
 library(writexl)
+library(corrplot)
 ```
 
 ::: {style="text-align: justify"}
@@ -184,13 +186,11 @@ glimpse(df_0)
 ```{r}
 sapply(df_0, class)
 ```
-
 #### Checking completeness
 Number of missing values in each column
 ```{r}
 colSums(is.na(df_0))
 ```
-
 #### Checking duplicates
 Number of duplicate values in each column
 ```{r}
@@ -206,23 +206,40 @@ Number of unique values in each column
 ```{r}
 sapply(df_0, function(x) sum(n_distinct(x)))
 ```
-
 #### Transorm data
-Convert Date column from character into date 
+Convert Date column from character into date
+Creating new data frame
 ```{r}
-df_0$Date <- mdy(df_0$Date)
+df <- df_0
+```
+
+```{r}
+df$Date <- mdy(df$Date)
 ```
 Convert Plant_ID column from numeric into factor 
 ```{r}
-df_0$Plant_ID <- as.factor(df_0$Plant_ID)
+df$Plant_ID <- as.factor(df$Plant_ID)
 ```
-
-
 Clean names 
 ```{r}
-df <- clean_names(df_0)
+df <- clean_names(df)
 ```
 <br>
+
+#### Checking data after transormation
+Table overview
+```{r}
+df %>% arrange(date)
+```
+Checking completeness after transormation
+```{r}
+colSums(is.na(df))
+```
+Checking data stricture
+```{r}
+str(df)
+```
+
 
 #### Interpretation of the 1st stage EDA: Data Discovery & Profiling
 
@@ -264,9 +281,7 @@ After cleaning, all variables were in the correct type and ready for deeper anal
 
 __🧠 Concusion__
 
-The dataset was confirmed to be accurate, consistent, and complete.
-Minor formatting issues (dates, variable types) were corrected.
-Overall, this stage ensured data trustworthiness and integrity, making the dataset fully reliable for exploratory and statistical analysis.
+The dataset could be to be conserned (as it was mentioned above accurate, consistent, and complete. Minor formatting issues (dates, variable types) were corrected. Overall, this stage ensured data trustworthiness and integrity, making the dataset fully reliable for exploratory and statistical analysis.
 
 
 ## 3.2 Univariate analysis ("Understanding individual variables" phase)
@@ -338,29 +353,15 @@ Range: 2023-08-03 → 2023-09-19 (48 unique days).
 → Confirms the dataset’s panel/time-series nature.
 
 __🔢 Numeric Variables__
-| N | Variable |  Interpretation  |
-|-  |-----------|-----------|
+
+| N | Variable  |  Interpretation  |
+|---|-----------|------------------|
 | 1 | temperature_c | Moderate variation — typical indoor growing temperature, stable across time.|
 | 2 | humidity_percent | Reasonably humid environment — variation likely due to daily cycles.| 
 | 3 | tds_value_ppm | Stable nutrient concentration — healthy hydroponic range. |
 | 4 | p_h_level | Excellent — near-neutral, stable pH. |
 | 5 | growth_days | Data spans about 1.5 months: from 2023-08-03 to 2023-09-19.|
 
-__📊 Insights__
-
-No missing data or extreme anomalies.
-
-Boxplots showed relatively symmetric distributions for most environmental variables, with slight skewness or mild outliers in TDS and Growth Days.
-
-Overall, variability within variables supports robust analysis of growth-environment interactions.
-
-__🧠 Interpretation__
-
-Each variable behaves consistently with expectations for greenhouse data:
-
-Environmental factors are well-controlled but still varied enough to analyze correlations with plant growth.
-
-The dataset is statistically rich and suitable for later modeling (e.g., regression or correlation analysis).
 
 ## 3.3 Bivariate/Multivariate analysis ("Understanding relationships" phase)
 
