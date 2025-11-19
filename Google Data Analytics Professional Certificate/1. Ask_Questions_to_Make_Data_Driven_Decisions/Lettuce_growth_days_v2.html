@@ -1729,10 +1729,8 @@ understanding of this data for next season?</td>
 </table>
 </div>
 </div>
-</div>
 <div id="guiding-questions" class="section level2">
 <h2>1.2 Guiding questions</h2>
-<div style="text-align: justify">
 <table>
 <colgroup>
 <col width="4%" />
@@ -1773,6 +1771,8 @@ greenhouse</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
 <div id="step-2.-prepare" class="section level1">
 <h1>Step 2. Prepare</h1>
 <div id="key-tasks-and-deliverables-1" class="section level2">
@@ -1949,8 +1949,8 @@ dimensions listed above.</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Trustworthiness:</strong> The data isn’t trustworthiness.
-<strong>Conclusion on credibility of the data in accordance with the
+<p><strong>Trustworthiness:</strong> The data isn’t trustworthiness.</p>
+<p><strong>Conclusion on credibility of the data in accordance with the
 Data integrity conception:</strong> The data isn’t credible.</p>
 </div>
 <div id="bias" class="section level4">
@@ -2117,23 +2117,23 @@ formats.</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
+<p>:::</p>
 </div>
 </div>
 <div style="text-align: justify">
-<div id="step-3.-process-eda" class="section level1">
-<h1>Step 3. Process (EDA)</h1>
-<div id="stage-1-of-eda-data-discovery-profiling" class="section level2">
-<h2>3.1 Stage 1 of EDA: Data Discovery &amp; Profiling</h2>
-<div id="load-data" class="section level4">
-<h4>Load data</h4>
+<div id="step-3.-process-stage-1-of-eda-data-discovery-profiling" class="section level1">
+<h1>Step 3. Process (Stage 1 of EDA: Data Discovery &amp;
+Profiling)</h1>
+<div id="key-tasks-and-delivirables" class="section level2">
+<h2>3.1 Key tasks and delivirable(s)</h2>
+<div id="load-data" class="section level3">
+<h3>Load data</h3>
 <pre class="r"><code>df_0 &lt;- read_sheet(&quot;https://docs.google.com/spreadsheets/d/1esw9BCXZDO1h4hwuaKowia5eVmflEKTS6NiouamSYA0/edit?gid=723124268#gid=723124268&quot;, sheet = &quot;source_lettuce_dataset&quot;)
 
 # df_0 &lt;- read_excel(&quot;C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx&quot;, sheet = &quot;source_lettuce_dataset&quot;)</code></pre>
 </div>
-<div id="table-overview" class="section level4">
-<h4>Table overview</h4>
+<div id="table-overview" class="section level3">
+<h3>Table overview</h3>
 <pre class="r"><code>df_0</code></pre>
 <pre><code>## # A tibble: 3,169 × 7
 ##    Plant_ID Date  `Temperature (°C)` `Humidity (%)` `TDS Value (ppm)` `pH Level`
@@ -2151,19 +2151,19 @@ formats.</td>
 ## # ℹ 3,159 more rows
 ## # ℹ 1 more variable: `Growth Days` &lt;dbl&gt;</code></pre>
 </div>
-<div id="column-names" class="section level4">
-<h4>Column names</h4>
+<div id="column-names" class="section level3">
+<h3>Column names</h3>
 <pre class="r"><code>colnames(df_0)</code></pre>
 <pre><code>## [1] &quot;Plant_ID&quot;         &quot;Date&quot;             &quot;Temperature (°C)&quot; &quot;Humidity (%)&quot;    
 ## [5] &quot;TDS Value (ppm)&quot;  &quot;pH Level&quot;         &quot;Growth Days&quot;</code></pre>
 </div>
-<div id="number-of-rows-and-columns" class="section level4">
-<h4>Number of rows and columns</h4>
+<div id="number-of-rows-and-columns" class="section level3">
+<h3>Number of rows and columns</h3>
 <pre class="r"><code>dim(df_0)</code></pre>
 <pre><code>## [1] 3169    7</code></pre>
 </div>
-<div id="data-types" class="section level4">
-<h4>Data types</h4>
+<div id="data-types" class="section level3">
+<h3>Data types</h3>
 <pre class="r"><code>glimpse(df_0)</code></pre>
 <pre><code>## Rows: 3,169
 ## Columns: 7
@@ -2175,16 +2175,16 @@ formats.</td>
 ## $ `pH Level`         &lt;dbl&gt; 6.7, 6.8, 6.6, 6.6, 6.2, 6.4, 6.7, 6.1, 6.6, 6.6, 6…
 ## $ `Growth Days`      &lt;dbl&gt; 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41,…</code></pre>
 </div>
-<div id="data-classes" class="section level4">
-<h4>Data classes</h4>
+<div id="data-classes" class="section level3">
+<h3>Data classes</h3>
 <pre class="r"><code>sapply(df_0, class)</code></pre>
 <pre><code>##         Plant_ID             Date Temperature (°C)     Humidity (%) 
 ##        &quot;numeric&quot;      &quot;character&quot;        &quot;numeric&quot;        &quot;numeric&quot; 
 ##  TDS Value (ppm)         pH Level      Growth Days 
 ##        &quot;numeric&quot;        &quot;numeric&quot;        &quot;numeric&quot;</code></pre>
 </div>
-<div id="checking-completeness" class="section level4">
-<h4>Checking completeness</h4>
+<div id="checking-completeness" class="section level3">
+<h3>Checking completeness</h3>
 <p>Number of missing values in each column</p>
 <pre class="r"><code>colSums(is.na(df_0))</code></pre>
 <pre><code>##         Plant_ID             Date Temperature (°C)     Humidity (%) 
@@ -2192,8 +2192,8 @@ formats.</td>
 ##  TDS Value (ppm)         pH Level      Growth Days 
 ##                0                0                0</code></pre>
 </div>
-<div id="checking-duplicates" class="section level4">
-<h4>Checking duplicates</h4>
+<div id="checking-duplicates" class="section level3">
+<h3>Checking duplicates</h3>
 <p>Number of duplicate values in each column</p>
 <pre class="r"><code>sapply(df_0, function(x) sum(duplicated(x)))</code></pre>
 <pre><code>##         Plant_ID             Date Temperature (°C)     Humidity (%) 
@@ -2201,8 +2201,8 @@ formats.</td>
 ##  TDS Value (ppm)         pH Level      Growth Days 
 ##             2768             3160             3121</code></pre>
 </div>
-<div id="checking-uniqueness" class="section level4">
-<h4>Checking uniqueness</h4>
+<div id="checking-uniqueness" class="section level3">
+<h3>Checking uniqueness</h3>
 <p>Number of unique rows</p>
 <pre class="r"><code>distinct(df_0) %&gt;% dim()</code></pre>
 <pre><code>## [1] 3169    7</code></pre>
@@ -2213,8 +2213,8 @@ formats.</td>
 ##  TDS Value (ppm)         pH Level      Growth Days 
 ##              401                9               48</code></pre>
 </div>
-<div id="transorm-data" class="section level4">
-<h4>Transorm data</h4>
+<div id="transorm-data" class="section level3">
+<h3>Transorm data</h3>
 <p>Convert Date column from character into date Creating new data
 frame</p>
 <pre class="r"><code>df &lt;- df_0</code></pre>
@@ -2225,9 +2225,10 @@ frame</p>
 <pre class="r"><code>df &lt;- clean_names(df)</code></pre>
 <p><br></p>
 </div>
-<div id="checking-data-after-transormation" class="section level4">
-<h4>Checking data after transormation</h4>
-<p>Table overview</p>
+<div id="checking-data-after-transormation" class="section level3">
+<h3>Checking data after transormation</h3>
+<div id="table-overview-1" class="section level4">
+<h4>Table overview</h4>
 <pre class="r"><code>df %&gt;% arrange(date)</code></pre>
 <pre><code>## # A tibble: 3,169 × 7
 ##    plant_id date       temperature_c humidity_percent tds_value_ppm p_h_level
@@ -2244,13 +2245,17 @@ frame</p>
 ## 10 10       2023-08-03          33.4               66           503       6.5
 ## # ℹ 3,159 more rows
 ## # ℹ 1 more variable: growth_days &lt;dbl&gt;</code></pre>
-<p>Checking completeness after transormation</p>
+</div>
+<div id="checking-completeness-after-transformation" class="section level4">
+<h4>Checking completeness after transformation</h4>
 <pre class="r"><code>colSums(is.na(df))</code></pre>
 <pre><code>##         plant_id             date    temperature_c humidity_percent 
 ##                0                0                0                0 
 ##    tds_value_ppm        p_h_level      growth_days 
 ##                0                0                0</code></pre>
-<p>Checking data stricture</p>
+</div>
+<div id="checking-data-stricture-after-transformation" class="section level4">
+<h4>Checking data stricture after transformation</h4>
 <pre class="r"><code>str(df)</code></pre>
 <pre><code>## tibble [3,169 × 7] (S3: tbl_df/tbl/data.frame)
 ##  $ plant_id        : Factor w/ 70 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
@@ -2261,6 +2266,62 @@ frame</p>
 ##  $ p_h_level       : num [1:3169] 6.7 6.8 6.6 6.6 6.2 6.4 6.7 6.1 6.6 6.6 ...
 ##  $ growth_days     : num [1:3169] 41 41 41 41 41 41 41 41 41 41 ...</code></pre>
 </div>
+</div>
+</div>
+<div id="guiding-questions-2" class="section level2">
+<h2>3.2 Guiding questions</h2>
+<table>
+<colgroup>
+<col width="4%" />
+<col width="47%" />
+<col width="47%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>N</th>
+<th>Questions</th>
+<th>Answers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>What tools are you choosing and why?</td>
+<td>I chose R programming language (via RStudio and R Markdown) due to
+the following: R is powerful for data manipulation, cleaning, and
+visualization; It’s free, open-source, and part of the tools recommended
+in the Google Data Analytics Certificate; R can handle larger datasets
+and streamline reproducible workflows using scripts and reports.</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>How you ensured your data integrity?</td>
+<td>…</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>What steps have you taken to ensure that your data is clean</td>
+<td>…</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>How can you verify that your data is clean and ready to
+analyze?</td>
+<td>…</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>How you documented your cleaning process so you can review and share
+those results?</td>
+<td>…</td>
+</tr>
+</tbody>
+</table>
 <div id="interpretation-of-the-1st-stage-eda-data-discovery-profiling" class="section level4">
 <h4>Interpretation of the 1st stage EDA: Data Discovery &amp;
 Profiling</h4>
@@ -2277,9 +2338,6 @@ humidity_percent, tds_value_ppm, p_h_level and growth_days</p>
 <p><strong>Uniqueness and duplication checks:</strong></p>
 <p>No duplicated rows were found (distinct(df_0) returned 3,169 unique
 rows).</p>
-<p>Each variable had a meaningful count of unique values (e.g., 70 plant
-IDs, 98 temperature readings, 9 pH levels), confirming valid variability
-across measurements.</p>
 <p><strong>Data type consistency:</strong></p>
 <p>The “date” column was initially stored as a character type and was
 converted to a proper Date format using mdy().</p>
@@ -2301,13 +2359,17 @@ trustworthiness and integrity, making the dataset fully reliable for
 exploratory and statistical analysis.</p>
 </div>
 </div>
-<div id="univariate-analysis-understanding-individual-variables-phase" class="section level2">
-<h2>3.2 Univariate analysis (“Understanding individual variables”
-phase)</h2>
+</div>
+<div id="analyze" class="section level1">
+<h1>Analyze</h1>
+<div id="stage-2-of-eda-univariate-analysis-understanding-individual-variables-phase" class="section level2">
+<h2>Stage 2 of EDA: Univariate analysis (“Understanding individual
+variables” phase)</h2>
 <div id="summary-statistics" class="section level4">
 <h4>Summary statistics</h4>
 <p>Summary statistics using skim function</p>
-<pre class="r"><code>skim(df)</code></pre>
+<pre class="r"><code>skim(df) %&gt;% 
+  mutate(across(where(is.numeric), ~ round(.x, 2)))</code></pre>
 <table>
 <caption>Data summary</caption>
 <tbody>
@@ -2627,20 +2689,6 @@ cycles.</td>
 </tr>
 </tbody>
 </table>
-<p><strong>📊 Insights</strong></p>
-<p>No missing data or extreme anomalies.</p>
-<p>Boxplots showed relatively symmetric distributions for most
-environmental variables, with slight skewness or mild outliers in TDS
-and Growth Days.</p>
-<p>Overall, variability within variables supports robust analysis of
-growth-environment interactions.</p>
-<p><strong>🧠 Interpretation</strong></p>
-<p>Each variable behaves consistently with expectations for greenhouse
-data:</p>
-<p>Environmental factors are well-controlled but still varied enough to
-analyze correlations with plant growth.</p>
-<p>The dataset is statistically rich and suitable for later modeling
-(e.g., regression or correlation analysis).</p>
 </div>
 </div>
 <div id="bivariatemultivariate-analysis-understanding-relationships-phase" class="section level2">

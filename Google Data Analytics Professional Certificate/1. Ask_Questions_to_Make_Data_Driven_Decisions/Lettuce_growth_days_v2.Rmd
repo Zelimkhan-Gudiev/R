@@ -72,15 +72,15 @@ Managers
 | 5 | Visual Aids (images, dashboards) | Days 4-5 | Completion of visualizations | Visualizations created | - |
 |||||||
 | 6 | Final report (spreadsheet and PowerPoint) | Day 6-10 | Final report submission | Final report completed | - |
-:::
+
 ## 1.2 Guiding questions
-::: {style="text-align: justify"}
 | N | Questions |  Answers  |
 |-  |-----------|-----------|
 ||||
 | 1 | What is the problem you are trying to solve?   | The challenge lies in understanding (finding patterns) how environmental conditions influence lettuce growth time. This knowledge  will help inform decisions to optimize growth cycle. |
 ||||
 | 2 | How can you insights drive business decisions? | Knowing about environmental conditions that impact lettuce growth can help managers decide on construction of an appropriate greenhouse |
+:::
 
 # Step 2. Prepare
 
@@ -110,7 +110,7 @@ The following methodologies/frameworks were used to determine the credibility of
 | 3 | Comprehensive | Covers all necessary cases and variables. | It is not possible to determine the level of comprehensiveness of the data | It is logical to assume that data is greatly simplified for educational purposes and does not contain all necessary information needed to solve a business problem. Since it includes the following key variables it can be used for our educational purposes: Plant_ID; Date; Temperature (°C); Humidity (%); TDS Value (ppm); pH Level; Growth Days. |
 | 4 | Current | The data sources aren’t out of date or irrelevant | The data is current | The data can be considered current, even though the observation was conducted in 2023 and the analysis using this information is being carried out in 2025. |
 | 5 | Cited | Data source is cited and vetted | The source of the data was not cited or verified. | However, since the data is provided and used for training purposes the data can be used in our work. |
-__Reliable:__ The data isn't reliable
+__Reliable:__ The data isn't reliable 
 
 __Conclusion on the credibility of the data in accordance with the ROCCC framework:__ Data isn't credible.
 
@@ -124,6 +124,7 @@ __Conclusion on the credibility of the data in accordance with the ROCCC framewo
 | 4 | Trustworthiness | Data trustworthiness refers to the degree to which information can be relied upon as accurate, credible, and secure, allowing users to confidently make decisions and conduct analyses based on it. | The data isn't trustworthiness | The data isn't trustworthy due to low scores for data integrity dimensions listed above.| 
 
 __Trustworthiness:__ The data isn't trustworthiness.
+
 __Conclusion on credibility of the data in accordance with the Data integrity conception:__ The data isn't credible.
 
 #### 2.1.4.3 Bias
@@ -158,46 +159,45 @@ For this analytical task, the "lettuce growth" dataset from Kaggle was used.
 :::
 
 ::: {style="text-align: justify"}
-# Step 3. Process (EDA)
-## 3.1 Stage 1 of EDA: Data Discovery & Profiling
-#### Load data
+# Step 3. Process (Stage 1 of EDA: Data Discovery & Profiling)
+## 3.1 Key tasks and delivirable(s)
+### Load data
 ```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
 df_0 <- read_sheet("https://docs.google.com/spreadsheets/d/1esw9BCXZDO1h4hwuaKowia5eVmflEKTS6NiouamSYA0/edit?gid=723124268#gid=723124268", sheet = "source_lettuce_dataset")
 
 # df_0 <- read_excel("C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx", sheet = "source_lettuce_dataset")
 ```
-#### Table overview
+### Table overview
 ```{r}
 df_0
 ```
-#### Column names
+### Column names
 ```{r}
 colnames(df_0)
 ```
-#### Number of rows and columns
+### Number of rows and columns
 ```{r}
 dim(df_0)
 ```
-#### Data types
+### Data types
 ```{r}
 glimpse(df_0)
 ```
-#### Data classes
+### Data classes
 ```{r}
 sapply(df_0, class)
 ```
-#### Checking completeness
+### Checking completeness
 Number of missing values in each column
 ```{r}
 colSums(is.na(df_0))
 ```
-#### Checking duplicates
+### Checking duplicates
 Number of duplicate values in each column
 ```{r}
 sapply(df_0, function(x) sum(duplicated(x)))
 ```
-
-#### Checking uniqueness
+### Checking uniqueness
 Number of unique rows
 ```{r}
 distinct(df_0) %>% dim()
@@ -206,7 +206,7 @@ Number of unique values in each column
 ```{r}
 sapply(df_0, function(x) sum(n_distinct(x)))
 ```
-#### Transorm data
+### Transorm data
 Convert Date column from character into date
 Creating new data frame
 ```{r}
@@ -226,20 +226,30 @@ df <- clean_names(df)
 ```
 <br>
 
-#### Checking data after transormation
-Table overview
+### Checking data after transormation
+
+#### Table overview
 ```{r}
 df %>% arrange(date)
 ```
-Checking completeness after transormation
+#### Checking completeness after transformation
 ```{r}
 colSums(is.na(df))
 ```
-Checking data stricture
+#### Checking data stricture after transformation
 ```{r}
 str(df)
 ```
+## 3.2 Guiding questions
 
+| N | Questions |  Answers  |
+|-  |-----------|-----------|
+||||
+| 1 | What tools are you choosing and why? | I chose R programming language (via RStudio and R Markdown) due to the following: R is powerful for data manipulation, cleaning, and visualization; It's free, open-source, and part of the tools recommended in the Google Data Analytics Certificate; R can handle larger datasets and streamline reproducible workflows using scripts and reports. |
+| 2 | How you ensured your data integrity? | ... |
+| 3 | What steps have you taken to ensure that your data is clean | ... | 
+| 4 | How can you verify that your data is clean and ready to analyze? | ... | 
+| 5 | How you documented your cleaning process so you can review and share those results? | ...| 
 
 #### Interpretation of the 1st stage EDA: Data Discovery & Profiling
 
@@ -261,7 +271,6 @@ __Uniqueness and duplication checks:__
 
 No duplicated rows were found (distinct(df_0) returned 3,169 unique rows).
 
-Each variable had a meaningful count of unique values (e.g., 70 plant IDs, 98 temperature readings, 9 pH levels), confirming valid variability across measurements.
 
 __Data type consistency:__
 
@@ -284,12 +293,14 @@ __🧠 Concusion__
 The dataset could be to be conserned (as it was mentioned above accurate, consistent, and complete. Minor formatting issues (dates, variable types) were corrected. Overall, this stage ensured data trustworthiness and integrity, making the dataset fully reliable for exploratory and statistical analysis.
 
 
-## 3.2 Univariate analysis ("Understanding individual variables" phase)
+# Analyze
+## Stage 2 of EDA: Univariate analysis ("Understanding individual variables" phase)
 
 #### Summary statistics
 Summary statistics using skim function
 ```{r}
-skim(df)
+skim(df) %>% 
+  mutate(across(where(is.numeric), ~ round(.x, 2)))
 ```
 
 Summary statistics using summary function
