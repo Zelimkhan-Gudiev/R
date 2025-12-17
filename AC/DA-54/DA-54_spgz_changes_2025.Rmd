@@ -76,7 +76,7 @@ The result of completing this task should be the answers to the following questi
 
 ### 1.1.4. Scope of work (SOW)
 
-|N | Deliverable | Timeline | Milestones | Results | What SMART questions will be answered |
+|N | Deliverables | Timeline | Milestones | Results | What SMART questions will be answered |
 |--|-----------   | ----     |------------|------------|------------|
 |1 | 
 
