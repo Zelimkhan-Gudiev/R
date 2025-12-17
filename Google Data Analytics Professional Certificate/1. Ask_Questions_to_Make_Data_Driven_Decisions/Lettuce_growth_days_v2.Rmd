@@ -2,7 +2,10 @@
 title: "Lettuce_growth_days"
 author: "Zelimkhan"
 date: "2025-09-22"
-output: 
+output:
+  word_document:
+    toc: true
+    toc_depth: '5'
   html_document:
     toc: true
     toc_depth: 5
