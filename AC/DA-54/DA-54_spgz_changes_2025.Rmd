@@ -1,0 +1,100 @@
+---
+title: "DA 54. Analysis of changes to the SPGZ in 2025 in terms of grounds"
+author: "Zelimkhan Gudiev"
+date: "2025-12-17"
+output:
+  html_document:
+    toc: true
+    toc_depth: 5
+    toc_float: TRUE
+---
+
+::: {style="text-align: justify"}
+
+# Install packages and attach libraries
+```{r setup, echo=TRUE, results="hide", warning=FALSE, message=FALSE}
+# install.packages("psych")
+# install.packages("lubridate")
+# install.packages("purrr")
+# install.packages("GGally")
+# install.packages("skimr")
+# install.packages("Writexl")
+# install.packages("corrplot")
+library(psych)
+library(googlesheets4)
+library(tidyr)
+library(dplyr)
+library(janitor)
+library(ggplot2)
+library(lubridate)
+library(purrr)
+library(GGally)
+library(readxl)
+library(skimr)
+library(writexl)
+library(corrplot)
+```
+
+# Step 1. Ask stage
+
+## 1.1. Key tasks and deliverable(s)
+
+### 1.1.1. Business task
+
+Determine the number of changes made to the SPGZ in 2025 for each of possible scenarios (cases) for the subsequent determination of frequency of scenarios (cases) in which customers receive notifications (in accordance with "[EAIST_JB-8765](https://pm.mos.ru/issue/EAIST_JB-8765) Реализовать уведомления пользователям при изменении позиций КПГЗ/СПГЗ, которые были запланированы в лотах") and scenarios (cases) that entail the need for customers to make changes to the lot specifications. 
+
+**Notes**
+
+* The assignment to carry out of this task was issued at the "[Meet-145](https://youtrack.gbuac.moscow/issue/Meet-145/Obsuzhdenie-privyazki-STZ-k-nestandartizirovannym-poziciyam-SPGZ-i-dorabotki-EAIST-s-celyu-predostavleniya-zakazchikam) Обсуждение привязки СТЗ к нестандартизированным позициям СПГЗ и доработки ЕАИСТ с целью предоставления заказчикам возможности использования в определённых случаях позиций СПГЗ, которые стали неактуальными или были удалены с момента формирования лота и до момента публикации извещения (Расширение стандартизации и наследование КПГЗ)" meeting.
+ 
+* This task is carrying out in the card "[DA-54](https://youtrack.gbuac.moscow/issue/DA-54/Podgotovit-analitiku-statistiku-izmenenij-KPGZ-SPGZ-v-2025-godu-v-razreze-osnovanij) Подготовить аналитику/статистику изменений КПГЗ/СПГЗ в 2025 году в разрезе оснований"
+
+* The results of this task will be used in the following tasks:
+
+  - [SGL-105](https://youtrack.gbuac.moscow/issue/SGL-105/Soglasovat-FT-na-Realizaciyu-ispolzovaniya-arhivnyh-KPGZ-i-SPGZ-zapros-ot-GRBS) Согласовать ФТ на Реализацию использования архивных КПГЗ и СПГЗ (запрос от ГРБС)
+
+  - [Meet-145](https://youtrack.gbuac.moscow/issue/Meet-145/Obsuzhdenie-privyazki-STZ-k-nestandartizirovannym-poziciyam-SPGZ-i-dorabotki-EAIST-s-celyu-predostavleniya-zakazchikam) Обсуждение привязки СТЗ к нестандартизированным позициям СПГЗ и доработки ЕАИСТ с целью предоставления заказчикам возможности использования в определённых случаях позиций СПГЗ, которые стали неактуальными или были удалены с момента формирования лота и до момента публикации извещения (Расширение стандартизации и наследование КПГЗ)
+  
+### 1.1.2. Key stakeholders
+
+The key stakeholders of this task are following:
+
+* Department of Economic Policy and Development of the City of Moscow
+
+* Department of Competition Policy of the City of Moscow
+
+* Moscow city customers
+
+### 1.1.3.Smart questions
+
+The result of completing this task should be the answers to the following questions
+
+| N | Type      | Question   |
+|---|-----------|------------|
+| 1| ...  | How often  did the SPGZ change in 2025 for each of the scenarios (cases) described in "Матрица изменений" file, prepared during the work on task "IS_Task-318 Сформировать таблицу изменений СПГЗ, после которых требуется актуализация лота".|
+| 2| ... | ... |
+
+### 1.1.4. Scope of work (SOW)
+
+|N | Deliverable | Timeline | Milestones | Results | What SMART questions will be answered |
+|--|-----------   | ----     |------------|------------|------------|
+|1 | 
+
+## 1.2 Guiding questions
+
+| N | Question  | Answer     |
+|---|-----------|------------|
+| 1 | What problem need to be solved using the result of this task | The problem that needs to be solved is that customers need to make changes in they lots if the SPGZ positions used in those lot's specifications are changed or deleted |
+| 2 | How can the insights (results) of this task drive business decisions | This analysis insights will be used to determine necessary EAIST upgrades and their priorities.|
+
+# Step 2. Prepare stage 
+
+# Step 3. Process stage
+
+# Step 4. Analyze stage
+
+# Step 5. Share stage
+
+# Step 6. Act stage
+
+:::
