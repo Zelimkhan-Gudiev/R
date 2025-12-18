@@ -125,6 +125,8 @@ The ROCCC framework and Data integrity methodology were used to determine the da
 | N | ROCCC Dimension |  Description  | Conclusion | Comments  |
 |-  |      -----------|-----------    | -----------|-----------|
 |1  | Reliable | Source is dependable and consistent. | See to the conclusion below the table | It depends on ROCCC dimensions listed below |
+|2  | Original | The data obtained from the original source (or if the data is not obtained from the original source, it is possible compere and verify the data with the original source) | The data obtained from the original source (Catalog database).
+|3 | 
 
 # 3. Data processing
 
