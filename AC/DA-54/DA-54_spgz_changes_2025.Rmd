@@ -6,7 +6,13 @@ output:
   html_document:
     toc: true
     toc_depth: 5
-    toc_float: TRUE
+    toc_float: true
+  word_document:
+    toc: true
+    toc_depth: '5'
+  pdf_document:
+    toc: true
+    toc_depth: '5'
 ---
 
 ::: {style="text-align: justify"}
@@ -93,7 +99,9 @@ The result of completing this task should be the answers to the following questi
 |-|-----------|------------|
 | 1 | What problem need to be solved using the result of this task | The problem that needs to be solved is that customers need to make changes in they lots if the SPGZ positions used in those lot's specifications are changed or deleted |
 | 2 | How can the insights (results) of this task drive business decisions | This analysis insights will be used to determine necessary EAIST upgrades and their priorities.|
-
+<br>
+<br>
+<br>
 
 # **2. Data preparation**
 
@@ -103,12 +111,14 @@ The result of completing this task should be the answers to the following questi
 
 Data was collected from several Catalog database tables using the SQL query "spgz_kpgz_relations_packages.sql".
 
-### **2.1.2. Downloading and storing data
+### **2.1.2. Downloading and storing data**
 
 The data was downloaded and stored at the enterprise cloud and available is at this [link](https://drive.ac-mos.ru/f/4038789)
 
-```{r}
-df <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
+```{r, warning=FALSE, message=FALSE}
+# df <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
+df <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
+df_src <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
 ```
 
 
@@ -116,26 +126,254 @@ df <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_
 
 The data is organized as a table (in csv format) containing **`r nrow(df)`** rows. The rows contain information about versions of SPGZ positions which were changed or deleted in 2025.
 
-### **2.1.4 Data credibility determenation**
+### **2.1.4. Data credibility determination**
 
 The ROCCC framework and Data integrity methodology were used to determine the data credibility
 
-#### **2.1.4.1 ROCCC framework**
+##### **ROCCC framework**
 
 | N | ROCCC Dimension |  Description  | Conclusion | Comments  |
 |-  |      -----------|-----------    | -----------|-----------|
 |1  | Reliable | Source is dependable and consistent. | See to the conclusion below the table | It depends on ROCCC dimensions listed below |
 |2  | Original | The data obtained from the original source (or if the data is not obtained from the original source, it is possible compere and verify the data with the original source) | The data obtained from the original source (Catalog database).
-|3 | 
+|3 | Comprehensive | Covers all necessary cases and variables | The data covers all necessary cases and variables | |
+|4 | Current | The data source aren't out of date or irrelevant | The data is current and contains the necessary information for 2025 year | | 
+|5 | Cited   | The data source is cited and vetted | The data source is cited and veted | |
+**Conclusion on reliability of the data source based on the on ROCCC framework: The data source is reliable.**
 
-# 3. Data processing
+##### **Data integrity**
+| N | Data integrity dimension | Description | Conclusion |
+|-  |       -----------|-----------    | -----------|
+|1  |  Accuracy | The degree to which the data conforms to the actual entity being measured or described | The data conforms actual changes in the ZPGZ in 2025 |
+|2  | Completeness | Data completeness is a dimension of data quality that measures whether all necessary or required data is present and available for dataset to fulfill to intended purpose.| The dataset contains all necessary cases and variables.|
+|3  | Consistency | Data follows the same formats and rules.| The date are consistency |
+|4  | Trustworthiness | The trustworthiness refers to the degree to which information can be relied upon as accurate, credible and secure, allowing users confidently make decisions and conduct analysis based on it.  | The data is trustworthiness |
+**Conclusion on credibility of the data source based on Data integrity methodology: The source is credibility.**
+
+#### **2.1.5. Bias**
+The dataset come from Catalog database and reflect actaull changes in the SPGZ in 2025
+
+#### **2.1. 6. Conclusion on the admissibility of using data**
+The data is credible and can be use for analysis
+
+## 2.2 Guiding questions
+| N | Questions |  Answers  |
+|-  |-----------|-----------|
+|1  | Where the data is located? | The data was downloaded from Catalog database and stored in the enterprise cloud at this [link](https://drive.ac-mos.ru/f/4038789) (see section "2.1.2. Downloading and storing data")|
+|2  | How is the data organized? | The data is organized as a table consisting of **`r nrow(df)`** and **`r ncol(df)`** |
+|3  | Are there issues with bias or credibility in the data? Does the data ROCCC? | The data is unbiased and credible. Data is integrity and meets the ROCCC methodology requirements (see section the "2.1.4. Data credibility determination" section)|
+|4  | How are issues of licencing, privacy, security, and accessibility addressed? | 
+
+
+<br>
+<br>
+<br>
+
+# **3. Data processing**
+
+## Stage 1 of EDA: Data Discovery & Profiling
+
+Table overview 
+```{r}
+df
+```
+
+Clean names
+```{r}
+# toString(names(df))
+df <- clean_names(df)
+```
+
+Columns names
+```{r}
+names(df)
+```
+Number of rows and columns
+```{r}
+dim(df)
+```
+Data types
+```{r}
+glimpse(df)
+```
+Data classes
+```{r}
+sapply(df, class)
+```
+Checking duplicates. Number of duplicate columns in each column.
+```{r}
+sapply(df, function(x) sum(duplicated(x)))
+```
+Checking uniqueness. 
+
+Number of unique rows.
+```{r}
+df %>% n_distinct()
+```
+
+Number of unique values in each column
+```{r}
+sapply(df, function(x) sum(n_distinct(x)))
+```
+
+Checking completness
+```{r}
+colSums(is.na(df))
+```
+
+**Converting data types**
+Converting all columns with fewer than 10 unique (non-NA) values into factors
+
+```{r}
+# df <- df %>% 
+#   mutate(
+#     across(
+#       where(~ n_distinct(.x, na.rm = TRUE) < 10),
+#       as.factor
+#     )
+#     )
+```
+
+Converting variables with date and time values from character format to date format.
+```{r}
+df <- df %>% 
+  mutate(
+    across(
+      contains("date_") & where(is.character), 
+           ~ as.Date(ymd_hms(.x)))
+  )
+
+```
+
+Filtering data
+```{r}
+df <- df %>% 
+  filter(
+    (isexcluded_spgz == 0 & !is.na(package_user_name)) & # deleting excluded spgz and spgz without author (which where created by mistake)
+      (
+           year(editdate_spgz) == 2025 |
+         year(enddate_version_spgz) == 2025)
+        )
+```
+
+Deleting duplicate rows
+```{r}
+df <- df %>% 
+   distinct()
+```
+
+Deleting unnecessary columns
+```{r}
+df <- df %>% 
+  select(id_entity_spgz_katalog, id_version_spgz_katalog, name_spgz, isstandardized_spgz, isproject_spgz, isdeleted_spgz, 
+  ispcp_spgz, createdate_spgz, editdate_spgz, begindate_version_spgz, enddate_version_spgz, okpd2_code_spgz, 
+  okpd2_name_spgz, ktru_code_spgz, ktru_name_spgz, rels_old_pgz_id, rels_linktype, rels_new_pgz_id, rels_is_actual, 
+  rels_source_pgz_id, package_name, package_user_name, package_reason_name, id_entity_kpgz, name_kpgz, code_kpgz)
+
+# toString(names(df))
+```
+
+
+```{r}
+dups <- df %>%
+  group_by(across(everything())) %>%  # group by all columns
+  filter(n() > 1) %>%                 # keep groups with more than one row
+  ungroup()
+```
+
+**Adding new columns**
+Adding a column with number of values for each id_entity_spgz_katalog
+```{r}
+df <- df %>% 
+  group_by(id_entity_spgz_katalog) %>% 
+  mutate(
+    n_id_entity_spgz_katalog = n()) %>% 
+  ungroup()
+```
+
+Adding a column with the numbers of unique values id_version_spgz_katalog per id_entity_spgz_katalog
+```{r}
+df <- df %>% 
+  group_by(id_entity_spgz_katalog) %>% 
+  mutate(
+    n_unique_id_version_cataloge = n_distinct(id_version_spgz_katalog, na.rm = TRUE)) %>% 
+      ungroup()
+```
+
+Adding column with difference between "id_entity_spgz_katalog" and "id_version_spgz_katalog"
+```{r}
+df <- df %>% 
+  mutate(
+    diff_id_entity_id_version = n_id_entity_spgz_katalog - n_unique_id_version_cataloge
+  )
+```
+
+Adding a column with deletion information
+```{r}
+df <- df %>% 
+  group_by(id_entity_spgz_katalog) %>% 
+  mutate(
+    is_deleted_spgz = as.integer(sum(as.integer(isdeleted_spgz), na.rm = TRUE) > 1)
+    ) %>% 
+      ungroup()
+```
+Adding column with information about relation...
+
+
+Adding column with information about standardizing in 2025
+```{r}
+df <- df %>% 
+  group_by(id_entity_spgz_katalog) %>% 
+  mutate(
+    was_standartized_25 = as.integer(
+      n_distinct(trimws(as.character(isstandardized_spgz)), na.rm = TRUE) > 1
+      )
+    ) %>% 
+  ungroup()
+
+```
 
 
 
-# 4. Data analysis
 
-# 5. Report
 
-# 6. Usage result
+
+
+
+dssd
+```{r}
+# rels_old_pgz_id <- df %>% filter(!is.na(rels_old_pgz_id)) %>% select(rels_old_pgz_id)
+# df_rels <- df %>% filter(id_version_spgz_katalog %in% rels_old_pgz_id)
+
+df %>% filter(
+  id_version_spgz_katalog == "30425543" |
+    rels_old_pgz_id == "30425543" |
+    id_entity_spgz_katalog == "29270927" |
+    id_entity_spgz_katalog == "30424361" |
+    id_version_spgz_katalog == "30425542"
+) %>% write_xlsx("/Users/zelimkhan/Desktop/DA-54/2025.12.21_df_0.xlsx")
+```
+
+```
+
+<br>
+<br>
+<br>
+
+# **4. Data analysis**
+<br>
+<br>
+<br>
+
+# **5. Report**
+<br>
+<br>
+<br>
+
+# **6. Usage result**
+
+```{r}
+write_xlsx(df, "/Users/zelimkhan/Desktop/DA-54/2025.12.21_df.xlsx")
+```
 
 :::

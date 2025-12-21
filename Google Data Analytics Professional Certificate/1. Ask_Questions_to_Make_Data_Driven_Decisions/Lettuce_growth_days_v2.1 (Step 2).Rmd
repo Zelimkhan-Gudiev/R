@@ -1,0 +1,598 @@
+---
+title: "Lettuce_growth_days"
+author: "Zelimkhan"
+date: "2025-09-22"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 5
+    toc_float: true
+---
+
+# Install packages and attach libraries
+```{r setup, echo=TRUE, results="hide", warning=FALSE, message=FALSE}
+# install.packages("psych")
+# install.packages("lubridate")
+# install.packages("purrr")
+# install.packages("GGally")
+# install.packages("skimr")
+# install.packages("Writexl")
+library(psych)
+library(googlesheets4)
+library(tidyr)
+library(dplyr)
+library(janitor)
+library(ggplot2)
+library(lubridate)
+library(purrr)
+library(GGally)
+library(readxl)
+library(skimr)
+library(writexl)
+```
+
+::: {style="text-align: justify"}
+# Step 1. Ask
+## 1.1 Key tasks and Deliverable(s)
+
+### 1.1.1 A clear statement of the business task
+Determine how environmental factors (temperature, humidity, and total dissolved solids) influence lettuce growth and maturity time, in order to optimize greenhouse conditions and predict growth outcomes for future growing seasons.
+
+### 1.1.2 Key stakeholders
+Managers
+
+### 1.1.3 Smart questions
+| N | Type | Questions |
+| - |-----------|-----------|
+||||
+| 1 | Specific | Is there a connection between humidity and temperature? |
+||||
+| 2 | Measurable | How much growth is normal or expected over a one week period? |
+||||
+| 3 | Action-oriented | If total dissolved solids are increased when growing lettuce, will it shorten the time needed for the plants to reach maturity? |
+||||
+| 4 | Relevant | Based on the dataset, how can predictions about growth be made given the conditions? | 
+||||
+| 5 | Time - bound | 1) What is the data range for this data set? <br> 2) Do we need an understanding of this data for next season? |
+
+### 1.1.4 Scope of work (SOW)
+| N | Deliverables | Timeline | Milestones | Results | What SMART questions will be answered |
+|-  |-----------   | ----     |------------|------------|------------|
+|||||||
+| 1 | Clean dataset | Day 1 | Completion of data download and preparation | Dataset is clean and usable | - |
+|||||||
+| 2 | Exploratory data analysis (EDA) findings (form: spreadsheet, google doc summary) | Day 2 | Completion of EDA - understanding of dataset is formed | EDA highlights room for investigation. Questions were formulated based on the results of EDA. | **Specific:** Is the connection between humidity and temperature <br> <br> **Time - Bound:** What is the data range for this data set? |
+|||||||
+| 3 | Engineered features in the form of new columns (examples may include Avg 3 day growth, Growth since day before, etc.) | Day 3 | Completion of feature engineering | New columns engineered to provide more accessible information | **Measurable:** How much growth is normal or expected over a one week period? |
+|||||||
+| 4 | Statistical insights | Day 3 | Completion of statistical analysis | Statistical analysis conducted | **Action-oriented:** If total dissolved solids are increased when growing lettuce, will it shorten the time needed for the plants to reach maturity? <br> <br> **Relevant:** Based on the dataset, how can predictions about growth be made given the conditions? <br> <br> **Time - bound:** Do we need an understanding of this data for next season? |
+|||||||
+| 5 | Visual Aids (images, dashboards) | Days 4-5 | Completion of visualizations | Visualizations created | - |
+|||||||
+| 6 | Final report (spreadsheet and PowerPoint) | Day 6-10 | Final report submission | Final report completed | - |
+:::
+## 1.2 Guiding questions
+::: {style="text-align: justify"}
+| N | Questions |  Answers  |
+|-  |-----------|-----------|
+||||
+| 1 | What is the problem you are trying to solve?   | The challenge lies in understanding (finding patterns) how environmental conditions influence lettuce growth time. This knowledge  will help inform decisions to optimize growth cycle. |
+||||
+| 2 | How can you insights drive business decisions? | Knowing about environmental conditions that impact lettuce growth can help managers decide on construction of an appropriate greenhouse |
+
+# Step 2. Prepare
+
+## 2.1 Key tasks and deliverable(s)
+
+### 2.1.1 Download data and store it appropriately
+Data downloaded and stored on my personal computer and Google Drive. Data available at these links:
+1) On the work computer: C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx, sheet = “source_lettuce_dataset
+2) On the laptop: /Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx
+3) On the Google Drive
+
+### 2.1.2 Identify how it’s orginized
+The data is organized as a table containing data on 70 plants. The rows contain environmental conditions for each of the 70 plants on each day throughout the growing season. The columns contain information about the plant identifier (Plant_ID) and the following environmental conditions, which were recorded daily for each of the 70 plants throughout the growing season: Date; Temperature (?C); Humidity (%); TDS Value (ppm); pH Level; Growth Days.
+
+### 2.1.3 Sort and filter the data
+Data filtered and sorted
+
+### 2.1.4 Determine the credibility of the data
+The following methodologies/frameworks were used to determine the credibility of the data: ROCCC; Data Integrity.
+
+#### 2.1.4.1 ROCCC
+
+| N | ROCCC Dimension |  Description  | Conclusion | Comments |
+|-  |-----------|-----------|-----------|-----------|
+| 1 | Reliable | Source is dependable and consistent. | Watch conclusion below the table  | It depends on ROCCC dimensions listed below |
+| 2 | Original | We get data from original source (or If we obtained data from a secondary or tertiary source, we could compare and verify it with the primary source) | The data is not original | We do not receive data from the original source, we also cannot identify the original source and have no way to compare it with the original data. However, since the data is provided and used for educational purposes, we may use it for educational purposes |
+| 3 | Comprehensive | Covers all necessary cases and variables. | It is not possible to determine the level of comprehensiveness of the data | It is logical to assume that data is greatly simplified for educational purposes and does not contain all necessary information needed to solve a business problem. Since it includes the following key variables it can be used for our educational purposes: Plant_ID; Date; Temperature (°C); Humidity (%); TDS Value (ppm); pH Level; Growth Days. |
+| 4 | Current | The data sources aren’t out of date or irrelevant | The data is current | The data can be considered current, even though the observation was conducted in 2023 and the analysis using this information is being carried out in 2025. |
+| 5 | Cited | Data source is cited and vetted | The source of the data was not cited or verified. | However, since the data is provided and used for training purposes the data can be used in our work. |
+__Reliable:__ The data isn't reliable
+
+__Conclusion on the credibility of the data in accordance with the ROCCC framework:__ Data isn't credible.
+
+
+#### 2.1.4.2 Data integrity
+| N | Data integrity Dimension |  Description  | Conclusion | Comments |
+|-  |-----------|-----------|-----------|-----------|
+| 1 | Accuracy | The degree to which the data conforms to the actual entity being measured or described | It is not possible to determine the data's accuracy. | Since the data does not contain unrealistic values (such as days with negative growth, numerical values falling within an unexpected data range, or other impossible measurements), the data can be considered accurate.|  
+| 2 | Completeness | Data completeness is a dimension of data quality that measures whether all necessary or required data is present and available for a dataset to fulfill its intended purpose. |  It is not possible to determine the level of Completeness of the data | It is logical to assume that data is greatly simplified for educational purposes and does not contain all necessary information needed to solve a business problem. Since it includes the following key variables and  doesn't have missing values it can be used for our educational purposes: Plant_ID; Date; Temperature (°C); Humidity (%); TDS Value (ppm); pH Level; Growth Days. |
+| 3 | Consistency | Data follows the same format and rules. | Data is consistency | The Date column has character type. |
+| 4 | Trustworthiness | Data trustworthiness refers to the degree to which information can be relied upon as accurate, credible, and secure, allowing users to confidently make decisions and conduct analyses based on it. | The data isn't trustworthiness | The data isn't trustworthy due to low scores for data integrity dimensions listed above.| 
+
+__Trustworthiness:__ The data isn't trustworthiness.
+
+__Conclusion on credibility of the data in accordance with the Data integrity conception:__ The data isn't credible.
+
+#### 2.1.4.3 Bias
+The dataset appears to come from a controlled educational or research environment, so it may not present all real world farming conditions or varieties of lettuce. However, since it is used for analytical practice rather than policy or production decisions, the risk of bias affecting conclusions is minimal.
+
+__Conclusion on the admissibility of using data:__
+The data are acceptable for use despite negative findings regarding the credibility of the data in accordance with both the ROCCC framework and the concept of data integrity, as well as the inability to demonstrate the absence of bias, as they are used for educational purposes.
+
+
+### 2.1.5 A description of all data sourced used
+For this analytical task, the "lettuce growth" dataset from Kaggle was used.
+
+## 2.2 Guiding questions
+| N | Questions |  Answers  |
+|-  |-----------|-----------|
+||||
+| 1 | Where is your data located?                                                   | The data is publicly available in Kaggle website at this [link](https://www.kaggle.com/datasets/jurijsruko/lettuce) |
+||||
+| 2 | How is the data organized?                                                    | The data is organized as a table containing data on 70 plants in long format. The rows contain environmental conditions for each of the 70 plants on each day throughout the growing season. The columns contain information about the plant identifier (Plant_ID) and the following environmental conditions, which were recorded daily for each of the 70 plants throughout the growing season: Date; Temperature (?C); Humidity (%); TDS Value (ppm); pH Level; Growth Days.|
+||||
+| 3 | Are there issues with bias or credibility in this data? Does your data ROCCC? | See section "2.1.4 Determine the credibility of the data" |
+||||
+| 4 | How are you addressing licensing, privacy, security, and accessibility?       |1. **Licensing** <br> The lettuce dataset is published under the Apache 2.0.It means: <br> 1) You are allowed to freely use, modify, and share the dataset, including for commercial and non-commercial purposes.<br> 2) You must provide proper attribution to the original authors when you use the data. <br> 3) If you modify the dataset and distribute your modified version, you must indicate what changes you made. <br> 4) There is no warranty—the authors are not responsible for any issues from using the data. <br> 4) The dataset can be combined with other work, even proprietary.<br> However, on the Kaggle page for this dataset, there is an additional statement: "Do not use it for commercial purposes." This suggests the author is placing an extra restriction that is stricter than the typical Apache 2.0 terms. In this case, you should follow the conditions stated on the dataset's page. For academic or personal projects, with attribution, you are free to use the data. <br> 2. **Privacy** <br> It does not contain personally identifiable information (PII), so privacy is not a concern. <br> 3. **Security** <br> Security risks are minimal, as the dataset stored locally on my Google Drive. <br> 4. **Accessibility** <br> Accessibility is ensured by keeping the data in standard formats (csv, xlsx, R data frames), which can be opened in widely available tools such as Excel, Rstudio or Google Sheets.|
+||||
+| 5 | How did you verify the data's integrity?                                      | Data integrity involves the accuracy, completeness, consistency, and trustworthiness of data throughout its lifecycle. <br> 1. **Accuracy:** I inspected the dataset for unrealistic values (e.g., negative growth days, numerical values falling within an unexpected data range or impossible measurements) using: Sorting and filtering in spreadsheet; R functions such as summary() and is.na().  <br> *Definition  <br> Data accuracy refers to the degree to which data correctly represents the true, real-world information or events it describes, meaning it is correct, precise, and free from errors or distortions. Accurate data serves as a trustworthy foundation for effective decision-making, reliable analysis, and efficient operations, making it a critical component of overall data quality.* <br> 2. **Completeness:** I checked for missing or empty cells using: Sorting and filtering in spreadsheet; R functions such as summary() and is.na(). <br> *Definition  <br> Data completeness is a dimension of data quality that measures whether all necessary or required data is present and available for a dataset to fulfill its intended purpose. It ensures there are no missing values or gaps in critical information, preventing skewed analyses and enabling accurate decision-making*. <br> 3. **Consistency:** <br> I reviewed column names, formats, and data types to ensure that values were stored uniformly (e.g., all numeric columns have numeric data types).  <br> *Definition <br> Data consistency - is the quality of data follows the same format and rules remaining accurate, uniform, and coherent across all systems, databases, and applications within an organization.*. <br> 4. **Trustworthiness:** Users can depend on the data to be correct and dependable. <br> Since the dataset is a clean educational sample, I verified its source and confirmed it had not been altered during download or import (no unexpected changes in row count or structure). <br>  *Definition <br> Data trustworthiness refers to the degree to which information can be relied upon as accurate, credible, and secure, allowing users to confidently make decisions and conduct analyses based on it.*  <br> Data?s integrity will be checked in more detail (accuracy, completeness, consistency, trustworthiness) in the next step of analyses (step 3 ?Process?).  |
+||||
+| 6 |	How does it help you answer you questions?   | The dataset directly contains the variables needed (growth days and environmental factors), so it enables me to explore how growth varies by environmental conditions). <br> It provides the empirical basis for descriptive statistics and visualizations that can answer the practice assignment's research questions.| 
+||||
+| 7 | Are there any problems with the data?        | The Date column has character type instead date. |
+
+
+:::
+
+::: {style="text-align: justify"}
+# Step 3. Process (EDA)
+## Stage 1 of EDA: Data Discovery & Profiling
+#### Load data
+```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
+df_0 <- read_sheet("https://docs.google.com/spreadsheets/d/1esw9BCXZDO1h4hwuaKowia5eVmflEKTS6NiouamSYA0/edit?gid=723124268#gid=723124268", sheet = "source_lettuce_dataset")
+
+# df_0 <- read_excel("C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/1. Ask_Questions_to_Make_Data_Driven_Decisions/lettuce_dataset_SOW.xlsx", sheet = "source_lettuce_dataset")
+```
+#### Table overview
+```{r}
+df_0
+```
+#### Column names
+```{r}
+colnames(df_0)
+```
+#### Number of rows and columns
+```{r}
+dim(df_0)
+```
+#### Data types
+```{r}
+glimpse(df_0)
+```
+#### Data classes
+```{r}
+sapply(df_0, class)
+```
+
+#### Checking completeness
+Number of missing values in each column
+```{r}
+colSums(is.na(df_0))
+```
+
+#### Checking duplicates
+Number of duplicate values in each column
+```{r}
+sapply(df_0, function(x) sum(duplicated(x)))
+```
+
+#### Checking uniqueness
+Number of unique rows
+```{r}
+distinct(df_0) %>% dim()
+```
+Number of unique values in each column
+```{r}
+sapply(df_0, function(x) sum(n_distinct(x)))
+```
+
+#### Transorm data
+Convert Date column from character into date 
+```{r}
+df_0$Date <- mdy(df_0$Date)
+```
+Convert Plant_ID column from numeric into factor 
+```{r}
+df_0$Plant_ID <- as.factor(df_0$Plant_ID)
+```
+Clean names 
+```{r}
+df <- clean_names(df_0)
+```
+
+#### Checking data after transormation
+Table overview
+```{r}
+df %>% arrange(date)
+```
+Checking completeness after transormation
+```{r}
+colSums(is.na(df))
+```
+Checking data stricture
+```{r}
+str(df)
+```
+
+#### Interpretation of the 1st stage EDA: Data Discovery & Profiling
+
+__Purpose and Approach__
+
+This stage focused on initial understanding and validation of the lettuce dataset to answer two main questions:
+
+What does the data contain?
+
+Is the data clean and ready for analysis?
+
+__📄 Findings__
+
+Dataset structure:
+The table contained 3,169 rows and 7 columns, representing multiple measurements for 70 individual plants across 48 observation days.
+Columns included: plant_id, date, temperature_c, humidity_percent, tds_value_ppm, p_h_level and growth_days
+
+__Uniqueness and duplication checks:__
+
+No duplicated rows were found (distinct(df_0) returned 3,169 unique rows).
+
+Each variable had a meaningful count of unique values (e.g., 70 plant IDs, 98 temperature readings, 9 pH levels), confirming valid variability across measurements.
+
+__Data type consistency:__
+
+The "date" column was initially stored as a character type and was converted to a proper Date format using mdy().
+
+The "plant_id" column was converted from numeric to factor, which correctly represents categorical identifiers.
+
+Column names were standardized with clean_names() for consistent syntax.
+
+__Quality assessment:__
+
+No missing values were reported.
+
+The only detected issue before transformation was inconsistent date formatting.
+
+After cleaning, all variables were in the correct type and ready for deeper analysis.
+
+__🧠 Concusion__
+
+The dataset was confirmed to be accurate, consistent, and complete.
+Minor formatting issues (dates, variable types) were corrected.
+
+# Step 4. Analyze
+
+## Stage 2 of EDA: Univariate analysis ("Understanding individual variables" phase)
+
+#### Summary statistics
+Summary statistics using skim function
+```{r}
+skim(df) %>% 
+  mutate(across(where(is.numeric), ~ round(.x, 2)))
+```
+Summary statistics using summary function
+```{r}
+summary(df)
+```
+
+#### Examine distribution and detecting outliers
+Examine distribution plotting histograms
+```{r}
+df %>% select(where(is.numeric)) %>% 
+  pivot_longer(everything(),
+               names_to = "variable",
+               values_to = "value") %>% 
+  ggplot(aes(x = value, fill = variable)) +
+  geom_histogram(bins = 30, alpha = 0.6, color = "black", na.rm = TRUE) +
+  facet_wrap(~ variable, scales = "free", ncol = 3) +
+# theme_minimal() + 
+  guides(fill = "none")
+```
+
+Detect outliers plotting boxplots
+```{r}
+df %>% select(where(is.numeric)) %>% 
+  pivot_longer(everything(),
+               names_to = "variable",
+               values_to = "value") %>% 
+  ggplot(aes(x = variable, y = value)) +
+  geom_boxplot(outliers.alpha = 0.35) +
+  labs(x = NULL, y = NULL, title = "Boxplots of numeric variables") +
+  facet_wrap(~ variable, scales = "free", ncol = 3) +
+  # theme_minimal() +
+  guides(fill = "none")
+```
+<br>
+
+#### Interpretation of the 2d stage EDA: Univariate analysis
+
+__🎯 Purpose__
+
+This step examined each variable independently to describe its distribution, variation, and potential outliers.
+
+__📈 Summary Statistics__
+
+Rows: 3,169
+
+Columns: 7
+
+Variable types: 1 Date (date), 1 Factor (plant_id), 5 Numeric (temperature_c, humidity_percent, tds_value_ppm, p_h_level, growth_days).
+
+Missing data: 0 across all columns.
+
+📅 Date Variable
+
+Range: 2023-08-03 → 2023-09-19 (48 unique days).
+→ Represents about 7 weeks of continuous monitoring.
+
+🪴 Plant ID
+
+70 unique plants, each measured several times (roughly 45 observations per plant).
+→ Confirms the dataset’s panel/time-series nature.
+
+__🔢 Numeric Variables__
+
+| N | Variable |  Interpretation  |
+|-  |-----------|-----------|
+| 1 | temperature_c | Moderate variation — typical indoor growing temperature, stable across time.|
+| 2 | humidity_percent | Reasonably humid environment — variation likely due to daily cycles.| 
+| 3 | tds_value_ppm | Stable nutrient concentration — healthy hydroponic range. |
+| 4 | p_h_level | Excellent — near-neutral, stable pH. |
+| 5 | growth_days | Data spans about 1.5 months: from 2023-08-03 to 2023-09-19.|
+
+__📊 Insights__
+
+No missing data or extreme anomalies.
+
+Boxplots showed relatively symmetric distributions for most environmental variables, with slight skewness or mild outliers in TDS and Growth Days.
+
+Overall, variability within variables supports robust analysis of growth-environment interactions.
+
+__🧠 Interpretation__
+
+Each variable behaves consistently with expectations for greenhouse data:
+
+Environmental factors are well-controlled but still varied enough to analyze correlations with plant growth.
+
+The dataset is statistically rich and suitable for later modeling (e.g., regression or correlation analysis).
+
+## Stage 3 of EDA: Bivariate/Multivariate analysis ("Understanding relationships" phase)
+
+```{r}
+df %>% select(where(is.numeric)) %>% 
+  cor(use = "complete.obs") %>% round(2)
+```
+
+
+```{r}
+df %>% select(where(is.numeric)) %>% 
+  cor(use = "complete.obs") %>% 
+  corrplot::corrplot(method = "color", 
+                     type = "upper", 
+                     order = "hclust",
+                     addCoef.col = "black",
+                     tl.cex = 0.8,
+                     tl.col = "black",
+                     tl.srt = 45,
+                     cl.pos = "n")
+```
+
+
+```{r}
+pairs(df)  
+```
+
+```{r}
+df %>% select(-plant_id, -date) %>% 
+  ggpairs()
+```
+__🎯 Purpose__
+
+This stage examined how environmental variables relate to each other and to the target variable — Growth Days.
+
+🔗 Correlation Matrix (Rounded to 2 decimals)
+
+|    Variable      |	temperature_c	 | humidity_percent	| tds_value_ppm	| p_h_level	| growth_days |
+|------------------|----------------|-------------------|---------------|-----------|-------------|
+| temperature_c    |	    1.00	    |       0.03        |     -0.01     |	    0.01	|   -0.07     |
+| humidity_percent |      0.03	    |       1.00	      |     -0.01     |    	0.02  |  	-0.01     |
+| tds_value_ppm	   |     -0.01      |      -0.01        |      1.00	    |    -0.01  | 	-0.02     |
+| p_h_level	       |      0.01	    |       0.02	      |     -0.01	    |     1.00	|    0.00     |
+| growth_days	     |     -0.07	    |      -0.01	      |     -0.02	    |     0.00	|    1.00     |
+
+__💡 Interpretation of Correlations__
+
+All correlations are weak (|r| < 0.1) — no strong linear dependencies among variables.
+
+Slight negative correlation between temperature_c and growth_days (-0.07) could indicate that higher temperatures may slightly accelerate early growth, reducing total growth duration.
+
+Other environmental factors (humidity_percent, tds_value_ppm, p_h_level) show minimal direct relationships to growth time.
+
+The correlation plot confirms overall independence of predictors, meaning multicollinearity is not a concern.
+
+__🧠 General Interpretation__
+
+The weak correlations suggest lettuce growth in this dataset is not linearly dominated by any single factor — growth may depend on nonlinear or combined environmental effects (e.g., optimal ranges rather than simple linear relationships).
+
+These findings justify future modeling efforts (like regression or machine learning) to explore interactions or thresholds rather than direct proportional effects.
+
+__✅ Summary of the Three Phases__
+
+| Phase	| Focus	| Key Findings |
+|-------|-------|--------------|
+| 3.1  Data Discovery & Profiling 	| Structure & cleanliness	     | Data was complete, consistent, and properly formatted.|
+| 3.2 Univariate Analysis	          | Individual variable behavior |	Variables showed natural variation without missing data; distributions were realistic.
+3.3 Bivariate/Multivariate Analysis |	Variable relationships	     | No strong linear relationships; temperature showed a slight negative association with growth days.|
+
+
+____
+
+
+
+
+
+
+All statistics by plant id
+```{r}
+all_stats_by_id <- df %>% group_by(plant_id) %>%
+  summarise(
+            date_min = min(date),
+            date_mean = mean(date),
+            date_median = median(date),
+            date_max = max(date),
+            temperature_c_min = min(temperature_c),
+            temperature_c_q1 = quantile(temperature_c, 0.25),
+            temperature_c_mean = mean(temperature_c),
+            temperature_c_median = median(temperature_c),
+            temperature_c_sd = sd(temperature_c),
+            temperature_c_q3 = quantile(temperature_c, 0.75),
+            temperature_c_max = max(temperature_c),
+            humidity_percent_min = min(humidity_percent),
+            humidity_percent_q1 = quantile(humidity_percent, 0.25),
+            humidity_percent_mean = mean(humidity_percent),
+            humidity_percent_median = median(humidity_percent),
+            humidity_percent_sd = sd(humidity_percent),
+            humidity_percent_q3 = quantile(humidity_percent, 0.75),
+            humidity_percent_max = max(humidity_percent),
+            tds_value_ppm_min = min(tds_value_ppm),
+            tds_value_ppm_q1 = quantile(tds_value_ppm, 0.25),
+            tds_value_ppm_mean = mean(tds_value_ppm),
+            tds_value_ppm_median = median(tds_value_ppm),
+            tds_value_ppm_sd = sd(tds_value_ppm),
+            tds_value_ppm_q3 = quantile(tds_value_ppm, 0.75),
+            tds_value_ppm_max = max(tds_value_ppm),
+            p_h_level_min = min(p_h_level),
+            p_h_level_q1 = quantile(p_h_level, 0.25),
+            p_h_level_mean = mean(p_h_level),
+            p_h_level_median = median(p_h_level),
+            p_h_level_sd = sd(p_h_level),
+            p_h_level_q3 = quantile(p_h_level, 0.75),
+            p_h_level_max = max(p_h_level),
+            growth_days_min = min(growth_days),
+            growth_days_q1 = quantile(growth_days, 0.25),
+            growth_days_mean = mean(growth_days),
+            growth_days_median = median(growth_days),
+            growth_days_sd = sd(growth_days),
+            growth_days_q3 = quantile(growth_days, 0.75),
+            growth_days_max = max(growth_days)
+  ) %>% 
+  mutate(
+    across(where(is.numeric), ~ round(.x, 2))
+         )
+
+all_stats_by_id
+```
+
+Summary of all statistics by plant id
+```{r}
+all_stats_by_id %>% summary()
+```
+Statistics (basic) by plant id
+```{r}
+all_stats_by_id %>% 
+  select(plant_id, 
+         temperature_c_mean,
+         humidity_percent_mean,
+         tds_value_ppm_mean,
+         p_h_level_mean,
+         growth_days_max)
+```
+Statistics by maximum growth day
+```{r}
+df %>% group_by(plant_id) %>% 
+  mutate(growth_days_max = max(growth_days)) %>% 
+  group_by(growth_days_max) %>% 
+  summarise(
+    plant_id_n = n_distinct(plant_id),
+            temperature_c_mean = mean(temperature_c),
+            humidity_percent_mean = mean(humidity_percent),
+            tds_value_ppm_mean = mean(tds_value_ppm),
+            p_h_level_mean = mean(p_h_level)
+  ) %>% 
+  mutate(
+    across(
+      where(is.numeric), ~ round(.x, 2)
+      )
+  )
+```
+
+# 3.4 Visualize relationships
+Time-series plots (trends over time)
+```{r}
+df %>%
+  pivot_longer(-c(date, plant_id), names_to = "variable", values_to = "value") %>% 
+  group_by(variable, date) %>%
+  summarise(
+    mean = mean(value, na.rm = TRUE),
+    p25  = quantile(value, 0.25, na.rm = TRUE),
+    p75  = quantile(value, 0.75, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  arrange(variable, date) %>% 
+  ggplot(aes(date, mean)) +
+  geom_ribbon(aes(ymin = p25, ymax = p75), alpha = 0.15) +
+  geom_line() +
+  facet_wrap(~ variable, scales = "free_y", ncol = 2) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  labs(x = NULL, y = NULL, title = "Daily mean with IQR band") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.grid.minor = element_blank())
+```
+c
+```{r}
+df %>% 
+  pivot_longer(-c(date, plant_id), names_to = "variable", values_to = "values") %>% 
+  group_by(variable, date) %>% 
+  summarise(mean = mean(values)) %>% 
+  arrange(variable, date) %>% 
+  ggplot(aes(x = date, y = mean)) +
+  geom_line() + 
+  facet_wrap(~ variable, scales = "free_y", ncol = 2) + 
+  scale_x_date(date_breaks = "1 month", date_labels = "%b %Y") +
+  labs(x = NULL, y = NULL, title = "Daily mean") + 
+  # theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.grid.minor = element_blank())
+```
+Scatterplots (check correlation)
+```{r}
+df %>% select(where(is.numeric)) %>% 
+  ggpairs(progress = FALSE,
+          upper = list(continuous = wrap("cor", method = "pearson")),
+          diag = list(continuous = "densityDiag"),
+          lwer = list(continuous = wrap("points", alpha = 0.4, size = 0.7))
+    
+  )
+```
+
+# 3.5 Form hypotheses
+
+Does higher humidity improve growth?
+
+Are weekly growth patterns consistent?
+
+Is there seasonality in the data?
+
+
+
+
