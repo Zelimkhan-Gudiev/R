@@ -116,9 +116,12 @@ Data was collected from several Catalog database tables using the SQL query "spg
 The data was downloaded and stored at the enterprise cloud and available is at this [link](https://drive.ac-mos.ru/f/4038789)
 
 ```{r, warning=FALSE, message=FALSE}
-# df <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
-df <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
-df_src <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
+df <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
+df_src <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
+
+
+# df <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
+# df_src <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
 ```
 
 
@@ -151,7 +154,7 @@ The ROCCC framework and Data integrity methodology were used to determine the da
 **Conclusion on credibility of the data source based on Data integrity methodology: The source is credibility.**
 
 #### **2.1.5. Bias**
-The dataset come from Catalog database and reflect actaull changes in the SPGZ in 2025
+The dataset come from Catalog database and reflect actual changes in the SPGZ in 2025
 
 #### **2.1. 6. Conclusion on the admissibility of using data**
 The data is credible and can be use for analysis
@@ -345,13 +348,14 @@ dssd
 # rels_old_pgz_id <- df %>% filter(!is.na(rels_old_pgz_id)) %>% select(rels_old_pgz_id)
 # df_rels <- df %>% filter(id_version_spgz_katalog %in% rels_old_pgz_id)
 
-df %>% filter(
+df_0 %>% filter(
   id_version_spgz_katalog == "30425543" |
     rels_old_pgz_id == "30425543" |
     id_entity_spgz_katalog == "29270927" |
     id_entity_spgz_katalog == "30424361" |
     id_version_spgz_katalog == "30425542"
-) %>% write_xlsx("/Users/zelimkhan/Desktop/DA-54/2025.12.21_df_0.xlsx")
+) %>% # write_xlsx("/Users/zelimkhan/Desktop/DA-54/2025.12.21_df_0.xlsx")
+    write_xlsx("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/df_0.xlsx")
 ```
 
 ```
@@ -373,7 +377,7 @@ df %>% filter(
 # **6. Usage result**
 
 ```{r}
-write_xlsx(df, "/Users/zelimkhan/Desktop/DA-54/2025.12.21_df.xlsx")
+# write_xlsx(df, "/Users/zelimkhan/Desktop/DA-54/2025.12.21_df.xlsx")
 ```
 
 :::
