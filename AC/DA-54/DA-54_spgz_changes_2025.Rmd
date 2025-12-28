@@ -3,16 +3,17 @@ title: "DA 54. Analysis of changes to the SPGZ in 2025 in terms of grounds"
 author: "Zelimkhan Gudiev"
 date: "2025-12-17"
 output:
+  pdf_document:
+    latex_engine: xelatex
+    toc: true
+    toc_depth: '5'
+  word_document:
+    toc: true
+    toc_depth: '5'
   html_document:
     toc: true
     toc_depth: 5
     toc_float: true
-  word_document:
-    toc: true
-    toc_depth: '5'
-  pdf_document:
-    toc: true
-    toc_depth: '5'
 ---
 
 ::: {style="text-align: justify"}
@@ -116,12 +117,12 @@ Data was collected from several Catalog database tables using the SQL query "spg
 The data was downloaded and stored at the enterprise cloud and available is at this [link](https://drive.ac-mos.ru/f/4038789)
 
 ```{r, warning=FALSE, message=FALSE}
-df <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
-df_src <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
+# df <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
+# df_src <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
 
 
-# df <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
-# df_src <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
+df <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
+df_src <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
 ```
 
 
@@ -133,7 +134,7 @@ The data is organized as a table (in csv format) containing **`r nrow(df)`** row
 
 The ROCCC framework and Data integrity methodology were used to determine the data credibility
 
-##### **ROCCC framework**
+#### **ROCCC framework**
 
 | N | ROCCC Dimension |  Description  | Conclusion | Comments  |
 |-  |      -----------|-----------    | -----------|-----------|
@@ -144,22 +145,22 @@ The ROCCC framework and Data integrity methodology were used to determine the da
 |5 | Cited   | The data source is cited and vetted | The data source is cited and veted | |
 **Conclusion on reliability of the data source based on the on ROCCC framework: The data source is reliable.**
 
-##### **Data integrity**
+#### **Data integrity**
 | N | Data integrity dimension | Description | Conclusion |
 |-  |       -----------|-----------    | -----------|
-|1  |  Accuracy | The degree to which the data conforms to the actual entity being measured or described | The data conforms actual changes in the ZPGZ in 2025 |
+|1  |  Accuracy | The degree to which the data conforms to the actual entity being measured or described | The data conforms actual changes in the SPGZ in 2025 |
 |2  | Completeness | Data completeness is a dimension of data quality that measures whether all necessary or required data is present and available for dataset to fulfill to intended purpose.| The dataset contains all necessary cases and variables.|
-|3  | Consistency | Data follows the same formats and rules.| The date are consistency |
+|3  | Consistency | Data follows the same formats and rules.| The data is consistency |
 |4  | Trustworthiness | The trustworthiness refers to the degree to which information can be relied upon as accurate, credible and secure, allowing users confidently make decisions and conduct analysis based on it.  | The data is trustworthiness |
 **Conclusion on credibility of the data source based on Data integrity methodology: The source is credibility.**
 
-#### **2.1.5. Bias**
+### **2.1.5. Bias**
 The dataset come from Catalog database and reflect actual changes in the SPGZ in 2025
 
-#### **2.1. 6. Conclusion on the admissibility of using data**
+### **2.1.6. Conclusion on the admissibility of using data**
 The data is credible and can be use for analysis
 
-## 2.2 Guiding questions
+## **2.2 Guiding questions**
 | N | Questions |  Answers  |
 |-  |-----------|-----------|
 |1  | Where the data is located? | The data was downloaded from Catalog database and stored in the enterprise cloud at this [link](https://drive.ac-mos.ru/f/4038789) (see section "2.1.2. Downloading and storing data")|
@@ -348,14 +349,14 @@ dssd
 # rels_old_pgz_id <- df %>% filter(!is.na(rels_old_pgz_id)) %>% select(rels_old_pgz_id)
 # df_rels <- df %>% filter(id_version_spgz_katalog %in% rels_old_pgz_id)
 
-df_0 %>% filter(
-  id_version_spgz_katalog == "30425543" |
-    rels_old_pgz_id == "30425543" |
-    id_entity_spgz_katalog == "29270927" |
-    id_entity_spgz_katalog == "30424361" |
-    id_version_spgz_katalog == "30425542"
-) %>% # write_xlsx("/Users/zelimkhan/Desktop/DA-54/2025.12.21_df_0.xlsx")
-    write_xlsx("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/df_0.xlsx")
+# df_0 %>% filter(
+#   id_version_spgz_katalog == "30425543" |
+#     rels_old_pgz_id == "30425543" |
+#     id_entity_spgz_katalog == "29270927" |
+#     id_entity_spgz_katalog == "30424361" |
+#     id_version_spgz_katalog == "30425542"
+# ) %>% # write_xlsx("/Users/zelimkhan/Desktop/DA-54/2025.12.21_df_0.xlsx")
+#    # write_xlsx("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/df_0.xlsx")
 ```
 
 ```
