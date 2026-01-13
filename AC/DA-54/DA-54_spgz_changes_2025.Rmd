@@ -14,11 +14,12 @@ output:
     toc: true
     toc_depth: 5
     toc_float: true
----
 
+---
+\newpage
 ::: {style="text-align: justify"}
 
-# Install packages and attach libraries
+# **0. Install packages and attach libraries**
 ```{r setup, echo=TRUE, results="hide", warning=FALSE, message=FALSE}
 # install.packages("psych")
 # install.packages("lubridate")
@@ -41,6 +42,8 @@ library(skimr)
 library(writexl)
 library(corrplot)
 ```
+
+\newpage
 
 # **1. Business task, context and scope of work**
 
@@ -103,6 +106,8 @@ The result of completing this task should be the answers to the following questi
 <br>
 <br>
 <br>
+
+\newpage
 
 # **2. Data preparation**
 
@@ -168,14 +173,11 @@ The data is credible and can be use for analysis
 |3  | Are there issues with bias or credibility in the data? Does the data ROCCC? | The data is unbiased and credible. Data is integrity and meets the ROCCC methodology requirements (see section the "2.1.4. Data credibility determination" section)|
 |4  | How are issues of licencing, privacy, security, and accessibility addressed? | 
 
-
-<br>
-<br>
-<br>
+\newpage
 
 # **3. Data processing**
 
-## Stage 1 of EDA: Data Discovery & Profiling
+**Stage 1 of EDA: Data Discovery & Profiling**
 
 Table overview 
 ```{r}
@@ -359,26 +361,74 @@ dssd
 #    # write_xlsx("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/df_0.xlsx")
 ```
 
-```
-
-<br>
-<br>
-<br>
+\newpage
 
 # **4. Data analysis**
-<br>
-<br>
-<br>
+
+## **4.1 Key tasks and deliverable(s)**
+
+### **4.1.1. Data aggregation**
+
+### **4.1.2. Data organizing and formatting**
+
+### **4.1.3. Perfoming calculations**
+
+### **4.1.4. Identifying trends and relationships**
+
+### **4.1.5. Summary of the analysis**
+
+## **4.2 Guiding questions**
+| N | Questions |  Answers  |
+|-  |-----------|-----------|
+| 1 | How should data be organized for analysis? | ... |
+| 2 | Has the data been properly formatted? | ... |
+| 3 | What trends and relationships were found? | ... |
+| 4 | What insights help answer business questions? | ... |
+
+\newpage
 
 # **5. Report**
-<br>
-<br>
-<br>
 
-# **6. Usage result**
+## **5.1 Key tasks and deliverable(s)**
+
+### **5.1.1. Determening communication aproach**
+
+### **5.1.2. Data visualizations creating**
+
+### **5.1.3. Presenting findings**
+
+### **5.1.4. Ensuring accessibility**
+
+### **5.1.5. Support visualizations and key findings**
+
+## **5.2 Guiding questions**
+| N | Questions |  Answers  |
+|-  |-----------|-----------|
+| 1 | Were the bussines questions answered? | ... |
+| 2 | What story does the data tell? | ... |
+| 3 | Who is the audience | ... |
+| 4 | Is visualization effective and accessible?|
+
+\newpage
+
+# **6. Usage results**
+
+## **6.1. Key tasks and deliverable(s)**
+
+### **6.1.1. Top three recomendations based on analysis**
+
+## **6.2 Guiding questions**
+| N | Questions |  Answers  |
+|-  |-----------|-----------|
+| 1 | What is the final conclusion? | ... | 
+| 2 | How can the business apply the insights? | ... |
+| 3 | What are the next steps? | ... |
+| 4 | Is additional data needed? | ... | 
 
 ```{r}
-# write_xlsx(df, "/Users/zelimkhan/Desktop/DA-54/2025.12.21_df.xlsx")
+0.7 * 450
 ```
+
+
 
 :::
