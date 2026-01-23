@@ -21,7 +21,8 @@ library(stringr)
 ```
 # Read data
 ```{r}
-source_df <- read_xlsx("/Users/zelimkhan/Desktop/Data/Data_sets/DA-49/2025.07.31_ DA-49_purchases_23-25_source_data_23-35_cleaned.xlsx")
+# source_df <- read_xlsx("/Users/zelimkhan/Desktop/Data/Data_sets/DA-49/2025.07.31_ DA-49_purchases_23-25_source_data_23-35_cleaned.xlsx")
+source_df <- read_xlsx("C:\Users\GudievZK\Nextcloud\Data analysis\DA-49\2025.07.31_ DA-49_purchases_23-25_source_data_23-35_cleaned.xlsx")
 head(source_df)
 ```
 

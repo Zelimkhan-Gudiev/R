@@ -1,0 +1,1213 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={DA 54. Analysis of changes to the SPGZ in 2025 in terms of grounds},
+  pdfauthor={Zelimkhan Gudiev},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{DA 54. Analysis of changes to the SPGZ in 2025 in terms of
+grounds}
+\author{Zelimkhan Gudiev}
+\date{2025-12-17}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{5}
+\tableofcontents
+}
+\newpage
+
+\section{\texorpdfstring{\textbf{0. Install packages and attach
+libraries}}{0. Install packages and attach libraries}}\label{install-packages-and-attach-libraries}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# install.packages("psych")}
+\CommentTok{\# install.packages("lubridate")}
+\CommentTok{\# install.packages("purrr")}
+\CommentTok{\# install.packages("GGally")}
+\CommentTok{\# install.packages("skimr")}
+\CommentTok{\# install.packages("Writexl")}
+\CommentTok{\# install.packages("corrplot")}
+\FunctionTok{library}\NormalTok{(psych)}
+\FunctionTok{library}\NormalTok{(googlesheets4)}
+\FunctionTok{library}\NormalTok{(tidyr)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(janitor)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(lubridate)}
+\FunctionTok{library}\NormalTok{(purrr)}
+\FunctionTok{library}\NormalTok{(GGally)}
+\FunctionTok{library}\NormalTok{(readxl)}
+\FunctionTok{library}\NormalTok{(skimr)}
+\FunctionTok{library}\NormalTok{(writexl)}
+\FunctionTok{library}\NormalTok{(corrplot)}
+\end{Highlighting}
+\end{Shaded}
+
+\newpage
+
+\section{\texorpdfstring{\textbf{1. Business task, context and scope of
+work}}{1. Business task, context and scope of work}}\label{business-task-context-and-scope-of-work}
+
+\subsection{\texorpdfstring{\textbf{1.1. Key tasks and
+deliverable(s)}}{1.1. Key tasks and deliverable(s)}}\label{key-tasks-and-deliverables}
+
+\subsubsection{\texorpdfstring{\textbf{1.1.1. Business
+task}}{1.1.1. Business task}}\label{business-task}
+
+Determine the number of changes made to the SPGZ in 2025 for each of
+possible scenarios (cases) for the subsequent determination of frequency
+of scenarios (cases) in which customers receive notifications (in
+accordance with
+``\href{https://pm.mos.ru/issue/EAIST_JB-8765}{EAIST\_JB-8765}
+Реализовать уведомления пользователям при изменении позиций КПГЗ/СПГЗ,
+которые были запланированы в лотах'') and scenarios (cases) that entail
+the need for customers to make changes to the lot specifications.
+
+\textbf{Notes}
+
+\begin{itemize}
+\item
+  The assignment to carry out of this task was issued at the
+  ``\href{https://youtrack.gbuac.moscow/issue/Meet-145/Obsuzhdenie-privyazki-STZ-k-nestandartizirovannym-poziciyam-SPGZ-i-dorabotki-EAIST-s-celyu-predostavleniya-zakazchikam}{Meet-145}
+  Обсуждение привязки СТЗ к нестандартизированным позициям СПГЗ и
+  доработки ЕАИСТ с целью предоставления заказчикам возможности
+  использования в определённых случаях позиций СПГЗ, которые стали
+  неактуальными или были удалены с момента формирования лота и до
+  момента публикации извещения (Расширение стандартизации и наследование
+  КПГЗ)'' meeting.
+\item
+  This task is carrying out in the card
+  ``\href{https://youtrack.gbuac.moscow/issue/DA-54/Podgotovit-analitiku-statistiku-izmenenij-KPGZ-SPGZ-v-2025-godu-v-razreze-osnovanij}{DA-54}
+  Подготовить аналитику/статистику изменений КПГЗ/СПГЗ в 2025 году в
+  разрезе оснований''
+\item
+  The results of this task will be used in the following tasks:
+
+  \begin{itemize}
+  \item
+    \href{https://youtrack.gbuac.moscow/issue/SGL-105/Soglasovat-FT-na-Realizaciyu-ispolzovaniya-arhivnyh-KPGZ-i-SPGZ-zapros-ot-GRBS}{SGL-105}
+    Согласовать ФТ на Реализацию использования архивных КПГЗ и СПГЗ
+    (запрос от ГРБС)
+  \item
+    \href{https://youtrack.gbuac.moscow/issue/Meet-145/Obsuzhdenie-privyazki-STZ-k-nestandartizirovannym-poziciyam-SPGZ-i-dorabotki-EAIST-s-celyu-predostavleniya-zakazchikam}{Meet-145}
+    Обсуждение привязки СТЗ к нестандартизированным позициям СПГЗ и
+    доработки ЕАИСТ с целью предоставления заказчикам возможности
+    использования в определённых случаях позиций СПГЗ, которые стали
+    неактуальными или были удалены с момента формирования лота и до
+    момента публикации извещения (Расширение стандартизации и
+    наследование КПГЗ)
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{\texorpdfstring{\textbf{1.1.2. Key
+stakeholders}}{1.1.2. Key stakeholders}}\label{key-stakeholders}
+
+The key stakeholders of this task are following:
+
+\begin{itemize}
+\item
+  Department of Economic Policy and Development of the City of Moscow
+\item
+  Department of Competition Policy of the City of Moscow
+\item
+  Moscow city customers
+\end{itemize}
+
+\subsubsection{\texorpdfstring{\textbf{1.1.3. SMART
+questions}}{1.1.3. SMART questions}}\label{smart-questions}
+
+The result of completing this task should be the answers to the
+following questions
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.0476}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2381}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.7143}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\textbf{N}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Type}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{Question}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & - Specific - Measurable - Relevant - Time-bound & How often did the
+SPGZ change in 2025 for each of the scenarios (cases) described in
+``Матрица изменений'' file, prepared during the work on task
+``\href{https://youtrack.gbuac.moscow/issue/IS_Task-318/Sformirovat-tablicu-izmenenij-SPGZ-posle-kotoryh-trebuetsya-aktualizaciya-lota}{IS\_Task-318}
+Сформировать таблицу изменений СПГЗ, после которых требуется
+актуализация лота''. \\
+2 & \ldots{} & \ldots{} \\
+\end{longtable}
+
+\subsubsection{\texorpdfstring{\textbf{1.1.4. Scope of work
+(SOW)}}{1.1.4. Scope of work (SOW)}}\label{scope-of-work-sow}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0145}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1594}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0580}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1739}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1739}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.4203}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Deliverables
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Timeline
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Milestones
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Results
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What SMART questions will be answered
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Dataset with information about changes SPGZ in 2025 from Catalog
+database & 18.12.2025 & Completion of extracting data from Catalog
+database & Dataset with information about changes SPGZ in 2025 from
+Catalog database & - \\
+2 & Clean dataset & 19.12.2025 & Dataset is clean and usable & - & \\
+3 & Exploratory data analysis (EDA) & 21.12.2025 & Completion of EDA -
+understanding of dataset is formed & EDA highlights room for
+investigation. Questions were formulated based on the results of EDA. &
+- \\
+4 & Engineered features in the form of new columns & 22.12.2025 & New
+columns engineered to provide more accessible information & & \\
+5 & Statistical insights & 24.12.2025 & Completion of statistical
+analysis & Statistical analysis conducted & How often did the SPGZ
+change in 2025 for each of the scenarios (cases) described in ``Матрица
+изменений'' file, prepared during the work on task
+``\href{https://youtrack.gbuac.moscow/issue/IS_Task-318/Sformirovat-tablicu-izmenenij-SPGZ-posle-kotoryh-trebuetsya-aktualizaciya-lota}{IS\_Task-318}
+Сформировать таблицу изменений СПГЗ, после которых требуется
+актуализация лота''. \\
+6 & Visual aids & 25.12.2025 & Completion of visualizations &
+Visualizations created & - \\
+7 & Final report & 27.12.2025 & Final report submission & Final report
+completed & - \\
+\end{longtable}
+
+\subsection{\texorpdfstring{\textbf{1.2 Guiding
+questions}}{1.2 Guiding questions}}\label{guiding-questions}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.0417}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4583}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Question
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Answer
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & What problem need to be solved using the result of this task & The
+problem that needs to be solved is that customers need to make changes
+in they lots if the SPGZ positions used in those lot's specifications
+are changed or deleted \\
+2 & How can the insights (results) of this task drive business decisions
+& This analysis insights will be used to determine necessary EAIST
+upgrades and their priorities. \\
+\end{longtable}
+
+\newpage
+
+\section{\texorpdfstring{\textbf{2. Data
+preparation}}{2. Data preparation}}\label{data-preparation}
+
+\subsection{\texorpdfstring{\textbf{2.1. Key tasks and
+delivirables}}{2.1. Key tasks and delivirables}}\label{key-tasks-and-delivirables}
+
+\subsubsection{\texorpdfstring{\textbf{2.1.1. Collecting the necessary
+data}}{2.1.1. Collecting the necessary data}}\label{collecting-the-necessary-data}
+
+Data was collected from several Catalog database tables using the SQL
+query ``spgz\_kpgz\_relations\_packages.sql''.
+
+\subsubsection{\texorpdfstring{\textbf{2.1.2. Downloading and storing
+data}}{2.1.2. Downloading and storing data}}\label{downloading-and-storing-data}
+
+The data was downloaded and stored at the enterprise cloud and available
+is at this \href{https://drive.ac-mos.ru/f/4038789}{link}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"C:/Users/GudievZK/Nextcloud/Data analysis/DA{-}54/2026.01.21\_spgz\_kpgz\_ktru\_pack\_okpd2\_rels\_db\_ktlg.csv"}\NormalTok{, }\AttributeTok{fileEncoding =} \StringTok{"Windows{-}1251"}\NormalTok{)}
+\NormalTok{df\_src }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"C:/Users/GudievZK/Nextcloud/Data analysis/DA{-}54/2026.01.21\_spgz\_kpgz\_ktru\_pack\_okpd2\_rels\_db\_ktlg.csv"}\NormalTok{, }\AttributeTok{fileEncoding =} \StringTok{"Windows{-}1251"}\NormalTok{)}
+
+
+\CommentTok{\# df \textless{}{-} read\_excel("/Users/zelimkhan/Desktop/DA{-}54/2025.12.18\_spgz\_kpgz\_ktru\_pack\_rels\_db\_ktlg.xlsx", guess\_max = 60000)}
+\CommentTok{\# df\_src \textless{}{-} read\_excel("/Users/zelimkhan/Desktop/DA{-}54/2025.12.18\_spgz\_kpgz\_ktru\_pack\_rels\_db\_ktlg.xlsx", guess\_max = 60000)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{\texorpdfstring{\textbf{2.1.3. Data
+organization}}{2.1.3. Data organization}}\label{data-organization}
+
+The data is organized as a table (in csv format) containing
+\textbf{57604} rows. The rows contain information about versions of SPGZ
+positions which were changed or deleted in 2025.
+
+\subsubsection{\texorpdfstring{\textbf{2.1.4. Data credibility
+determination}}{2.1.4. Data credibility determination}}\label{data-credibility-determination}
+
+The ROCCC framework and Data integrity methodology were used to
+determine the data credibility
+
+\paragraph{\texorpdfstring{\textbf{ROCCC
+framework}}{ROCCC framework}}\label{roccc-framework}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0222}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2444}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2444}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2444}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2444}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ROCCC Dimension
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Conclusion
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Comments
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Reliable & Source is dependable and consistent. & See to the
+conclusion below the table & It depends on ROCCC dimensions listed
+below \\
+2 & Original & The data obtained from the original source (or if the
+data is not obtained from the original source, it is possible compere
+and verify the data with the original source) & The data obtained from
+the original source (Catalog database). & \\
+3 & Comprehensive & Covers all necessary cases and variables & The data
+covers all necessary cases and variables & \\
+4 & Current & The data source aren't out of date or irrelevant & The
+data is current and contains the necessary information for 2025 year
+& \\
+5 & Cited & The data source is cited and vetted & The data source is
+cited and veted & \\
+\end{longtable}
+
+\textbf{Conclusion on reliability of the data source based on the on
+ROCCC framework: The data source is reliable.}
+
+\paragraph{\texorpdfstring{\textbf{Data
+integrity}}{Data integrity}}\label{data-integrity}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.0294}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3235}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3235}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3235}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Data integrity dimension
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Conclusion
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Accuracy & The degree to which the data conforms to the actual
+entity being measured or described & The data conforms actual changes in
+the SPGZ in 2025 \\
+2 & Completeness & Data completeness is a dimension of data quality that
+measures whether all necessary or required data is present and available
+for dataset to fulfill to intended purpose. & The dataset contains all
+necessary cases and variables. \\
+3 & Consistency & Data follows the same formats and rules. & The data is
+consistency \\
+4 & Trustworthiness & The trustworthiness refers to the degree to which
+information can be relied upon as accurate, credible and secure,
+allowing users confidently make decisions and conduct analysis based on
+it. & The data is trustworthiness \\
+\end{longtable}
+
+\textbf{Conclusion on credibility of the data source based on Data
+integrity methodology: The source is credibility.}
+
+\subsubsection{\texorpdfstring{\textbf{2.1.5.
+Bias}}{2.1.5. Bias}}\label{bias}
+
+The dataset come from Catalog database and reflect actual changes in the
+SPGZ in 2025
+
+\subsubsection{\texorpdfstring{\textbf{2.1.6. Conclusion on the
+admissibility of using
+data}}{2.1.6. Conclusion on the admissibility of using data}}\label{conclusion-on-the-admissibility-of-using-data}
+
+The data is credible and can be use for analysis
+
+\subsection{\texorpdfstring{\textbf{2.2 Guiding
+questions}}{2.2 Guiding questions}}\label{guiding-questions-1}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.0435}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4783}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4783}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Questions
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Answers
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Where the data is located? & The data was downloaded from Catalog
+database and stored in the enterprise cloud at this
+\href{https://drive.ac-mos.ru/f/4038789}{link} (see section ``2.1.2.
+Downloading and storing data'') \\
+2 & How is the data organized? & The data is organized as a table
+consisting of \textbf{57604} and \textbf{47} \\
+3 & Are there issues with bias or credibility in the data? Does the data
+ROCCC? & The data is unbiased and credible. Data is integrity and meets
+the ROCCC methodology requirements (see section the ``2.1.4. Data
+credibility determination'' section) \\
+4 & How are issues of licencing, privacy, security, and accessibility
+addressed? & \\
+\end{longtable}
+
+\newpage
+
+\section{\texorpdfstring{\textbf{3. Data
+processing}}{3. Data processing}}\label{data-processing}
+
+\textbf{Stage 1 of EDA: Data Discovery \& Profiling}
+
+Table overview
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   TOTAL_ROWS ID_ENTITY_SPGZ_EAIST ID_SPGZ_EAIST ID_ENTITY_SPGZ_KATALOG
+## 1      57604              3387290    1622432877                3387290
+## 2      57604              8350827    1622432878                8350827
+## 3      57604              2328905    1622433006                2328905
+## 4      57604              3702889    1622433007                3702889
+## 5      57604           1607762767    1607762767               30430535
+## 6      57604             92700977    1604409139               29336789
+##   ID_VERSION_SPGZ_KATALOG PARENTID_SPGZ CODE_KPGZ_SPGZ
+## 1                30448246      19768800             NA
+## 2                30448247      19768800             NA
+## 3                30448248      19768800             NA
+## 4                30448249      19768800             NA
+## 5                30430535      30427289             NA
+## 6                30425328       3206306             NA
+##                                                                                                        NAME_SPGZ
+## 1                                                                                  Исследования воздуха, усл. ед
+## 2                                     Лабораторный контроль за состоянием воздушной среды на границе СЗЗ, усл.ед
+## 3 Проведение лабораторно-инструментального исследования воздуха подаваемого из воздушных компрессорных установок
+## 4                             Проведение проб количественного и химического анализа атмосферного воздуха, усл ед
+## 5                                                                                     Сера техническая природная
+## 6                                                                                      Конверт почтовый бумажный
+##   ISSTANDARDIZED_SPGZ ISPROJECT_SPGZ ISDELETED_SPGZ ISEXCLUDED_SPGZ
+## 1                   0              0              1               0
+## 2                   0              0              1               0
+## 3                   0              0              1               0
+## 4                   0              0              1               0
+## 5                   0              0              0               0
+## 6                   1              0              0               0
+##   ISEMIAS_SPGZ SPGZATTRIBUTES_SPGZ ADDITIONALUNIT_SPGZ ISPCP_SPGZ
+## 1            0                   0                              0
+## 2            0                   0                              0
+## 3            0                   0                              0
+## 4            0                   0                              0
+## 5            0                   0                              0
+## 6            0                   0                              0
+##   ATTRIBUTETARIF_SPGZ KTRUID_SPGZ OKPDID_SPGZ ISKPGZ_SPGZ
+## 1                   0          NA       52873           0
+## 2                   0          NA       52873           0
+## 3                   0          NA       52873           0
+## 4                   0          NA       52873           0
+## 5                   0          NA          NA           0
+## 6                   0    22829269          NA           0
+##           CREATEDATE_SPGZ           EDITDATE_SPGZ  BEGINDATE_VERSION_SPGZ
+## 1 2025-07-28 17:05:31.000 2025-07-28 14:12:44.575 2025-07-28 00:00:00.000
+## 2 2025-07-28 17:05:45.000 2025-07-28 14:12:44.575 2025-07-28 00:00:00.000
+## 3 2025-07-28 17:05:58.000 2025-07-28 14:12:44.576 2025-07-28 00:00:00.000
+## 4 2025-07-28 17:06:15.000 2025-07-28 14:12:44.576 2025-07-28 00:00:00.000
+## 5 2025-05-19 14:00:13.000 2025-05-19 11:04:06.595 2025-05-19 00:00:00.000
+## 6 2025-04-29 18:00:59.000 2025-04-30 09:23:25.919 2025-04-30 00:00:00.000
+##   ENDDATE_VERSION_SPGZ IS_KPGZ OKPD2_ID_SPGZ OKPD2_CODE_SPGZ
+## 1                            0       2066155    86.90.19.110
+## 2                            0       2066155    86.90.19.110
+## 3                            0       2066155    86.90.19.110
+## 4                            0       2066155    86.90.19.110
+## 5                            0       2066162    20.13.66.110
+## 6                            0       2066186    17.23.12.110
+##                                          OKPD2_NAME_SPGZ OKPD2_CANCELDATE_SPGZ
+## 1 Услуги организаций санитарно-эпидемиологической службы                    NA
+## 2 Услуги организаций санитарно-эпидемиологической службы                    NA
+## 3 Услуги организаций санитарно-эпидемиологической службы                    NA
+## 4 Услуги организаций санитарно-эпидемиологической службы                    NA
+## 5                             Сера техническая природная                    NA
+## 6                              Конверты, письма-секретки                    NA
+##   OKPD2_ISACTUAL_SPGZ OKPD2_OKPD2ID_SPGZ        KTRU_CODE_SPGZ
+## 1                   1            8891201                      
+## 2                   1            8891201                      
+## 3                   1            8891201                      
+## 4                   1            8891201                      
+## 5                   1            8884525                      
+## 6                   1            8884092 17.23.12.110-00000003
+##              KTRU_NAME_SPGZ RELS_OLD_PGZ_ID RELS_LINKTYPE RELS_NEW_PGZ_ID
+## 1                                        NA            NA              NA
+## 2                                        NA            NA              NA
+## 3                                        NA            NA              NA
+## 4                                        NA            NA              NA
+## 5                                        NA            NA              NA
+## 6 Конверт почтовый бумажный              NA            NA              NA
+##   RELS_IS_ACTUAL RELS_PREVIOUS_PGZ_ID RELS_SOURCE_PGZ_ID
+## 1             NA                   NA                 NA
+## 2             NA                   NA                 NA
+## 3             NA                   NA                 NA
+## 4             NA                   NA                 NA
+## 5             NA                   NA                 NA
+## 6             NA                   NA           29931867
+##                                                                                                                              PACKAGE_NAME
+## 1 Оказание услуг по проведению лабораторных и инструментальных исследований и испытаний в рамках производственного контроля №441 (FR-460)
+## 2 Оказание услуг по проведению лабораторных и инструментальных исследований и испытаний в рамках производственного контроля №441 (FR-460)
+## 3 Оказание услуг по проведению лабораторных и инструментальных исследований и испытаний в рамках производственного контроля №441 (FR-460)
+## 4 Оказание услуг по проведению лабораторных и инструментальных исследований и испытаний в рамках производственного контроля №441 (FR-460)
+## 5                                                                                                     Поставка химических веществ SP-5988
+## 6                                                                              Поставка канцелярских товаров (ДПР-3-5555/25, АЦ-25-3315) 
+##   PGZPACK_PGZ_ID PACKAGE_REASON_ID                PACKAGE_USER_NAME
+## 1       30448246                 3 Кольчинская Татьяна Вячеславовна
+## 2       30448247                 3 Кольчинская Татьяна Вячеславовна
+## 3       30448248                 3 Кольчинская Татьяна Вячеславовна
+## 4       30448249                 3 Кольчинская Татьяна Вячеславовна
+## 5       30430535                 3         Кузнецова Анна Сергеевна
+## 6       30425328                 3     Спицына Наталья Владимировна
+##   PACKAGE_REASON_NAME ID_ENTITY_KPGZ
+## 1      Стандартизация       19768800
+## 2      Стандартизация       19768800
+## 3      Стандартизация       19768800
+## 4      Стандартизация       19768800
+## 5      Стандартизация       30427289
+## 6      Стандартизация        3206306
+##                                                 NAME_KPGZ         CODE_KPGZ
+## 1 ИССЛЕДОВАНИЯ ЛАБОРАТОРНЫЕ КАЧЕСТВА АТМОСФЕРНОГО ВОЗДУХА 03.01.99.01.02.02
+## 2 ИССЛЕДОВАНИЯ ЛАБОРАТОРНЫЕ КАЧЕСТВА АТМОСФЕРНОГО ВОЗДУХА 03.01.99.01.02.02
+## 3 ИССЛЕДОВАНИЯ ЛАБОРАТОРНЫЕ КАЧЕСТВА АТМОСФЕРНОГО ВОЗДУХА 03.01.99.01.02.02
+## 4 ИССЛЕДОВАНИЯ ЛАБОРАТОРНЫЕ КАЧЕСТВА АТМОСФЕРНОГО ВОЗДУХА 03.01.99.01.02.02
+## 5                                        СЕРА ТЕХНИЧЕСКАЯ    01.26.01.03.18
+## 6                                       КОНВЕРТЫ ПОЧТОВЫЕ       01.15.08.01
+\end{verbatim}
+
+Clean names
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# toString(names(df))}
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{clean\_names}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+Columns names
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{names}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] "total_rows"              "id_entity_spgz_eaist"   
+##  [3] "id_spgz_eaist"           "id_entity_spgz_katalog" 
+##  [5] "id_version_spgz_katalog" "parentid_spgz"          
+##  [7] "code_kpgz_spgz"          "name_spgz"              
+##  [9] "isstandardized_spgz"     "isproject_spgz"         
+## [11] "isdeleted_spgz"          "isexcluded_spgz"        
+## [13] "isemias_spgz"            "spgzattributes_spgz"    
+## [15] "additionalunit_spgz"     "ispcp_spgz"             
+## [17] "attributetarif_spgz"     "ktruid_spgz"            
+## [19] "okpdid_spgz"             "iskpgz_spgz"            
+## [21] "createdate_spgz"         "editdate_spgz"          
+## [23] "begindate_version_spgz"  "enddate_version_spgz"   
+## [25] "is_kpgz"                 "okpd2_id_spgz"          
+## [27] "okpd2_code_spgz"         "okpd2_name_spgz"        
+## [29] "okpd2_canceldate_spgz"   "okpd2_isactual_spgz"    
+## [31] "okpd2_okpd2id_spgz"      "ktru_code_spgz"         
+## [33] "ktru_name_spgz"          "rels_old_pgz_id"        
+## [35] "rels_linktype"           "rels_new_pgz_id"        
+## [37] "rels_is_actual"          "rels_previous_pgz_id"   
+## [39] "rels_source_pgz_id"      "package_name"           
+## [41] "pgzpack_pgz_id"          "package_reason_id"      
+## [43] "package_user_name"       "package_reason_name"    
+## [45] "id_entity_kpgz"          "name_kpgz"              
+## [47] "code_kpgz"
+\end{verbatim}
+
+Number of rows and columns
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dim}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 57604    47
+\end{verbatim}
+
+Data types
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{glimpse}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 57,604
+## Columns: 47
+## $ total_rows              <int> 57604, 57604, 57604, 57604, 57604, 57604, 5760~
+## $ id_entity_spgz_eaist    <int> 3387290, 8350827, 2328905, 3702889, 1607762767~
+## $ id_spgz_eaist           <int> 1622432877, 1622432878, 1622433006, 1622433007~
+## $ id_entity_spgz_katalog  <int> 3387290, 8350827, 2328905, 3702889, 30430535, ~
+## $ id_version_spgz_katalog <int> 30448246, 30448247, 30448248, 30448249, 304305~
+## $ parentid_spgz           <int> 19768800, 19768800, 19768800, 19768800, 304272~
+## $ code_kpgz_spgz          <lgl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~
+## $ name_spgz               <chr> "Исследования воздуха, усл. ед", "Лабораторный~
+## $ isstandardized_spgz     <int> 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1~
+## $ isproject_spgz          <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
+## $ isdeleted_spgz          <int> 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0~
+## $ isexcluded_spgz         <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
+## $ isemias_spgz            <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
+## $ spgzattributes_spgz     <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
+## $ additionalunit_spgz     <chr> "", "", "", "", "", "", "", "", "", "", "", ""~
+## $ ispcp_spgz              <int> 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0~
+## $ attributetarif_spgz     <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
+## $ ktruid_spgz             <int> NA, NA, NA, NA, NA, 22829269, 22801408, NA, NA~
+## $ okpdid_spgz             <int> 52873, 52873, 52873, 52873, NA, NA, 15463, NA,~
+## $ iskpgz_spgz             <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
+## $ createdate_spgz         <chr> "2025-07-28 17:05:31.000", "2025-07-28 17:05:4~
+## $ editdate_spgz           <chr> "2025-07-28 14:12:44.575", "2025-07-28 14:12:4~
+## $ begindate_version_spgz  <chr> "2025-07-28 00:00:00.000", "2025-07-28 00:00:0~
+## $ enddate_version_spgz    <chr> "", "", "", "", "", "", "", "", "", "", "", ""~
+## $ is_kpgz                 <int> 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0~
+## $ okpd2_id_spgz           <int> 2066155, 2066155, 2066155, 2066155, 2066162, 2~
+## $ okpd2_code_spgz         <chr> "86.90.19.110", "86.90.19.110", "86.90.19.110"~
+## $ okpd2_name_spgz         <chr> "Услуги организаций санитарно-эпидемиологическ~
+## $ okpd2_canceldate_spgz   <lgl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~
+## $ okpd2_isactual_spgz     <int> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1~
+## $ okpd2_okpd2id_spgz      <int> 8891201, 8891201, 8891201, 8891201, 8884525, 8~
+## $ ktru_code_spgz          <chr> "", "", "", "", "", "17.23.12.110-00000003", "~
+## $ ktru_name_spgz          <chr> "", "", "", "", "", "Конверт почтовый бумажный~
+## $ rels_old_pgz_id         <int> NA, NA, NA, NA, NA, NA, NA, 30434248, 30434249~
+## $ rels_linktype           <int> NA, NA, NA, NA, NA, NA, NA, 2, 2, NA, NA, NA, ~
+## $ rels_new_pgz_id         <int> NA, NA, NA, NA, NA, NA, NA, 30434515, 30434515~
+## $ rels_is_actual          <int> NA, NA, NA, NA, NA, NA, NA, 1, 1, NA, NA, NA, ~
+## $ rels_previous_pgz_id    <lgl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA~
+## $ rels_source_pgz_id      <int> NA, NA, NA, NA, NA, 29931867, 29931868, NA, NA~
+## $ package_name            <chr> "Оказание услуг по проведению лабораторных и и~
+## $ pgzpack_pgz_id          <int> 30448246, 30448247, 30448248, 30448249, 304305~
+## $ package_reason_id       <int> 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 2, 2~
+## $ package_user_name       <chr> "Кольчинская Татьяна Вячеславовна", "Кольчинск~
+## $ package_reason_name     <chr> "Стандартизация", "Стандартизация", "Стандарти~
+## $ id_entity_kpgz          <int> 19768800, 19768800, 19768800, 19768800, 304272~
+## $ name_kpgz               <chr> "ИССЛЕДОВАНИЯ ЛАБОРАТОРНЫЕ КАЧЕСТВА АТМОСФЕРНО~
+## $ code_kpgz               <chr> "03.01.99.01.02.02", "03.01.99.01.02.02", "03.~
+\end{verbatim}
+
+Data classes
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sapply}\NormalTok{(df, class)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              total_rows    id_entity_spgz_eaist           id_spgz_eaist 
+##               "integer"               "integer"               "integer" 
+##  id_entity_spgz_katalog id_version_spgz_katalog           parentid_spgz 
+##               "integer"               "integer"               "integer" 
+##          code_kpgz_spgz               name_spgz     isstandardized_spgz 
+##               "logical"             "character"               "integer" 
+##          isproject_spgz          isdeleted_spgz         isexcluded_spgz 
+##               "integer"               "integer"               "integer" 
+##            isemias_spgz     spgzattributes_spgz     additionalunit_spgz 
+##               "integer"               "integer"             "character" 
+##              ispcp_spgz     attributetarif_spgz             ktruid_spgz 
+##               "integer"               "integer"               "integer" 
+##             okpdid_spgz             iskpgz_spgz         createdate_spgz 
+##               "integer"               "integer"             "character" 
+##           editdate_spgz  begindate_version_spgz    enddate_version_spgz 
+##             "character"             "character"             "character" 
+##                 is_kpgz           okpd2_id_spgz         okpd2_code_spgz 
+##               "integer"               "integer"             "character" 
+##         okpd2_name_spgz   okpd2_canceldate_spgz     okpd2_isactual_spgz 
+##             "character"               "logical"               "integer" 
+##      okpd2_okpd2id_spgz          ktru_code_spgz          ktru_name_spgz 
+##               "integer"             "character"             "character" 
+##         rels_old_pgz_id           rels_linktype         rels_new_pgz_id 
+##               "integer"               "integer"               "integer" 
+##          rels_is_actual    rels_previous_pgz_id      rels_source_pgz_id 
+##               "integer"               "logical"               "integer" 
+##            package_name          pgzpack_pgz_id       package_reason_id 
+##             "character"               "integer"               "integer" 
+##       package_user_name     package_reason_name          id_entity_kpgz 
+##             "character"             "character"               "integer" 
+##               name_kpgz               code_kpgz 
+##             "character"             "character"
+\end{verbatim}
+
+Checking duplicates. Number of duplicate columns in each column.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sapply}\NormalTok{(df, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sum}\NormalTok{(}\FunctionTok{duplicated}\NormalTok{(x)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              total_rows    id_entity_spgz_eaist           id_spgz_eaist 
+##                   57603                   40081                   17342 
+##  id_entity_spgz_katalog id_version_spgz_katalog           parentid_spgz 
+##                   40126                   16677                   55543 
+##          code_kpgz_spgz               name_spgz     isstandardized_spgz 
+##                   57603                   44241                   57602 
+##          isproject_spgz          isdeleted_spgz         isexcluded_spgz 
+##                   57603                   57602                   57603 
+##            isemias_spgz     spgzattributes_spgz     additionalunit_spgz 
+##                   57603                   57602                   57602 
+##              ispcp_spgz     attributetarif_spgz             ktruid_spgz 
+##                   57601                   57603                   48652 
+##             okpdid_spgz             iskpgz_spgz         createdate_spgz 
+##                   57054                   57603                   36403 
+##           editdate_spgz  begindate_version_spgz    enddate_version_spgz 
+##                   48105                   56534                   54229 
+##                 is_kpgz           okpd2_id_spgz         okpd2_code_spgz 
+##                   57603                   52908                   55691 
+##         okpd2_name_spgz   okpd2_canceldate_spgz     okpd2_isactual_spgz 
+##                   55698                   57603                   57602 
+##      okpd2_okpd2id_spgz          ktru_code_spgz          ktru_name_spgz 
+##                   55691                   54104                   56639 
+##         rels_old_pgz_id           rels_linktype         rels_new_pgz_id 
+##                   44317                   57600                   56057 
+##          rels_is_actual    rels_previous_pgz_id      rels_source_pgz_id 
+##                   57601                   57603                   31214 
+##            package_name          pgzpack_pgz_id       package_reason_id 
+##                   53196                   17274                   57598 
+##       package_user_name     package_reason_name          id_entity_kpgz 
+##                   57540                   57598                   55543 
+##               name_kpgz               code_kpgz 
+##                   55543                   55543
+\end{verbatim}
+
+Checking uniqueness.
+
+Number of unique rows.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{n\_distinct}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 57466
+\end{verbatim}
+
+Number of unique values in each column
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sapply}\NormalTok{(df, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sum}\NormalTok{(}\FunctionTok{n\_distinct}\NormalTok{(x)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              total_rows    id_entity_spgz_eaist           id_spgz_eaist 
+##                       1                   17523                   40262 
+##  id_entity_spgz_katalog id_version_spgz_katalog           parentid_spgz 
+##                   17478                   40927                    2061 
+##          code_kpgz_spgz               name_spgz     isstandardized_spgz 
+##                       1                   13363                       2 
+##          isproject_spgz          isdeleted_spgz         isexcluded_spgz 
+##                       1                       2                       1 
+##            isemias_spgz     spgzattributes_spgz     additionalunit_spgz 
+##                       1                       2                       2 
+##              ispcp_spgz     attributetarif_spgz             ktruid_spgz 
+##                       3                       1                    8952 
+##             okpdid_spgz             iskpgz_spgz         createdate_spgz 
+##                     550                       1                   21201 
+##           editdate_spgz  begindate_version_spgz    enddate_version_spgz 
+##                    9499                    1070                    3375 
+##                 is_kpgz           okpd2_id_spgz         okpd2_code_spgz 
+##                       1                    4696                    1913 
+##         okpd2_name_spgz   okpd2_canceldate_spgz     okpd2_isactual_spgz 
+##                    1906                       1                       2 
+##      okpd2_okpd2id_spgz          ktru_code_spgz          ktru_name_spgz 
+##                    1913                    3500                     965 
+##         rels_old_pgz_id           rels_linktype         rels_new_pgz_id 
+##                   13287                       4                    1547 
+##          rels_is_actual    rels_previous_pgz_id      rels_source_pgz_id 
+##                       3                       1                   26390 
+##            package_name          pgzpack_pgz_id       package_reason_id 
+##                    4408                   40330                       6 
+##       package_user_name     package_reason_name          id_entity_kpgz 
+##                      64                       6                    2061 
+##               name_kpgz               code_kpgz 
+##                    2061                    2061
+\end{verbatim}
+
+Checking completness
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colSums}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(df))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              total_rows    id_entity_spgz_eaist           id_spgz_eaist 
+##                       0                      74                      60 
+##  id_entity_spgz_katalog id_version_spgz_katalog           parentid_spgz 
+##                       0                       0                       0 
+##          code_kpgz_spgz               name_spgz     isstandardized_spgz 
+##                   57604                       0                       0 
+##          isproject_spgz          isdeleted_spgz         isexcluded_spgz 
+##                       0                       0                       0 
+##            isemias_spgz     spgzattributes_spgz     additionalunit_spgz 
+##                       0                       0                       0 
+##              ispcp_spgz     attributetarif_spgz             ktruid_spgz 
+##                    1532                       0                   42705 
+##             okpdid_spgz             iskpgz_spgz         createdate_spgz 
+##                   48753                       0                       0 
+##           editdate_spgz  begindate_version_spgz    enddate_version_spgz 
+##                       0                       0                       0 
+##                 is_kpgz           okpd2_id_spgz         okpd2_code_spgz 
+##                       0                       0                       0 
+##         okpd2_name_spgz   okpd2_canceldate_spgz     okpd2_isactual_spgz 
+##                       0                   57604                       0 
+##      okpd2_okpd2id_spgz          ktru_code_spgz          ktru_name_spgz 
+##                       0                       0                       0 
+##         rels_old_pgz_id           rels_linktype         rels_new_pgz_id 
+##                   39622                   39622                   39622 
+##          rels_is_actual    rels_previous_pgz_id      rels_source_pgz_id 
+##                   39622                   57604                   22784 
+##            package_name          pgzpack_pgz_id       package_reason_id 
+##                       0                     614                     614 
+##       package_user_name     package_reason_name          id_entity_kpgz 
+##                       0                       0                       0 
+##               name_kpgz               code_kpgz 
+##                       0                       0
+\end{verbatim}
+
+\textbf{Converting data types} Converting all columns with fewer than 10
+unique (non-NA) values into factors
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# df \textless{}{-} df \%\textgreater{}\% }
+\CommentTok{\#   mutate(}
+\CommentTok{\#     across(}
+\CommentTok{\#       where(\textasciitilde{} n\_distinct(.x, na.rm = TRUE) \textless{} 10),}
+\CommentTok{\#       as.factor}
+\CommentTok{\#     )}
+\CommentTok{\#     )}
+\end{Highlighting}
+\end{Shaded}
+
+Converting variables with date and time values from character format to
+date format.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \FunctionTok{across}\NormalTok{(}
+      \FunctionTok{contains}\NormalTok{(}\StringTok{"date\_"}\NormalTok{) }\SpecialCharTok{\&} \FunctionTok{where}\NormalTok{(is.character), }
+           \SpecialCharTok{\textasciitilde{}} \FunctionTok{as.Date}\NormalTok{(}\FunctionTok{ymd\_hms}\NormalTok{(.x)))}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+Filtering data
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{filter}\NormalTok{(}
+\NormalTok{    (isexcluded\_spgz }\SpecialCharTok{==} \DecValTok{0} \SpecialCharTok{\&} \SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(package\_user\_name)) }\SpecialCharTok{\&} \CommentTok{\# deleting excluded spgz and spgz without author (which where created by mistake)}
+\NormalTok{      (}
+           \FunctionTok{year}\NormalTok{(editdate\_spgz) }\SpecialCharTok{==} \DecValTok{2025} \SpecialCharTok{|}
+         \FunctionTok{year}\NormalTok{(enddate\_version\_spgz) }\SpecialCharTok{==} \DecValTok{2025}\NormalTok{)}
+\NormalTok{        )}
+\end{Highlighting}
+\end{Shaded}
+
+Deleting duplicate rows
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+   \FunctionTok{distinct}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Deleting unnecessary columns
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(id\_entity\_spgz\_katalog, id\_version\_spgz\_katalog, name\_spgz, isstandardized\_spgz, isproject\_spgz, isdeleted\_spgz, }
+\NormalTok{  ispcp\_spgz, createdate\_spgz, editdate\_spgz, begindate\_version\_spgz, enddate\_version\_spgz, okpd2\_code\_spgz, }
+\NormalTok{  okpd2\_name\_spgz, ktru\_code\_spgz, ktru\_name\_spgz, rels\_old\_pgz\_id, rels\_linktype, rels\_new\_pgz\_id, rels\_is\_actual, }
+\NormalTok{  rels\_source\_pgz\_id, package\_name, package\_user\_name, package\_reason\_name, id\_entity\_kpgz, name\_kpgz, code\_kpgz)}
+
+\CommentTok{\# toString(names(df))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dups }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{everything}\NormalTok{())) }\SpecialCharTok{\%\textgreater{}\%}  \CommentTok{\# group by all columns}
+  \FunctionTok{filter}\NormalTok{(}\FunctionTok{n}\NormalTok{() }\SpecialCharTok{\textgreater{}} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}                 \CommentTok{\# keep groups with more than one row}
+  \FunctionTok{ungroup}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Adding new columns} Adding a column with number of values for
+each id\_entity\_spgz\_katalog
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(id\_entity\_spgz\_katalog) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{n\_id\_entity\_spgz\_katalog =} \FunctionTok{n}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ungroup}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Adding a column with the numbers of unique values
+id\_version\_spgz\_katalog per id\_entity\_spgz\_katalog
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(id\_entity\_spgz\_katalog) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{n\_unique\_id\_version\_cataloge =} \FunctionTok{n\_distinct}\NormalTok{(id\_version\_spgz\_katalog, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{ungroup}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Adding column with difference between ``id\_entity\_spgz\_katalog'' and
+``id\_version\_spgz\_katalog''
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{diff\_id\_entity\_id\_version =}\NormalTok{ n\_id\_entity\_spgz\_katalog }\SpecialCharTok{{-}}\NormalTok{ n\_unique\_id\_version\_cataloge}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+Adding a column with deletion information
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(id\_entity\_spgz\_katalog) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{is\_deleted\_spgz =} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{sum}\NormalTok{(}\FunctionTok{as.integer}\NormalTok{(isdeleted\_spgz), }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\textgreater{}} \DecValTok{1}\NormalTok{)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%} 
+      \FunctionTok{ungroup}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+Adding column with information about relation\ldots{}
+
+Adding column with information about standardizing in 2025
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(id\_entity\_spgz\_katalog) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{was\_standartized\_25 =} \FunctionTok{as.integer}\NormalTok{(}
+      \FunctionTok{n\_distinct}\NormalTok{(}\FunctionTok{trimws}\NormalTok{(}\FunctionTok{as.character}\NormalTok{(isstandardized\_spgz)), }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\textgreater{}} \DecValTok{1}
+\NormalTok{      )}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ungroup}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+dssd
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# rels\_old\_pgz\_id \textless{}{-} df \%\textgreater{}\% filter(!is.na(rels\_old\_pgz\_id)) \%\textgreater{}\% select(rels\_old\_pgz\_id)}
+\CommentTok{\# df\_rels \textless{}{-} df \%\textgreater{}\% filter(id\_version\_spgz\_katalog \%in\% rels\_old\_pgz\_id)}
+
+\CommentTok{\# df\_0 \%\textgreater{}\% filter(}
+\CommentTok{\#   id\_version\_spgz\_katalog == "30425543" |}
+\CommentTok{\#     rels\_old\_pgz\_id == "30425543" |}
+\CommentTok{\#     id\_entity\_spgz\_katalog == "29270927" |}
+\CommentTok{\#     id\_entity\_spgz\_katalog == "30424361" |}
+\CommentTok{\#     id\_version\_spgz\_katalog == "30425542"}
+\CommentTok{\# ) \%\textgreater{}\% \# write\_xlsx("/Users/zelimkhan/Desktop/DA{-}54/2025.12.21\_df\_0.xlsx")}
+\CommentTok{\#    \# write\_xlsx("C:/Users/GudievZK/Nextcloud/Data analysis/DA{-}54/df\_0.xlsx")}
+\end{Highlighting}
+\end{Shaded}
+
+\newpage
+
+\section{\texorpdfstring{\textbf{4. Data
+analysis}}{4. Data analysis}}\label{data-analysis}
+
+\subsection{\texorpdfstring{\textbf{4.1 Key tasks and
+deliverable(s)}}{4.1 Key tasks and deliverable(s)}}\label{key-tasks-and-deliverables-1}
+
+\subsubsection{\texorpdfstring{\textbf{4.1.1. Data
+aggregation}}{4.1.1. Data aggregation}}\label{data-aggregation}
+
+\subsubsection{\texorpdfstring{\textbf{4.1.2. Data organizing and
+formatting}}{4.1.2. Data organizing and formatting}}\label{data-organizing-and-formatting}
+
+\subsubsection{\texorpdfstring{\textbf{4.1.3. Perfoming
+calculations}}{4.1.3. Perfoming calculations}}\label{perfoming-calculations}
+
+\subsubsection{\texorpdfstring{\textbf{4.1.4. Identifying trends and
+relationships}}{4.1.4. Identifying trends and relationships}}\label{identifying-trends-and-relationships}
+
+\subsubsection{\texorpdfstring{\textbf{4.1.5. Summary of the
+analysis}}{4.1.5. Summary of the analysis}}\label{summary-of-the-analysis}
+
+\subsection{\texorpdfstring{\textbf{4.2 Guiding
+questions}}{4.2 Guiding questions}}\label{guiding-questions-2}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+N & Questions & Answers \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & How should data be organized for analysis? & \ldots{} \\
+2 & Has the data been properly formatted? & \ldots{} \\
+3 & What trends and relationships were found? & \ldots{} \\
+4 & What insights help answer business questions? & \ldots{} \\
+\end{longtable}
+
+\newpage
+
+\section{\texorpdfstring{\textbf{5. Report}}{5. Report}}\label{report}
+
+\subsection{\texorpdfstring{\textbf{5.1 Key tasks and
+deliverable(s)}}{5.1 Key tasks and deliverable(s)}}\label{key-tasks-and-deliverables-2}
+
+\subsubsection{\texorpdfstring{\textbf{5.1.1. Determening communication
+aproach}}{5.1.1. Determening communication aproach}}\label{determening-communication-aproach}
+
+\subsubsection{\texorpdfstring{\textbf{5.1.2. Data visualizations
+creating}}{5.1.2. Data visualizations creating}}\label{data-visualizations-creating}
+
+\subsubsection{\texorpdfstring{\textbf{5.1.3. Presenting
+findings}}{5.1.3. Presenting findings}}\label{presenting-findings}
+
+\subsubsection{\texorpdfstring{\textbf{5.1.4. Ensuring
+accessibility}}{5.1.4. Ensuring accessibility}}\label{ensuring-accessibility}
+
+\subsubsection{\texorpdfstring{\textbf{5.1.5. Support visualizations and
+key
+findings}}{5.1.5. Support visualizations and key findings}}\label{support-visualizations-and-key-findings}
+
+\subsection{\texorpdfstring{\textbf{5.2 Guiding
+questions}}{5.2 Guiding questions}}\label{guiding-questions-3}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+N & Questions & Answers \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Were the bussines questions answered? & \ldots{} \\
+2 & What story does the data tell? & \ldots{} \\
+3 & Who is the audience & \ldots{} \\
+4 & Is visualization effective and accessible? & \\
+\end{longtable}
+
+\newpage
+
+\section{\texorpdfstring{\textbf{6. Usage
+results}}{6. Usage results}}\label{usage-results}
+
+\subsection{\texorpdfstring{\textbf{6.1. Key tasks and
+deliverable(s)}}{6.1. Key tasks and deliverable(s)}}\label{key-tasks-and-deliverables-3}
+
+\subsubsection{\texorpdfstring{\textbf{6.1.1. Top three recomendations
+based on
+analysis}}{6.1.1. Top three recomendations based on analysis}}\label{top-three-recomendations-based-on-analysis}
+
+\subsection{\texorpdfstring{\textbf{6.2 Guiding
+questions}}{6.2 Guiding questions}}\label{guiding-questions-4}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+N & Questions & Answers \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & What is the final conclusion? & \ldots{} \\
+2 & How can the business apply the insights? & \ldots{} \\
+3 & What are the next steps? & \ldots{} \\
+4 & Is additional data needed? & \ldots{} \\
+\end{longtable}
+
+\end{document}

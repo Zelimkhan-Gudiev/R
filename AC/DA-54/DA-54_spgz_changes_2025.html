@@ -1737,17 +1737,17 @@ query “spgz_kpgz_relations_packages.sql”.</p>
 <h3><strong>2.1.2. Downloading and storing data</strong></h3>
 <p>The data was downloaded and stored at the enterprise cloud and
 available is at this <a href="https://drive.ac-mos.ru/f/4038789">link</a></p>
-<pre class="r"><code># df &lt;- read.csv(&quot;C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv&quot;, fileEncoding = &quot;Windows-1251&quot;)
-# df_src &lt;- read.csv(&quot;C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv&quot;, fileEncoding = &quot;Windows-1251&quot;)
+<pre class="r"><code>df &lt;- read.csv(&quot;C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2026.01.22_spgz_kpgz_ktru_pack_okpd2_rels_db_ktlg.csv&quot;, fileEncoding = &quot;Windows-1251&quot;)
+df_src &lt;- read.csv(&quot;C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2026.01.22_spgz_kpgz_ktru_pack_okpd2_rels_db_ktlg.csv&quot;, fileEncoding = &quot;Windows-1251&quot;)
 
 
-df &lt;- read_excel(&quot;/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx&quot;, guess_max = 60000)
-df_src &lt;- read_excel(&quot;/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx&quot;, guess_max = 60000)</code></pre>
+# df &lt;- read_excel(&quot;/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx&quot;, guess_max = 60000)
+# df_src &lt;- read_excel(&quot;/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx&quot;, guess_max = 60000)</code></pre>
 </div>
 <div id="data-organization" class="section level3">
 <h3><strong>2.1.3. Data organization</strong></h3>
 <p>The data is organized as a table (in csv format) containing
-<strong>58682</strong> rows. The rows contain information about versions
+<strong>57604</strong> rows. The rows contain information about versions
 of SPGZ positions which were changed or deleted in 2025.</p>
 </div>
 <div id="data-credibility-determination" class="section level3">
@@ -1908,7 +1908,7 @@ Downloading and storing data”)</td>
 <td>2</td>
 <td>How is the data organized?</td>
 <td>The data is organized as a table consisting of
-<strong>58682</strong> and <strong>47</strong></td>
+<strong>57604</strong> and <strong>47</strong></td>
 </tr>
 <tr class="odd">
 <td>3</td>
@@ -1933,27 +1933,23 @@ addressed?</td>
 <h1><strong>3. Data processing</strong></h1>
 <p><strong>Stage 1 of EDA: Data Discovery &amp; Profiling</strong></p>
 <p>Table overview</p>
-<pre class="r"><code>df</code></pre>
-<pre><code>## # A tibble: 58,682 × 47
-##    TOTAL_ROWS ID_ENTITY_SPGZ_EAIST ID_SPGZ_EAIST ID_ENTITY_SPGZ_KATALOG
-##    &lt;chr&gt;      &lt;chr&gt;                &lt;chr&gt;         &lt;chr&gt;                 
-##  1 58682      10008020             1530772545    10008020              
-##  2 58682      10008020             1592957700    10008020              
-##  3 58682      10008215             1530772547    10008215              
-##  4 58682      10008215             1592956858    10008215              
-##  5 58682      10044442             10044442      10044442              
-##  6 58682      10044442             1640044123    10044442              
-##  7 58682      10052745             1530785272    10052745              
-##  8 58682      10052745             1575153004    10052745              
-##  9 58682      10052764             1530785269    10052764              
-## 10 58682      10052764             1575153001    10052764              
-## # ℹ 58,672 more rows
-## # ℹ 43 more variables: ID_VERSION_SPGZ_KATALOG &lt;chr&gt;, PARENTID_SPGZ &lt;chr&gt;,
-## #   CODE_KPGZ_SPGZ &lt;lgl&gt;, NAME_SPGZ &lt;chr&gt;, ISSTANDARDIZED_SPGZ &lt;chr&gt;,
-## #   ISPROJECT_SPGZ &lt;chr&gt;, ISDELETED_SPGZ &lt;chr&gt;, ISEXCLUDED_SPGZ &lt;chr&gt;,
-## #   ISEMIAS_SPGZ &lt;chr&gt;, SPGZATTRIBUTES_SPGZ &lt;chr&gt;, ADDITIONALUNIT_SPGZ &lt;chr&gt;,
-## #   ISPCP_SPGZ &lt;chr&gt;, ATTRIBUTETARIF_SPGZ &lt;chr&gt;, KTRUID_SPGZ &lt;chr&gt;,
-## #   OKPDID_SPGZ &lt;chr&gt;, ISKPGZ_SPGZ &lt;chr&gt;, CREATEDATE_SPGZ &lt;chr&gt;, …</code></pre>
+<pre class="r"><code>head(df) %&gt;% as_tibble()</code></pre>
+<pre><code>## # A tibble: 6 × 47
+##   TOTAL_ROWS ID_ENTITY_SPGZ_EAIST ID_SPGZ_EAIST ID_ENTITY_SPGZ_KATALOG
+##        &lt;int&gt;                &lt;int&gt;         &lt;int&gt;                  &lt;int&gt;
+## 1      57604              3387290    1622432877                3387290
+## 2      57604              8350827    1622432878                8350827
+## 3      57604              2328905    1622433006                2328905
+## 4      57604              3702889    1622433007                3702889
+## 5      57604           1607762767    1607762767               30430535
+## 6      57604             92700977    1604409139               29336789
+## # ℹ 43 more variables: ID_VERSION_SPGZ_KATALOG &lt;int&gt;, PARENTID_SPGZ &lt;int&gt;,
+## #   CODE_KPGZ_SPGZ &lt;lgl&gt;, NAME_SPGZ &lt;chr&gt;, ISSTANDARDIZED_SPGZ &lt;int&gt;,
+## #   ISPROJECT_SPGZ &lt;int&gt;, ISDELETED_SPGZ &lt;int&gt;, ISEXCLUDED_SPGZ &lt;int&gt;,
+## #   ISEMIAS_SPGZ &lt;int&gt;, SPGZATTRIBUTES_SPGZ &lt;int&gt;, ADDITIONALUNIT_SPGZ &lt;chr&gt;,
+## #   ISPCP_SPGZ &lt;int&gt;, ATTRIBUTETARIF_SPGZ &lt;int&gt;, KTRUID_SPGZ &lt;int&gt;,
+## #   OKPDID_SPGZ &lt;int&gt;, ISKPGZ_SPGZ &lt;int&gt;, CREATEDATE_SPGZ &lt;chr&gt;,
+## #   EDITDATE_SPGZ &lt;chr&gt;, BEGINDATE_VERSION_SPGZ &lt;chr&gt;, …</code></pre>
 <p>Clean names</p>
 <pre class="r"><code># toString(names(df))
 df &lt;- clean_names(df)</code></pre>
@@ -1985,196 +1981,196 @@ df &lt;- clean_names(df)</code></pre>
 ## [47] &quot;code_kpgz&quot;</code></pre>
 <p>Number of rows and columns</p>
 <pre class="r"><code>dim(df)</code></pre>
-<pre><code>## [1] 58682    47</code></pre>
+<pre><code>## [1] 57604    47</code></pre>
 <p>Data types</p>
 <pre class="r"><code>glimpse(df)</code></pre>
-<pre><code>## Rows: 58,682
+<pre><code>## Rows: 57,604
 ## Columns: 47
-## $ total_rows              &lt;chr&gt; &quot;58682&quot;, &quot;58682&quot;, &quot;58682&quot;, &quot;58682&quot;, &quot;58682&quot;, &quot;…
-## $ id_entity_spgz_eaist    &lt;chr&gt; &quot;10008020&quot;, &quot;10008020&quot;, &quot;10008215&quot;, &quot;10008215&quot;…
-## $ id_spgz_eaist           &lt;chr&gt; &quot;1530772545&quot;, &quot;1592957700&quot;, &quot;1530772547&quot;, &quot;159…
-## $ id_entity_spgz_katalog  &lt;chr&gt; &quot;10008020&quot;, &quot;10008020&quot;, &quot;10008215&quot;, &quot;10008215&quot;…
-## $ id_version_spgz_katalog &lt;chr&gt; &quot;30040471&quot;, &quot;30384089&quot;, &quot;30040473&quot;, &quot;30384100&quot;…
-## $ parentid_spgz           &lt;chr&gt; &quot;3206701&quot;, &quot;3206701&quot;, &quot;3206701&quot;, &quot;3206701&quot;, &quot;6…
+## $ total_rows              &lt;int&gt; 57604, 57604, 57604, 57604, 57604, 57604, 5760…
+## $ id_entity_spgz_eaist    &lt;int&gt; 3387290, 8350827, 2328905, 3702889, 1607762767…
+## $ id_spgz_eaist           &lt;int&gt; 1622432877, 1622432878, 1622433006, 1622433007…
+## $ id_entity_spgz_katalog  &lt;int&gt; 3387290, 8350827, 2328905, 3702889, 30430535, …
+## $ id_version_spgz_katalog &lt;int&gt; 30448246, 30448247, 30448248, 30448249, 304305…
+## $ parentid_spgz           &lt;int&gt; 19768800, 19768800, 19768800, 19768800, 304272…
 ## $ code_kpgz_spgz          &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ name_spgz               &lt;chr&gt; &quot;Станок высокочастотной балансировки турбокомп…
-## $ isstandardized_spgz     &lt;chr&gt; &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;…
-## $ isproject_spgz          &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;…
-## $ isdeleted_spgz          &lt;chr&gt; &quot;0&quot;, &quot;1&quot;, &quot;0&quot;, &quot;1&quot;, &quot;0&quot;, &quot;1&quot;, &quot;0&quot;, &quot;1&quot;, &quot;0&quot;, &quot;…
-## $ isexcluded_spgz         &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;…
-## $ isemias_spgz            &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;…
-## $ spgzattributes_spgz     &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;…
-## $ additionalunit_spgz     &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ ispcp_spgz              &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;…
-## $ attributetarif_spgz     &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;…
-## $ ktruid_spgz             &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ okpdid_spgz             &lt;chr&gt; &quot;39566&quot;, &quot;39566&quot;, &quot;39566&quot;, &quot;39566&quot;, &quot;44818&quot;, &quot;…
-## $ iskpgz_spgz             &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;…
-## $ createdate_spgz         &lt;chr&gt; &quot;2024-08-26 18:10:59.000&quot;, &quot;2025-03-19 15:41:3…
-## $ editdate_spgz           &lt;chr&gt; &quot;2024-08-26 16:08:59.092&quot;, &quot;2025-03-19 15:07:3…
-## $ begindate_version_spgz  &lt;chr&gt; &quot;2024-08-26 00:00:00.000&quot;, &quot;2025-03-19 00:00:0…
-## $ enddate_version_spgz    &lt;chr&gt; &quot;2025-03-19 00:00:00.000&quot;, NA, &quot;2025-03-19 00:…
-## $ is_kpgz                 &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;0&quot;, &quot;…
-## $ okpd2_id_spgz           &lt;chr&gt; &quot;1750486&quot;, &quot;2063125&quot;, &quot;1750486&quot;, &quot;2063125&quot;, &quot;1…
-## $ okpd2_code_spgz         &lt;chr&gt; &quot;28.99.39.190&quot;, &quot;28.99.39.190&quot;, &quot;28.99.39.190&quot;…
-## $ okpd2_name_spgz         &lt;chr&gt; &quot;Оборудование специального назначения прочее, …
+## $ name_spgz               &lt;chr&gt; &quot;Исследования воздуха, усл. ед&quot;, &quot;Лабораторный…
+## $ isstandardized_spgz     &lt;int&gt; 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1…
+## $ isproject_spgz          &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ isdeleted_spgz          &lt;int&gt; 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0…
+## $ isexcluded_spgz         &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ isemias_spgz            &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ spgzattributes_spgz     &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ additionalunit_spgz     &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ ispcp_spgz              &lt;int&gt; 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0…
+## $ attributetarif_spgz     &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ ktruid_spgz             &lt;int&gt; NA, NA, NA, NA, NA, 22829269, 22801408, NA, NA…
+## $ okpdid_spgz             &lt;int&gt; 52873, 52873, 52873, 52873, NA, NA, 15463, NA,…
+## $ iskpgz_spgz             &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ createdate_spgz         &lt;chr&gt; &quot;2025-07-28 17:05:31&quot;, &quot;2025-07-28 17:05:45&quot;, …
+## $ editdate_spgz           &lt;chr&gt; &quot;2025-07-28 14:12:44&quot;, &quot;2025-07-28 14:12:44&quot;, …
+## $ begindate_version_spgz  &lt;chr&gt; &quot;2025-07-28 00:00:00&quot;, &quot;2025-07-28 00:00:00&quot;, …
+## $ enddate_version_spgz    &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;…
+## $ is_kpgz                 &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+## $ okpd2_id_spgz           &lt;int&gt; 2066155, 2066155, 2066155, 2066155, 2066162, 2…
+## $ okpd2_code_spgz         &lt;chr&gt; &quot;86.90.19.110&quot;, &quot;86.90.19.110&quot;, &quot;86.90.19.110&quot;…
+## $ okpd2_name_spgz         &lt;chr&gt; &quot;Услуги организаций санитарно-эпидемиологическ…
 ## $ okpd2_canceldate_spgz   &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ okpd2_isactual_spgz     &lt;chr&gt; &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;1&quot;, &quot;…
-## $ okpd2_okpd2id_spgz      &lt;chr&gt; &quot;8888313&quot;, &quot;8888313&quot;, &quot;8888313&quot;, &quot;8888313&quot;, &quot;8…
-## $ ktru_code_spgz          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ ktru_name_spgz          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ rels_old_pgz_id         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ rels_linktype           &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ rels_new_pgz_id         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ rels_is_actual          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ okpd2_isactual_spgz     &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+## $ okpd2_okpd2id_spgz      &lt;int&gt; 8891201, 8891201, 8891201, 8891201, 8884525, 8…
+## $ ktru_code_spgz          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;17.23.12.110-00000003&quot;, &quot;…
+## $ ktru_name_spgz          &lt;chr&gt; &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Конверт почтовый бумажный…
+## $ rels_old_pgz_id         &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, 30434248, 30434249…
+## $ rels_linktype           &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, 2, 2, NA, NA, NA, …
+## $ rels_new_pgz_id         &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, 30434515, 30434515…
+## $ rels_is_actual          &lt;int&gt; NA, NA, NA, NA, NA, NA, NA, 1, 1, NA, NA, NA, …
 ## $ rels_previous_pgz_id    &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ rels_source_pgz_id      &lt;chr&gt; &quot;10050054&quot;, &quot;10050054&quot;, &quot;10050055&quot;, &quot;10050055&quot;…
-## $ package_name            &lt;chr&gt; &quot;СТП 17&quot;, &quot;Удаление позиций СПГЗ по отменных с…
-## $ pgzpack_pgz_id          &lt;chr&gt; &quot;30040471&quot;, &quot;30384089&quot;, &quot;30040473&quot;, &quot;30384100&quot;…
-## $ package_reason_id       &lt;dbl&gt; 5, 5, 5, 5, NA, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, …
-## $ package_user_name       &lt;chr&gt; &quot;Орлов Николай Витальевич&quot;, &quot;Копылов Владислав…
-## $ package_reason_name     &lt;chr&gt; &quot;Иные действия&quot;, &quot;Иные действия&quot;, &quot;Иные действ…
-## $ id_entity_kpgz          &lt;dbl&gt; 3206701, 3206701, 3206701, 3206701, 68912, 689…
-## $ name_kpgz               &lt;chr&gt; &quot;СТЕНДЫ ПРОВЕРКИ ПРЕДОХРАНИТЕЛЕЙ&quot;, &quot;СТЕНДЫ ПРО…
-## $ code_kpgz               &lt;chr&gt; &quot;01.25.93.12&quot;, &quot;01.25.93.12&quot;, &quot;01.25.93.12&quot;, &quot;…</code></pre>
+## $ rels_source_pgz_id      &lt;int&gt; NA, NA, NA, NA, NA, 29931867, 29931868, NA, NA…
+## $ package_name            &lt;chr&gt; &quot;Оказание услуг по проведению лабораторных и и…
+## $ pgzpack_pgz_id          &lt;int&gt; 30448246, 30448247, 30448248, 30448249, 304305…
+## $ package_reason_id       &lt;int&gt; 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 3, 2, 2…
+## $ package_user_name       &lt;chr&gt; &quot;Кольчинская Татьяна Вячеславовна&quot;, &quot;Кольчинск…
+## $ package_reason_name     &lt;chr&gt; &quot;Стандартизация&quot;, &quot;Стандартизация&quot;, &quot;Стандарти…
+## $ id_entity_kpgz          &lt;int&gt; 19768800, 19768800, 19768800, 19768800, 304272…
+## $ name_kpgz               &lt;chr&gt; &quot;ИССЛЕДОВАНИЯ ЛАБОРАТОРНЫЕ КАЧЕСТВА АТМОСФЕРНО…
+## $ code_kpgz               &lt;chr&gt; &quot;03.01.99.01.02.02&quot;, &quot;03.01.99.01.02.02&quot;, &quot;03.…</code></pre>
 <p>Data classes</p>
 <pre class="r"><code>sapply(df, class)</code></pre>
 <pre><code>##              total_rows    id_entity_spgz_eaist           id_spgz_eaist 
-##             &quot;character&quot;             &quot;character&quot;             &quot;character&quot; 
+##               &quot;integer&quot;               &quot;integer&quot;               &quot;integer&quot; 
 ##  id_entity_spgz_katalog id_version_spgz_katalog           parentid_spgz 
-##             &quot;character&quot;             &quot;character&quot;             &quot;character&quot; 
+##               &quot;integer&quot;               &quot;integer&quot;               &quot;integer&quot; 
 ##          code_kpgz_spgz               name_spgz     isstandardized_spgz 
-##               &quot;logical&quot;             &quot;character&quot;             &quot;character&quot; 
+##               &quot;logical&quot;             &quot;character&quot;               &quot;integer&quot; 
 ##          isproject_spgz          isdeleted_spgz         isexcluded_spgz 
-##             &quot;character&quot;             &quot;character&quot;             &quot;character&quot; 
+##               &quot;integer&quot;               &quot;integer&quot;               &quot;integer&quot; 
 ##            isemias_spgz     spgzattributes_spgz     additionalunit_spgz 
-##             &quot;character&quot;             &quot;character&quot;             &quot;character&quot; 
+##               &quot;integer&quot;               &quot;integer&quot;             &quot;character&quot; 
 ##              ispcp_spgz     attributetarif_spgz             ktruid_spgz 
-##             &quot;character&quot;             &quot;character&quot;             &quot;character&quot; 
+##               &quot;integer&quot;               &quot;integer&quot;               &quot;integer&quot; 
 ##             okpdid_spgz             iskpgz_spgz         createdate_spgz 
-##             &quot;character&quot;             &quot;character&quot;             &quot;character&quot; 
+##               &quot;integer&quot;               &quot;integer&quot;             &quot;character&quot; 
 ##           editdate_spgz  begindate_version_spgz    enddate_version_spgz 
 ##             &quot;character&quot;             &quot;character&quot;             &quot;character&quot; 
 ##                 is_kpgz           okpd2_id_spgz         okpd2_code_spgz 
-##             &quot;character&quot;             &quot;character&quot;             &quot;character&quot; 
+##               &quot;integer&quot;               &quot;integer&quot;             &quot;character&quot; 
 ##         okpd2_name_spgz   okpd2_canceldate_spgz     okpd2_isactual_spgz 
-##             &quot;character&quot;               &quot;logical&quot;             &quot;character&quot; 
+##             &quot;character&quot;               &quot;logical&quot;               &quot;integer&quot; 
 ##      okpd2_okpd2id_spgz          ktru_code_spgz          ktru_name_spgz 
-##             &quot;character&quot;             &quot;character&quot;             &quot;character&quot; 
+##               &quot;integer&quot;             &quot;character&quot;             &quot;character&quot; 
 ##         rels_old_pgz_id           rels_linktype         rels_new_pgz_id 
-##             &quot;character&quot;               &quot;numeric&quot;             &quot;character&quot; 
+##               &quot;integer&quot;               &quot;integer&quot;               &quot;integer&quot; 
 ##          rels_is_actual    rels_previous_pgz_id      rels_source_pgz_id 
-##             &quot;character&quot;               &quot;logical&quot;             &quot;character&quot; 
+##               &quot;integer&quot;               &quot;logical&quot;               &quot;integer&quot; 
 ##            package_name          pgzpack_pgz_id       package_reason_id 
-##             &quot;character&quot;             &quot;character&quot;               &quot;numeric&quot; 
+##             &quot;character&quot;               &quot;integer&quot;               &quot;integer&quot; 
 ##       package_user_name     package_reason_name          id_entity_kpgz 
-##             &quot;character&quot;             &quot;character&quot;               &quot;numeric&quot; 
+##             &quot;character&quot;             &quot;character&quot;               &quot;integer&quot; 
 ##               name_kpgz               code_kpgz 
 ##             &quot;character&quot;             &quot;character&quot;</code></pre>
 <p>Checking duplicates. Number of duplicate columns in each column.</p>
 <pre class="r"><code>sapply(df, function(x) sum(duplicated(x)))</code></pre>
 <pre><code>##              total_rows    id_entity_spgz_eaist           id_spgz_eaist 
-##                   58681                   41066                   17368 
+##                   57603                   40081                   17342 
 ##  id_entity_spgz_katalog id_version_spgz_katalog           parentid_spgz 
-##                   41114                   16702                   56644 
+##                   40126                   16677                   55543 
 ##          code_kpgz_spgz               name_spgz     isstandardized_spgz 
-##                   58681                   45324                   58680 
+##                   57603                   44241                   57602 
 ##          isproject_spgz          isdeleted_spgz         isexcluded_spgz 
-##                   58681                   58680                   58680 
+##                   57603                   57602                   57603 
 ##            isemias_spgz     spgzattributes_spgz     additionalunit_spgz 
-##                   58681                   58680                   58680 
+##                   57603                   57602                   57602 
 ##              ispcp_spgz     attributetarif_spgz             ktruid_spgz 
-##                   58679                   58681                   49485 
+##                   57601                   57603                   48652 
 ##             okpdid_spgz             iskpgz_spgz         createdate_spgz 
-##                   58132                   58681                   37490 
+##                   57054                   57603                   36403 
 ##           editdate_spgz  begindate_version_spgz    enddate_version_spgz 
-##                   49115                   57627                   55366 
+##                   52766                   56534                   55891 
 ##                 is_kpgz           okpd2_id_spgz         okpd2_code_spgz 
-##                   58681                   54003                   56779 
+##                   57603                   52908                   55691 
 ##         okpd2_name_spgz   okpd2_canceldate_spgz     okpd2_isactual_spgz 
-##                   56786                   58681                   58680 
+##                   55698                   57603                   57602 
 ##      okpd2_okpd2id_spgz          ktru_code_spgz          ktru_name_spgz 
-##                   56779                   55178                   57733 
+##                   55691                   54104                   56639 
 ##         rels_old_pgz_id           rels_linktype         rels_new_pgz_id 
-##                   45371                   58678                   57115 
+##                   44317                   57600                   56057 
 ##          rels_is_actual    rels_previous_pgz_id      rels_source_pgz_id 
-##                   58679                   58681                   32038 
+##                   57601                   57603                   31214 
 ##            package_name          pgzpack_pgz_id       package_reason_id 
-##                   54331                   17298                   58676 
+##                   53196                   17274                   57598 
 ##       package_user_name     package_reason_name          id_entity_kpgz 
-##                   58618                   58676                   56644 
+##                   57540                   57598                   55543 
 ##               name_kpgz               code_kpgz 
-##                   56644                   56644</code></pre>
+##                   55543                   55543</code></pre>
 <p>Checking uniqueness.</p>
 <p>Number of unique rows.</p>
 <pre class="r"><code>df %&gt;% n_distinct()</code></pre>
-<pre><code>## [1] 58544</code></pre>
+<pre><code>## [1] 57466</code></pre>
 <p>Number of unique values in each column</p>
 <pre class="r"><code>sapply(df, function(x) sum(n_distinct(x)))</code></pre>
 <pre><code>##              total_rows    id_entity_spgz_eaist           id_spgz_eaist 
-##                       1                   17616                   41314 
+##                       1                   17523                   40262 
 ##  id_entity_spgz_katalog id_version_spgz_katalog           parentid_spgz 
-##                   17568                   41980                    2038 
+##                   17478                   40927                    2061 
 ##          code_kpgz_spgz               name_spgz     isstandardized_spgz 
-##                       1                   13358                       2 
+##                       1                   13363                       2 
 ##          isproject_spgz          isdeleted_spgz         isexcluded_spgz 
-##                       1                       2                       2 
+##                       1                       2                       1 
 ##            isemias_spgz     spgzattributes_spgz     additionalunit_spgz 
 ##                       1                       2                       2 
 ##              ispcp_spgz     attributetarif_spgz             ktruid_spgz 
-##                       3                       1                    9197 
+##                       3                       1                    8952 
 ##             okpdid_spgz             iskpgz_spgz         createdate_spgz 
-##                     550                       1                   21192 
+##                     550                       1                   21201 
 ##           editdate_spgz  begindate_version_spgz    enddate_version_spgz 
-##                    9567                    1055                    3316 
+##                    4838                    1070                    1713 
 ##                 is_kpgz           okpd2_id_spgz         okpd2_code_spgz 
-##                       1                    4679                    1903 
+##                       1                    4696                    1913 
 ##         okpd2_name_spgz   okpd2_canceldate_spgz     okpd2_isactual_spgz 
-##                    1896                       1                       2 
+##                    1906                       1                       2 
 ##      okpd2_okpd2id_spgz          ktru_code_spgz          ktru_name_spgz 
-##                    1903                    3504                     949 
+##                    1913                    3500                     965 
 ##         rels_old_pgz_id           rels_linktype         rels_new_pgz_id 
-##                   13311                       4                    1567 
+##                   13287                       4                    1547 
 ##          rels_is_actual    rels_previous_pgz_id      rels_source_pgz_id 
-##                       3                       1                   26644 
+##                       3                       1                   26390 
 ##            package_name          pgzpack_pgz_id       package_reason_id 
-##                    4351                   41384                       6 
+##                    4408                   40330                       6 
 ##       package_user_name     package_reason_name          id_entity_kpgz 
-##                      64                       6                    2038 
+##                      64                       6                    2061 
 ##               name_kpgz               code_kpgz 
-##                    2038                    2038</code></pre>
+##                    2061                    2061</code></pre>
 <p>Checking completness</p>
 <pre class="r"><code>colSums(is.na(df))</code></pre>
 <pre><code>##              total_rows    id_entity_spgz_eaist           id_spgz_eaist 
-##                       0                      75                      61 
+##                       0                      74                      60 
 ##  id_entity_spgz_katalog id_version_spgz_katalog           parentid_spgz 
 ##                       0                       0                       0 
 ##          code_kpgz_spgz               name_spgz     isstandardized_spgz 
-##                   58682                       0                       0 
+##                   57604                       0                       0 
 ##          isproject_spgz          isdeleted_spgz         isexcluded_spgz 
 ##                       0                       0                       0 
 ##            isemias_spgz     spgzattributes_spgz     additionalunit_spgz 
-##                       0                       0                   58681 
+##                       0                       0                       0 
 ##              ispcp_spgz     attributetarif_spgz             ktruid_spgz 
-##                    1633                       0                   42773 
+##                    1532                       0                   42705 
 ##             okpdid_spgz             iskpgz_spgz         createdate_spgz 
-##                   49819                       0                       0 
+##                   48753                       0                       0 
 ##           editdate_spgz  begindate_version_spgz    enddate_version_spgz 
-##                    1779                       0                   19829 
+##                       0                       0                       0 
 ##                 is_kpgz           okpd2_id_spgz         okpd2_code_spgz 
 ##                       0                       0                       0 
 ##         okpd2_name_spgz   okpd2_canceldate_spgz     okpd2_isactual_spgz 
-##                       0                   58682                       0 
+##                       0                   57604                       0 
 ##      okpd2_okpd2id_spgz          ktru_code_spgz          ktru_name_spgz 
-##                       0                   47586                   47587 
+##                       0                       0                       0 
 ##         rels_old_pgz_id           rels_linktype         rels_new_pgz_id 
-##                   40655                   40655                   40655 
+##                   39622                   39622                   39622 
 ##          rels_is_actual    rels_previous_pgz_id      rels_source_pgz_id 
-##                   40655                   58682                   22851 
+##                   39622                   57604                   22784 
 ##            package_name          pgzpack_pgz_id       package_reason_id 
-##                     613                     613                     613 
+##                       0                     614                     614 
 ##       package_user_name     package_reason_name          id_entity_kpgz 
-##                    3638                     613                       0 
+##                       0                       0                       0 
 ##               name_kpgz               code_kpgz 
 ##                       0                       0</code></pre>
 <p><strong>Converting data types</strong> Converting all columns with
