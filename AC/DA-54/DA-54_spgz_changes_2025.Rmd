@@ -121,8 +121,8 @@ Data was collected from several Catalog database tables using the SQL query "spg
 The data was downloaded and stored at the enterprise cloud and available is at this [link](https://drive.ac-mos.ru/f/4038789)
 
 ```{r, warning=FALSE, message=FALSE}
-df <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2026.01.22_spgz_kpgz_ktru_pack_okpd2_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
-df_src <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2026.01.22_spgz_kpgz_ktru_pack_okpd2_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
+df <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2026.01.22_spgz_kpgz_okpd_ktru_rels_packs.csv", fileEncoding = "Windows-1251")
+df_src <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2026.01.22_spgz_kpgz_okpd_ktru_rels_packs.csv", fileEncoding = "Windows-1251")
 
 
 # df <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
@@ -416,7 +416,7 @@ dssd
 
 ## **6.1. Key tasks and deliverable(s)**
 
-### **6.1.1. Top three recomendations based on analysis**
+### **6.1.1. Top three recommendations based on analysis**
 
 ## **6.2 Guiding questions**
 | N | Questions |  Answers  |

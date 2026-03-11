@@ -1,0 +1,62 @@
+---
+title: "DA-60 Calculation of the share of standardized procurement items in the total share of regular procurement"
+author: "Zelimkhan Gudiev"
+date: "2026-02-02"
+output: 
+  html_document:
+    toc: TRUE
+    toc_depth: 5
+    toc_float: FALSE
+  word_document:
+    toc: true
+    toc_depth: '5'
+  pdf_document:
+    # latex_engine: xelatex
+    toc: true
+    toc_depth: '5'
+---
+:::{style="text-align: justify"}
+# *0. Installation necessary packages and attaching libraries*
+
+```{r setup, echo=TRUE, results="hide", warning=FALSE, message=FALSE}
+# install.packages("psych")
+# install.packages("lubridate")
+# install.packages("purrr")
+# install.packages("GGally")
+# install.packages("skimr")
+# install.packages("Writexl")
+# install.packages("corrplot")
+library(psych)
+library(googlesheets4)
+library(tidyr)
+library(dplyr)
+library(janitor)
+library(ggplot2)
+library(lubridate)
+library(purrr)
+library(GGally)
+library(readxl)
+library(skimr)
+library(writexl)
+library(corrplot)
+```
+
+\newpage
+
+# 1. Business task, context and scope of work
+
+## 1.1. Key tasks and deliverable(s)
+
+### 1.1. Business task
+
+Calculation of the share of standardized procurement items in the total share of regular procurement. Data should be breakdowns of the following attributes:
+1) Life-cycle contract (LCC)
+2) Contract with counter-investment obligations (offset contract)
+3) Legal basis
+4) Type of relationship.
+With and without classify as part of standardization deleted positions that are linked to standardized positions by a type of relationship "⊃". This means that the deleted position is a subset of standardized position
+5) Is leaf-item, number of descended items and number of descended standardized items.
+With and without classify as part of standardization non-leaf positions that have at least 1 non-standardized position.
+
+
+
