@@ -121,11 +121,23 @@ spgz <- spgz %>%
          tip_vybora_znacenij_harakteristiki_zakazcikom)
 
 spgz %>% group_by(medicine, has_add_chars, standartizirovana, spgz_ktru) %>% 
-  summarise(n_spgz = n_distinct(identifikator_spgz)) %>% 
-  pull(n_spgz) %>%                                                           # Extract the numeric summary column as a vector
-  sum()        
+  summarise(n_spgz = n_distinct(identifikator_spgz)) # %>% 
+#  pull(n_spgz) %>%                                                           # Extract the numeric summary column as a vector
+#  sum()        
 
 
-spgz %>% filter(has_add_chars == "Да") %>% unique()
-  group_by(identifikator_spgz) %>% 
-  summarise(n_chars = length(naimenovanie_harakteristiki))
+spgz %>% group_by(medicine, has_add_chars, standartizirovana, spgz_ktru) %>% 
+  summarise(n_spgz = n_distinct(identifikator_spgz),
+            n_chars = n())
+
+# Group rows and calculate summary statistics for each group
+stats_df <- spgz %>% 
+  group_by(medicine, has_add_chars, standartizirovana, spgz_ktru) %>% 
+  summarise(
+    n_spgz = n_distinct(identifikator_spgz),            # Count distinct SPGZ identifiers in the group
+    n_chars = n(),                                      # Count rows (total characteristics)
+    n_add_chars = sum(characteristic_ktru == "Нет"),    # Count rows where characteristic_ktru equals "Нет"
+    .groups = "drop"                                    # Remove grouping after summarisation
+  )
+
+write_xlsx(stats_df, "C:/Users/GudievZK/Nextcloud/Data analysis/DA-66/2026.03.11_stats_df.xlsx")
