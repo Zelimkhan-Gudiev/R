@@ -425,9 +425,6 @@ dssd
 | 3 | What are the next steps? | ... |
 | 4 | Is additional data needed? | ... | 
 
-```{r}
-0.7 * 450
-```
 
 
 
