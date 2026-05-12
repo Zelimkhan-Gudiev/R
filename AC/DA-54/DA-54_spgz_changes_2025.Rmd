@@ -3,18 +3,17 @@ title: "DA 54. Analysis of changes to the SPGZ in 2025 in terms of grounds"
 author: "Zelimkhan Gudiev"
 date: "2025-12-17"
 output:
-  pdf_document:
-    latex_engine: xelatex
-    toc: true
-    toc_depth: '5'
-  word_document:
-    toc: true
-    toc_depth: '5'
   html_document:
     toc: true
     toc_depth: 5
     toc_float: true
-
+  word_document:
+    toc: true
+    toc_depth: '5'
+  pdf_document:
+    # latex_engine: xelatex
+    toc: true
+    toc_depth: '5'
 ---
 \newpage
 ::: {style="text-align: justify"}
@@ -122,12 +121,12 @@ Data was collected from several Catalog database tables using the SQL query "spg
 The data was downloaded and stored at the enterprise cloud and available is at this [link](https://drive.ac-mos.ru/f/4038789)
 
 ```{r, warning=FALSE, message=FALSE}
-# df <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
-# df_src <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.csv", fileEncoding = "Windows-1251")
+df <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2026.01.22_spgz_kpgz_okpd_ktru_rels_packs.csv", fileEncoding = "Windows-1251")
+df_src <- read.csv("C:/Users/GudievZK/Nextcloud/Data analysis/DA-54/2026.01.22_spgz_kpgz_okpd_ktru_rels_packs.csv", fileEncoding = "Windows-1251")
 
 
-df <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
-df_src <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
+# df <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
+# df_src <- read_excel("/Users/zelimkhan/Desktop/DA-54/2025.12.18_spgz_kpgz_ktru_pack_rels_db_ktlg.xlsx", guess_max = 60000)
 ```
 
 
@@ -169,9 +168,9 @@ The data is credible and can be use for analysis
 | N | Questions |  Answers  |
 |-  |-----------|-----------|
 |1  | Where the data is located? | The data was downloaded from Catalog database and stored in the enterprise cloud at this [link](https://drive.ac-mos.ru/f/4038789) (see section "2.1.2. Downloading and storing data")|
-|2  | How is the data organized? | The data is organized as a table consisting of **`r nrow(df)`** and **`r ncol(df)`** |
+|2  | How is the data organized? | The data is organized as a table consisting of **`r nrow(df)`** rows and **`r ncol(df)`** columns|
 |3  | Are there issues with bias or credibility in the data? Does the data ROCCC? | The data is unbiased and credible. Data is integrity and meets the ROCCC methodology requirements (see section the "2.1.4. Data credibility determination" section)|
-|4  | How are issues of licencing, privacy, security, and accessibility addressed? | 
+|4  | How are issues of licencing, privacy, security, and accessibility addressed? | ? |
 
 \newpage
 
@@ -181,7 +180,7 @@ The data is credible and can be use for analysis
 
 Table overview 
 ```{r}
-df
+head(df) %>% as_tibble()
 ```
 
 Clean names
@@ -222,7 +221,7 @@ Number of unique values in each column
 sapply(df, function(x) sum(n_distinct(x)))
 ```
 
-Checking completness
+Checking completeness
 ```{r}
 colSums(is.na(df))
 ```
@@ -264,8 +263,10 @@ df <- df %>%
 
 Deleting duplicate rows
 ```{r}
+# dups <- df[duplicated(df), ]
+
 df <- df %>% 
-   distinct()
+  distinct()
 ```
 
 Deleting unnecessary columns
@@ -279,7 +280,7 @@ df <- df %>%
 # toString(names(df))
 ```
 
-
+Removing duplicate rows (after deleting columns)
 ```{r}
 dups <- df %>%
   group_by(across(everything())) %>%  # group by all columns
@@ -415,7 +416,7 @@ dssd
 
 ## **6.1. Key tasks and deliverable(s)**
 
-### **6.1.1. Top three recomendations based on analysis**
+### **6.1.1. Top three recommendations based on analysis**
 
 ## **6.2 Guiding questions**
 | N | Questions |  Answers  |
@@ -425,7 +426,15 @@ dssd
 | 3 | What are the next steps? | ... |
 | 4 | Is additional data needed? | ... | 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 429e181c5a8b7b8ec20c070575be90f7590b4c40
 
+#	Next steps
+1. Add new columns with the following attributes related spgz (rels_old_pgz_id (version id)): 
+  1) Was it harmonized
+  2) Was it standardized
+2. Remove duplicated id_version_spgz_catalog (there are duplicate values across all columns except okpd2 and relations)
 :::
