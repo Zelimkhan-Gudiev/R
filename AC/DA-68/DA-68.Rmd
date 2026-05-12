@@ -1,0 +1,135 @@
+---
+title: "DA-68 Рассчитать показатель \"Доля стандартизированных предметов в общем объёме регулярных закупок\" по методике ДКП"
+author: "Zelimkhan Gudiev"
+date: "2026-05-12"
+output:
+  html_document:
+    toc: true
+    toc_depth: 5
+    toc_float: true
+  word_document:
+    toc: true
+    toc_depth: '5'
+  pdf_document:
+    # latex_engine: xelatex
+    toc: true
+    toc_depth: '5'
+---
+\newpage
+::: {style="text-align: justify"}
+
+# 1. Требования к задаче
+**Необходимо:** [DA-68](https://youtrack.gbuac.moscow/issue/DA-68/Rasschitat-pokazatel-Dolya-standartizirovannyh-predmetov-v-obshem-obuyome-regulyarnyh-zakupok-po-metodike-DKP-po-proceduram-po) Рассчитать показатель "Доля стандартизированных предметов в общем объёме регулярных закупок" по методике ДКП (по процедурам, по которым было опубликовано извещение)
+
+**Решаемая проблема:** ДКП и ДЭПиР рассчитывают показатель «Доля стандартизированных предметов в общем объёме регулярных закупок», и периодически его значения не совпадают.
+
+**Планируемое использование результатов задачи:** Результаты выполнения настоящей задачи будут использованы в целях определения возможности унификации методики расчета показателя.
+
+**Заинтересованные стороны:** <br>
+1) ДЭПиР <br>
+2) ДКП <br>
+3) УС ГБУ АЦ <br>
+4) ДИТ <br>
+5) ПроАйТи <br>
+
+# 2. Сбор данных
+Были запрошены и получены от ПроАйТи [данные](https://drive.ac-mos.ru/apps/files/files/5724246?dir=/Data%20analysis/DA-68&openfile=true) о лотах, которые имеют связанные процедуры с датой публикации извещения на ЕИС в 2025 году.
+
+# 3. Обработка данных
+
+```{r, include=FALSE}
+library(readxl)
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(psych)
+library(stringr)
+library(psych)
+library(googlesheets4)
+library(tidyr)
+library(janitor)
+library(ggplot2)
+library(purrr)
+library(GGally)
+library(skimr)
+library(writexl)
+library(corrplot)
+```
+
+Считывание данных
+```{r}
+
+df_src <- read_xlsx("C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/2026.04.13_Детализация по лотам 2025_итог2.xlsx", sheet = "Исх.")
+```
+Очистка и приведение столбцов к единому формату
+```{r}
+df_src <- clean_names(df_src) 
+```
+Структура данных
+```{r}
+glimpse(df_src)
+```
+Конвертация типов данных
+```{r}
+df <- df_src %>% 
+  mutate(
+    across(
+      c(id_lota_eaist, reestrovyj_nomer_lota_eaist, nomer_sovmestnoj_zakupki, 
+        reestrovyj_nomer_procedury_eaist, entity_id_kpgz_iz_specifikacii_lota, entity_id_tz),
+    as.character
+    ) #,
+    # across(
+    #   c(kompleks, grbs, zakon_osnovanie, sposob_opredelenia_postavsika, 
+    #     status_lota, priznak_kzc, priznak_kontrakta_so_vstrecnymi_o,
+    #     priznak_kontrakta_so_vstrecnymi_o_1, status_procedury, priznak_standartizacii_da_net,
+    #     konecnaa_kpgz_da_net, pozicia_kpgz_udalena_da_net, inf_ia_o_svazannyh_poziciah),
+    #     as.factor)
+)
+
+glimpse(df)
+```
+Отфильтровываем строки с пропущенными значения в столбце количество поданных заявок (kol_vo_podannyh_zaavok) или содержащие значение "0"
+```{r}
+df <- df %>% filter(!is.na(kol_vo_podannyh_zaavok) & kol_vo_podannyh_zaavok != 0)
+dim(df)
+```
+Не понятно почему набор данных содержащий процедуры по которым в 2025 году были опубликованы извещения и по которым были поданы заявки содержит `r 580 + 192` уникальных процедур, в связанных лотах которых предусмотрен способ определения поставщика "закупка у единственного поставщика".
+```{r}
+susp <- df %>% filter(sposob_opredelenia_postavsika == "закупка у единственного поставщика")
+
+susp %>% group_by(priznak_standartizacii_da_net) %>% 
+  summarise(
+    uniq_procedures = n_distinct(reestrovyj_nomer_procedury_na_eis),
+    sum = sum(summa_lota_po_pozicii_kpgz_rub)
+  )
+```
+
+Количество пропущенных значений
+```{r}
+sapply(df, function(x) sum(is.na(x)))
+```
+Количество дублирующихся значений
+```{r}
+sapply(df, function(x) sum(duplicated(x)))
+```
+Количество уникальных значений
+```{r}
+sapply(df, function(x) n_distinct(x))
+```
+
+
+```{r}
+sapply(df, function(x) sum(is.na(x)))
+```
+
+
+
+
+
+
+
+
+
+
+
+:::

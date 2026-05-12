@@ -1,33 +1,38 @@
+library(readxl)
+library(tidyverse)
+library(dplyr)
+library(lubridate)
+library(psych)
+library(stringr)
 library(psych)
 library(googlesheets4)
 library(tidyr)
-library(dplyr)
 library(janitor)
 library(ggplot2)
-library(lubridate)
 library(purrr)
 library(GGally)
-library(readxl)
 library(skimr)
 library(writexl)
 library(corrplot)
 
-df_src <- read_xlsx("C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/2026.03.31 АМиПМ.xlsx")
-names(df)
-df <- clean_names(df_src) 
-str(df)
-glimpse(df)
-describe(df)
-skim(df)
+df_src <- read_xlsx("C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/2026.04.13_Детализация по лотам 2025_итог2.xlsx", sheet = "2025")
+names(df_src)
+df_src <- clean_names(df_src) 
+str(df_src)
+glimpse(df_src)
+describe(df_src)
+skim(df_src)
 
-summary(df)
+summary(df_src)
 
-sapply(df, function(x) sum(duplicated(x)))
+sapply(df_src, function(x) sum(duplicated(x)))
 
-sapply(df, function(x) n_distinct(x))
+sapply(df_src, function(x) n_distinct(x))
+
+sapply(df_src, function(x) sum(is.na(x)))
  
   
-stats <- df %>% 
+stats <- df_src %>% 
     summarise(
     across(
       .cols = everything(),
