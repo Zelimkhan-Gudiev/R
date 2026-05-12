@@ -426,6 +426,11 @@ dssd
 | 3 | What are the next steps? | ... |
 | 4 | Is additional data needed? | ... | 
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 429e181c5a8b7b8ec20c070575be90f7590b4c40
 
 #	Next steps
 1. Add new columns with the following attributes related spgz (rels_old_pgz_id (version id)): 
