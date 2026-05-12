@@ -1,0 +1,59 @@
+---
+title: "EDA"
+author: "Zelimkhan Gudiev"
+date: "2026-03-12"
+output: html_document
+---
+
+# 1. SETUP & LOAD DATA
+
+Install required packages, load the diamonds dataset, and understand what we are working with before touching any statistics.
+
+📦 Dataset — diamonds (ggplot2)
+The diamonds dataset contains measurements of 53,940 diamonds. It includes price, carat weight, cut quality, color grade, clarity grade, and physical dimensions (x, y, z depth). It is a rich dataset with both numeric and categorical variables — perfect for a real-world workflow.
+
+## INSTALL PACKAGES (run once, then comment out) ##
+All packages used throughout this entire workflow
+```{r}
+# install.packages(c(
+#   "tidyverse",    # includes dplyr, ggplot2, tidyr, readr, purrr
+#   "psych",        # describe() — rich descriptive statistics table
+#   "moments",      # skewness() and kurtosis() functions
+#   "corrplot",     # correlation matrix heatmap visualization
+#   "naniar",       # visualize missing values patterns
+#   "patchwork",    # combine multiple ggplot charts into one figure
+#   "scales"        # formatting axis labels (percent, comma, dollar)
+# ))
+```
+
+
+## LOAD LIBRARIES ##
+```{r}
+library(tidyverse)   # loads dplyr, ggplot2, tidyr, etc. all at once
+library(psych)       # describe()
+library(moments)     # skewness(), kurtosis()
+library(corrplot)    # corrplot()
+library(naniar)      # vis_miss(), miss_var_summary()
+library(patchwork)   # plot1 + plot2 + plot3 layout
+library(scales)      # dollar(), percent(), comma()
+```
+
+## LOAD DATASET ##
+# diamonds is built into ggplot2, so no file to import
+
+```{r}
+df <- diamonds    # assign to 'df' so our code is generalisable
+```
+
+## ── GLOBAL PLOT THEME ─────────────────────────────────────────
+Set once here so ALL charts look consistent throughout
+```{r}
+theme_set(theme_minimal(base_size = 12) +
+            theme(
+              plot.title    = element_text(face = "bold", size = 14),
+              plot.subtitle = element_text(color = "gray50", size = 11),
+              panel.grid.minor = element_blank()  # remove minor gridlines
+            )
+)
+```
+
