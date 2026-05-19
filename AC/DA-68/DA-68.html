@@ -1513,12 +1513,7 @@ border-radius: 0px;
 </div>
 <div id="обработка-данных" class="section level1">
 <h1>3. Обработка данных</h1>
-<p>Считывание данных</p>
-<pre class="r"><code>df_src &lt;- read_xlsx(&quot;C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/2026.04.13_Детализация по лотам 2025_итог2.xlsx&quot;, sheet = &quot;Исх.&quot;)</code></pre>
-<p>Очистка и приведение столбцов к единому формату</p>
-<pre class="r"><code>df_src &lt;- clean_names(df_src) </code></pre>
 <p>Структура данных</p>
-<pre class="r"><code>glimpse(df_src)</code></pre>
 <pre><code>## Rows: 243,906
 ## Columns: 37
 ## $ id_lota_eaist                       &lt;dbl&gt; 15282789, 15282789, 15282789, 1528…
@@ -1538,8 +1533,8 @@ border-radius: 0px;
 ## $ priznak_kontrakta_so_vstrecnymi_o   &lt;chr&gt; &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;,…
 ## $ priznak_kontrakta_so_vstrecnymi_o_1 &lt;chr&gt; &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;,…
 ## $ reestrovyj_nomer_procedury_eaist    &lt;dbl&gt; 13905229, 13905229, 13905229, 1390…
-## $ ikz                                 &lt;dbl&gt; 2.127736e+35, 2.127736e+35, 2.1277…
-## $ reestrovyj_nomer_procedury_na_eis   &lt;dbl&gt; 1.390523e+07, 1.390523e+07, 1.3905…
+## $ ikz                                 &lt;dbl&gt; 2127736242019773614828482808246262…
+## $ reestrovyj_nomer_procedury_na_eis   &lt;dbl&gt; 13905229, 13905229, 13905229, 1390…
 ## $ data_publikacii_procedury_na_eis    &lt;dttm&gt; 2025-01-22, 2025-01-22, 2025-01-2…
 ## $ kol_vo_podannyh_zaavok              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, 3, 5, …
 ## $ nmc_summa_po_vsej_procedure         &lt;dbl&gt; 2808754.0, 2808754.0, 2808754.0, 2…
@@ -1555,113 +1550,1158 @@ border-radius: 0px;
 ## $ data_sozdania_pozicii_kpgz          &lt;dttm&gt; 2018-09-27, 2018-07-06, 2018-07-0…
 ## $ kolicestvo_podcinennyh_pozicij_kp   &lt;dbl&gt; 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0…
 ## $ kolicestvo_standartizirovannyh_p    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-## $ inf_ia_o_svazannyh_poziciah         &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, NA, &quot;0&quot;, NA, &quot;0&quot;, &quot;Связа…
+## $ inf_ia_o_svazannyh_poziciah         &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA…
 ## $ entity_id_tz                        &lt;dbl&gt; NA, 57999504, NA, NA, NA, 57988554…
 ## $ naimenovanie_ttz_stz                &lt;chr&gt; NA, &quot;Поставка реагентов и расходны…</code></pre>
-<p>Конвертация типов данных</p>
-<pre class="r"><code>df &lt;- df_src %&gt;% 
-  mutate(
-    across(
-      c(id_lota_eaist, reestrovyj_nomer_lota_eaist, nomer_sovmestnoj_zakupki, 
-        reestrovyj_nomer_procedury_eaist, entity_id_kpgz_iz_specifikacii_lota, entity_id_tz),
-    as.character
-    ) #,
-    # across(
-    #   c(kompleks, grbs, zakon_osnovanie, sposob_opredelenia_postavsika, 
-    #     status_lota, priznak_kzc, priznak_kontrakta_so_vstrecnymi_o,
-    #     priznak_kontrakta_so_vstrecnymi_o_1, status_procedury, priznak_standartizacii_da_net,
-    #     konecnaa_kpgz_da_net, pozicia_kpgz_udalena_da_net, inf_ia_o_svazannyh_poziciah),
-    #     as.factor)
-)
-
-glimpse(df)</code></pre>
+<p>Вопрос: Не понятно, почему в таблице содержится два столбца с
+информацией о наличии признака офсетного контракта
+(priznak_kontrakta_so_vstrecnymi).</p>
+<p>Конвертация типов данных, изменение пордка столбцов и просмотр
+структруры</p>
 <pre><code>## Rows: 243,906
-## Columns: 37
+## Columns: 38
 ## $ id_lota_eaist                       &lt;chr&gt; &quot;15282789&quot;, &quot;15282789&quot;, &quot;15282789&quot;…
 ## $ reestrovyj_nomer_lota_eaist         &lt;chr&gt; &quot;15282789&quot;, &quot;15282789&quot;, &quot;15282789&quot;…
-## $ kompleks                            &lt;chr&gt; &quot;Комплекс социального развития&quot;, &quot;…
-## $ grbs                                &lt;chr&gt; &quot;Департамент здравоохранения город…
-## $ zakazcik                            &lt;chr&gt; &quot;Государственное бюджетное учрежде…
-## $ summa_lota_po_pozicii_kpgz_rub      &lt;dbl&gt; 314999.75, 987000.00, 1410000.00, …
-## $ planiruemaa_data_publikacii_izves   &lt;dttm&gt; 2021-12-01, 2021-12-01, 2021-12-0…
-## $ planiruemaa_data_zaklucenia_kontr   &lt;dttm&gt; 2022-01-31, 2022-01-31, 2022-01-3…
-## $ zakon_osnovanie                     &lt;chr&gt; &quot;44-ФЗ&quot;, &quot;44-ФЗ&quot;, &quot;44-ФЗ&quot;, &quot;44-ФЗ&quot;…
-## $ sposob_opredelenia_postavsika       &lt;chr&gt; &quot;электронный аукцион&quot;, &quot;электронны…
-## $ status_lota                         &lt;chr&gt; &quot;Формирование&quot;, &quot;Формирование&quot;, &quot;Ф…
-## $ naimenovanie_predmeta_zakupki       &lt;chr&gt; &quot;Электронный аукцион на поставку р…
-## $ nomer_sovmestnoj_zakupki            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ priznak_kzc                         &lt;chr&gt; &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;,…
-## $ priznak_kontrakta_so_vstrecnymi_o   &lt;chr&gt; &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;,…
-## $ priznak_kontrakta_so_vstrecnymi_o_1 &lt;chr&gt; &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;,…
 ## $ reestrovyj_nomer_procedury_eaist    &lt;chr&gt; &quot;13905229&quot;, &quot;13905229&quot;, &quot;13905229&quot;…
-## $ ikz                                 &lt;dbl&gt; 2.127736e+35, 2.127736e+35, 2.1277…
-## $ reestrovyj_nomer_procedury_na_eis   &lt;dbl&gt; 1.390523e+07, 1.390523e+07, 1.3905…
-## $ data_publikacii_procedury_na_eis    &lt;dttm&gt; 2025-01-22, 2025-01-22, 2025-01-2…
-## $ kol_vo_podannyh_zaavok              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, 3, 5, …
-## $ nmc_summa_po_vsej_procedure         &lt;dbl&gt; 2808754.0, 2808754.0, 2808754.0, 2…
-## $ status_procedury                    &lt;chr&gt; &quot;Установлены сроки размещения&quot;, &quot;У…
+## $ reestrovyj_nomer_procedury_na_eis   &lt;chr&gt; &quot;13905229&quot;, &quot;13905229&quot;, &quot;13905229&quot;…
+## $ ikz                                 &lt;chr&gt; &quot;212773624201977361482848280824626…
+## $ naimenovanie_predmeta_zakupki       &lt;chr&gt; &quot;Электронный аукцион на поставку р…
+## $ zakon_osnovanie                     &lt;fct&gt; 44-ФЗ, 44-ФЗ, 44-ФЗ, 44-ФЗ, 44-ФЗ,…
+## $ sposob_opredelenia_postavsika       &lt;fct&gt; электронный аукцион, электронный а…
+## $ nomer_sovmestnoj_zakupki            &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ naimenovanie_ttz_stz                &lt;chr&gt; NA, &quot;Поставка реагентов и расходны…
 ## $ entity_id_kpgz_iz_specifikacii_lota &lt;chr&gt; &quot;19759611&quot;, &quot;18055168&quot;, &quot;18055073&quot;…
 ## $ kod_kpgz_iz_specifikacii_lota       &lt;chr&gt; &quot;01.02.10.43.03.07&quot;, &quot;01.02.10.59.…
 ## $ naimenovanie_kpgz_iz_specifikaci    &lt;chr&gt; &quot;РЕАГЕНТЫ \&quot;IN VITRO\&quot; ДЛЯ ПРОВЕДЕ…
-## $ priznak_standartizacii_da_net       &lt;chr&gt; &quot;нет&quot;, &quot;да&quot;, &quot;нет&quot;, &quot;нет&quot;, &quot;нет&quot;, …
-## $ konecnaa_kpgz_da_net                &lt;chr&gt; &quot;да&quot;, &quot;да&quot;, &quot;да&quot;, &quot;да&quot;, &quot;нет&quot;, &quot;да…
-## $ pozicia_kpgz_udalena_da_net         &lt;chr&gt; &quot;да&quot;, &quot;нет&quot;, &quot;да&quot;, &quot;нет&quot;, &quot;нет&quot;, &quot;…
+## $ summa_lota_po_pozicii_kpgz_rub      &lt;dbl&gt; 314999.75, 987000.00, 1410000.00, …
+## $ nmc_summa_po_vsej_procedure         &lt;dbl&gt; 2808754.0, 2808754.0, 2808754.0, 2…
+## $ priznak_kzc                         &lt;fct&gt; нет, нет, нет, нет, нет, нет, нет,…
+## $ priznak_kontrakta_so_vstrecnymi_o   &lt;fct&gt; нет, нет, нет, нет, нет, нет, нет,…
+## $ priznak_kontrakta_so_vstrecnymi_o_1 &lt;fct&gt; нет, нет, нет, нет, нет, нет, нет,…
+## $ kol_vo_podannyh_zaavok              &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, 3, 5, …
+## $ status_lota                         &lt;fct&gt; Формирование, Формирование, Формир…
+## $ status_procedury                    &lt;fct&gt; Установлены сроки размещения, Уста…
+## $ kompleks                            &lt;fct&gt; &quot;Комплекс социального развития&quot;, &quot;…
+## $ grbs                                &lt;fct&gt; &quot;Департамент здравоохранения город…
+## $ zakazcik                            &lt;chr&gt; &quot;Государственное бюджетное учрежде…
+## $ priznak_standartizacii_da_net       &lt;fct&gt; нет, да, нет, нет, нет, да, да, да…
+## $ konecnaa_kpgz_da_net                &lt;fct&gt; да, да, да, да, нет, да, да, да, д…
+## $ pozicia_kpgz_udalena_da_net         &lt;fct&gt; да, нет, да, нет, нет, нет, нет, н…
 ## $ data_udalenia_kpgz                  &lt;dttm&gt; 2026-03-24, NA, 2023-03-01, NA, N…
 ## $ data_standartizacii_pozicii         &lt;dttm&gt; NA, 2026-02-01, NA, NA, NA, 2026-…
 ## $ data_sozdania_pozicii_kpgz          &lt;dttm&gt; 2018-09-27, 2018-07-06, 2018-07-0…
 ## $ kolicestvo_podcinennyh_pozicij_kp   &lt;dbl&gt; 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0…
 ## $ kolicestvo_standartizirovannyh_p    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-## $ inf_ia_o_svazannyh_poziciah         &lt;chr&gt; &quot;0&quot;, &quot;0&quot;, NA, &quot;0&quot;, NA, &quot;0&quot;, &quot;Связа…
+## $ inf_ia_o_svazannyh_poziciah         &lt;fct&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA…
 ## $ entity_id_tz                        &lt;chr&gt; NA, &quot;57999504&quot;, NA, NA, NA, &quot;57988…
-## $ naimenovanie_ttz_stz                &lt;chr&gt; NA, &quot;Поставка реагентов и расходны…</code></pre>
-<p>Отфильтровываем строки с пропущенными значения в столбце количество
-поданных заявок (kol_vo_podannyh_zaavok) или содержащие значение “0”</p>
-<pre class="r"><code>df &lt;- df %&gt;% filter(!is.na(kol_vo_podannyh_zaavok) &amp; kol_vo_podannyh_zaavok != 0)
-dim(df)</code></pre>
-<pre><code>## [1] 197985     37</code></pre>
-<p>Не понятно почему набор данных содержащий процедуры по которым в 2025
-году были опубликованы извещения и по которым были поданы заявки
-содержит 772 уникальных процедур, в связанных лотах которых предусмотрен
-способ определения поставщика “закупка у единственного поставщика”.</p>
-<pre class="r"><code>susp &lt;- df %&gt;% filter(sposob_opredelenia_postavsika == &quot;закупка у единственного поставщика&quot;)
-
-susp %&gt;% group_by(priznak_standartizacii_da_net) %&gt;% 
-  summarise(
-    uniq_procedures = n_distinct(reestrovyj_nomer_procedury_na_eis),
-    sum = sum(summa_lota_po_pozicii_kpgz_rub)
-  )</code></pre>
-<pre><code>## # A tibble: 2 × 3
-##   priznak_standartizacii_da_net uniq_procedures         sum
-##   &lt;chr&gt;                                   &lt;int&gt;       &lt;dbl&gt;
-## 1 да                                        580 2686481064.
-## 2 нет                                       192  448474351.</code></pre>
+## $ data_publikacii_procedury_na_eis    &lt;dttm&gt; 2025-01-22, 2025-01-22, 2025-01-2…
+## $ planiruemaa_data_publikacii_izves   &lt;dttm&gt; 2021-12-01, 2021-12-01, 2021-12-0…
+## $ planiruemaa_data_zaklucenia_kontr   &lt;dttm&gt; 2022-01-31, 2022-01-31, 2022-01-3…
+## $ my_questions                        &lt;chr&gt; &quot;Проверить признак офсетной закупк…</code></pre>
+<p>Статистика</p>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">df</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">243906</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">38</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">14</td>
+</tr>
+<tr class="odd">
+<td align="left">factor</td>
+<td align="left">13</td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">5</td>
+</tr>
+<tr class="odd">
+<td align="left">POSIXct</td>
+<td align="left">6</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<colgroup>
+<col width="37%" />
+<col width="10%" />
+<col width="14%" />
+<col width="4%" />
+<col width="5%" />
+<col width="6%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">id_lota_eaist</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">168888</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">reestrovyj_nomer_lota_eaist</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">168888</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">reestrovyj_nomer_procedury_eaist</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">145884</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">reestrovyj_nomer_procedury_na_eis</td>
+<td align="right">1</td>
+<td align="right">1.00</td>
+<td align="right">8</td>
+<td align="right">19</td>
+<td align="right">0</td>
+<td align="right">23672</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">ikz</td>
+<td align="right">76734</td>
+<td align="right">0.69</td>
+<td align="right">36</td>
+<td align="right">41</td>
+<td align="right">0</td>
+<td align="right">1704</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">naimenovanie_predmeta_zakupki</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">4</td>
+<td align="right">1334</td>
+<td align="right">0</td>
+<td align="right">126168</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">nomer_sovmestnoj_zakupki</td>
+<td align="right">203082</td>
+<td align="right">0.17</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">3946</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">naimenovanie_ttz_stz</td>
+<td align="right">43632</td>
+<td align="right">0.82</td>
+<td align="right">14</td>
+<td align="right">238</td>
+<td align="right">0</td>
+<td align="right">395</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">entity_id_kpgz_iz_specifikacii_lota</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">5</td>
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">8000</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">kod_kpgz_iz_specifikacii_lota</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">5</td>
+<td align="right">32</td>
+<td align="right">0</td>
+<td align="right">7999</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">naimenovanie_kpgz_iz_specifikaci</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">3</td>
+<td align="right">203</td>
+<td align="right">0</td>
+<td align="right">7990</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">zakazcik</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">25</td>
+<td align="right">244</td>
+<td align="right">0</td>
+<td align="right">1800</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">entity_id_tz</td>
+<td align="right">43632</td>
+<td align="right">0.82</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">395</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">my_questions</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">34</td>
+<td align="right">34</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: factor</strong></p>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="8%" />
+<col width="11%" />
+<col width="6%" />
+<col width="7%" />
+<col width="38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">ordered</th>
+<th align="right">n_unique</th>
+<th align="left">top_counts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">zakon_osnovanie</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">44-: 205580, 223: 38326</td>
+</tr>
+<tr class="even">
+<td align="left">sposob_opredelenia_postavsika</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">6</td>
+<td align="left">эле: 168431, эле: 54601, эле: 16240, зак: 3389</td>
+</tr>
+<tr class="odd">
+<td align="left">priznak_kzc</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">нет: 243870, да: 36</td>
+</tr>
+<tr class="even">
+<td align="left">priznak_kontrakta_so_vstrecnymi_o</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">нет: 243879, да: 27</td>
+</tr>
+<tr class="odd">
+<td align="left">priznak_kontrakta_so_vstrecnymi_o_1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">нет: 174873, да: 69033</td>
+</tr>
+<tr class="even">
+<td align="left">status_lota</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">11</td>
+<td align="left">Не : 120804, Опу: 113717, Отм: 5016, Вне: 4135</td>
+</tr>
+<tr class="odd">
+<td align="left">status_procedury</td>
+<td align="right">87</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">12</td>
+<td align="left">Тор: 235163, Отм: 4620, Изв: 3252, Отк: 333</td>
+</tr>
+<tr class="even">
+<td align="left">kompleks</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">11</td>
+<td align="left">Ком: 167571, Пре: 33683, Ком: 15540, Ком: 13974</td>
+</tr>
+<tr class="odd">
+<td align="left">grbs</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">59</td>
+<td align="left">Деп: 119415, Деп: 39482, Деп: 13286, Деп: 9563</td>
+</tr>
+<tr class="even">
+<td align="left">priznak_standartizacii_da_net</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">да: 218864, нет: 25042</td>
+</tr>
+<tr class="odd">
+<td align="left">konecnaa_kpgz_da_net</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">да: 241308, нет: 2598</td>
+</tr>
+<tr class="even">
+<td align="left">pozicia_kpgz_udalena_da_net</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">нет: 235760, да: 8146</td>
+</tr>
+<tr class="odd">
+<td align="left">inf_ia_o_svazannyh_poziciah</td>
+<td align="right">243906</td>
+<td align="right">0</td>
+<td align="left">FALSE</td>
+<td align="right">0</td>
+<td align="left">:</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<colgroup>
+<col width="26%" />
+<col width="7%" />
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="2%" />
+<col width="7%" />
+<col width="7%" />
+<col width="6%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">summa_lota_po_pozicii_kpgz_rub</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">17519917.79</td>
+<td align="right">907740662.94</td>
+<td align="right">0</td>
+<td align="right">6254.1</td>
+<td align="right">123301.8</td>
+<td align="right">995985</td>
+<td align="right">205984392882</td>
+</tr>
+<tr class="even">
+<td align="left">nmc_summa_po_vsej_procedure</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">36002777.70</td>
+<td align="right">1013490575.66</td>
+<td align="right">0</td>
+<td align="right">360000.0</td>
+<td align="right">1432020.0</td>
+<td align="right">5109961</td>
+<td align="right">205984392882</td>
+</tr>
+<tr class="odd">
+<td align="left">kol_vo_podannyh_zaavok</td>
+<td align="right">45921</td>
+<td align="right">0.81</td>
+<td align="right">3.17</td>
+<td align="right">3.09</td>
+<td align="right">1</td>
+<td align="right">1.0</td>
+<td align="right">2.0</td>
+<td align="right">4</td>
+<td align="right">62</td>
+</tr>
+<tr class="even">
+<td align="left">kolicestvo_podcinennyh_pozicij_kp</td>
+<td align="right">1508</td>
+<td align="right">0.99</td>
+<td align="right">0.02</td>
+<td align="right">0.43</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+<td align="right">17</td>
+</tr>
+<tr class="odd">
+<td align="left">kolicestvo_standartizirovannyh_p</td>
+<td align="right">1508</td>
+<td align="right">0.99</td>
+<td align="right">0.00</td>
+<td align="right">0.13</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+<td align="right">8</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: POSIXct</strong></p>
+<table>
+<colgroup>
+<col width="34%" />
+<col width="10%" />
+<col width="14%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">min</th>
+<th align="left">max</th>
+<th align="left">median</th>
+<th align="right">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">data_udalenia_kpgz</td>
+<td align="right">235760</td>
+<td align="right">0.03</td>
+<td align="left">2021-10-20</td>
+<td align="left">2026-04-09</td>
+<td align="left">2026-03-24</td>
+<td align="right">124</td>
+</tr>
+<tr class="even">
+<td align="left">data_standartizacii_pozicii</td>
+<td align="right">23923</td>
+<td align="right">0.90</td>
+<td align="left">2016-12-29</td>
+<td align="left">2026-04-09</td>
+<td align="left">2025-10-25</td>
+<td align="right">953</td>
+</tr>
+<tr class="odd">
+<td align="left">data_sozdania_pozicii_kpgz</td>
+<td align="right">1508</td>
+<td align="right">0.99</td>
+<td align="left">2014-03-29</td>
+<td align="left">2025-12-19</td>
+<td align="left">2018-12-11</td>
+<td align="right">1091</td>
+</tr>
+<tr class="even">
+<td align="left">data_publikacii_procedury_na_eis</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="left">2025-01-09</td>
+<td align="left">2025-12-31</td>
+<td align="left">2025-06-27</td>
+<td align="right">341</td>
+</tr>
+<tr class="odd">
+<td align="left">planiruemaa_data_publikacii_izves</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="left">2021-12-01</td>
+<td align="left">2026-09-01</td>
+<td align="left">2025-06-01</td>
+<td align="right">241</td>
+</tr>
+<tr class="even">
+<td align="left">planiruemaa_data_zaklucenia_kontr</td>
+<td align="right">179099</td>
+<td align="right">0.27</td>
+<td align="left">2022-01-24</td>
+<td align="left">2027-12-31</td>
+<td align="left">2025-06-30</td>
+<td align="right">459</td>
+</tr>
+</tbody>
+</table>
+<p>Исключаем из таблицы строки с пропущенными значениями в столбце
+количество поданных заявок (kol_vo_podannyh_zaavok) или содержащие
+значение “0” (45921 строк)</p>
+<table>
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">df</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">197985</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">38</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">14</td>
+</tr>
+<tr class="odd">
+<td align="left">factor</td>
+<td align="left">13</td>
+</tr>
+<tr class="even">
+<td align="left">numeric</td>
+<td align="left">5</td>
+</tr>
+<tr class="odd">
+<td align="left">POSIXct</td>
+<td align="left">6</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<colgroup>
+<col width="37%" />
+<col width="10%" />
+<col width="14%" />
+<col width="4%" />
+<col width="5%" />
+<col width="6%" />
+<col width="9%" />
+<col width="11%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">id_lota_eaist</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">134474</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">reestrovyj_nomer_lota_eaist</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">134474</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">reestrovyj_nomer_procedury_eaist</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">114057</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">reestrovyj_nomer_procedury_na_eis</td>
+<td align="right">1</td>
+<td align="right">1.00</td>
+<td align="right">11</td>
+<td align="right">19</td>
+<td align="right">0</td>
+<td align="right">20829</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">ikz</td>
+<td align="right">68331</td>
+<td align="right">0.65</td>
+<td align="right">36</td>
+<td align="right">38</td>
+<td align="right">0</td>
+<td align="right">1656</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">naimenovanie_predmeta_zakupki</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">4</td>
+<td align="right">1314</td>
+<td align="right">0</td>
+<td align="right">104293</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">nomer_sovmestnoj_zakupki</td>
+<td align="right">160683</td>
+<td align="right">0.19</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">3517</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">naimenovanie_ttz_stz</td>
+<td align="right">39383</td>
+<td align="right">0.80</td>
+<td align="right">14</td>
+<td align="right">238</td>
+<td align="right">0</td>
+<td align="right">393</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">entity_id_kpgz_iz_specifikacii_lota</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">5</td>
+<td align="right">10</td>
+<td align="right">0</td>
+<td align="right">7871</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">kod_kpgz_iz_specifikacii_lota</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">5</td>
+<td align="right">32</td>
+<td align="right">0</td>
+<td align="right">7871</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">naimenovanie_kpgz_iz_specifikaci</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">3</td>
+<td align="right">203</td>
+<td align="right">0</td>
+<td align="right">7865</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">zakazcik</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">25</td>
+<td align="right">244</td>
+<td align="right">0</td>
+<td align="right">1794</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">entity_id_tz</td>
+<td align="right">39383</td>
+<td align="right">0.80</td>
+<td align="right">8</td>
+<td align="right">8</td>
+<td align="right">0</td>
+<td align="right">393</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">my_questions</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">34</td>
+<td align="right">34</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: factor</strong></p>
+<table>
+<colgroup>
+<col width="28%" />
+<col width="8%" />
+<col width="11%" />
+<col width="6%" />
+<col width="7%" />
+<col width="38%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">ordered</th>
+<th align="right">n_unique</th>
+<th align="left">top_counts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">zakon_osnovanie</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">44-: 164715, 223: 33270</td>
+</tr>
+<tr class="even">
+<td align="left">sposob_opredelenia_postavsika</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">6</td>
+<td align="left">эле: 141175, эле: 37937, эле: 14905, зак: 2866</td>
+</tr>
+<tr class="odd">
+<td align="left">priznak_kzc</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">нет: 197959, да: 26</td>
+</tr>
+<tr class="even">
+<td align="left">priznak_kontrakta_so_vstrecnymi_o</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">нет: 197958, да: 27</td>
+</tr>
+<tr class="odd">
+<td align="left">priznak_kontrakta_so_vstrecnymi_o_1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">нет: 129834, да: 68151</td>
+</tr>
+<tr class="even">
+<td align="left">status_lota</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">9</td>
+<td align="left">Опу: 110548, Не : 83076, Вне: 4041, Отм: 255</td>
+</tr>
+<tr class="odd">
+<td align="left">status_procedury</td>
+<td align="right">23</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">8</td>
+<td align="left">Тор: 197457, Изв: 278, Сог: 114, Сог: 84</td>
+</tr>
+<tr class="even">
+<td align="left">kompleks</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">11</td>
+<td align="left">Ком: 129641, Пре: 30916, Ком: 13952, Ком: 11691</td>
+</tr>
+<tr class="odd">
+<td align="left">grbs</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">59</td>
+<td align="left">Деп: 86176, Деп: 35724, Деп: 11893, Деп: 7977</td>
+</tr>
+<tr class="even">
+<td align="left">priznak_standartizacii_da_net</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">да: 175534, нет: 22451</td>
+</tr>
+<tr class="odd">
+<td align="left">konecnaa_kpgz_da_net</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">да: 195622, нет: 2363</td>
+</tr>
+<tr class="even">
+<td align="left">pozicia_kpgz_udalena_da_net</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="left">FALSE</td>
+<td align="right">2</td>
+<td align="left">нет: 190628, да: 7357</td>
+</tr>
+<tr class="odd">
+<td align="left">inf_ia_o_svazannyh_poziciah</td>
+<td align="right">197985</td>
+<td align="right">0</td>
+<td align="left">FALSE</td>
+<td align="right">0</td>
+<td align="left">:</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<colgroup>
+<col width="26%" />
+<col width="7%" />
+<col width="11%" />
+<col width="9%" />
+<col width="11%" />
+<col width="2%" />
+<col width="7%" />
+<col width="7%" />
+<col width="6%" />
+<col width="10%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">summa_lota_po_pozicii_kpgz_rub</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">18941152.68</td>
+<td align="right">976482153.05</td>
+<td align="right">0</td>
+<td align="right">5282.4</td>
+<td align="right">147146.7</td>
+<td align="right">1158279</td>
+<td align="right">205984392882</td>
+</tr>
+<tr class="even">
+<td align="left">nmc_summa_po_vsej_procedure</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">37274702.88</td>
+<td align="right">1049227588.86</td>
+<td align="right">0</td>
+<td align="right">506000.0</td>
+<td align="right">1680000.0</td>
+<td align="right">6187020</td>
+<td align="right">205984392882</td>
+</tr>
+<tr class="odd">
+<td align="left">kol_vo_podannyh_zaavok</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="right">3.17</td>
+<td align="right">3.09</td>
+<td align="right">1</td>
+<td align="right">1.0</td>
+<td align="right">2.0</td>
+<td align="right">4</td>
+<td align="right">62</td>
+</tr>
+<tr class="even">
+<td align="left">kolicestvo_podcinennyh_pozicij_kp</td>
+<td align="right">1389</td>
+<td align="right">0.99</td>
+<td align="right">0.03</td>
+<td align="right">0.45</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+<td align="right">17</td>
+</tr>
+<tr class="odd">
+<td align="left">kolicestvo_standartizirovannyh_p</td>
+<td align="right">1389</td>
+<td align="right">0.99</td>
+<td align="right">0.00</td>
+<td align="right">0.13</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+<td align="right">8</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: POSIXct</strong></p>
+<table>
+<colgroup>
+<col width="34%" />
+<col width="10%" />
+<col width="14%" />
+<col width="11%" />
+<col width="11%" />
+<col width="11%" />
+<col width="9%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="left">min</th>
+<th align="left">max</th>
+<th align="left">median</th>
+<th align="right">n_unique</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">data_udalenia_kpgz</td>
+<td align="right">190628</td>
+<td align="right">0.04</td>
+<td align="left">2021-10-20</td>
+<td align="left">2026-04-09</td>
+<td align="left">2026-03-27</td>
+<td align="right">123</td>
+</tr>
+<tr class="even">
+<td align="left">data_standartizacii_pozicii</td>
+<td align="right">21411</td>
+<td align="right">0.89</td>
+<td align="left">2016-12-29</td>
+<td align="left">2026-04-09</td>
+<td align="left">2025-10-01</td>
+<td align="right">948</td>
+</tr>
+<tr class="odd">
+<td align="left">data_sozdania_pozicii_kpgz</td>
+<td align="right">1389</td>
+<td align="right">0.99</td>
+<td align="left">2014-03-29</td>
+<td align="left">2025-12-19</td>
+<td align="left">2019-02-22</td>
+<td align="right">1084</td>
+</tr>
+<tr class="even">
+<td align="left">data_publikacii_procedury_na_eis</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="left">2025-01-09</td>
+<td align="left">2025-12-31</td>
+<td align="left">2025-06-30</td>
+<td align="right">341</td>
+</tr>
+<tr class="odd">
+<td align="left">planiruemaa_data_publikacii_izves</td>
+<td align="right">0</td>
+<td align="right">1.00</td>
+<td align="left">2024-02-01</td>
+<td align="left">2026-03-01</td>
+<td align="left">2025-06-01</td>
+<td align="right">230</td>
+</tr>
+<tr class="even">
+<td align="left">planiruemaa_data_zaklucenia_kontr</td>
+<td align="right">148429</td>
+<td align="right">0.25</td>
+<td align="left">2022-01-24</td>
+<td align="left">2027-12-31</td>
+<td align="left">2025-06-13</td>
+<td align="right">431</td>
+</tr>
+</tbody>
+</table>
+<p>Вопрос:</p>
+<ol style="list-style-type: decimal">
+<li><p>Почему количество уникальных реестровых номеров процедур в ЕИС
+(reestrovyj_nomer_procedury_eis) составляет 20830, в то время как
+количество уникальных реестровых номеров процедур в ЕАИСТ
+(reestrovyj_nomer_procedury_eaist) — 114057, а количество уникальных
+реестровых номеров лотов в ЕАИСТ (reestrovyj_nomer_lota_eaist) —
+134474?</p></li>
+<li><p>Почему процедуры с реестровым номером “373200068625000384” имеет
+63 уникальных идентификаторов лота и реестровых номеров
+процедур?</p></li>
+</ol>
+<pre><code>## # A tibble: 57 × 4
+##    id_lota_eaist reestrovyj_nomer_procedury_eaist group_n rows_n
+##    &lt;chr&gt;         &lt;chr&gt;                              &lt;int&gt;  &lt;int&gt;
+##  1 15768549      14701739                              15     92
+##  2 16742734      14696297                               6     92
+##  3 16743627      14690776                               4     92
+##  4 16780700      14700942                               3     92
+##  5 16782358      14697027                               3     92
+##  6 16782758      14705185                               3     92
+##  7 16823710      14708283                               3     92
+##  8 16640256      14702857                               2     92
+##  9 16653450      14690583                               2     92
+## 10 16728565      14701100                               2     92
+## # ℹ 47 more rows</code></pre>
+<p>Вопрос: Непонятно, почему набор данных, содержащий процедуры, по
+которым в 2025 году были опубликованы извещения и поданы заявки,
+включает 772 уникальные процедуры, в связанных лотах которых
+предусмотрен способ определения поставщика «закупка у единственного
+поставщика</p>
+</div>
+<div id="анализ-данных" class="section level1">
+<h1>4. Анализ данных</h1>
+<pre><code>## # A tibble: 5 × 5
+##   zakon_osnovanie priznak_standartizacii…¹ uniq_procedures sum_of_specifications
+##   &lt;fct&gt;           &lt;chr&gt;                              &lt;int&gt;                 &lt;dbl&gt;
+## 1 223-ФЗ          да                                 15071           7.800978e11
+## 2 223-ФЗ          нет                                 2932           1.976502e12
+## 3 44-ФЗ           да                                 82875           8.702409e11
+## 4 44-ФЗ           нет                                14281           1.232231e11
+## 5 TOTAL           -                                 115159           3.750064e12
+## # ℹ abbreviated name: ¹​priznak_standartizacii_da_net
+## # ℹ 1 more variable: sum_of_nmck_d &lt;dbl&gt;</code></pre>
+</div>
+<div id="заключение" class="section level1">
+<h1>5. Заключение</h1>
+</div>
+<div id="черновые-записи" class="section level1">
+<h1>Черновые записи</h1>
 <p>Количество пропущенных значений</p>
-<pre class="r"><code>sapply(df, function(x) sum(is.na(x)))</code></pre>
 <pre><code>##                       id_lota_eaist         reestrovyj_nomer_lota_eaist 
 ##                                   0                                   0 
-##                            kompleks                                grbs 
-##                                   0                                   0 
-##                            zakazcik      summa_lota_po_pozicii_kpgz_rub 
-##                                   0                                   0 
-##   planiruemaa_data_publikacii_izves   planiruemaa_data_zaklucenia_kontr 
-##                                   0                              148429 
+##    reestrovyj_nomer_procedury_eaist   reestrovyj_nomer_procedury_na_eis 
+##                                   0                                   1 
+##                                 ikz       naimenovanie_predmeta_zakupki 
+##                               68331                                   0 
 ##                     zakon_osnovanie       sposob_opredelenia_postavsika 
 ##                                   0                                   0 
-##                         status_lota       naimenovanie_predmeta_zakupki 
+##            nomer_sovmestnoj_zakupki                naimenovanie_ttz_stz 
+##                              160683                               39383 
+## entity_id_kpgz_iz_specifikacii_lota       kod_kpgz_iz_specifikacii_lota 
 ##                                   0                                   0 
-##            nomer_sovmestnoj_zakupki                         priznak_kzc 
-##                              160683                                   0 
+##    naimenovanie_kpgz_iz_specifikaci      summa_lota_po_pozicii_kpgz_rub 
+##                                   0                                   0 
+##         nmc_summa_po_vsej_procedure                         priznak_kzc 
+##                                   0                                   0 
 ##   priznak_kontrakta_so_vstrecnymi_o priznak_kontrakta_so_vstrecnymi_o_1 
 ##                                   0                                   0 
-##    reestrovyj_nomer_procedury_eaist                                 ikz 
-##                                   0                               68331 
-##   reestrovyj_nomer_procedury_na_eis    data_publikacii_procedury_na_eis 
-##                                   1                                   0 
-##              kol_vo_podannyh_zaavok         nmc_summa_po_vsej_procedure 
+##              kol_vo_podannyh_zaavok                         status_lota 
 ##                                   0                                   0 
-##                    status_procedury entity_id_kpgz_iz_specifikacii_lota 
+##                    status_procedury                            kompleks 
 ##                                  23                                   0 
-##       kod_kpgz_iz_specifikacii_lota    naimenovanie_kpgz_iz_specifikaci 
+##                                grbs                            zakazcik 
 ##                                   0                                   0 
 ##       priznak_standartizacii_da_net                konecnaa_kpgz_da_net 
 ##                                   0                                   0 
@@ -1672,37 +2712,36 @@ susp %&gt;% group_by(priznak_standartizacii_da_net) %&gt;%
 ##   kolicestvo_podcinennyh_pozicij_kp    kolicestvo_standartizirovannyh_p 
 ##                                1389                                1389 
 ##         inf_ia_o_svazannyh_poziciah                        entity_id_tz 
-##                                 176                               39383 
-##                naimenovanie_ttz_stz 
-##                               39383</code></pre>
+##                              197985                               39383 
+##    data_publikacii_procedury_na_eis   planiruemaa_data_publikacii_izves 
+##                                   0                                   0 
+##   planiruemaa_data_zaklucenia_kontr                        my_questions 
+##                              148429                                   0</code></pre>
 <p>Количество дублирующихся значений</p>
-<pre class="r"><code>sapply(df, function(x) sum(duplicated(x)))</code></pre>
 <pre><code>##                       id_lota_eaist         reestrovyj_nomer_lota_eaist 
 ##                               63511                               63511 
-##                            kompleks                                grbs 
-##                              197974                              197926 
-##                            zakazcik      summa_lota_po_pozicii_kpgz_rub 
-##                              196191                               70979 
-##   planiruemaa_data_publikacii_izves   planiruemaa_data_zaklucenia_kontr 
-##                              197755                              197553 
+##    reestrovyj_nomer_procedury_eaist   reestrovyj_nomer_procedury_na_eis 
+##                               83928                              177155 
+##                                 ikz       naimenovanie_predmeta_zakupki 
+##                              196328                               93692 
 ##                     zakon_osnovanie       sposob_opredelenia_postavsika 
 ##                              197983                              197979 
-##                         status_lota       naimenovanie_predmeta_zakupki 
-##                              197976                               93692 
-##            nomer_sovmestnoj_zakupki                         priznak_kzc 
-##                              194467                              197983 
+##            nomer_sovmestnoj_zakupki                naimenovanie_ttz_stz 
+##                              194467                              197591 
+## entity_id_kpgz_iz_specifikacii_lota       kod_kpgz_iz_specifikacii_lota 
+##                              190114                              190114 
+##    naimenovanie_kpgz_iz_specifikaci      summa_lota_po_pozicii_kpgz_rub 
+##                              190120                               70979 
+##         nmc_summa_po_vsej_procedure                         priznak_kzc 
+##                              107019                              197983 
 ##   priznak_kontrakta_so_vstrecnymi_o priznak_kontrakta_so_vstrecnymi_o_1 
 ##                              197983                              197983 
-##    reestrovyj_nomer_procedury_eaist                                 ikz 
-##                               83928                              196328 
-##   reestrovyj_nomer_procedury_na_eis    data_publikacii_procedury_na_eis 
-##                              177155                              197644 
-##              kol_vo_podannyh_zaavok         nmc_summa_po_vsej_procedure 
-##                              197931                              107019 
-##                    status_procedury entity_id_kpgz_iz_specifikacii_lota 
-##                              197976                              190114 
-##       kod_kpgz_iz_specifikacii_lota    naimenovanie_kpgz_iz_specifikaci 
-##                              190114                              190120 
+##              kol_vo_podannyh_zaavok                         status_lota 
+##                              197931                              197976 
+##                    status_procedury                            kompleks 
+##                              197976                              197974 
+##                                grbs                            zakazcik 
+##                              197926                              196191 
 ##       priznak_standartizacii_da_net                konecnaa_kpgz_da_net 
 ##                              197983                              197983 
 ##         pozicia_kpgz_udalena_da_net                  data_udalenia_kpgz 
@@ -1712,37 +2751,36 @@ susp %&gt;% group_by(priznak_standartizacii_da_net) %&gt;%
 ##   kolicestvo_podcinennyh_pozicij_kp    kolicestvo_standartizirovannyh_p 
 ##                              197974                              197977 
 ##         inf_ia_o_svazannyh_poziciah                        entity_id_tz 
-##                              197978                              197591 
-##                naimenovanie_ttz_stz 
-##                              197591</code></pre>
+##                              197984                              197591 
+##    data_publikacii_procedury_na_eis   planiruemaa_data_publikacii_izves 
+##                              197644                              197755 
+##   planiruemaa_data_zaklucenia_kontr                        my_questions 
+##                              197553                              197983</code></pre>
 <p>Количество уникальных значений</p>
-<pre class="r"><code>sapply(df, function(x) n_distinct(x))</code></pre>
 <pre><code>##                       id_lota_eaist         reestrovyj_nomer_lota_eaist 
 ##                              134474                              134474 
-##                            kompleks                                grbs 
-##                                  11                                  59 
-##                            zakazcik      summa_lota_po_pozicii_kpgz_rub 
-##                                1794                              127006 
-##   planiruemaa_data_publikacii_izves   planiruemaa_data_zaklucenia_kontr 
-##                                 230                                 432 
+##    reestrovyj_nomer_procedury_eaist   reestrovyj_nomer_procedury_na_eis 
+##                              114057                               20830 
+##                                 ikz       naimenovanie_predmeta_zakupki 
+##                                1657                              104293 
 ##                     zakon_osnovanie       sposob_opredelenia_postavsika 
 ##                                   2                                   6 
-##                         status_lota       naimenovanie_predmeta_zakupki 
-##                                   9                              104293 
-##            nomer_sovmestnoj_zakupki                         priznak_kzc 
-##                                3518                                   2 
+##            nomer_sovmestnoj_zakupki                naimenovanie_ttz_stz 
+##                                3518                                 394 
+## entity_id_kpgz_iz_specifikacii_lota       kod_kpgz_iz_specifikacii_lota 
+##                                7871                                7871 
+##    naimenovanie_kpgz_iz_specifikaci      summa_lota_po_pozicii_kpgz_rub 
+##                                7865                              127006 
+##         nmc_summa_po_vsej_procedure                         priznak_kzc 
+##                               90966                                   2 
 ##   priznak_kontrakta_so_vstrecnymi_o priznak_kontrakta_so_vstrecnymi_o_1 
 ##                                   2                                   2 
-##    reestrovyj_nomer_procedury_eaist                                 ikz 
-##                              114057                                1657 
-##   reestrovyj_nomer_procedury_na_eis    data_publikacii_procedury_na_eis 
-##                               20830                                 341 
-##              kol_vo_podannyh_zaavok         nmc_summa_po_vsej_procedure 
-##                                  54                               90966 
-##                    status_procedury entity_id_kpgz_iz_specifikacii_lota 
-##                                   9                                7871 
-##       kod_kpgz_iz_specifikacii_lota    naimenovanie_kpgz_iz_specifikaci 
-##                                7871                                7865 
+##              kol_vo_podannyh_zaavok                         status_lota 
+##                                  54                                   9 
+##                    status_procedury                            kompleks 
+##                                   9                                  11 
+##                                grbs                            zakazcik 
+##                                  59                                1794 
 ##       priznak_standartizacii_da_net                konecnaa_kpgz_da_net 
 ##                                   2                                   2 
 ##         pozicia_kpgz_udalena_da_net                  data_udalenia_kpgz 
@@ -1752,48 +2790,34 @@ susp %&gt;% group_by(priznak_standartizacii_da_net) %&gt;%
 ##   kolicestvo_podcinennyh_pozicij_kp    kolicestvo_standartizirovannyh_p 
 ##                                  11                                   8 
 ##         inf_ia_o_svazannyh_poziciah                        entity_id_tz 
-##                                   7                                 394 
-##                naimenovanie_ttz_stz 
-##                                 394</code></pre>
-<pre class="r"><code>sapply(df, function(x) sum(is.na(x)))</code></pre>
-<pre><code>##                       id_lota_eaist         reestrovyj_nomer_lota_eaist 
-##                                   0                                   0 
-##                            kompleks                                grbs 
-##                                   0                                   0 
-##                            zakazcik      summa_lota_po_pozicii_kpgz_rub 
-##                                   0                                   0 
-##   planiruemaa_data_publikacii_izves   planiruemaa_data_zaklucenia_kontr 
-##                                   0                              148429 
-##                     zakon_osnovanie       sposob_opredelenia_postavsika 
-##                                   0                                   0 
-##                         status_lota       naimenovanie_predmeta_zakupki 
-##                                   0                                   0 
-##            nomer_sovmestnoj_zakupki                         priznak_kzc 
-##                              160683                                   0 
-##   priznak_kontrakta_so_vstrecnymi_o priznak_kontrakta_so_vstrecnymi_o_1 
-##                                   0                                   0 
-##    reestrovyj_nomer_procedury_eaist                                 ikz 
-##                                   0                               68331 
-##   reestrovyj_nomer_procedury_na_eis    data_publikacii_procedury_na_eis 
-##                                   1                                   0 
-##              kol_vo_podannyh_zaavok         nmc_summa_po_vsej_procedure 
-##                                   0                                   0 
-##                    status_procedury entity_id_kpgz_iz_specifikacii_lota 
-##                                  23                                   0 
-##       kod_kpgz_iz_specifikacii_lota    naimenovanie_kpgz_iz_specifikaci 
-##                                   0                                   0 
-##       priznak_standartizacii_da_net                konecnaa_kpgz_da_net 
-##                                   0                                   0 
-##         pozicia_kpgz_udalena_da_net                  data_udalenia_kpgz 
-##                                   0                              190628 
-##         data_standartizacii_pozicii          data_sozdania_pozicii_kpgz 
-##                               21411                                1389 
-##   kolicestvo_podcinennyh_pozicij_kp    kolicestvo_standartizirovannyh_p 
-##                                1389                                1389 
-##         inf_ia_o_svazannyh_poziciah                        entity_id_tz 
-##                                 176                               39383 
-##                naimenovanie_ttz_stz 
-##                               39383</code></pre>
+##                                   1                                 394 
+##    data_publikacii_procedury_na_eis   planiruemaa_data_publikacii_izves 
+##                                 341                                 230 
+##   planiruemaa_data_zaklucenia_kontr                        my_questions 
+##                                 432                                   2</code></pre>
+<pre><code>## # A tibble: 197,985 × 38
+## # Groups:   reestrovyj_nomer_lota_eaist, reestrovyj_nomer_procedury_eaist,
+## #   reestrovyj_nomer_procedury_na_eis [134,474]
+##    id_lota_eaist reestrovyj_nomer_lota_eaist reestrovyj_nomer_procedury_eaist
+##    &lt;chr&gt;         &lt;chr&gt;                       &lt;chr&gt;                           
+##  1 15721356      15721356                    14643213                        
+##  2 15721749      15721749                    14654004                        
+##  3 15722746      15722746                    14673398                        
+##  4 15722746      15722746                    14673398                        
+##  5 15722795      15722795                    14614514                        
+##  6 15735750      15735750                    14615250                        
+##  7 15768289      15768289                    14647411                        
+##  8 15768362      15768362                    14695079                        
+##  9 15768459      15768459                    14695029                        
+## 10 15768549      15768549                    14701739                        
+## # ℹ 197,975 more rows
+## # ℹ 35 more variables: reestrovyj_nomer_procedury_na_eis &lt;chr&gt;, ikz &lt;chr&gt;,
+## #   naimenovanie_predmeta_zakupki &lt;chr&gt;, zakon_osnovanie &lt;fct&gt;,
+## #   sposob_opredelenia_postavsika &lt;fct&gt;, nomer_sovmestnoj_zakupki &lt;chr&gt;,
+## #   naimenovanie_ttz_stz &lt;chr&gt;, entity_id_kpgz_iz_specifikacii_lota &lt;chr&gt;,
+## #   kod_kpgz_iz_specifikacii_lota &lt;chr&gt;,
+## #   naimenovanie_kpgz_iz_specifikaci &lt;chr&gt;, …</code></pre>
+<pre><code>## [1] 1000000000</code></pre>
 </div>
 </div>
 

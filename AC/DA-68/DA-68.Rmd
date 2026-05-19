@@ -37,7 +37,7 @@ output:
 
 # 3. Обработка данных
 
-```{r, include=FALSE}
+```{r attaching packages, include=FALSE}
 library(readxl)
 library(tidyverse)
 library(dplyr)
@@ -54,80 +54,240 @@ library(GGally)
 library(skimr)
 library(writexl)
 library(corrplot)
+library(pillar)
 ```
 
-Считывание данных
-```{r}
-
-df_src <- read_xlsx("C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/2026.04.13_Детализация по лотам 2025_итог2.xlsx", sheet = "Исх.")
+```{r setup, include=FALSE}
+ # EDA setup
+options(scipen = 999)
+# Set the global settings for tibbles and data frames
+options(pillar.sigfig = 7, pillar.spacing = 3)
+# Set global chunk options for the entire R Markdown document
+knitr::opts_chunk$set(
+  # Hide R code in the output by default
+  echo = FALSE,
+  # Hide messages, for example package loading messages
+  message = FALSE,
+  # Hide warning messages in the final output
+  warning = FALSE
+)
+###
 ```
-Очистка и приведение столбцов к единому формату
-```{r}
+
+
+```{r Loading data}
+# Считывание данных
+df_src <- read_xlsx("C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/2026.04.13_df_src.xlsx", sheet = "Исх.")
+```
+
+```{r Cleaning column names}
+# Очистка и приведение столбцов к единому формату
 df_src <- clean_names(df_src) 
 ```
+
 Структура данных
-```{r}
+```{r Viewing data}
 glimpse(df_src)
 ```
-Конвертация типов данных
-```{r}
+Вопрос: Не понятно, почему в таблице содержится два столбца с информацией о наличии признака офсетного контракта (priznak_kontrakta_so_vstrecnymi).
+```{r Question_1}
 df <- df_src %>% 
+  mutate(my_questions = "Проверить признак офсетной закупки")
+```
+Конвертация типов данных, изменение пордка столбцов и просмотр структруры
+```{r Changing data types}
+df <- df %>% 
   mutate(
     across(
       c(id_lota_eaist, reestrovyj_nomer_lota_eaist, nomer_sovmestnoj_zakupki, 
-        reestrovyj_nomer_procedury_eaist, entity_id_kpgz_iz_specifikacii_lota, entity_id_tz),
+        reestrovyj_nomer_procedury_eaist, ikz, reestrovyj_nomer_procedury_na_eis,
+        entity_id_kpgz_iz_specifikacii_lota, entity_id_tz),
     as.character
-    ) #,
-    # across(
-    #   c(kompleks, grbs, zakon_osnovanie, sposob_opredelenia_postavsika, 
-    #     status_lota, priznak_kzc, priznak_kontrakta_so_vstrecnymi_o,
-    #     priznak_kontrakta_so_vstrecnymi_o_1, status_procedury, priznak_standartizacii_da_net,
-    #     konecnaa_kpgz_da_net, pozicia_kpgz_udalena_da_net, inf_ia_o_svazannyh_poziciah),
-    #     as.factor)
-)
+    ),
+    across(
+      c(kompleks, grbs, zakon_osnovanie, sposob_opredelenia_postavsika,
+        status_lota, priznak_kzc, priznak_kontrakta_so_vstrecnymi_o,
+        priznak_kontrakta_so_vstrecnymi_o_1, status_procedury, priznak_standartizacii_da_net,
+        konecnaa_kpgz_da_net, pozicia_kpgz_udalena_da_net, inf_ia_o_svazannyh_poziciah),
+        as.factor)
+) %>% 
+    select(id_lota_eaist, reestrovyj_nomer_lota_eaist, reestrovyj_nomer_procedury_eaist, reestrovyj_nomer_procedury_na_eis, ikz, 
+           naimenovanie_predmeta_zakupki, zakon_osnovanie, sposob_opredelenia_postavsika,  
+           nomer_sovmestnoj_zakupki, naimenovanie_ttz_stz,
+           entity_id_kpgz_iz_specifikacii_lota, kod_kpgz_iz_specifikacii_lota, naimenovanie_kpgz_iz_specifikaci,
+           summa_lota_po_pozicii_kpgz_rub, nmc_summa_po_vsej_procedure,
+           priznak_kzc, priznak_kontrakta_so_vstrecnymi_o, priznak_kontrakta_so_vstrecnymi_o_1,
+           kol_vo_podannyh_zaavok, status_lota, status_procedury, 
+           kompleks, grbs, zakazcik,
+           priznak_standartizacii_da_net, konecnaa_kpgz_da_net, pozicia_kpgz_udalena_da_net, 
+           data_udalenia_kpgz, data_standartizacii_pozicii, data_sozdania_pozicii_kpgz,
+           kolicestvo_podcinennyh_pozicij_kp, kolicestvo_standartizirovannyh_p, inf_ia_o_svazannyh_poziciah, entity_id_tz, 
+           data_publikacii_procedury_na_eis, planiruemaa_data_publikacii_izves, planiruemaa_data_zaklucenia_kontr, my_questions)
 
 glimpse(df)
 ```
-Отфильтровываем строки с пропущенными значения в столбце количество поданных заявок (kol_vo_podannyh_zaavok) или содержащие значение "0"
-```{r}
-df <- df %>% filter(!is.na(kol_vo_podannyh_zaavok) & kol_vo_podannyh_zaavok != 0)
-dim(df)
+Статистика
+```{r skim}
+skim_without_charts(df)
 ```
-Не понятно почему набор данных содержащий процедуры по которым в 2025 году были опубликованы извещения и по которым были поданы заявки содержит `r 580 + 192` уникальных процедур, в связанных лотах которых предусмотрен способ определения поставщика "закупка у единственного поставщика".
-```{r}
-susp <- df %>% filter(sposob_opredelenia_postavsika == "закупка у единственного поставщика")
+Исключаем из таблицы строки с пропущенными значениями в столбце количество поданных заявок (kol_vo_podannyh_zaavok) или содержащие значение "0" (`r df %>% filter(is.na(kol_vo_podannyh_zaavok) | kol_vo_podannyh_zaavok == 0) %>% nrow()` строк)
+```{r Filtering data: exclusion procedures for which no applications have been submitted}
+df <- df %>% filter(!is.na(kol_vo_podannyh_zaavok) | kol_vo_podannyh_zaavok != 0)
+skim_without_charts(df)
+```
 
-susp %>% group_by(priznak_standartizacii_da_net) %>% 
+Вопрос: 
+
+1. Почему количество уникальных реестровых номеров процедур в ЕИС (reestrovyj_nomer_procedury_eis) составляет `r length(unique(df$reestrovyj_nomer_procedury_na_eis))`, в то время как количество уникальных реестровых номеров процедур в ЕАИСТ (reestrovyj_nomer_procedury_eaist) — `r length(unique(df$reestrovyj_nomer_procedury_eaist))`, а количество уникальных реестровых номеров лотов в ЕАИСТ (reestrovyj_nomer_lota_eaist) — `r length(unique(df$reestrovyj_nomer_lota_eaist))`?
+
+2. Почему процедуры с реестровым номером "373200068625000384" имеет 63 уникальных идентификаторов лота и реестровых номеров процедур?
+```{r Question_2}
+df %>%
+  select(
+    id_lota_eaist, reestrovyj_nomer_lota_eaist, reestrovyj_nomer_procedury_eaist, 
+    reestrovyj_nomer_procedury_na_eis, ikz, naimenovanie_predmeta_zakupki, 
+    zakon_osnovanie, sposob_opredelenia_postavsika, nomer_sovmestnoj_zakupki, 
+    naimenovanie_ttz_stz) %>%
+  filter(reestrovyj_nomer_procedury_na_eis == "373200068625000384") %>%
+  mutate(total_filtered_rows = n()) %>%
+  group_by(id_lota_eaist, reestrovyj_nomer_procedury_eaist) %>%
   summarise(
-    uniq_procedures = n_distinct(reestrovyj_nomer_procedury_na_eis),
-    sum = sum(summa_lota_po_pozicii_kpgz_rub)
-  )
+    group_n = n(),
+    rows_n = first(total_filtered_rows),
+    .groups = 'drop'
+  ) %>%
+  arrange(desc(group_n))
+
 ```
+
+
+
+Вопрос: Непонятно, почему набор данных, содержащий процедуры, по которым в 2025 году были опубликованы извещения и поданы заявки, включает `r 580 + 192` уникальные процедуры, в связанных лотах которых предусмотрен способ определения поставщика «закупка у единственного поставщика
+```{r Question_3}
+
+df <- df %>% 
+  mutate(my_questions = if_else(
+    sposob_opredelenia_postavsika == "закупка у единственного поставщика",
+    paste(my_questions, "Почему закупки у единственного поставщика имеют опубликованные извещения" , sep = "; "), my_questions
+      )
+           )
+  
+# susp <- df %>% filter(sposob_opredelenia_postavsika == "закупка у единственного поставщика")
+# 
+# susp %>% group_by(priznak_standartizacii_da_net) %>% 
+#   summarise(
+#     uniq_procedures = n_distinct(reestrovyj_nomer_procedury_na_eis),
+#     sum = sum(summa_lota_po_pozicii_kpgz_rub)
+#   )
+```
+
+# 4. Анализ данных
+
+```{r}
+df %>% 
+  group_by(zakon_osnovanie, priznak_standartizacii_da_net) %>% 
+  summarise(
+    uniq_procedures = n_distinct(reestrovyj_nomer_procedury_eaist),
+    sum_of_specifications = sum(summa_lota_po_pozicii_kpgz_rub),
+    sum_of_nmck_d = sum(tapply(nmc_summa_po_vsej_procedure, 
+                                reestrovyj_nomer_procedury_eaist, 
+                                function(x) first(na.omit(x))))
+  ) %>% adorn_totals(where = "row", name = "TOTAL") %>% as.tibble()
+```
+
+
+
+# 5. Заключение
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Черновые записи
+
+```{r}
+df %>% 
+  group_by(zakon_osnovanie, priznak_standartizacii_da_net) %>% 
+  summarise(
+    uniq_procedures = n_distinct(reestrovyj_nomer_procedury_eaist),
+    sum_of_specifications = sum(summa_lota_po_pozicii_kpgz_rub),
+    sum_of_nmck_d = sum(tapply(nmc_summa_po_vsej_procedure, 
+                                reestrovyj_nomer_procedury_eaist, 
+                                function(x) first(na.omit(x))))
+  ) %>% 
+  group_by(zakon_osnovanie) %>% 
+  adorn_totals(where = "row", name = "SUBTOTAL") %>% 
+  ungroup() %>% 
+  adorn_totals(where = "row", name = "TOTAL")
+```
+
+
 
 Количество пропущенных значений
-```{r}
+```{r Counting NAs}
 sapply(df, function(x) sum(is.na(x)))
 ```
 Количество дублирующихся значений
-```{r}
+```{r Counting duplicates}
 sapply(df, function(x) sum(duplicated(x)))
 ```
 Количество уникальных значений
-```{r}
+```{r Counting unique values}
 sapply(df, function(x) n_distinct(x))
 ```
 
 
+
+
 ```{r}
-sapply(df, function(x) sum(is.na(x)))
+df %>% group_by(reestrovyj_nomer_lota_eaist, reestrovyj_nomer_procedury_eaist, reestrovyj_nomer_procedury_na_eis)
+
 ```
 
 
 
+```{r echo=FALSE, eval=FALSE}
+df %>% summarise(
+  table_rows_n = nrow(df),
+  id_lota_eaist_n_unique = n_distinct(id_lota_eaist),
+  id_lota_eaist_n_dups = sum(duplicated(id_lota_eaist)),
+  id_lota_eaist_n_missing = sum(is.na(id_lota_eaist)),
+  reestrovyj_nomer_procedury_eaist = n_distinct(reestrovyj_nomer_procedury_eaist),
+  reestrovyj_nomer_procedury_eaist = sum(duplicated(reestrovyj_nomer_procedury_eaist)),
+  reestrovyj_nomer_procedury_eaist = sum(is.na(reestrovyj_nomer_procedury_eaist))
+) %>% 
+  pivot_longer(cols = everything(),
+               names_to = "varible",
+               values_to = "values")
 
 
+df %>% summarise(
+  across(c(
+    id_lota_eaist, reestrovyj_nomer_lota_eaist, kompleks, grbs, zakazcik, summa_lota_po_pozicii_kpgz_rub, planiruemaa_data_publikacii_izves, planiruemaa_data_zaklucenia_kontr, zakon_osnovanie, sposob_opredelenia_postavsika, status_lota, naimenovanie_predmeta_zakupki, nomer_sovmestnoj_zakupki, priznak_kzc, priznak_kontrakta_so_vstrecnymi_o, priznak_kontrakta_so_vstrecnymi_o_1, reestrovyj_nomer_procedury_eaist, ikz, reestrovyj_nomer_procedury_na_eis, data_publikacii_procedury_na_eis, kol_vo_podannyh_zaavok, nmc_summa_po_vsej_procedure, status_procedury, entity_id_kpgz_iz_specifikacii_lota, kod_kpgz_iz_specifikacii_lota, naimenovanie_kpgz_iz_specifikaci, priznak_standartizacii_da_net, konecnaa_kpgz_da_net, pozicia_kpgz_udalena_da_net, data_udalenia_kpgz, data_standartizacii_pozicii, data_sozdania_pozicii_kpgz, kolicestvo_podcinennyh_pozicij_kp, kolicestvo_standartizirovannyh_p, inf_ia_o_svazannyh_poziciah, entity_id_tz, naimenovanie_ttz_stz
+  ))
+)
+
+```
 
 
+```{r}
+100000 * 10000
+```
 
 
 
