@@ -217,8 +217,8 @@ metrics <- metrics %>%
     ac_sum_contract = c(789719941540, (2694424078030 - 789719941540), 1666246056730, (1976206922550 - 1666246056730)),
     diff_procedures_n = ac_n_uniq_contract - dkp_n_uniq_procedures,
     diff_sums_rub = ac_sum_contract - dkp_sum_of_nmck_d,
-    perc_diff_procedures = round(((dkp_n_uniq_procedures - ac_n_uniq_contract)/ac_n_uniq_contract)),
-    perc_diff_sums = round(((dkp_sum_of_nmck_d - ac_sum_contract)/ac_sum_contract)),
+    perc_diff_procedures = round((dkp_n_uniq_procedures - ac_n_uniq_contract)/ac_n_uniq_contract , 2),
+    perc_diff_sums = round((dkp_sum_of_nmck_d - ac_sum_contract)/ac_sum_contract, 2),
       ) %>% 
   select(zakon_osnovanie, priznak_standartizacii_da_net,
     dkp_n_uniq_procedures, ac_n_uniq_contract, diff_procedures_n, perc_diff_procedures, 
@@ -228,16 +228,16 @@ metrics <- metrics %>%
   group_by(zakon_osnovanie) %>% 
   mutate(
         total_dkp_n_procedures = sum(dkp_n_uniq_procedures),
-        share_dkp_n_procedures = round(dkp_n_uniq_procedures/total_dkp_n_procedures * 100),
+        share_dkp_n_procedures = round(dkp_n_uniq_procedures/total_dkp_n_procedures, 2),
         
         total_ac_n_uniq_contract = sum(ac_n_uniq_contract),
-        share_ac_n_uniq_contract = round(ac_n_uniq_contract/total_ac_n_uniq_contract * 100),
+        share_ac_n_uniq_contract = round(ac_n_uniq_contract/total_ac_n_uniq_contract, 2),
         
         total_dkp_sum_of_nmck_d = sum(dkp_sum_of_nmck_d),
-        share_dkp_sum_of_nmck_d = round(dkp_sum_of_nmck_d/total_dkp_sum_of_nmck_d * 100),
+        share_dkp_sum_of_nmck_d = round(dkp_sum_of_nmck_d/total_dkp_sum_of_nmck_d, 2),
         
         total_ac_sum_contract = sum(ac_sum_contract),
-        share_ac_sum_contract = round(ac_sum_contract/total_ac_sum_contract * 100)
+        share_ac_sum_contract = round(ac_sum_contract/total_ac_sum_contract, 2)
         )
 
 write_xlsx(metrics, "C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/2026.05.25_metrics.xlsx")
