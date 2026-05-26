@@ -1,0 +1,1665 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Lettuce\_growth\_days},
+  pdfauthor={Zelimkhan},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Lettuce\_growth\_days}
+\author{Zelimkhan}
+\date{2025-09-22}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{5}
+\tableofcontents
+}
+\section{Install packages and attach
+libraries}\label{install-packages-and-attach-libraries}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# install.packages("psych")}
+\CommentTok{\# install.packages("lubridate")}
+\CommentTok{\# install.packages("purrr")}
+\CommentTok{\# install.packages("GGally")}
+\CommentTok{\# install.packages("skimr")}
+\CommentTok{\# install.packages("Writexl")}
+\FunctionTok{library}\NormalTok{(psych)}
+\FunctionTok{library}\NormalTok{(googlesheets4)}
+\FunctionTok{library}\NormalTok{(tidyr)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(janitor)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(lubridate)}
+\FunctionTok{library}\NormalTok{(purrr)}
+\FunctionTok{library}\NormalTok{(GGally)}
+\FunctionTok{library}\NormalTok{(readxl)}
+\FunctionTok{library}\NormalTok{(skimr)}
+\FunctionTok{library}\NormalTok{(writexl)}
+\end{Highlighting}
+\end{Shaded}
+
+\section{Step 1. Ask}\label{step-1.-ask}
+
+\subsection{1.1 Key tasks and
+Deliverable(s)}\label{key-tasks-and-deliverables}
+
+\subsubsection{1.1.1 A clear statement of the business
+task}\label{a-clear-statement-of-the-business-task}
+
+Determine how environmental factors (temperature, humidity, and total
+dissolved solids) influence lettuce growth and maturity time, in order
+to optimize greenhouse conditions and predict growth outcomes for future
+growing seasons.
+
+\subsubsection{1.1.2 Key stakeholders}\label{key-stakeholders}
+
+Managers
+
+\subsubsection{1.1.3 Smart questions}\label{smart-questions}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.0435}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4783}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4783}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Type
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Questions
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+& & \\
+1 & Specific & Is there a connection between humidity and
+temperature? \\
+& & \\
+2 & Measurable & How much growth is normal or expected over a one week
+period? \\
+& & \\
+3 & Action-oriented & If total dissolved solids are increased when
+growing lettuce, will it shorten the time needed for the plants to reach
+maturity? \\
+& & \\
+4 & Relevant & Based on the dataset, how can predictions about growth be
+made given the conditions? \\
+& & \\
+5 & Time - bound & 1) What is the data range for this data set? 2) Do we
+need an understanding of this data for next season? \\
+\end{longtable}
+
+\subsubsection{1.1.4 Scope of work (SOW)}\label{scope-of-work-sow}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0192}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2115}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0769}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2308}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2308}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2308}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Deliverables
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Timeline
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Milestones
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Results
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+What SMART questions will be answered
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+& & & & & \\
+1 & Clean dataset & Day 1 & Completion of data download and preparation
+& Dataset is clean and usable & - \\
+& & & & & \\
+2 & Exploratory data analysis (EDA) findings (form: spreadsheet, google
+doc summary) & Day 2 & Completion of EDA - understanding of dataset is
+formed & EDA highlights room for investigation. Questions were
+formulated based on the results of EDA. & \textbf{Specific:} Is the
+connection between humidity and temperature \textbf{Time - Bound:} What
+is the data range for this data set? \\
+& & & & & \\
+3 & Engineered features in the form of new columns (examples may include
+Avg 3 day growth, Growth since day before, etc.) & Day 3 & Completion of
+feature engineering & New columns engineered to provide more accessible
+information & \textbf{Measurable:} How much growth is normal or expected
+over a one week period? \\
+& & & & & \\
+4 & Statistical insights & Day 3 & Completion of statistical analysis &
+Statistical analysis conducted & \textbf{Action-oriented:} If total
+dissolved solids are increased when growing lettuce, will it shorten the
+time needed for the plants to reach maturity? \textbf{Relevant:} Based
+on the dataset, how can predictions about growth be made given the
+conditions? \textbf{Time - bound:} Do we need an understanding of this
+data for next season? \\
+& & & & & \\
+5 & Visual Aids (images, dashboards) & Days 4-5 & Completion of
+visualizations & Visualizations created & - \\
+& & & & & \\
+6 & Final report (spreadsheet and PowerPoint) & Day 6-10 & Final report
+submission & Final report completed & - \\
+\end{longtable}
+
+\subsection{1.2 Guiding questions}\label{guiding-questions}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.0435}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4783}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4783}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Questions
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Answers
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+& & \\
+1 & What is the problem you are trying to solve? & The challenge lies in
+understanding (finding patterns) how environmental conditions influence
+lettuce growth time. This knowledge will help inform decisions to
+optimize growth cycle. \\
+& & \\
+2 & How can you insights drive business decisions? & Knowing about
+environmental conditions that impact lettuce growth can help managers
+decide on construction of an appropriate greenhouse \\
+\end{longtable}
+
+\section{Step 2. Prepare}\label{step-2.-prepare}
+
+\subsection{2.1 Key tasks and
+deliverable(s)}\label{key-tasks-and-deliverables-1}
+
+\subsubsection{2.1.1 Download data and store it
+appropriately}\label{download-data-and-store-it-appropriately}
+
+Data downloaded and stored on my personal computer and Google Drive.
+Data available at these links: 1) On the work computer:
+C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional
+Certificate/1.
+Ask\_Questions\_to\_Make\_Data\_Driven\_Decisions/lettuce\_dataset\_SOW.xlsx,
+sheet = ``source\_lettuce\_dataset 2) On the laptop:
+/Users/zelimkhan/Desktop/Data/GitHub/Google Data Analytics Professional
+Certificate/1.
+Ask\_Questions\_to\_Make\_Data\_Driven\_Decisions/lettuce\_dataset\_SOW.xlsx
+3) On the Google Drive
+
+\subsubsection{2.1.2 Identify how it's
+orginized}\label{identify-how-its-orginized}
+
+The data is organized as a table containing data on 70 plants. The rows
+contain environmental conditions for each of the 70 plants on each day
+throughout the growing season. The columns contain information about the
+plant identifier (Plant\_ID) and the following environmental conditions,
+which were recorded daily for each of the 70 plants throughout the
+growing season: Date; Temperature (?C); Humidity (\%); TDS Value (ppm);
+pH Level; Growth Days.
+
+\subsubsection{2.1.3 Sort and filter the
+data}\label{sort-and-filter-the-data}
+
+Data filtered and sorted
+
+\subsubsection{2.1.4 Determine the credibility of the
+data}\label{determine-the-credibility-of-the-data}
+
+The following methodologies/frameworks were used to determine the
+credibility of the data: ROCCC; Data Integrity.
+
+\paragraph{2.1.4.1 ROCCC}\label{roccc}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0222}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2444}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2444}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2444}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2444}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ROCCC Dimension
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Conclusion
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Comments
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Reliable & Source is dependable and consistent. & Watch conclusion
+below the table & It depends on ROCCC dimensions listed below \\
+2 & Original & We get data from original source (or If we obtained data
+from a secondary or tertiary source, we could compare and verify it with
+the primary source) & The data is not original & We do not receive data
+from the original source, we also cannot identify the original source
+and have no way to compare it with the original data. However, since the
+data is provided and used for educational purposes, we may use it for
+educational purposes \\
+3 & Comprehensive & Covers all necessary cases and variables. & It is
+not possible to determine the level of comprehensiveness of the data &
+It is logical to assume that data is greatly simplified for educational
+purposes and does not contain all necessary information needed to solve
+a business problem. Since it includes the following key variables it can
+be used for our educational purposes: Plant\_ID; Date; Temperature (°C);
+Humidity (\%); TDS Value (ppm); pH Level; Growth Days. \\
+4 & Current & The data sources aren't out of date or irrelevant & The
+data is current & The data can be considered current, even though the
+observation was conducted in 2023 and the analysis using this
+information is being carried out in 2025. \\
+5 & Cited & Data source is cited and vetted & The source of the data was
+not cited or verified. & However, since the data is provided and used
+for training purposes the data can be used in our work. \\
+\end{longtable}
+
+\textbf{Reliable:} The data isn't reliable
+
+\textbf{Conclusion on the credibility of the data in accordance with the
+ROCCC framework:} Data isn't credible.
+
+\paragraph{2.1.4.2 Data integrity}\label{data-integrity}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.0222}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2444}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2444}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2444}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2444}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Data integrity Dimension
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Conclusion
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Comments
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & Accuracy & The degree to which the data conforms to the actual
+entity being measured or described & It is not possible to determine the
+data's accuracy. & Since the data does not contain unrealistic values
+(such as days with negative growth, numerical values falling within an
+unexpected data range, or other impossible measurements), the data can
+be considered accurate. \\
+2 & Completeness & Data completeness is a dimension of data quality that
+measures whether all necessary or required data is present and available
+for a dataset to fulfill its intended purpose. & It is not possible to
+determine the level of Completeness of the data & It is logical to
+assume that data is greatly simplified for educational purposes and does
+not contain all necessary information needed to solve a business
+problem. Since it includes the following key variables and doesn't have
+missing values it can be used for our educational purposes: Plant\_ID;
+Date; Temperature (°C); Humidity (\%); TDS Value (ppm); pH Level; Growth
+Days. \\
+3 & Consistency & Data follows the same format and rules. & Data is
+consistency & The Date column has character type. \\
+4 & Trustworthiness & Data trustworthiness refers to the degree to which
+information can be relied upon as accurate, credible, and secure,
+allowing users to confidently make decisions and conduct analyses based
+on it. & The data isn't trustworthiness & The data isn't trustworthy due
+to low scores for data integrity dimensions listed above. \\
+\end{longtable}
+
+\textbf{Trustworthiness:} The data isn't trustworthiness.
+
+\textbf{Conclusion on credibility of the data in accordance with the
+Data integrity conception:} The data isn't credible.
+
+\paragraph{2.1.4.3 Bias}\label{bias}
+
+The dataset appears to come from a controlled educational or research
+environment, so it may not present all real world farming conditions or
+varieties of lettuce. However, since it is used for analytical practice
+rather than policy or production decisions, the risk of bias affecting
+conclusions is minimal.
+
+\textbf{Conclusion on the admissibility of using data:} The data are
+acceptable for use despite negative findings regarding the credibility
+of the data in accordance with both the ROCCC framework and the concept
+of data integrity, as well as the inability to demonstrate the absence
+of bias, as they are used for educational purposes.
+
+\subsubsection{2.1.5 A description of all data sourced
+used}\label{a-description-of-all-data-sourced-used}
+
+For this analytical task, the ``lettuce growth'' dataset from Kaggle was
+used.
+
+\subsection{2.2 Guiding questions}\label{guiding-questions-1}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.0435}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4783}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4783}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Questions
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Answers
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+& & \\
+1 & Where is your data located? & The data is publicly available in
+Kaggle website at this
+\href{https://www.kaggle.com/datasets/jurijsruko/lettuce}{link} \\
+& & \\
+2 & How is the data organized? & The data is organized as a table
+containing data on 70 plants in long format. The rows contain
+environmental conditions for each of the 70 plants on each day
+throughout the growing season. The columns contain information about the
+plant identifier (Plant\_ID) and the following environmental conditions,
+which were recorded daily for each of the 70 plants throughout the
+growing season: Date; Temperature (?C); Humidity (\%); TDS Value (ppm);
+pH Level; Growth Days. \\
+& & \\
+3 & Are there issues with bias or credibility in this data? Does your
+data ROCCC? & See section ``2.1.4 Determine the credibility of the
+data'' \\
+& & \\
+4 & How are you addressing licensing, privacy, security, and
+accessibility? & 1. \textbf{Licensing} The lettuce dataset is published
+under the Apache 2.0.It means: 1) You are allowed to freely use, modify,
+and share the dataset, including for commercial and non-commercial
+purposes. 2) You must provide proper attribution to the original authors
+when you use the data. 3) If you modify the dataset and distribute your
+modified version, you must indicate what changes you made. 4) There is
+no warranty---the authors are not responsible for any issues from using
+the data. 4) The dataset can be combined with other work, even
+proprietary. However, on the Kaggle page for this dataset, there is an
+additional statement: ``Do not use it for commercial purposes.'' This
+suggests the author is placing an extra restriction that is stricter
+than the typical Apache 2.0 terms. In this case, you should follow the
+conditions stated on the dataset's page. For academic or personal
+projects, with attribution, you are free to use the data. 2.
+\textbf{Privacy} It does not contain personally identifiable information
+(PII), so privacy is not a concern. 3. \textbf{Security} Security risks
+are minimal, as the dataset stored locally on my Google Drive. 4.
+\textbf{Accessibility} Accessibility is ensured by keeping the data in
+standard formats (csv, xlsx, R data frames), which can be opened in
+widely available tools such as Excel, Rstudio or Google Sheets. \\
+& & \\
+5 & How did you verify the data's integrity? & Data integrity involves
+the accuracy, completeness, consistency, and trustworthiness of data
+throughout its lifecycle. 1. \textbf{Accuracy:} I inspected the dataset
+for unrealistic values (e.g., negative growth days, numerical values
+falling within an unexpected data range or impossible measurements)
+using: Sorting and filtering in spreadsheet; R functions such as
+summary() and is.na(). \emph{Definition Data accuracy refers to the
+degree to which data correctly represents the true, real-world
+information or events it describes, meaning it is correct, precise, and
+free from errors or distortions. Accurate data serves as a trustworthy
+foundation for effective decision-making, reliable analysis, and
+efficient operations, making it a critical component of overall data
+quality.} 2. \textbf{Completeness:} I checked for missing or empty cells
+using: Sorting and filtering in spreadsheet; R functions such as
+summary() and is.na(). \emph{Definition Data completeness is a dimension
+of data quality that measures whether all necessary or required data is
+present and available for a dataset to fulfill its intended purpose. It
+ensures there are no missing values or gaps in critical information,
+preventing skewed analyses and enabling accurate decision-making}. 3.
+\textbf{Consistency:} I reviewed column names, formats, and data types
+to ensure that values were stored uniformly (e.g., all numeric columns
+have numeric data types). \emph{Definition Data consistency - is the
+quality of data follows the same format and rules remaining accurate,
+uniform, and coherent across all systems, databases, and applications
+within an organization.}. 4. \textbf{Trustworthiness:} Users can depend
+on the data to be correct and dependable. Since the dataset is a clean
+educational sample, I verified its source and confirmed it had not been
+altered during download or import (no unexpected changes in row count or
+structure). \emph{Definition Data trustworthiness refers to the degree
+to which information can be relied upon as accurate, credible, and
+secure, allowing users to confidently make decisions and conduct
+analyses based on it.} Data?s integrity will be checked in more detail
+(accuracy, completeness, consistency, trustworthiness) in the next step
+of analyses (step 3 ?Process?). \\
+& & \\
+6 & How does it help you answer you questions? & The dataset directly
+contains the variables needed (growth days and environmental factors),
+so it enables me to explore how growth varies by environmental
+conditions). It provides the empirical basis for descriptive statistics
+and visualizations that can answer the practice assignment's research
+questions. \\
+& & \\
+7 & Are there any problems with the data? & The Date column has
+character type instead date. \\
+\end{longtable}
+
+\section{Step 3. Process (EDA)}\label{step-3.-process-eda}
+
+\subsection{Stage 1 of EDA: Data Discovery \&
+Profiling}\label{stage-1-of-eda-data-discovery-profiling}
+
+\paragraph{Load data}\label{load-data}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_0 }\OtherTok{\textless{}{-}} \FunctionTok{read\_sheet}\NormalTok{(}\StringTok{"https://docs.google.com/spreadsheets/d/1esw9BCXZDO1h4hwuaKowia5eVmflEKTS6NiouamSYA0/edit?gid=723124268\#gid=723124268"}\NormalTok{, }\AttributeTok{sheet =} \StringTok{"source\_lettuce\_dataset"}\NormalTok{)}
+
+\CommentTok{\# df\_0 \textless{}{-} read\_excel("C:/Users/GudievZK/Desktop/GitHub/Google Data Analytics Professional Certificate/1. Ask\_Questions\_to\_Make\_Data\_Driven\_Decisions/lettuce\_dataset\_SOW.xlsx", sheet = "source\_lettuce\_dataset")}
+\end{Highlighting}
+\end{Shaded}
+
+\paragraph{Table overview}\label{table-overview}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_0}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3,169 x 7
+##    Plant_ID Date  `Temperature (°C)` `Humidity (%)` `TDS Value (ppm)` `pH Level`
+##       <dbl> <chr>              <dbl>          <dbl>             <dbl>      <dbl>
+##  1        1 9/12~               31.2             62               576        6.7
+##  2        2 9/12~               31.2             66               657        6.8
+##  3        3 9/12~               31.2             69               403        6.6
+##  4        4 9/12~               31.2             72               729        6.6
+##  5        5 9/12~               31.2             72               738        6.2
+##  6        6 9/12~               31.2             57               793        6.4
+##  7        7 9/12~               31.2             52               468        6.7
+##  8        8 9/12~               31.2             51               768        6.1
+##  9        9 9/12~               31.2             80               793        6.6
+## 10       10 9/12~               31.2             58               794        6.6
+## # i 3,159 more rows
+## # i 1 more variable: `Growth Days` <dbl>
+\end{verbatim}
+
+\paragraph{Column names}\label{column-names}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colnames}\NormalTok{(df\_0)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Plant_ID"         "Date"             "Temperature (°C)" "Humidity (%)"    
+## [5] "TDS Value (ppm)"  "pH Level"         "Growth Days"
+\end{verbatim}
+
+\paragraph{Number of rows and columns}\label{number-of-rows-and-columns}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dim}\NormalTok{(df\_0)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3169    7
+\end{verbatim}
+
+\paragraph{Data types}\label{data-types}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{glimpse}\NormalTok{(df\_0)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 3,169
+## Columns: 7
+## $ Plant_ID           <dbl> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, ~
+## $ Date               <chr> "9/12/2023", "9/12/2023", "9/12/2023", "9/12/2023",~
+## $ `Temperature (°C)` <dbl> 31.2, 31.2, 31.2, 31.2, 31.2, 31.2, 31.2, 31.2, 31.~
+## $ `Humidity (%)`     <dbl> 62, 66, 69, 72, 72, 57, 52, 51, 80, 58, 66, 64, 51,~
+## $ `TDS Value (ppm)`  <dbl> 576, 657, 403, 729, 738, 793, 468, 768, 793, 794, 4~
+## $ `pH Level`         <dbl> 6.7, 6.8, 6.6, 6.6, 6.2, 6.4, 6.7, 6.1, 6.6, 6.6, 6~
+## $ `Growth Days`      <dbl> 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41, 41,~
+\end{verbatim}
+
+\paragraph{Data classes}\label{data-classes}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sapply}\NormalTok{(df\_0, class)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         Plant_ID             Date Temperature (°C)     Humidity (%) 
+##        "numeric"      "character"        "numeric"        "numeric" 
+##  TDS Value (ppm)         pH Level      Growth Days 
+##        "numeric"        "numeric"        "numeric"
+\end{verbatim}
+
+\paragraph{Checking completeness}\label{checking-completeness}
+
+Number of missing values in each column
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colSums}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(df\_0))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         Plant_ID             Date Temperature (°C)     Humidity (%) 
+##                0                0                0                0 
+##  TDS Value (ppm)         pH Level      Growth Days 
+##                0                0                0
+\end{verbatim}
+
+\paragraph{Checking duplicates}\label{checking-duplicates}
+
+Number of duplicate values in each column
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sapply}\NormalTok{(df\_0, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sum}\NormalTok{(}\FunctionTok{duplicated}\NormalTok{(x)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         Plant_ID             Date Temperature (°C)     Humidity (%) 
+##             3099             3121             3071             3138 
+##  TDS Value (ppm)         pH Level      Growth Days 
+##             2768             3160             3121
+\end{verbatim}
+
+\paragraph{Checking uniqueness}\label{checking-uniqueness}
+
+Number of unique rows
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{distinct}\NormalTok{(df\_0) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{dim}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 3169    7
+\end{verbatim}
+
+Number of unique values in each column
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sapply}\NormalTok{(df\_0, }\ControlFlowTok{function}\NormalTok{(x) }\FunctionTok{sum}\NormalTok{(}\FunctionTok{n\_distinct}\NormalTok{(x)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         Plant_ID             Date Temperature (°C)     Humidity (%) 
+##               70               48               98               31 
+##  TDS Value (ppm)         pH Level      Growth Days 
+##              401                9               48
+\end{verbatim}
+
+\paragraph{Transorm data}\label{transorm-data}
+
+Convert Date column from character into date
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_0}\SpecialCharTok{$}\NormalTok{Date }\OtherTok{\textless{}{-}} \FunctionTok{mdy}\NormalTok{(df\_0}\SpecialCharTok{$}\NormalTok{Date)}
+\end{Highlighting}
+\end{Shaded}
+
+Convert Plant\_ID column from numeric into factor
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_0}\SpecialCharTok{$}\NormalTok{Plant\_ID }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(df\_0}\SpecialCharTok{$}\NormalTok{Plant\_ID)}
+\end{Highlighting}
+\end{Shaded}
+
+Clean names
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{clean\_names}\NormalTok{(df\_0)}
+\end{Highlighting}
+\end{Shaded}
+
+\paragraph{Checking data after
+transormation}\label{checking-data-after-transormation}
+
+Table overview
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(date)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3,169 x 7
+##    plant_id date       temperature_c humidity_percent tds_value_ppm p_h_level
+##    <fct>    <date>             <dbl>            <dbl>         <dbl>     <dbl>
+##  1 1        2023-08-03          33.4               53           582       6.4
+##  2 2        2023-08-03          33.4               74           586       6.1
+##  3 3        2023-08-03          33.4               51           667       6.2
+##  4 4        2023-08-03          33.4               62           547       6.7
+##  5 5        2023-08-03          33.4               67           651       6.3
+##  6 6        2023-08-03          33.4               66           795       6.1
+##  7 7        2023-08-03          33.4               74           459       6.5
+##  8 8        2023-08-03          33.4               76           650       6  
+##  9 9        2023-08-03          33.4               72           693       6.4
+## 10 10       2023-08-03          33.4               66           503       6.5
+## # i 3,159 more rows
+## # i 1 more variable: growth_days <dbl>
+\end{verbatim}
+
+Checking completeness after transormation
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colSums}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(df))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         plant_id             date    temperature_c humidity_percent 
+##                0                0                0                0 
+##    tds_value_ppm        p_h_level      growth_days 
+##                0                0                0
+\end{verbatim}
+
+Checking data stricture
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## tibble [3,169 x 7] (S3: tbl_df/tbl/data.frame)
+##  $ plant_id        : Factor w/ 70 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+##  $ date            : Date[1:3169], format: "2023-09-12" "2023-09-12" ...
+##  $ temperature_c   : num [1:3169] 31.2 31.2 31.2 31.2 31.2 31.2 31.2 31.2 31.2 31.2 ...
+##  $ humidity_percent: num [1:3169] 62 66 69 72 72 57 52 51 80 58 ...
+##  $ tds_value_ppm   : num [1:3169] 576 657 403 729 738 793 468 768 793 794 ...
+##  $ p_h_level       : num [1:3169] 6.7 6.8 6.6 6.6 6.2 6.4 6.7 6.1 6.6 6.6 ...
+##  $ growth_days     : num [1:3169] 41 41 41 41 41 41 41 41 41 41 ...
+\end{verbatim}
+
+\paragraph{Interpretation of the 1st stage EDA: Data Discovery \&
+Profiling}\label{interpretation-of-the-1st-stage-eda-data-discovery-profiling}
+
+\textbf{Purpose and Approach}
+
+This stage focused on initial understanding and validation of the
+lettuce dataset to answer two main questions:
+
+What does the data contain?
+
+Is the data clean and ready for analysis?
+
+\textbf{📄 Findings}
+
+Dataset structure: The table contained 3,169 rows and 7 columns,
+representing multiple measurements for 70 individual plants across 48
+observation days. Columns included: plant\_id, date, temperature\_c,
+humidity\_percent, tds\_value\_ppm, p\_h\_level and growth\_days
+
+\textbf{Uniqueness and duplication checks:}
+
+No duplicated rows were found (distinct(df\_0) returned 3,169 unique
+rows).
+
+Each variable had a meaningful count of unique values (e.g., 70 plant
+IDs, 98 temperature readings, 9 pH levels), confirming valid variability
+across measurements.
+
+\textbf{Data type consistency:}
+
+The ``date'' column was initially stored as a character type and was
+converted to a proper Date format using mdy().
+
+The ``plant\_id'' column was converted from numeric to factor, which
+correctly represents categorical identifiers.
+
+Column names were standardized with clean\_names() for consistent
+syntax.
+
+\textbf{Quality assessment:}
+
+No missing values were reported.
+
+The only detected issue before transformation was inconsistent date
+formatting.
+
+After cleaning, all variables were in the correct type and ready for
+deeper analysis.
+
+\textbf{🧠 Concusion}
+
+The dataset was confirmed to be accurate, consistent, and complete.
+Minor formatting issues (dates, variable types) were corrected.
+
+\section{Step 4. Analyze}\label{step-4.-analyze}
+
+\subsection{Stage 2 of EDA: Univariate analysis (``Understanding
+individual variables''
+phase)}\label{stage-2-of-eda-univariate-analysis-understanding-individual-variables-phase}
+
+\paragraph{Summary statistics}\label{summary-statistics}
+
+Summary statistics using skim function
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{skim}\NormalTok{(df) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{2}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Data summary}\tabularnewline
+\toprule\noalign{}
+\endfirsthead
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Name & df \\
+Number of rows & 3169 \\
+Number of columns & 7 \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \\
+Column type frequency: & \\
+Date & 1 \\
+factor & 1 \\
+numeric & 5 \\
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ & \\
+Group variables & None \\
+\end{longtable}
+
+\textbf{Variable type: Date}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1750}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1250}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1750}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1375}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1375}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1375}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1125}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+skim\_variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_missing
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+complete\_rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+min
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+max
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+median
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_unique
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+date & 0 & 1 & 2023-08-03 & 2023-09-19 & 2023-08-25 & 48 \\
+\end{longtable}
+
+\textbf{Variable type: factor}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1687}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1205}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1687}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0964}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1084}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.3373}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+skim\_variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_missing
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+complete\_rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ordered
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_unique
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+top\_counts
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+plant\_id & 0 & 1 & FALSE & 70 & 4: 48, 55: 48, 3: 47, 7: 47 \\
+\end{longtable}
+
+\textbf{Variable type: numeric}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.1910}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.1124}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.1573}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0787}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0787}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0449}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0674}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0674}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0674}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0674}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0674}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+skim\_variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+n\_missing
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+complete\_rate
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+mean
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+sd
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p0
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p25
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p50
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p75
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p100
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+hist
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+temperature\_c & 0 & 1 & 28.14 & 4.67 & 18 & 23.6 & 30.2 & 31.5 & 33.5 &
+▂▂▁▅▇ \\
+humidity\_percent & 0 & 1 & 64.87 & 8.99 & 50 & 57.0 & 65.0 & 73.0 &
+80.0 & ▇▆▆▇▆ \\
+tds\_value\_ppm & 0 & 1 & 598.05 & 115.71 & 400 & 498.0 & 593.0 & 699.0
+& 800.0 & ▇▇▇▇▇ \\
+p\_h\_level & 0 & 1 & 6.40 & 0.23 & 6 & 6.2 & 6.4 & 6.6 & 6.8 & ▆▇▃▇▆ \\
+growth\_days & 0 & 1 & 23.14 & 13.08 & 1 & 12.0 & 23.0 & 34.0 & 48.0 &
+▇▇▇▇▆ \\
+\end{longtable}
+
+Summary statistics using summary function
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     plant_id         date            temperature_c   humidity_percent
+##  4      :  48   Min.   :2023-08-03   Min.   :18.00   Min.   :50.00   
+##  55     :  48   1st Qu.:2023-08-14   1st Qu.:23.60   1st Qu.:57.00   
+##  3      :  47   Median :2023-08-25   Median :30.20   Median :65.00   
+##  7      :  47   Mean   :2023-08-25   Mean   :28.14   Mean   :64.87   
+##  11     :  47   3rd Qu.:2023-09-05   3rd Qu.:31.50   3rd Qu.:73.00   
+##  48     :  47   Max.   :2023-09-19   Max.   :33.50   Max.   :80.00   
+##  (Other):2885                                                        
+##  tds_value_ppm   p_h_level      growth_days   
+##  Min.   :400   Min.   :6.000   Min.   : 1.00  
+##  1st Qu.:498   1st Qu.:6.200   1st Qu.:12.00  
+##  Median :593   Median :6.400   Median :23.00  
+##  Mean   :598   Mean   :6.399   Mean   :23.14  
+##  3rd Qu.:699   3rd Qu.:6.600   3rd Qu.:34.00  
+##  Max.   :800   Max.   :6.800   Max.   :48.00  
+## 
+\end{verbatim}
+
+\paragraph{Examine distribution and detecting
+outliers}\label{examine-distribution-and-detecting-outliers}
+
+Examine distribution plotting histograms
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{pivot\_longer}\NormalTok{(}\FunctionTok{everything}\NormalTok{(),}
+               \AttributeTok{names\_to =} \StringTok{"variable"}\NormalTok{,}
+               \AttributeTok{values\_to =} \StringTok{"value"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ value, }\AttributeTok{fill =}\NormalTok{ variable)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{bins =} \DecValTok{30}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ variable, }\AttributeTok{scales =} \StringTok{"free"}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+\CommentTok{\# theme\_minimal() + }
+  \FunctionTok{guides}\NormalTok{(}\AttributeTok{fill =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Lettuce_growth_days_v2.1--Step-2-_files/figure-latex/unnamed-chunk-19-1.pdf}}
+
+Detect outliers plotting boxplots
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{pivot\_longer}\NormalTok{(}\FunctionTok{everything}\NormalTok{(),}
+               \AttributeTok{names\_to =} \StringTok{"variable"}\NormalTok{,}
+               \AttributeTok{values\_to =} \StringTok{"value"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ variable, }\AttributeTok{y =}\NormalTok{ value)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{outliers.alpha =} \FloatTok{0.35}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{y =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{title =} \StringTok{"Boxplots of numeric variables"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ variable, }\AttributeTok{scales =} \StringTok{"free"}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+  \CommentTok{\# theme\_minimal() +}
+  \FunctionTok{guides}\NormalTok{(}\AttributeTok{fill =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in geom_boxplot(outliers.alpha = 0.35): Ignoring unknown parameters:
+## `outliers.alpha`
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Lettuce_growth_days_v2.1--Step-2-_files/figure-latex/unnamed-chunk-20-1.pdf}}
+
+\paragraph{Interpretation of the 2d stage EDA: Univariate
+analysis}\label{interpretation-of-the-2d-stage-eda-univariate-analysis}
+
+\textbf{🎯 Purpose}
+
+This step examined each variable independently to describe its
+distribution, variation, and potential outliers.
+
+\textbf{📈 Summary Statistics}
+
+Rows: 3,169
+
+Columns: 7
+
+Variable types: 1 Date (date), 1 Factor (plant\_id), 5 Numeric
+(temperature\_c, humidity\_percent, tds\_value\_ppm, p\_h\_level,
+growth\_days).
+
+Missing data: 0 across all columns.
+
+📅 Date Variable
+
+Range: 2023-08-03 → 2023-09-19 (48 unique days). → Represents about 7
+weeks of continuous monitoring.
+
+🪴 Plant ID
+
+70 unique plants, each measured several times (roughly 45 observations
+per plant). → Confirms the dataset's panel/time-series nature.
+
+\textbf{🔢 Numeric Variables}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.0435}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4783}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4783}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+N
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Interpretation
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & temperature\_c & Moderate variation --- typical indoor growing
+temperature, stable across time. \\
+2 & humidity\_percent & Reasonably humid environment --- variation
+likely due to daily cycles. \\
+3 & tds\_value\_ppm & Stable nutrient concentration --- healthy
+hydroponic range. \\
+4 & p\_h\_level & Excellent --- near-neutral, stable pH. \\
+5 & growth\_days & Data spans about 1.5 months: from 2023-08-03 to
+2023-09-19. \\
+\end{longtable}
+
+\textbf{📊 Insights}
+
+No missing data or extreme anomalies.
+
+Boxplots showed relatively symmetric distributions for most
+environmental variables, with slight skewness or mild outliers in TDS
+and Growth Days.
+
+Overall, variability within variables supports robust analysis of
+growth-environment interactions.
+
+\textbf{🧠 Interpretation}
+
+Each variable behaves consistently with expectations for greenhouse
+data:
+
+Environmental factors are well-controlled but still varied enough to
+analyze correlations with plant growth.
+
+The dataset is statistically rich and suitable for later modeling (e.g.,
+regression or correlation analysis).
+
+\subsection{Stage 3 of EDA: Bivariate/Multivariate analysis
+(``Understanding relationships''
+phase)}\label{stage-3-of-eda-bivariatemultivariate-analysis-understanding-relationships-phase}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{cor}\NormalTok{(}\AttributeTok{use =} \StringTok{"complete.obs"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{round}\NormalTok{(}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                  temperature_c humidity_percent tds_value_ppm p_h_level
+## temperature_c             1.00             0.03         -0.01      0.01
+## humidity_percent          0.03             1.00         -0.01      0.02
+## tds_value_ppm            -0.01            -0.01          1.00     -0.01
+## p_h_level                 0.01             0.02         -0.01      1.00
+## growth_days              -0.07            -0.01         -0.02      0.00
+##                  growth_days
+## temperature_c          -0.07
+## humidity_percent       -0.01
+## tds_value_ppm          -0.02
+## p_h_level               0.00
+## growth_days             1.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{cor}\NormalTok{(}\AttributeTok{use =} \StringTok{"complete.obs"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+\NormalTok{  corrplot}\SpecialCharTok{::}\FunctionTok{corrplot}\NormalTok{(}\AttributeTok{method =} \StringTok{"color"}\NormalTok{, }
+                     \AttributeTok{type =} \StringTok{"upper"}\NormalTok{, }
+                     \AttributeTok{order =} \StringTok{"hclust"}\NormalTok{,}
+                     \AttributeTok{addCoef.col =} \StringTok{"black"}\NormalTok{,}
+                     \AttributeTok{tl.cex =} \FloatTok{0.8}\NormalTok{,}
+                     \AttributeTok{tl.col =} \StringTok{"black"}\NormalTok{,}
+                     \AttributeTok{tl.srt =} \DecValTok{45}\NormalTok{,}
+                     \AttributeTok{cl.pos =} \StringTok{"n"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Lettuce_growth_days_v2.1--Step-2-_files/figure-latex/unnamed-chunk-22-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{pairs}\NormalTok{(df)  }
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Lettuce_growth_days_v2.1--Step-2-_files/figure-latex/unnamed-chunk-23-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{plant\_id, }\SpecialCharTok{{-}}\NormalTok{date) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggpairs}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Lettuce_growth_days_v2.1--Step-2-_files/figure-latex/unnamed-chunk-24-1.pdf}}
+\textbf{🎯 Purpose}
+
+This stage examined how environmental variables relate to each other and
+to the target variable --- Growth Days.
+
+🔗 Correlation Matrix (Rounded to 2 decimals)
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1957}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1739}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2065}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1630}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1196}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1413}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Variable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+temperature\_c
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+humidity\_percent
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+tds\_value\_ppm
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+p\_h\_level
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+growth\_days
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+temperature\_c & 1.00 & 0.03 & -0.01 & 0.01 & -0.07 \\
+humidity\_percent & 0.03 & 1.00 & -0.01 & 0.02 & -0.01 \\
+tds\_value\_ppm & -0.01 & -0.01 & 1.00 & -0.01 & -0.02 \\
+p\_h\_level & 0.01 & 0.02 & -0.01 & 1.00 & 0.00 \\
+growth\_days & -0.07 & -0.01 & -0.02 & 0.00 & 1.00 \\
+\end{longtable}
+
+\textbf{💡 Interpretation of Correlations}
+
+All correlations are weak (\textbar r\textbar{} \textless{} 0.1) --- no
+strong linear dependencies among variables.
+
+Slight negative correlation between temperature\_c and growth\_days
+(-0.07) could indicate that higher temperatures may slightly accelerate
+early growth, reducing total growth duration.
+
+Other environmental factors (humidity\_percent, tds\_value\_ppm,
+p\_h\_level) show minimal direct relationships to growth time.
+
+The correlation plot confirms overall independence of predictors,
+meaning multicollinearity is not a concern.
+
+\textbf{🧠 General Interpretation}
+
+The weak correlations suggest lettuce growth in this dataset is not
+linearly dominated by any single factor --- growth may depend on
+nonlinear or combined environmental effects (e.g., optimal ranges rather
+than simple linear relationships).
+
+These findings justify future modeling efforts (like regression or
+machine learning) to explore interactions or thresholds rather than
+direct proportional effects.
+
+\textbf{✅ Summary of the Three Phases}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Phase
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Focus
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Key Findings
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+3.1 Data Discovery \& Profiling & Structure \& cleanliness & Data was
+complete, consistent, and properly formatted. \\
+3.2 Univariate Analysis & Individual variable behavior & Variables
+showed natural variation without missing data; distributions were
+realistic. \\
+3.3 Bivariate/Multivariate Analysis & Variable relationships & No strong
+linear relationships; temperature showed a slight negative association
+with growth days. \\
+\end{longtable}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+All statistics by plant id
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{all\_stats\_by\_id }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{group\_by}\NormalTok{(plant\_id) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+            \AttributeTok{date\_min =} \FunctionTok{min}\NormalTok{(date),}
+            \AttributeTok{date\_mean =} \FunctionTok{mean}\NormalTok{(date),}
+            \AttributeTok{date\_median =} \FunctionTok{median}\NormalTok{(date),}
+            \AttributeTok{date\_max =} \FunctionTok{max}\NormalTok{(date),}
+            \AttributeTok{temperature\_c\_min =} \FunctionTok{min}\NormalTok{(temperature\_c),}
+            \AttributeTok{temperature\_c\_q1 =} \FunctionTok{quantile}\NormalTok{(temperature\_c, }\FloatTok{0.25}\NormalTok{),}
+            \AttributeTok{temperature\_c\_mean =} \FunctionTok{mean}\NormalTok{(temperature\_c),}
+            \AttributeTok{temperature\_c\_median =} \FunctionTok{median}\NormalTok{(temperature\_c),}
+            \AttributeTok{temperature\_c\_sd =} \FunctionTok{sd}\NormalTok{(temperature\_c),}
+            \AttributeTok{temperature\_c\_q3 =} \FunctionTok{quantile}\NormalTok{(temperature\_c, }\FloatTok{0.75}\NormalTok{),}
+            \AttributeTok{temperature\_c\_max =} \FunctionTok{max}\NormalTok{(temperature\_c),}
+            \AttributeTok{humidity\_percent\_min =} \FunctionTok{min}\NormalTok{(humidity\_percent),}
+            \AttributeTok{humidity\_percent\_q1 =} \FunctionTok{quantile}\NormalTok{(humidity\_percent, }\FloatTok{0.25}\NormalTok{),}
+            \AttributeTok{humidity\_percent\_mean =} \FunctionTok{mean}\NormalTok{(humidity\_percent),}
+            \AttributeTok{humidity\_percent\_median =} \FunctionTok{median}\NormalTok{(humidity\_percent),}
+            \AttributeTok{humidity\_percent\_sd =} \FunctionTok{sd}\NormalTok{(humidity\_percent),}
+            \AttributeTok{humidity\_percent\_q3 =} \FunctionTok{quantile}\NormalTok{(humidity\_percent, }\FloatTok{0.75}\NormalTok{),}
+            \AttributeTok{humidity\_percent\_max =} \FunctionTok{max}\NormalTok{(humidity\_percent),}
+            \AttributeTok{tds\_value\_ppm\_min =} \FunctionTok{min}\NormalTok{(tds\_value\_ppm),}
+            \AttributeTok{tds\_value\_ppm\_q1 =} \FunctionTok{quantile}\NormalTok{(tds\_value\_ppm, }\FloatTok{0.25}\NormalTok{),}
+            \AttributeTok{tds\_value\_ppm\_mean =} \FunctionTok{mean}\NormalTok{(tds\_value\_ppm),}
+            \AttributeTok{tds\_value\_ppm\_median =} \FunctionTok{median}\NormalTok{(tds\_value\_ppm),}
+            \AttributeTok{tds\_value\_ppm\_sd =} \FunctionTok{sd}\NormalTok{(tds\_value\_ppm),}
+            \AttributeTok{tds\_value\_ppm\_q3 =} \FunctionTok{quantile}\NormalTok{(tds\_value\_ppm, }\FloatTok{0.75}\NormalTok{),}
+            \AttributeTok{tds\_value\_ppm\_max =} \FunctionTok{max}\NormalTok{(tds\_value\_ppm),}
+            \AttributeTok{p\_h\_level\_min =} \FunctionTok{min}\NormalTok{(p\_h\_level),}
+            \AttributeTok{p\_h\_level\_q1 =} \FunctionTok{quantile}\NormalTok{(p\_h\_level, }\FloatTok{0.25}\NormalTok{),}
+            \AttributeTok{p\_h\_level\_mean =} \FunctionTok{mean}\NormalTok{(p\_h\_level),}
+            \AttributeTok{p\_h\_level\_median =} \FunctionTok{median}\NormalTok{(p\_h\_level),}
+            \AttributeTok{p\_h\_level\_sd =} \FunctionTok{sd}\NormalTok{(p\_h\_level),}
+            \AttributeTok{p\_h\_level\_q3 =} \FunctionTok{quantile}\NormalTok{(p\_h\_level, }\FloatTok{0.75}\NormalTok{),}
+            \AttributeTok{p\_h\_level\_max =} \FunctionTok{max}\NormalTok{(p\_h\_level),}
+            \AttributeTok{growth\_days\_min =} \FunctionTok{min}\NormalTok{(growth\_days),}
+            \AttributeTok{growth\_days\_q1 =} \FunctionTok{quantile}\NormalTok{(growth\_days, }\FloatTok{0.25}\NormalTok{),}
+            \AttributeTok{growth\_days\_mean =} \FunctionTok{mean}\NormalTok{(growth\_days),}
+            \AttributeTok{growth\_days\_median =} \FunctionTok{median}\NormalTok{(growth\_days),}
+            \AttributeTok{growth\_days\_sd =} \FunctionTok{sd}\NormalTok{(growth\_days),}
+            \AttributeTok{growth\_days\_q3 =} \FunctionTok{quantile}\NormalTok{(growth\_days, }\FloatTok{0.75}\NormalTok{),}
+            \AttributeTok{growth\_days\_max =} \FunctionTok{max}\NormalTok{(growth\_days)}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \FunctionTok{across}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{2}\NormalTok{))}
+\NormalTok{         )}
+
+\NormalTok{all\_stats\_by\_id}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 70 x 40
+##    plant_id date_min   date_mean  date_median date_max   temperature_c_min
+##    <fct>    <date>     <date>     <date>      <date>                 <dbl>
+##  1 1        2023-08-03 2023-08-25 2023-08-25  2023-09-16              20.1
+##  2 2        2023-08-03 2023-08-25 2023-08-25  2023-09-16              20.1
+##  3 3        2023-08-03 2023-08-26 2023-08-26  2023-09-18              20.1
+##  4 4        2023-08-03 2023-08-26 2023-08-26  2023-09-19              20.1
+##  5 5        2023-08-03 2023-08-25 2023-08-25  2023-09-16              20.1
+##  6 6        2023-08-03 2023-08-25 2023-08-25  2023-09-16              20.1
+##  7 7        2023-08-03 2023-08-26 2023-08-26  2023-09-18              20.1
+##  8 8        2023-08-03 2023-08-25 2023-08-25  2023-09-16              20.1
+##  9 9        2023-08-03 2023-08-25 2023-08-25  2023-09-17              20.1
+## 10 10       2023-08-03 2023-08-25 2023-08-25  2023-09-16              20.1
+## # i 60 more rows
+## # i 34 more variables: temperature_c_q1 <dbl>, temperature_c_mean <dbl>,
+## #   temperature_c_median <dbl>, temperature_c_sd <dbl>, temperature_c_q3 <dbl>,
+## #   temperature_c_max <dbl>, humidity_percent_min <dbl>,
+## #   humidity_percent_q1 <dbl>, humidity_percent_mean <dbl>,
+## #   humidity_percent_median <dbl>, humidity_percent_sd <dbl>,
+## #   humidity_percent_q3 <dbl>, humidity_percent_max <dbl>, ...
+\end{verbatim}
+
+Summary of all statistics by plant id
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{all\_stats\_by\_id }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{summary}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     plant_id     date_min            date_mean           date_median        
+##  1      : 1   Min.   :2023-08-03   Min.   :2023-08-25   Min.   :2023-08-25  
+##  2      : 1   1st Qu.:2023-08-03   1st Qu.:2023-08-25   1st Qu.:2023-08-25  
+##  3      : 1   Median :2023-08-03   Median :2023-08-25   Median :2023-08-25  
+##  4      : 1   Mean   :2023-08-03   Mean   :2023-08-25   Mean   :2023-08-25  
+##  5      : 1   3rd Qu.:2023-08-03   3rd Qu.:2023-08-25   3rd Qu.:2023-08-25  
+##  6      : 1   Max.   :2023-08-03   Max.   :2023-08-26   Max.   :2023-08-26  
+##  (Other):64                                                                 
+##     date_max          temperature_c_min temperature_c_q1 temperature_c_mean
+##  Min.   :2023-09-16   Min.   :18.00     Min.   :18.80    Min.   :21.04     
+##  1st Qu.:2023-09-16   1st Qu.:18.32     1st Qu.:20.25    1st Qu.:21.94     
+##  Median :2023-09-16   Median :20.10     Median :30.10    Median :30.63     
+##  Mean   :2023-09-16   Mean   :19.56     Mean   :27.27    Mean   :28.14     
+##  3rd Qu.:2023-09-16   3rd Qu.:20.10     3rd Qu.:30.10    3rd Qu.:30.63     
+##  Max.   :2023-09-19   Max.   :20.10     Max.   :30.10    Max.   :30.67     
+##                                                                            
+##  temperature_c_median temperature_c_sd temperature_c_q3 temperature_c_max
+##  Min.   :20.75        Min.   :1.810    Min.   :22.2     Min.   :24.60    
+##  1st Qu.:22.23        1st Qu.:2.277    1st Qu.:23.8     1st Qu.:26.65    
+##  Median :30.90        Median :2.380    Median :31.7     Median :33.50    
+##  Mean   :28.34        Mean   :2.301    Mean   :29.4     Mean   :31.25    
+##  3rd Qu.:30.90        3rd Qu.:2.380    3rd Qu.:31.7     3rd Qu.:33.50    
+##  Max.   :31.10        Max.   :3.160    Max.   :31.7     Max.   :33.50    
+##                                                                          
+##  humidity_percent_min humidity_percent_q1 humidity_percent_mean
+##  Min.   :50.00        Min.   :53.00       Min.   :62.62        
+##  1st Qu.:50.00        1st Qu.:56.00       1st Qu.:63.71        
+##  Median :50.00        Median :57.00       Median :64.82        
+##  Mean   :50.19        Mean   :57.39       Mean   :64.88        
+##  3rd Qu.:50.00        3rd Qu.:59.00       3rd Qu.:65.81        
+##  Max.   :51.00        Max.   :62.50       Max.   :68.68        
+##                                                                
+##  humidity_percent_median humidity_percent_sd humidity_percent_q3
+##  Min.   :61.00           Min.   : 7.050      Min.   :68.00      
+##  1st Qu.:63.00           1st Qu.: 8.533      1st Qu.:71.00      
+##  Median :65.00           Median : 9.060      Median :72.88      
+##  Mean   :64.89           Mean   : 8.959      Mean   :72.29      
+##  3rd Qu.:66.00           3rd Qu.: 9.287      3rd Qu.:74.00      
+##  Max.   :72.00           Max.   :10.290      Max.   :76.00      
+##                                                                 
+##  humidity_percent_max tds_value_ppm_min tds_value_ppm_q1 tds_value_ppm_mean
+##  Min.   :77.00        Min.   :400       Min.   :451.0    Min.   :567.0     
+##  1st Qu.:79.00        1st Qu.:402       1st Qu.:486.2    1st Qu.:584.2     
+##  Median :80.00        Median :405       Median :501.0    Median :598.3     
+##  Mean   :79.61        Mean   :409       Mean   :502.7    Mean   :598.0     
+##  3rd Qu.:80.00        3rd Qu.:412       3rd Qu.:515.8    3rd Qu.:611.9     
+##  Max.   :80.00        Max.   :449       Max.   :576.0    Max.   :628.2     
+##                                                                            
+##  tds_value_ppm_median tds_value_ppm_sd tds_value_ppm_q3 tds_value_ppm_max
+##  Min.   :544.0        Min.   : 95.55   Min.   :641.0    Min.   :765.0    
+##  1st Qu.:574.2        1st Qu.:109.97   1st Qu.:680.0    1st Qu.:789.0    
+##  Median :596.5        Median :115.61   Median :698.8    Median :795.0    
+##  Mean   :596.9        Mean   :115.56   Mean   :695.0    Mean   :791.9    
+##  3rd Qu.:613.0        3rd Qu.:120.48   3rd Qu.:714.2    3rd Qu.:798.0    
+##  Max.   :666.0        Max.   :138.25   Max.   :749.0    Max.   :800.0    
+##                                                                          
+##  p_h_level_min    p_h_level_q1   p_h_level_mean  p_h_level_median
+##  Min.   :6.000   Min.   :6.100   Min.   :6.310   Min.   :6.300   
+##  1st Qu.:6.000   1st Qu.:6.200   1st Qu.:6.380   1st Qu.:6.400   
+##  Median :6.000   Median :6.200   Median :6.400   Median :6.400   
+##  Mean   :6.001   Mean   :6.207   Mean   :6.399   Mean   :6.398   
+##  3rd Qu.:6.000   3rd Qu.:6.200   3rd Qu.:6.420   3rd Qu.:6.400   
+##  Max.   :6.100   Max.   :6.400   Max.   :6.490   Max.   :6.500   
+##                                                                  
+##   p_h_level_sd     p_h_level_q3   p_h_level_max   growth_days_min
+##  Min.   :0.1900   Min.   :6.500   Min.   :6.700   Min.   :1      
+##  1st Qu.:0.2200   1st Qu.:6.600   1st Qu.:6.800   1st Qu.:1      
+##  Median :0.2300   Median :6.600   Median :6.800   Median :1      
+##  Mean   :0.2344   Mean   :6.598   Mean   :6.789   Mean   :1      
+##  3rd Qu.:0.2500   3rd Qu.:6.600   3rd Qu.:6.800   3rd Qu.:1      
+##  Max.   :0.2800   Max.   :6.700   Max.   :6.800   Max.   :1      
+##                                                                  
+##  growth_days_q1  growth_days_mean growth_days_median growth_days_sd 
+##  Min.   :12.00   Min.   :23.00    Min.   :23.00      Min.   :13.13  
+##  1st Qu.:12.00   1st Qu.:23.00    1st Qu.:23.00      1st Qu.:13.13  
+##  Median :12.00   Median :23.00    Median :23.00      Median :13.13  
+##  Mean   :12.07   Mean   :23.13    Mean   :23.14      Mean   :13.21  
+##  3rd Qu.:12.00   3rd Qu.:23.00    3rd Qu.:23.00      3rd Qu.:13.13  
+##  Max.   :12.75   Max.   :24.50    Max.   :24.50      Max.   :14.00  
+##                                                                     
+##  growth_days_q3  growth_days_max
+##  Min.   :34.00   Min.   :45.00  
+##  1st Qu.:34.00   1st Qu.:45.00  
+##  Median :34.00   Median :45.00  
+##  Mean   :34.20   Mean   :45.26  
+##  3rd Qu.:34.00   3rd Qu.:45.00  
+##  Max.   :36.25   Max.   :48.00  
+## 
+\end{verbatim}
+
+Statistics (basic) by plant id
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{all\_stats\_by\_id }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(plant\_id, }
+\NormalTok{         temperature\_c\_mean,}
+\NormalTok{         humidity\_percent\_mean,}
+\NormalTok{         tds\_value\_ppm\_mean,}
+\NormalTok{         p\_h\_level\_mean,}
+\NormalTok{         growth\_days\_max)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 70 x 6
+##    plant_id temperature_c_mean humidity_percent_mean tds_value_ppm_mean
+##    <fct>                 <dbl>                 <dbl>              <dbl>
+##  1 1                      30.6                  64.0               615.
+##  2 2                      30.6                  64.6               597.
+##  3 3                      30.6                  68.7               620.
+##  4 4                      30.6                  63.4               598.
+##  5 5                      30.6                  65.1               577.
+##  6 6                      30.6                  64.4               614.
+##  7 7                      30.6                  64.1               608.
+##  8 8                      30.6                  66.3               598.
+##  9 9                      30.6                  66.9               608.
+## 10 10                     30.6                  65.8               613.
+## # i 60 more rows
+## # i 2 more variables: p_h_level_mean <dbl>, growth_days_max <dbl>
+\end{verbatim}
+
+Statistics by maximum growth day
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{group\_by}\NormalTok{(plant\_id) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{growth\_days\_max =} \FunctionTok{max}\NormalTok{(growth\_days)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(growth\_days\_max) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{plant\_id\_n =} \FunctionTok{n\_distinct}\NormalTok{(plant\_id),}
+            \AttributeTok{temperature\_c\_mean =} \FunctionTok{mean}\NormalTok{(temperature\_c),}
+            \AttributeTok{humidity\_percent\_mean =} \FunctionTok{mean}\NormalTok{(humidity\_percent),}
+            \AttributeTok{tds\_value\_ppm\_mean =} \FunctionTok{mean}\NormalTok{(tds\_value\_ppm),}
+            \AttributeTok{p\_h\_level\_mean =} \FunctionTok{mean}\NormalTok{(p\_h\_level)}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}
+    \FunctionTok{across}\NormalTok{(}
+      \FunctionTok{where}\NormalTok{(is.numeric), }\SpecialCharTok{\textasciitilde{}} \FunctionTok{round}\NormalTok{(.x, }\DecValTok{2}\NormalTok{)}
+\NormalTok{      )}
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4 x 6
+##   growth_days_max plant_id_n temperature_c_mean humidity_percent_mean
+##             <dbl>      <dbl>              <dbl>                 <dbl>
+## 1              45         59               28.1                  64.9
+## 2              46          5               27.0                  65.0
+## 3              47          5               28.8                  65.0
+## 4              48          1               30.6                  63.4
+## # i 2 more variables: tds_value_ppm_mean <dbl>, p_h_level_mean <dbl>
+\end{verbatim}
+
+\section{3.4 Visualize relationships}\label{visualize-relationships}
+
+Time-series plots (trends over time)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(date, plant\_id), }\AttributeTok{names\_to =} \StringTok{"variable"}\NormalTok{, }\AttributeTok{values\_to =} \StringTok{"value"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(variable, date) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{mean =} \FunctionTok{mean}\NormalTok{(value, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{p25  =} \FunctionTok{quantile}\NormalTok{(value, }\FloatTok{0.25}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{p75  =} \FunctionTok{quantile}\NormalTok{(value, }\FloatTok{0.75}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{arrange}\NormalTok{(variable, date) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(date, mean)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_ribbon}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin =}\NormalTok{ p25, }\AttributeTok{ymax =}\NormalTok{ p75), }\AttributeTok{alpha =} \FloatTok{0.15}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ variable, }\AttributeTok{scales =} \StringTok{"free\_y"}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_x\_date}\NormalTok{(}\AttributeTok{date\_breaks =} \StringTok{"1 month"}\NormalTok{, }\AttributeTok{date\_labels =} \StringTok{"\%b \%Y"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{y =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{title =} \StringTok{"Daily mean with IQR band"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{),}
+        \AttributeTok{panel.grid.minor =} \FunctionTok{element\_blank}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Lettuce_growth_days_v2.1--Step-2-_files/figure-latex/unnamed-chunk-29-1.pdf}}
+c
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{pivot\_longer}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(date, plant\_id), }\AttributeTok{names\_to =} \StringTok{"variable"}\NormalTok{, }\AttributeTok{values\_to =} \StringTok{"values"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(variable, date) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{mean =} \FunctionTok{mean}\NormalTok{(values)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(variable, date) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ date, }\AttributeTok{y =}\NormalTok{ mean)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ variable, }\AttributeTok{scales =} \StringTok{"free\_y"}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_x\_date}\NormalTok{(}\AttributeTok{date\_breaks =} \StringTok{"1 month"}\NormalTok{, }\AttributeTok{date\_labels =} \StringTok{"\%b \%Y"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{y =} \ConstantTok{NULL}\NormalTok{, }\AttributeTok{title =} \StringTok{"Daily mean"}\NormalTok{) }\SpecialCharTok{+} 
+  \CommentTok{\# theme\_minimal() +}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.text.x =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{angle =} \DecValTok{45}\NormalTok{, }\AttributeTok{hjust =} \DecValTok{1}\NormalTok{),}
+        \AttributeTok{panel.grid.minor =} \FunctionTok{element\_blank}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has regrouped the output.
+## i Summaries were computed grouped by variable and date.
+## i Output is grouped by variable.
+## i Use `summarise(.groups = "drop_last")` to silence this message.
+## i Use `summarise(.by = c(variable, date))` for per-operation grouping
+##   (`?dplyr::dplyr_by`) instead.
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Lettuce_growth_days_v2.1--Step-2-_files/figure-latex/unnamed-chunk-30-1.pdf}}
+Scatterplots (check correlation)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(}\FunctionTok{where}\NormalTok{(is.numeric)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{ggpairs}\NormalTok{(}\AttributeTok{progress =} \ConstantTok{FALSE}\NormalTok{,}
+          \AttributeTok{upper =} \FunctionTok{list}\NormalTok{(}\AttributeTok{continuous =} \FunctionTok{wrap}\NormalTok{(}\StringTok{"cor"}\NormalTok{, }\AttributeTok{method =} \StringTok{"pearson"}\NormalTok{)),}
+          \AttributeTok{diag =} \FunctionTok{list}\NormalTok{(}\AttributeTok{continuous =} \StringTok{"densityDiag"}\NormalTok{),}
+          \AttributeTok{lwer =} \FunctionTok{list}\NormalTok{(}\AttributeTok{continuous =} \FunctionTok{wrap}\NormalTok{(}\StringTok{"points"}\NormalTok{, }\AttributeTok{alpha =} \FloatTok{0.4}\NormalTok{, }\AttributeTok{size =} \FloatTok{0.7}\NormalTok{))}
+    
+\NormalTok{  )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: The `...` argument of `ggpais()` is deprecated as of GGally 2.3.0.
+## This warning is displayed once per session.
+## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+## generated.
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Lettuce_growth_days_v2.1--Step-2-_files/figure-latex/unnamed-chunk-31-1.pdf}}
+
+\section{3.5 Form hypotheses}\label{form-hypotheses}
+
+Does higher humidity improve growth?
+
+Are weekly growth patterns consistent?
+
+Is there seasonality in the data?
+
+\end{document}
