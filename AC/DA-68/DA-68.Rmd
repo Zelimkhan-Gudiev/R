@@ -78,7 +78,8 @@ knitr::opts_chunk$set(
 
 ```{r Loading data}
 # Считывание данных
-df_src <- read_xlsx("C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/data_request&src_data/2026.04.13_df_src.xlsx", sheet = "Исх.")
+# df_src <- read_xlsx("C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/data_request&src_data/2026.04.13_df_src.xlsx", sheet = "Исх.")
+df_src <- read_xlsx("/Users/zelimkhan/Desktop/2026.04.13_df_src.xlsx", sheet = "Исх.")
 ```
 
 ```{r Cleaning column names}
@@ -240,7 +241,7 @@ metrics <- metrics %>%
         share_ac_sum_contract = round(ac_sum_contract/total_ac_sum_contract, 2)
         )
 
-write_xlsx(metrics, "C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/2026.05.25_metrics.xlsx")
+# write_xlsx(metrics, "C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/2026.05.25_metrics.xlsx")
 
 ###
 metrics_223 <- metrics %>% 
