@@ -173,7 +173,7 @@ df %>%
   mutate(reestrovyj_nomer_procedury_eis = "373200068625000384") %>% 
   arrange(desc(group_n))
 ```
-Вопрос: Почему 92 процедуры с реестровым номером "373200068625000384" имеют 54 уникальных идентификаторов лота (id_lota_eaist) и реестровых номеров процедур в ЕАИСТ (reestrovyj_nomer_procedury_eaist)? Разве количество процедур в ЕАИСТ не должно равняться количеству процедур в ЕИС?
+Вопрос: Почему 92 процедуры с реестровым номером "373200068625000384" (reestrovyj_nomer_procedury_na_eis) имеют 54 уникальных идентификаторов лота (id_lota_eaist) и реестровых номеров процедур в ЕАИСТ (reestrovyj_nomer_procedury_eaist)? Разве количество процедур в ЕАИСТ не должно равняться количеству процедур в ЕИС?
 
 Вопрос: Почуму в [ЕИС не нахдится процедура с реестровым номером "373200068625000384"](https://zakupki.gov.ru/epz/order/extendedsearch/results.html?searchString=373200068625000384) (reestrovyj_nomer_procedury_eis).
 ```{r Question_3}
@@ -240,7 +240,21 @@ metrics <- metrics %>%
         share_ac_sum_contract = round(ac_sum_contract/total_ac_sum_contract, 2)
         )
 
-write_xlsx(metrics, "C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/2026.05.25_metrics.xlsx")
+
+# Перестановка столбцов
+metrics %>% colnames() %>% toString()
+metrics <- metrics %>% 
+  select(zakon_osnovanie, priznak_standartizacii_da_net, 
+         ac_sum_contract, dkp_sum_of_nmck_d, 
+         share_ac_sum_contract, share_dkp_sum_of_nmck_d, 
+         diff_sums_rub, perc_diff_sums,
+         total_dkp_sum_of_nmck_d, total_ac_sum_contract,
+         dkp_n_uniq_procedures, ac_n_uniq_contract, 
+         diff_procedures_n, perc_diff_procedures, 
+         total_dkp_n_procedures, share_dkp_n_procedures, 
+         total_ac_n_uniq_contract, share_ac_n_uniq_contract)
+
+# write_xlsx(metrics, "C:/Users/GudievZK/Nextcloud/Data analysis/DA-68/2026.05.25_metrics.xlsx")
 
 ###
 metrics_223 <- metrics %>% 
@@ -254,6 +268,14 @@ metrics_44 <- metrics %>%
 bind_rows(metrics_223, metrics_44)
 ```
 
+```{r}
+n_distinct(df$reestrovyj_nomer_lota_eaist)
+n_distinct(df$reestrovyj_nomer_procedury_eaist)
+n_distinct(df$reestrovyj_nomer_procedury_na_eis)
+
+
+df %>% 
+```
 
 
 # 5. Заключение
